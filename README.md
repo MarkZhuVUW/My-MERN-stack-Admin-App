@@ -75,6 +75,10 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 npm i redux react-redux redux-thunk
 npm i bootstrap reactstrap uuid react-transition-group
 npm i axios
+npm install recharts
+npm install @material-ui/core
+npm install @material-ui/icons
+npm install react-router-dom
 
 # server environment:
 
