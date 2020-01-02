@@ -1,3 +1,35 @@
+# This is meant to be a terminal app of all the fullstack apps I am going to make. (All important notification on my other websites should be pushed to the admin app and potentially I will make a React Native version of this app to receive notifications, messages from users).
+
+## milestone 1: 
+### complete a simple admin app with user statistics and github statistics. 
+
+## milestone 2: 
+### Make the admin app interact with my portfolio website (user sends messages through the chatbot on my-portfolio and I receive them on the admin app. )
+
+## milestone 3: 
+### Host this website with AWS and play with DYNAMO DB.
+
+# client environment:
+
+npm i redux react-redux redux-thunk
+npm i bootstrap reactstrap uuid react-transition-group
+npm i axios
+npm install recharts
+npm install @material-ui/core
+npm install @material-ui/icons
+npm install react-router-dom
+
+# server environment:
+
+npm i bcryptjs
+npm i jsonwebtoken
+npm i config
+
+
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
@@ -70,18 +102,3 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 
 
-# client environment:
-
-npm i redux react-redux redux-thunk
-npm i bootstrap reactstrap uuid react-transition-group
-npm i axios
-npm install recharts
-npm install @material-ui/core
-npm install @material-ui/icons
-npm install react-router-dom
-
-# server environment:
-
-npm i bcryptjs
-npm i jsonwebtoken
-npm i config
