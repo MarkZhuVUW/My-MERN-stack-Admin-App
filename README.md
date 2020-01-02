@@ -1,4 +1,4 @@
-# This is meant to be a terminal app of all the fullstack apps I am going to make. (All important notification on my other websites should be pushed to the admin app and potentially I will make a React Native version of this app to receive notifications, messages from users).
+# This is meant to be a terminal app for all the fullstack apps I am going to make. (All websites share the same database and changes on my other websites should be pushed to this admin app).
 
 ## milestone 1: 
 ### complete a simple admin app with user statistics and github statistics. 
