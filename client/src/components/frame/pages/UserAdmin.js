@@ -1,56 +1,72 @@
-import React from "react";
-import { Grid } from "@material-ui/core";
-import MUIDataTable from "mui-datatables";
+import React, { Component } from "react";
 
-// components
-import PageTitle from "../../components/PageTitle";
-import Widget from "../../components/Widget";
-import Table from "../dashboard/components/Table/Table";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/styles";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-// data
-import mock from "../dashboard/mock";
+import { clearErrors } from "../../../actions/errorActions";
+import EditableTable from "../../EditableTable";
 
-const datatableData = [
-  ["Joe James", "Example Inc.", "Yonkers", "NY"],
-  ["John Walsh", "Example Inc.", "Hartford", "CT"],
-  ["Bob Herm", "Example Inc.", "Tampa", "FL"],
-  ["James Houston", "Example Inc.", "Dallas", "TX"],
-  ["Prabhakar Linwood", "Example Inc.", "Hartford", "CT"],
-  ["Kaui Ignace", "Example Inc.", "Yonkers", "NY"],
-  ["Esperanza Susanne", "Example Inc.", "Hartford", "CT"],
-  ["Christian Birgitte", "Example Inc.", "Tampa", "FL"],
-  ["Meral Elias", "Example Inc.", "Hartford", "CT"],
-  ["Deep Pau", "Example Inc.", "Yonkers", "NY"],
-  ["Sebastiana Hani", "Example Inc.", "Dallas", "TX"],
-  ["Marciano Oihana", "Example Inc.", "Yonkers", "NY"],
-  ["Brigid Ankur", "Example Inc.", "Dallas", "TX"],
-  ["Anna Siranush", "Example Inc.", "Yonkers", "NY"],
-  ["Avram Sylva", "Example Inc.", "Hartford", "CT"],
-  ["Serafima Babatunde", "Example Inc.", "Tampa", "FL"],
-  ["Gaston Festus", "Example Inc.", "Tampa", "FL"],
-];
+const styles = {
+  table: {
+    width: "80%"
+  }
+};
 
-export default function UserAdmin() {
-  return (
-    <>
-      <PageTitle title="Tables" />
-      <Grid container spacing={4}>
-        <Grid item xs={12}>
-          <MUIDataTable
-            title="Employee List"
-            data={datatableData}
-            columns={["Name", "Company", "City", "State"]}
-            options={{
-              filterType: "checkbox",
-            }}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Widget title="Material-UI Table" upperTitle noBodyPadding>
-            <Table data={mock.table} />
-          </Widget>
-        </Grid>
-      </Grid>
-    </>
-  );
+class UserAdmin extends Component {
+  state = {};
+
+  static propTypes = {};
+  componentDidMount() {
+    const { email, TFA } = this.props;
+    const { domainName } = this.state;
+    if (this.props.title === "Google Two-Factor Auth") {
+      const obj = {
+        email,
+        domainName
+      };
+      this.props.getTFA(obj).then(() => {
+        console.log(TFA);
+        console.log(email);
+
+        if (!TFA && email) {
+          this.props.TFASetup(obj).then(() => {
+            this.props.getTFA(obj);
+          });
+        }
+      });
+    }
+  }
+  componentDidUpdate(prevProps) {
+    const { error } = this.props;
+
+    if (error !== prevProps.error) {
+      // Check for register error
+      if (error.id === "LOGIN_FAIL") {
+        this.setState({ msg: error.msg.msg });
+      } else {
+        this.setState({ msg: null });
+      }
+    }
+  }
+  toggle = () => {
+    // Clear errors
+    this.props.clearErrors();
+  };
+
+  render() {
+    const { classes } = this.props;
+
+    return <EditableTable className={classes.table} />;
+  }
 }
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  error: state.error,
+  TFA: state.auth.TFA
+});
+export default connect(mapStateToProps, {
+  clearErrors
+})(withStyles(styles)(UserAdmin));

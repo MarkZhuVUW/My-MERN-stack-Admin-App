@@ -1,15 +1,5 @@
-
 import React, { useState } from "react";
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  InputBase,
-  Menu,
-  MenuItem,
-  Fab,
-  Link
-} from "@material-ui/core";
+import { IconButton, Menu, MenuItem, Fab, Link } from "@material-ui/core";
 import {
   Menu as MenuIcon,
   MailOutline as MailIcon,
@@ -21,11 +11,10 @@ import {
 } from "@material-ui/icons";
 import classNames from "classnames";
 
-// components
-import { Badge, Typography, Button } from "../Wrappers/Wrappers";
+import { Badge, Typography, Button } from "@material-ui/core";
 import UserAvatar from "../../components/UserAvatar";
 
-import { Logout } from "../auth/Logout";
+import Logout from "../auth/Logout";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { fade } from "@material-ui/core/styles/colorManipulator";
@@ -60,55 +49,11 @@ const useStyles = makeStyles(theme => ({
   grow: {
     flexGrow: 1
   },
-  search: {
-    position: "relative",
-    borderRadius: 25,
-    paddingLeft: theme.spacing(2.5),
-    width: 36,
-    backgroundColor: fade(theme.palette.common.black, 0),
-    transition: theme.transitions.create(["background-color", "width"]),
-    "&:hover": {
-      cursor: "pointer",
-      backgroundColor: fade(theme.palette.common.black, 0.08)
-    }
-  },
-  searchFocused: {
-    backgroundColor: fade(theme.palette.common.black, 0.08),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: 250
-    }
-  },
-  searchIcon: {
-    width: 36,
-    right: 0,
-    height: "100%",
-    position: "absolute",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    transition: theme.transitions.create("right"),
-    "&:hover": {
-      cursor: "pointer"
-    }
-  },
-  searchIconOpened: {
-    right: theme.spacing(1.25)
-  },
-  inputRoot: {
-    color: "inherit",
-    width: "100%"
-  },
-  inputInput: {
-    height: 36,
-    padding: 0,
-    paddingRight: 36 + theme.spacing(1.25),
-    width: "100%"
-  },
-  messageContent: {
-    display: "flex",
-    flexDirection: "column"
-  },
+  
+  
+  
+  
+  
   headerMenu: {
     marginTop: theme.spacing(7)
   },
@@ -116,12 +61,7 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column"
   },
-  headerMenuItem: {
-    "&:hover, &:focus": {
-      backgroundColor: theme.palette.primary.main,
-      color: "white"
-    }
-  },
+  
   headerMenuButton: {
     marginLeft: theme.spacing(2),
     padding: theme.spacing(0.5)
@@ -144,19 +84,11 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     padding: theme.spacing(2)
   },
-  profileMenuItem: {
-    color: theme.palette.text.hint
-  },
-  profileMenuIcon: {
-    marginRight: theme.spacing(2),
-    color: theme.palette.text.hint
-  },
+  
   profileMenuLink: {
     fontSize: 16,
-    textDecoration: "none",
-    "&:hover": {
-      cursor: "pointer"
-    }
+    textDecoration: "none"
+    
   },
   messageNotification: {
     height: "auto",
@@ -317,13 +249,7 @@ export default function UserMenu() {
           <AccountIcon className={classes.profileMenuIcon} /> Messages
         </MenuItem>
         <div className={classes.profileMenuUser}>
-          <Typography
-            className={classes.profileMenuLink}
-            color="primary"
-            onClick={Logout}
-          >
-            Sign Out
-          </Typography>
+          <Logout />
         </div>
       </Menu>
       {/* user menu */}
@@ -384,7 +310,6 @@ export default function UserMenu() {
           <SendIcon className={classes.sendButtonIcon} />
         </Fab>
       </Menu>
-     
     </div>
   );
 }

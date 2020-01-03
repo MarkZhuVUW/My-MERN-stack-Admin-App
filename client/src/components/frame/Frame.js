@@ -21,21 +21,28 @@ import Paper from "@material-ui/core/Paper";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-import SelectedListItem, {
-  mainListItems,
-  secondaryListItems
-} from "./listItems";
+import SelectedListItem from "./listItems";
 
-import { Route, BrowserRouter as Router, NavLink } from "react-router-dom";
+import {
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  Redirect
+} from "react-router-dom";
 import Logout from "../auth/Logout";
 import UserMenu from "./UserMenu";
 
 //redux
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import ResponsiveDialog from "../ResponsiveDialog";
 
 import { getAllUsers } from "../../actions/authActions";
+
+import Dashboard from "./pages/dashboard/Dashboard";
+import Developer from "./pages/Developer";
+import UserAdmin from "./pages/UserAdmin";
+import EditableTable from "../EditableTable";
+
 const drawerWidth = 240;
 const theme = createMuiTheme({
   spacing: 4
@@ -108,15 +115,7 @@ const styles = {
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4)
   },
-  paper: {
-    padding: theme.spacing(2),
-    display: "flex",
-    overflow: "auto",
-    flexDirection: "column"
-  },
-  fixedHeight: {
-    height: 240
-  }
+  
 };
 
 class Frame extends Component {
@@ -168,13 +167,13 @@ class Frame extends Component {
             noWrap
             className={classes.title}
           >
-            My MERN stack Admin App
+            Admin
           </Typography>
-          <IconButton color="inherit">
+          {/* <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
           <UserMenu />
         </Toolbar>
       </AppBar>
@@ -208,7 +207,11 @@ class Frame extends Component {
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
-            <Grid container spacing={3}></Grid>
+            <Grid container spacing={3}>
+                <Route path="/dashboard" component={Dashboard}></Route>
+                {/* <Route path="/developer" component={Developer}></Route> */}
+                <Route path="/useradmin" component={UserAdmin}></Route>
+            </Grid>
           </Container>
         </main>
       </div>

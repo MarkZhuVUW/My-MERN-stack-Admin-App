@@ -72,7 +72,6 @@ class ResponsiveDialog extends Component {
           });
         }
       });
-      // this.props.TFASetup();
     }
   }
   componentDidUpdate(prevProps) {
