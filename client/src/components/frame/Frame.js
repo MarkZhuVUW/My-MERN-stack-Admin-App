@@ -36,7 +36,7 @@ import UserMenu from "./UserMenu";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { getAllUsers } from "../../actions/authActions";
+import { clearErrors } from "../../actions/errorActions";
 
 import Dashboard from "./pages/dashboard/Dashboard";
 import Developer from "./pages/Developer";
@@ -125,7 +125,7 @@ class Frame extends Component {
   };
   static propTypes = {
     auth: PropTypes.object.isRequired,
-    getAllUsers: PropTypes.func.isRequired
+    clearErrors: PropTypes.func.isRequired
   };
 
   render() {
@@ -221,9 +221,8 @@ class Frame extends Component {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  allUsers: state.auth
 });
 
-export default connect(mapStateToProps, { getAllUsers })(
+export default connect(mapStateToProps, { clearErrors })(
   withStyles(styles)(Frame)
 );

@@ -40,7 +40,7 @@ export const loadUser = () => (dispatch, getState) => {
 };
 
 // get all registered users
-export const getAllUsers = () => (dispatch, getState) => {
+export const loadAllUsers = () => (dispatch, getState) => {
   // User loading
   dispatch({ type: USER_LOADING });
 

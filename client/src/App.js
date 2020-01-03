@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 
-import { Provider } from "react-redux";
-import store from "./store";
-import { loadUser } from "./actions/authActions";
+// import { Provider } from "react-redux";
+// import store from "./store";
 
 import "./App.css";
 import Frame from "./components/frame/Frame";
@@ -15,24 +14,49 @@ import {
 import SignInSide from "./components/auth/SignInSide";
 import SignUp from "./components/auth/SignUp";
 
+import { withStyles } from "@material-ui/styles";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { loadUser } from "./actions/authActions";
+
 class App extends Component {
   componentDidMount() {
-    store.dispatch(loadUser());
+    // this.props.loadUser();
   }
 
+  static propTypes = {
+    isAuthenticated: PropTypes.bool
+  };
   render() {
     return (
-      <Provider store={store}>
+      
         <Router>
-          <Route path="/" component={Frame}></Route>
-          {/* <Switch> */}
+          <Switch>
             <Route path="/signin" component={SignInSide}></Route>
             <Route path="/signup" component={SignUp}></Route>
-          {/* </Switch> */}
+            <Route
+              exact
+              path="/"
+              render={() => {
+                return (
+                  <>
+                  {console.log(this.props.isAuthenticated)}
+                    {this.props.isAuthenticated ? (
+                      <Frame />
+                    ) : (
+                      <Redirect to="/signin" />
+                    )}
+                  </>
+                );
+              }}
+            />
+          </Switch>
         </Router>
-      </Provider>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+export default connect(mapStateToProps, { loadUser })(App);

@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 
-import { createMuiTheme } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/styles";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import { clearErrors } from "../../../actions/errorActions";
+import { loadAllUsers } from "../../../actions/authActions";
+
 import EditableTable from "../../EditableTable";
 
 const styles = {
@@ -17,44 +18,34 @@ const styles = {
 class UserAdmin extends Component {
   state = {};
 
-  static propTypes = {};
+  static propTypes = {
+    clearErrors: PropTypes.func.isRequired,
+    loadAllUsers: PropTypes.func.isRequired
+
+  };
   componentDidMount() {
     const { email, TFA } = this.props;
     const { domainName } = this.state;
-    if (this.props.title === "Google Two-Factor Auth") {
-      const obj = {
-        email,
-        domainName
-      };
-      this.props.getTFA(obj).then(() => {
-        console.log(TFA);
-        console.log(email);
-
-        if (!TFA && email) {
-          this.props.TFASetup(obj).then(() => {
-            this.props.getTFA(obj);
-          });
-        }
-      });
-    }
+    
   }
   componentDidUpdate(prevProps) {
-    const { error } = this.props;
-
-    if (error !== prevProps.error) {
-      // Check for register error
-      if (error.id === "LOGIN_FAIL") {
-        this.setState({ msg: error.msg.msg });
-      } else {
-        this.setState({ msg: null });
-      }
-    }
+    
   }
   toggle = () => {
     // Clear errors
     this.props.clearErrors();
   };
+  onSubmit = e => {
+    e.preventDefault();
 
+    const { code } = this.state;
+    const { email } = this.props;
+    
+    
+  
+    //clear errors
+    this.toggle();
+  };
   render() {
     const { classes } = this.props;
 
@@ -68,5 +59,6 @@ const mapStateToProps = state => ({
   TFA: state.auth.TFA
 });
 export default connect(mapStateToProps, {
-  clearErrors
+  clearErrors,
+  loadAllUsers
 })(withStyles(styles)(UserAdmin));
