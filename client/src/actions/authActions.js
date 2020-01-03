@@ -3,7 +3,6 @@ import { returnErrors } from "./errorActions";
 
 import {
   USER_LOADED,
-  GET_USERS,
   USER_LOADING,
   AUTH_ERROR,
   LOGIN_SUCCESS,
@@ -174,12 +173,15 @@ export const getTFA = ({ email, domainName }) => dispatch => {
   const authPromise = axios
     .post("/api/TFA/", body, config)
     .then(res => {
+      console.log(res);
       dispatch({
         type: TFA_LOADED,
         payload: res.data
       });
     })
     .catch(err => {
+      console.log(err);
+
       dispatch(
         returnErrors(err.response.data, err.response.status, "TFA_FAIL")
       );
@@ -197,6 +199,7 @@ export const TFASetup = ({ email, domainName }) => dispatch => {
   // TFAing
   // dispatch({ type: TFA_ING });
   // Headers
+
   const config = {
     headers: {
       "Content-Type": "application/json"
@@ -208,10 +211,12 @@ export const TFASetup = ({ email, domainName }) => dispatch => {
   const authPromise = axios
     .post("/api/TFA/setup", body, config)
     .then(res => {
+      console.log(res);
+
       dispatch({
         type: TFA_SETUP_SUCCESS,
+        payload: res.data
       });
-      
     })
     .catch(err => {
       dispatch(

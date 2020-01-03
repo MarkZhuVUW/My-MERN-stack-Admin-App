@@ -21,6 +21,8 @@ import { loadUser } from "../../actions/authActions";
 import ResponsiveDialog from "../ResponsiveDialog";
 import { NavLink } from "react-router-dom";
 import SimpleBackdrop from "../MyBackdrop";
+import { withRouter } from 'react-router-dom';
+import compose from 'recompose/compose'
 
 const theme = createMuiTheme({
   spacing: 4
@@ -73,7 +75,12 @@ class SignInSide extends Component {
     userLoaded: PropTypes.bool,
     clearErrors: PropTypes.func.isRequired,
     isTFAing: PropTypes.bool,
-    isAuthenticated: PropTypes.bool
+    isAuthenticated: PropTypes.bool,
+
+    //withRouter
+    match: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
   };
 
   componentDidUpdate(prevProps) {
@@ -97,6 +104,7 @@ class SignInSide extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  
   onSubmit = e => {
     e.preventDefault();
 
@@ -107,16 +115,19 @@ class SignInSide extends Component {
       password
     };
 
-    if (this.props.isAuthenticated) {
-      document.location.href = "/";
-    }
+    
     // Attempt to login
-    this.props.login(user).then(authPromise => {
-      this.props.loadUser();
-    });
+    this.props.login(user);
+    this.props.loadUser();
     //clear errors
     this.toggle();
   };
+
+  callback = (isTFAVerified) => {
+    if(isTFAVerified) {
+      this.props.history.push("/");
+    }
+  }
 
   render() {
     const { classes, isTFAing, userLoaded, error } = this.props;
@@ -133,6 +144,7 @@ class SignInSide extends Component {
                 alertMsg="enter the code from google authenticator to log in."
                 title="Google Two-Factor Auth"
                 email={this.state.email}
+                cb={this.callback}
               />
             ) : null}
 
@@ -232,6 +244,4 @@ const mapStateToProps = state => ({
   isTFAing: state.auth.isTFAing,
   isAuthenticated: state.auth.isAuthenticated
 });
-export default connect(mapStateToProps, { login, clearErrors, loadUser })(
-  withStyles(styles)(SignInSide)
-);
+export default compose(withStyles(styles), connect(mapStateToProps, { login, clearErrors, loadUser }))(withRouter(SignInSide));

@@ -1,19 +1,18 @@
-import React from 'react';
+import React from "react";
 import MUIDataTable from "mui-datatables";
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
-
-const tableTheme = () => createMuiTheme({
-  overrides: {
-    MUIDataTableBodyCell: {
-      root: {
-        backgroundColor: "#FFF",
-        width: "50px"
+const tableTheme = () =>
+  createMuiTheme({
+    overrides: {
+      MUIDataTableBodyCell: {
+        root: {
+          backgroundColor: "#FFF",
+          width: "50px"
+        }
       }
     }
-  }
-})
-
+  });
 
 export default function EditableTable(props) {
   const datatableData = [
@@ -33,21 +32,27 @@ export default function EditableTable(props) {
     ["Anna Siranush", "Example Inc.", "Yonkers", "NY"],
     ["Avram Sylva", "Example Inc.", "Hartford", "CT"],
     ["Serafima Babatunde", "Example Inc.", "Tampa", "FL"],
-    ["Gaston Festus", "Example Inc.", "Tampa", "FL"],
+    ["Gaston Festus", "Example Inc.", "Tampa", "FL"]
   ];
 
   const options = {
     filter: true,
-    // filterType: 'dropdown',
-    responsive: 'scroll',
+    responsive: "scrollFullHeight"
   };
   return (
     <MUIDataTable
-            title="Employee List"
-            data={props.data}
-            columns={["id", "Name", "Email", "City", "register date"]}
-            options={options}
-            theme={tableTheme}
-          ></MUIDataTable>
-  )
+      title="Employee List"
+      data={props.data.map(user => {
+        return [
+          user._id,
+          user.name,
+          user.email,
+          user.register_date
+        ]
+      })}
+      columns={["id", "Name", "Email", "register date"]}
+      options={options}
+      theme={tableTheme}
+    ></MUIDataTable>
+  );
 }

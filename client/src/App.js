@@ -29,12 +29,14 @@ class App extends Component {
   };
   render() {
     return (
-      
-        <Router>
-          <Switch>
-            <Route path="/signin" component={SignInSide}></Route>
-            <Route path="/signup" component={SignUp}></Route>
-            <Route
+      <Router>
+        <Route path="/" component={Frame} />
+        <Switch>
+          
+          <Route path="/signin" component={SignInSide} />
+          <Route path="/signup" component={SignUp} />
+
+          {/* <Route
               exact
               path="/"
               render={() => {
@@ -49,9 +51,9 @@ class App extends Component {
                   </>
                 );
               }}
-            />
-          </Switch>
-        </Router>
+            /> */}
+        </Switch>
+      </Router>
     );
   }
 }

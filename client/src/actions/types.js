@@ -5,7 +5,7 @@ export const ITEMS_LOADING = 'ITEMS_LOADING';
 
 //USER
 export const USER_LOADING = "USER_LOADING";
-export const ALL_USERS_LOADED = "GET_USERS";
+export const ALL_USERS_LOADED = "ALL_USERS_LOADED";
 export const USER_LOADED = "USER_LOADED";
 
 //AUTH

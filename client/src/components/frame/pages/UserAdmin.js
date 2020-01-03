@@ -20,17 +20,14 @@ class UserAdmin extends Component {
 
   static propTypes = {
     clearErrors: PropTypes.func.isRequired,
-    loadAllUsers: PropTypes.func.isRequired
-
+    loadAllUsers: PropTypes.func.isRequired,
+    allUsers: PropTypes.array,
+    isAuthenticated: PropTypes.bool.isRequired
   };
   componentDidMount() {
-    const { email, TFA } = this.props;
-    const { domainName } = this.state;
-    
+    this.props.loadAllUsers();
   }
-  componentDidUpdate(prevProps) {
-    
-  }
+  componentDidUpdate(prevProps) {}
   toggle = () => {
     // Clear errors
     this.props.clearErrors();
@@ -40,23 +37,28 @@ class UserAdmin extends Component {
 
     const { code } = this.state;
     const { email } = this.props;
-    
-    
-  
+
     //clear errors
     this.toggle();
   };
   render() {
-    const { classes } = this.props;
+    const { classes, allUsers } = this.props;
 
-    return <EditableTable className={classes.table} />;
+    return (
+      <div>
+        {console.log(allUsers)}
+        {allUsers ? (
+          <EditableTable data={allUsers} className={classes.table} />
+        ) : null}
+      </div>
+    );
   }
 }
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
   error: state.error,
-  TFA: state.auth.TFA
+  allUsers: state.auth.allUsers
 });
 export default connect(mapStateToProps, {
   clearErrors,

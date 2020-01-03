@@ -62,16 +62,20 @@ class ResponsiveDialog extends Component {
         email,
         domainName
       };
-      this.props.getTFA(obj).then(() => {
-        console.log(TFA);
-        console.log(email);
+      this.props.TFASetup(obj);
 
-        if (!TFA && email) {
-          this.props.TFASetup(obj).then(() => {
-            this.props.getTFA(obj);
-          });
-        }
-      });
+      this.props.getTFA(obj);
+
+      // .then(resolve => {
+      //   console.log("resolve: " + JSON.stringify(resolve));
+      // })
+      // .catch(reject => {
+      //   console.log("reject: " + JSON.stringify(reject));
+
+      //   if (!TFA && email) {
+      //     this.props.TFASetup(obj);
+      //   }
+      // });
     }
   }
   componentDidUpdate(prevProps) {
@@ -109,7 +113,7 @@ class ResponsiveDialog extends Component {
     // Attempt to login
     this.props.TFAVerify(email, code).then(verificationPromise => {
       if (verificationPromise) {
-        document.location.href = "/";
+        this.props.cb(true);
       }
     });
     //clear errors
@@ -137,6 +141,7 @@ class ResponsiveDialog extends Component {
           <DialogTitle id="responsive-dialog-title">{title}</DialogTitle>
           <DialogContent>
             <DialogContentText>{alertMsg}</DialogContentText>
+            {/* {console.log(TFA)} */}
             {TFA ? (
               <div className={classes.centerItems}>
                 <img src={TFA.TFA.dataURL} />
