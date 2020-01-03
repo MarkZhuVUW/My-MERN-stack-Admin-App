@@ -25,9 +25,7 @@ import SelectedListItem, {
   mainListItems,
   secondaryListItems
 } from "./listItems";
-import Chart from "./Chart";
-import Deposits from "./Deposits";
-import Orders from "./Orders";
+
 import { Route, BrowserRouter as Router, NavLink } from "react-router-dom";
 import Logout from "../auth/Logout";
 import UserMenu from "./UserMenu";
@@ -121,7 +119,7 @@ const styles = {
   }
 };
 
-class Dashboard extends Component {
+class Frame extends Component {
   state = {
     open: false,
     selectedIndex: 0
@@ -145,7 +143,7 @@ class Dashboard extends Component {
       });
     };
 
-    const DashboardAppBar = (
+    const FrameAppBar = (
       <AppBar
         position="absolute"
         className={clsx(classes.appBar, open && classes.appBarShift)}
@@ -170,7 +168,7 @@ class Dashboard extends Component {
             noWrap
             className={classes.title}
           >
-            Dashboard
+            My MERN stack Admin App
           </Typography>
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
@@ -181,12 +179,12 @@ class Dashboard extends Component {
         </Toolbar>
       </AppBar>
     );
-    const cb = (selectedIndex) => {
+    const cb = selectedIndex => {
       this.setState({
         selectedIndex: selectedIndex
       });
-    }
-    const DashboardDrawer = (
+    };
+    const FrameDrawer = (
       <Drawer
         variant="permanent"
         classes={{
@@ -195,50 +193,22 @@ class Dashboard extends Component {
         open={open}
       >
         <div className={classes.toolbarIcon}>
-          <IconButton>
-            <NavLink to="/profile">
-              <Avatar></Avatar>
-            </NavLink>
-          </IconButton>
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon />
           </IconButton>
         </div>
-        <SelectedListItem callback={cb}/>
+        <SelectedListItem callback={cb} />
       </Drawer>
     );
     return (
       <div className={classes.root}>
         <CssBaseline />
-        {DashboardAppBar}
-        {DashboardDrawer}
+        {FrameAppBar}
+        {FrameDrawer}
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
-            <Grid container spacing={3}>
-              {/* Chart */}
-              {/* <Grid item xs={12} md={8} lg={9}>
-                <Paper className={fixedHeightPaper}>
-                  <Chart />
-                </Paper>
-              </Grid> */}
-              {/* Recent Deposits */}
-              {/* <Grid item xs={12} md={4} lg={3}>
-                <Paper className={fixedHeightPaper}>
-                  <Deposits />
-                </Paper>
-              </Grid> */}
-              {/* Recent Orders */}
-              {/* <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  <Orders />
-                </Paper>
-              </Grid> */}
-          <UserMenu />
-
-              {/* all users table */}
-              
-            </Grid>
+            <Grid container spacing={3}></Grid>
           </Container>
         </main>
       </div>
@@ -251,4 +221,6 @@ const mapStateToProps = state => ({
   allUsers: state.auth
 });
 
-export default connect(mapStateToProps, { getAllUsers })(withStyles(styles)(Dashboard));
+export default connect(mapStateToProps, { getAllUsers })(
+  withStyles(styles)(Frame)
+);

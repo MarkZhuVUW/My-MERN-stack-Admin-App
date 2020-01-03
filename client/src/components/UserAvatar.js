@@ -1,25 +1,23 @@
 import React from "react";
-import { useTheme } from "@material-ui/styles";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 // components
 import { Typography } from "../components/Wrappers/Wrappers";
 
 const useStyles = makeStyles(() => ({
-    avatar: {
-      width: 30,
-      height: 30,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      borderRadius: "50%"
-    },
-    text: {
-      color: "white"
-    }
-  }));
+  avatar: {
+    width: 30,
+    height: 30,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: "50%"
+  },
+  text: {
+    color: "white"
+  }
+}));
 export default function UserAvatar({ color = "primary", ...props }) {
-    
   var classes = useStyles();
   var theme = useTheme();
 

@@ -30,7 +30,7 @@ const datatableData = [
   ["Gaston Festus", "Example Inc.", "Tampa", "FL"],
 ];
 
-export default function Tables() {
+export default function UserAdmin() {
   return (
     <>
       <PageTitle title="Tables" />
