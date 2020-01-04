@@ -28,7 +28,12 @@ router.post("/", (req, res) => {
 // @access  Private
 router.post("/setup", (req, res) => {
   const { email, domainName } = req.body;
-  console.log(email);
+  User.findOne({ email }).then((user) => {
+    if(!user) {
+      //return 400 if user does not even exist.
+      return res.status(400).json({ msg: "user does not even exist!" });
+    }
+  });
   TFA.findOne({ email })
     .then(TFA => {
       if (TFA) return res.status(400).json({ msg: "TFA already exists" });
@@ -46,7 +51,7 @@ router.post("/setup", (req, res) => {
     issuer: "domain name",
     encoding: "base32"
   });
-  QRCode.toDataURL(url, auth, (err, dataURL) => {
+  QRCode.toDataURL(url, (err, dataURL) => {
     const newTFA = new TFA({
       secret: secret.base32,
       dataURL: dataURL,
@@ -64,7 +69,7 @@ router.post("/setup", (req, res) => {
 // @desc    Delete a TFA document
 // @access  Private
 router.delete("/setup", (req, res) => {
-  const email = req.body;
+  const { email } = req.body;
 
   TFA.findOne({ email })
     .then(TFA => TFA.remove().then(() => res.json({ success: true })))
@@ -76,11 +81,10 @@ router.delete("/setup", (req, res) => {
 // @access  Private
 router.post("/verify", (req, res) => {
   const { email, code } = req.body;
-  var token = speakeasy.totp({
-    secret: TFA.secret,
-    encoding: "base32"
-  });
-  console.log("token: " + token + " || " + "code: " + code);
+  // var token = speakeasy.totp({
+  //   secret: TFA.secret,
+  //   encoding: "base32"
+  // });
 
   TFA.findOne({ email })
     .then(TFA => {
@@ -95,10 +99,13 @@ router.post("/verify", (req, res) => {
           msg: "verification successfull"
         });
       }
+      else {
+        return res.status(400).json({
+          msg: "verification unsuccessfull. Probably because wrong code is provided"
+        })
+      }
     })
     .catch(err => {
-      console.log(err);
-
       res.status(403).json({
         msg: err
       });

@@ -42,7 +42,7 @@ class App extends Component {
               render={() => {
                 return (
                   <>
-                  {console.log(this.props.isAuthenticated)}
+               
                     {this.props.isAuthenticated ? (
                       <Frame />
                     ) : (

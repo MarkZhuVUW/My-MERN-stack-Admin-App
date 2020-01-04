@@ -29,7 +29,7 @@ const initialState = {
 };
 
 export default function(state = initialState, action) {
-  console.log(action.type);
+
   switch (action.type) {
     case USER_LOADING:
       return {
@@ -80,7 +80,7 @@ export default function(state = initialState, action) {
       };
 
     case TFA_LOADED:
-      console.log(action.payload);
+
       return {
         ...state,
         TFA: action.payload,
@@ -95,7 +95,7 @@ export default function(state = initialState, action) {
         isTFAing: false
       };
     case TFA_SETUP_SUCCESS:
-      console.log(action.payload);
+  
       return {
         ...state,
         TFA: action.payload,

@@ -173,14 +173,12 @@ export const getTFA = ({ email, domainName }) => dispatch => {
   const authPromise = axios
     .post("/api/TFA/", body, config)
     .then(res => {
-      console.log(res);
       dispatch({
         type: TFA_LOADED,
         payload: res.data
       });
     })
     .catch(err => {
-      console.log(err);
 
       dispatch(
         returnErrors(err.response.data, err.response.status, "TFA_FAIL")
@@ -211,7 +209,6 @@ export const TFASetup = ({ email, domainName }) => dispatch => {
   const authPromise = axios
     .post("/api/TFA/setup", body, config)
     .then(res => {
-      console.log(res);
 
       dispatch({
         type: TFA_SETUP_SUCCESS,

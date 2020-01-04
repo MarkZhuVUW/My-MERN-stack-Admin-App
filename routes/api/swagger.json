@@ -1,0 +1,513 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "My MERN Stack Admin App API",
+    "description": "Done with node.js, express.js, REST API and postman.",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Local Dev, or from Heroku"
+    },
+    {
+      "url": "/api/",
+      "description": "With docker-compose and nginx proxy"
+    }
+  ],
+  "tags": [
+    {
+      "name": "auth",
+      "description": "API for user authentication"
+    },
+    {
+      "name": "users",
+      "description": "API for users"
+    },
+    {
+      "name": "TFA",
+      "description": "google two-factor authentication"
+    }
+  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/api/auth/user": {
+      "get": {
+        "tags": ["auth"],
+        "summary": "gets the current user",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/auth": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "authenticate user by email and password. Email is used to find the user object in db. Password is encrypted with 'bcrypt' and compared with the corresponding encrypted password in db",
+        "requestBody": {
+          "description": "email and password of the user",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Auth"
+            }
+          },
+          "400": {
+            "description": "unauthorized"
+          }
+        }
+      }
+    },
+    "/api/TFA": {
+      "post": {
+        "tags": ["TFA"],
+        "summary": "gets the TFA setup if it exists in db using the user email and domainName",
+        "requestBody": {
+          "description": "email of the user and domainName",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/TFAReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TFA"
+            }
+          },
+          "400": {
+            "description": "unauthorized. Probably because TFA does not exist in DB"
+          }
+        }
+      }
+    },
+    "/api/TFA/setup": {
+      "post": {
+        "tags": ["TFA"],
+        "summary": "setup TFA using the provided email and domainName.",
+        "requestBody": {
+          "description": "email of the user and domainName",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/TFAReq"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TFA"
+            }
+          },
+          "400": {
+            "description": "unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete TFA with given email",
+        "tags": ["TFA"],
+        "requestBody": {
+          "description": "email of the user",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success"
+          },
+          "404": {
+            "description": "Failed. TFA not found."
+          }
+        }
+      }
+    },
+    "/api/TFA/verify": {
+      "post": {
+        "tags": ["TFA"],
+        "summary": "verify TFA using the user email and code",
+        "requestBody": {
+          "description": "email of the user and code",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                    "email": {
+                      "type": "string"
+                    },
+                    "code": {
+                        "type": "string"
+                      }
+                  }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "verification successfull"
+          },
+          "400": {
+            "description": "unauthorized. Probably because code is not correct from my experience :)"
+          }
+        }
+      }
+    },
+
+    "/api/users/": {
+      "get": {
+        "tags": ["users"],
+        "summary": "get all registered users",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Auth"
+            }
+          },
+          "401": {
+            "description": "unauthorized because of the 'auth' middleware"
+          }
+        }
+      },
+      "post": {
+        "tags": ["users"],
+        "summary": "register a user with email, name and password. respond with the name, email, encrypted password and register_date of the user",
+        "requestBody": {
+          "description": "name, email and password",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/UserReq"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Register Failed. Bad user data."
+          }
+        }
+      }
+    },
+    "/cats": {
+      "get": {
+        "tags": ["Cats"],
+        "summary": "Get all cats in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Cats"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Cats"],
+        "summary": "Create a new cat in system",
+        "requestBody": {
+          "description": "Cat Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Cat"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/cats/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID of the cat that we want to match",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["Cats"],
+        "summary": "Get cat with given ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Cat with id",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Cat"
+            }
+          },
+          "404": {
+            "description": "Failed. Cat not found."
+          }
+        }
+      },
+      "put": {
+        "summary": "Update cat with given ID",
+        "tags": ["Cats"],
+        "requestBody": {
+          "description": "Cat Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Cat"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Cat with new values of properties",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Cat"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          },
+          "404": {
+            "description": "Failed. Cat not found."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete cat with given ID",
+        "tags": ["Cats"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Delete Cat with id",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          },
+          "404": {
+            "description": "Failed. Cat not found."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "register_date": {
+          "type": "date"
+        }
+      }
+    },
+    "UserReq": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+    "Auth": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "user": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "TFA": {
+      "type": "object",
+      "properties": {
+        "secret": {
+          "type": "string"
+        },
+        "dataURL": {
+          "type": "string"
+        },
+        "TFAURL": {
+          "type": "boolean"
+        },
+        "email": {
+          "type": "string"
+        },
+        "date_established": {
+          "type": "date"
+        }
+      }
+    },
+    "TFAReq": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "domainName": {
+          "type": "string"
+        }
+      }
+    },
+    "id": {
+      "properties": {
+        "uuid": {
+          "type": "string"
+        }
+      }
+    },
+    "Cat": {
+      "type": "object",
+      "properties": {
+        "genus": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "isHungry": {
+          "type": "boolean"
+        },
+        "lastFedDate": {
+          "type": "string"
+        }
+      }
+    },
+    "Cats": {
+      "type": "object",
+      "properties": {
+        "cats": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/Cat"
+          }
+        }
+      }
+    }
+  }
+}

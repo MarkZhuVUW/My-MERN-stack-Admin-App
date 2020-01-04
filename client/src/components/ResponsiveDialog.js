@@ -65,17 +65,6 @@ class ResponsiveDialog extends Component {
       this.props.TFASetup(obj);
 
       this.props.getTFA(obj);
-
-      // .then(resolve => {
-      //   console.log("resolve: " + JSON.stringify(resolve));
-      // })
-      // .catch(reject => {
-      //   console.log("reject: " + JSON.stringify(reject));
-
-      //   if (!TFA && email) {
-      //     this.props.TFASetup(obj);
-      //   }
-      // });
     }
   }
   componentDidUpdate(prevProps) {
@@ -141,7 +130,7 @@ class ResponsiveDialog extends Component {
           <DialogTitle id="responsive-dialog-title">{title}</DialogTitle>
           <DialogContent>
             <DialogContentText>{alertMsg}</DialogContentText>
-            {/* {console.log(TFA)} */}
+          
             {TFA ? (
               <div className={classes.centerItems}>
                 <img src={TFA.TFA.dataURL} />

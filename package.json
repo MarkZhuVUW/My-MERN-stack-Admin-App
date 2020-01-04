@@ -14,8 +14,6 @@
   "author": "Mark Zhu",
   "license": "MIT",
   "dependencies": {
-    "@material-ui/core": "^4.8.1",
-    "@material-ui/icons": "^4.5.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.4.1",
@@ -28,6 +26,8 @@
     "qrcode": "^1.4.4",
     "react-transition-group": "^4.3.0",
     "speakeasy": "^2.0.0",
+    "swagger-jsdoc": "^3.5.0",
+    "swagger-ui-express": "^4.1.2",
     "uuid": "^3.3.3"
   },
   "devDependencies": {

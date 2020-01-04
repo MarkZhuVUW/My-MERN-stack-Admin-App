@@ -11,7 +11,7 @@ const User = require("../../models/User");
 // @route   GET api/users
 // @desc    Get All Registered Users
 // @access  Public
-router.get("/", auth,  (req, res) => {
+router.get("/",  (req, res) => {
   User.find()
     .sort({ register_date: -1 })
     .then(users => res.json(users));
@@ -22,7 +22,7 @@ router.get("/", auth,  (req, res) => {
 // @access  Public
 router.post("/", (req, res) => {
   const { name, email, password } = req.body;
-  console.log( req.body);
+
 
   // Simple validation
   if (!name || !email || !password) {

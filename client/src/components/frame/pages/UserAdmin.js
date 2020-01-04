@@ -46,7 +46,6 @@ class UserAdmin extends Component {
 
     return (
       <div>
-        {console.log(allUsers)}
         {allUsers ? (
           <EditableTable data={allUsers} className={classes.table} />
         ) : null}

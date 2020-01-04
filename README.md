@@ -12,21 +12,22 @@
 
 # client environment:
 
-npm i redux react-redux redux-thunk
-npm i bootstrap reactstrap uuid react-transition-group
-npm i axios
-npm install recharts
-npm install @material-ui/core
-npm install @material-ui/icons
-npm install react-router-dom
-
+## npm i redux react-redux redux-thunk
+## npm i bootstrap reactstrap uuid react-transition-group
+## npm i axios
+## npm install recharts
+## npm install @material-ui/core
+## npm install @material-ui/icons
+## npm install react-router-dom
+## npm install material-table --save
+## npm i -s recompose
 # server environment:
 
-npm i bcryptjs
-npm i jsonwebtoken
-npm i config
-
-
+## npm i bcryptjs
+## npm i jsonwebtoken
+## npm i config
+## npm install -g swagger
+## npm i swagger-jsdoc swagger-ui-express
 
 
 
