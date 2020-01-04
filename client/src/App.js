@@ -30,11 +30,11 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <Route path="/" component={Frame} />
+        <Route path="/frame" component={Frame} />
         <Switch>
           
-          <Route path="/signin" component={SignInSide} />
-          <Route path="/signup" component={SignUp} />
+          <Route exact path="/signin" component={SignInSide} />
+          <Route exact path="/signup" component={SignUp} />
 
           {/* <Route
               exact

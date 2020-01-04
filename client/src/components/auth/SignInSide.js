@@ -125,7 +125,7 @@ class SignInSide extends Component {
 
   callback = (isTFAVerified) => {
     if(isTFAVerified) {
-      this.props.history.push("/");
+      this.props.history.push("/frame/dashboard");
     }
   }
 

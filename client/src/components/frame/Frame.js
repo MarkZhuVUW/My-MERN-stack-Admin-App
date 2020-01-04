@@ -31,17 +31,15 @@ import {
 } from "react-router-dom";
 import Logout from "../auth/Logout";
 import UserMenu from "./UserMenu";
-
-//redux
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-
-import { clearErrors } from "../../actions/errorActions";
-
 import Dashboard from "./pages/dashboard/Dashboard";
 import Developer from "./pages/Developer";
 import UserAdmin from "./pages/UserAdmin";
 import EditableTable from "../EditableTable";
+
+//redux
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { clearErrors } from "../../actions/errorActions";
 
 const drawerWidth = 240;
 const theme = createMuiTheme({
@@ -114,8 +112,7 @@ const styles = {
   container: {
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4)
-  },
-  
+  }
 };
 
 class Frame extends Component {
@@ -125,9 +122,11 @@ class Frame extends Component {
   };
   static propTypes = {
     auth: PropTypes.object.isRequired,
-    clearErrors: PropTypes.func.isRequired
+    clearErrors: PropTypes.func.isRequired,
+    swaggerUIDocs: PropTypes.object
   };
 
+  componentDidMount() {}
   render() {
     const { classes } = this.props;
     const { open } = this.state;
@@ -208,9 +207,9 @@ class Frame extends Component {
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
             <Grid container spacing={3}>
-                <Route path="/dashboard" component={Dashboard}></Route>
-                {/* <Route path="/developer" component={Developer}></Route> */}
-                <Route path="/useradmin" component={UserAdmin}></Route>
+              <Route path="/frame/dashboard" component={Dashboard}></Route>
+              <Route path="/frame/developer" component={Developer}></Route>
+              <Route path="/frame/useradmin" component={UserAdmin}></Route>
             </Grid>
           </Container>
         </main>
@@ -220,7 +219,7 @@ class Frame extends Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth,
+  auth: state.auth
 });
 
 export default connect(mapStateToProps, { clearErrors })(

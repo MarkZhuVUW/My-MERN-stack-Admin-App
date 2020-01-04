@@ -7,12 +7,14 @@ import {
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
-  TFA_FAIL,
+  TFA_SETUP_FAIL,
+  TFA_VERIFY_FAIL,
   TFA_SUCCESS,
   TFA_SETUP_SUCCESS,
   TFA_LOADED,
   TFA_ING,
-  ALL_USERS_LOADED
+  ALL_USERS_LOADED,
+  TFA_LOAD_FAIL
 } from "../actions/types";
 
 const initialState = {
@@ -29,7 +31,6 @@ const initialState = {
 };
 
 export default function(state = initialState, action) {
-
   switch (action.type) {
     case USER_LOADING:
       return {
@@ -71,16 +72,25 @@ export default function(state = initialState, action) {
         isLoading: false,
         userLoaded: false
       };
-    case TFA_FAIL:
+    case TFA_SETUP_FAIL:
       return {
         ...state,
         TFA: null,
         isTFAing: false,
         TFALoaded: false
       };
-
+    //do not change state if verification failed
+    case TFA_VERIFY_FAIL:
+      return {
+        ...state,
+        isTFAing: false
+      };
+    case TFA_LOAD_FAIL:
+      return {
+        ...state,
+        isTFAing: false
+      };
     case TFA_LOADED:
-
       return {
         ...state,
         TFA: action.payload,
@@ -95,18 +105,24 @@ export default function(state = initialState, action) {
         isTFAing: false
       };
     case TFA_SETUP_SUCCESS:
-  
       return {
         ...state,
         TFA: action.payload,
         TFALoaded: true,
         isTFAing: false
       };
-    case TFA_ING:
+    // case TFA_ING:
+    //   return {
+    //     ...state,
+    //     isTFAing: true
+    //   };
+
+    case TFA_SETUP_SUCCESS:
       return {
         ...state,
-
-        isTFAing: true
+        TFA: action.payload,
+        TFALoaded: true,
+        isTFAing: false
       };
     default:
       return state;

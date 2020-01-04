@@ -35,7 +35,7 @@ export default function SelectedListItem(props) {
   return (
     <div className={classes.root}>
       <List component="nav" aria-label="main mailbox folders">
-        <Link to="/dashboard">
+        <Link to="/frame/dashboard">
           <ListItem
             button
             selected={selectedIndex === 0}
@@ -50,7 +50,7 @@ export default function SelectedListItem(props) {
           </ListItem>
         </Link>
         <Divider />
-        <Link to="/developer">
+        <Link to="/frame/developer">
           <ListItem
             button
             selected={selectedIndex === 1}
@@ -64,7 +64,7 @@ export default function SelectedListItem(props) {
             <ListItemText primary="Developer" />
           </ListItem>
         </Link>
-        <Link to="useradmin">
+        <Link to="/frame/useradmin">
           <ListItem
             button
             selected={selectedIndex === 2}

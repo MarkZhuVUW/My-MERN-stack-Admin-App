@@ -11,10 +11,13 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   TFA_SUCCESS,
-  TFA_FAIL,
+  TFA_SETUP_FAIL,
+  TFA_VERIFY_FAIL,
   TFA_SETUP_SUCCESS,
   TFA_LOADED,
-  ALL_USERS_LOADED
+  ALL_USERS_LOADED,
+  TFA_ING,
+  TFA_LOAD_FAIL
 } from "./types";
 
 // Check token & load user
@@ -160,7 +163,7 @@ export const tokenConfig = getState => {
 
 export const getTFA = ({ email, domainName }) => dispatch => {
   // TFAing
-  // dispatch({ type: TFA_ING });
+  dispatch({ type: TFA_ING });
   // Headers
   const config = {
     headers: {
@@ -179,12 +182,11 @@ export const getTFA = ({ email, domainName }) => dispatch => {
       });
     })
     .catch(err => {
-
       dispatch(
-        returnErrors(err.response.data, err.response.status, "TFA_FAIL")
+        returnErrors(err.response.data, err.response.status, "TFA_LOAD_FAIL")
       );
       dispatch({
-        type: TFA_FAIL
+        type: TFA_LOAD_FAIL
       });
     });
 
@@ -195,7 +197,7 @@ export const getTFA = ({ email, domainName }) => dispatch => {
 // google 2fa auth setup.
 export const TFASetup = ({ email, domainName }) => dispatch => {
   // TFAing
-  // dispatch({ type: TFA_ING });
+  dispatch({ type: TFA_ING });
   // Headers
 
   const config = {
@@ -209,7 +211,6 @@ export const TFASetup = ({ email, domainName }) => dispatch => {
   const authPromise = axios
     .post("/api/TFA/setup", body, config)
     .then(res => {
-
       dispatch({
         type: TFA_SETUP_SUCCESS,
         payload: res.data
@@ -217,10 +218,10 @@ export const TFASetup = ({ email, domainName }) => dispatch => {
     })
     .catch(err => {
       dispatch(
-        returnErrors(err.response.data, err.response.status, "TFA_FAIL")
+        returnErrors(err.response.data, err.response.status, "TFA_SETUP_FAIL")
       );
       dispatch({
-        type: TFA_FAIL
+        type: TFA_SETUP_FAIL
       });
     });
 
@@ -231,7 +232,7 @@ export const TFASetup = ({ email, domainName }) => dispatch => {
 // google 2fa auth verify.
 export const TFAVerify = (email, code) => dispatch => {
   // TFAing
-  // dispatch({ type: TFA_ING });
+  dispatch({ type: TFA_ING });
   // Headers
   const config = {
     headers: {
@@ -250,10 +251,10 @@ export const TFAVerify = (email, code) => dispatch => {
     )
     .catch(err => {
       dispatch(
-        returnErrors(err.response.data, err.response.status, "TFA_FAIL")
+        returnErrors(err.response.data, err.response.status, "TFA_VERIFY_FAIL")
       );
       dispatch({
-        type: TFA_FAIL
+        type: TFA_VERIFY_FAIL
       });
     });
 

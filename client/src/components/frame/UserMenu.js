@@ -281,7 +281,7 @@ export default function UserMenu() {
           <MenuItem key={message.id} className={classes.messageNotification}>
             <div className={classes.messageNotificationSide}>
               <UserAvatar color={message.variant} name={message.name} />
-              <Typography size="sm" color="text" colorBrightness="secondary">
+              <Typography size="sm" >
                 {message.time}
               </Typography>
             </div>
@@ -294,7 +294,7 @@ export default function UserMenu() {
               <Typography weight="medium" gutterBottom>
                 {message.name}
               </Typography>
-              <Typography color="text" colorBrightness="secondary">
+              <Typography>
                 {message.message}
               </Typography>
             </div>

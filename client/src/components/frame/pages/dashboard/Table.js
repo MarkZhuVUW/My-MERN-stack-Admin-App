@@ -4,16 +4,16 @@ import {
   TableRow,
   TableHead,
   TableBody,
-  TableCell,
+  TableCell
 } from "@material-ui/core";
 
 // components
 import Button from "@material-ui/core/Button";
 
 const states = {
-  sent: "green",
+  sent: "default",
   pending: "primary",
-  declined: "secondary",
+  declined: "secondary"
 };
 
 export default function TableComponent({ data }) {
