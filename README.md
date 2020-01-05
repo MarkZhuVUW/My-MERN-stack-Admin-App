@@ -1,36 +1,102 @@
 # This is meant to be a terminal app for all the fullstack apps I am going to make. (All websites share the same database and changes on my other websites should be pushed to this admin app).
 
-## milestone 1: 
-### complete a simple admin app with user statistics and github statistics. 
+## milestone 1:
 
-## milestone 2: 
+### complete a simple admin app with user statistics and github statistics.
+
+## milestone 2:
+
 ### Make the admin app interact with my portfolio website (user sends messages through the chatbot on my-portfolio and I receive them on the admin app. )
 
-## milestone 3: 
-### Host this website with AWS and play with DYNAMO DB.
+## milestone 3:
 
+### Host this website with AWS and play with DYNAMO DB.
 
 # client environment:
 
 ## npm i redux react-redux redux-thunk
+
 ## npm i bootstrap reactstrap uuid react-transition-group
+
 ## npm i axios
+
 ## npm install recharts
+
 ## npm install @material-ui/core
+
 ## npm install @material-ui/icons
+
 ## npm install react-router-dom
+
 ## npm install material-table --save
+
 ## npm i -s recompose
+
 # server environment:
 
 ## npm i bcryptjs
+
 ## npm i jsonwebtoken
+
 ## npm i config
+
 ## npm install -g swagger
+
 ## npm i swagger-jsdoc swagger-ui-express
 
+# vscode extensions:
 
+## code --install-extension Arjun.swagger-viewer
 
+## code --install-extension austin.code-gnu-global
+
+## code --install-extension christian-kohler.npm-intellisense
+
+## code --install-extension christian-kohler.path-intellisense
+
+## code --install-extension cmborchert.local-import-intellisense
+
+## code --install-extension CoenraadS.bracket-pair-colorizer-2
+
+## code --install-extension dsznajder.es7-react-js-snippets
+
+## code --install-extension eg2.vscode-npm-script
+
+## code --install-extension esbenp.prettier-vscode
+
+## code --install-extension formulahendry.code-runner
+
+## code --install-extension leizongmin.node-module-intellisense
+
+## code --install-extension lukas-tr.materialdesignicons-intellisense
+
+## code --install-extension mrmlnc.vscode-scss
+
+## code --install-extension ms-vscode.cpptools
+
+## code --install-extension msjsdiag.debugger-for-chrome
+
+## code --install-extension OfHumanBondage.react-proptypes-intellisense
+
+## code --install-extension ritwickdey.LiveServer
+
+## code --install-extension salesforce.salesforcedx-vscode-apex
+
+## code --install-extension salesforce.salesforcedx-vscode-apex-debugger
+
+## code --install-extension salesforce.salesforcedx-vscode-core
+
+## code --install-extension sburg.vscode-javascript-booster
+
+## code --install-extension trinm1709.dracula-theme-from-intellij
+
+## code --install-extension VisualStudioExptTeam.vscodeintellicode
+
+## code --install-extension xabikos.JavaScriptSnippets
+
+## code --install-extension zh9528.file-size
+
+## code --install-extension Zignd.html-css-class-completion
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -100,7 +166,3 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
-
-
-
-

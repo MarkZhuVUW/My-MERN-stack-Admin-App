@@ -30,9 +30,9 @@ class App extends Component {
   render() {
     return (
       <Router>
+        <Redirect to="signin" />
         <Route path="/frame" component={Frame} />
         <Switch>
-          
           <Route exact path="/signin" component={SignInSide} />
           <Route exact path="/signup" component={SignUp} />
 
