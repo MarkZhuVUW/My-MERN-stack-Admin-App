@@ -1,10 +1,10 @@
-# This is meant to be a terminal app for all the fullstack apps I am going to make. (All websites share the same database and changes on my other websites should be pushed to this admin app).
+# This is meant to be a terminal app for all the fullstack apps I am going to make. (All websites share the same database and the admin app should statiscally analyze the changes on my other websites).
 
 ## milestone 1: 
 ### complete a simple admin app with user statistics and github statistics. 
 
 ## milestone 2: 
-### Make the admin app interact with my portfolio website (user sends messages through the chatbot on my-portfolio and I receive them on the admin app. )
+### Make the admin app interact with my portfolio website (user sends messages through the contact form on my-portfolio and I receive them on the admin app. )
 
 ## milestone 3: 
 ### Host this website with AWS and play with DYNAMO DB.
