@@ -72,15 +72,12 @@ router.post("/", (req, res) => {
 router.delete("/:id", auth, (req, res) => {
   // Check for existing user
 
-  console.log(req.params);
-  User.findById(req.params.id)
-    .then(user => {
-      if (!user) return res.status(400).json({ msg: "User does not exist" });
-      return user
-        .remove()
-        .then(() => res.json({ success: true }))
-        .catch(err => res.status(404).json({ success: false }));
-    })
-    .catch(err => res.status(400).json({ msg: err }));
+  User.findById(req.params.id).then(user => {
+    if (!user) return res.status(400).json({ msg: "User does not exist" });
+    return user
+      .remove()
+      .then(() => res.json({ success: true }))
+      .catch(err => res.status(404).json({ success: false }));
+  });
 });
 module.exports = router;

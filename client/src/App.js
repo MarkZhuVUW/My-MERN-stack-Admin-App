@@ -48,7 +48,7 @@ class App extends Component {
         <Route
           exact
           path="/frame"
-          render={<Redirect to="/frame/dashboard" />}
+          render={() => <Redirect to="/frame/dashboard" />}
         />
         <Route path="/frame" component={Frame} />
         <Switch>
