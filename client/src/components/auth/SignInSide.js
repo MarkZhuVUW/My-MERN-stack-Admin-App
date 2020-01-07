@@ -16,13 +16,12 @@ import PropTypes from "prop-types";
 
 import { login } from "../../actions/authActions";
 import { clearErrors } from "../../actions/errorActions";
-import { loadUser } from "../../actions/authActions";
 
 import ResponsiveDialog from "../ResponsiveDialog";
 import { NavLink } from "react-router-dom";
 import SimpleBackdrop from "../MyBackdrop";
-import { withRouter } from 'react-router-dom';
-import compose from 'recompose/compose'
+import { withRouter } from "react-router-dom";
+import compose from "recompose/compose";
 
 const theme = createMuiTheme({
   spacing: 4
@@ -65,8 +64,7 @@ class SignInSide extends Component {
   state = {
     email: "",
     password: "",
-    msg: null,
-    TFAAuth: false
+    msg: null
   };
 
   static propTypes = {
@@ -85,8 +83,10 @@ class SignInSide extends Component {
 
   componentDidUpdate(prevProps) {
     const { error } = this.props;
+
     if (error !== prevProps.error) {
       // Check for register error
+
       if (error.id === "LOGIN_FAIL") {
         this.setState({ msg: error.msg.msg });
       } else {
@@ -104,7 +104,6 @@ class SignInSide extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  
   onSubmit = e => {
     e.preventDefault();
 
@@ -115,26 +114,24 @@ class SignInSide extends Component {
       password
     };
 
-    
     // Attempt to login
     this.props.login(user);
-    this.props.loadUser();
-    //clear errors
+
     this.toggle();
   };
 
-  callback = (isTFAVerified) => {
-    if(isTFAVerified) {
-      this.props.history.push("/frame/dashboard");
+  callback = isTFAVerified => {
+    if (isTFAVerified) {
+      this.props.history.push("/frame/dashboard/");
     }
-  }
+  };
 
   render() {
-    const { classes, isTFAing, userLoaded, error } = this.props;
+    const { classes, isTFAing, userLoaded, error, isLoading } = this.props;
 
     return (
       <div>
-        {isTFAing ? (
+        {isTFAing || isLoading ? (
           <SimpleBackdrop></SimpleBackdrop>
         ) : (
           <div>
@@ -244,4 +241,7 @@ const mapStateToProps = state => ({
   isTFAing: state.auth.isTFAing,
   isAuthenticated: state.auth.isAuthenticated
 });
-export default compose(withStyles(styles), connect(mapStateToProps, { login, clearErrors, loadUser }))(withRouter(SignInSide));
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, { login, clearErrors })
+)(withRouter(SignInSide));

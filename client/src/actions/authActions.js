@@ -10,14 +10,16 @@ import {
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
-  TFA_SUCCESS,
+  TFA_VERIFED,
   TFA_SETUP_FAIL,
   TFA_VERIFY_FAIL,
   TFA_SETUP_SUCCESS,
   TFA_LOADED,
   ALL_USERS_LOADED,
   TFA_ING,
-  TFA_LOAD_FAIL
+  TFA_LOAD_FAIL,
+  LOADING,
+  USER_DELETED
 } from "./types";
 
 // Check token & load user
@@ -65,6 +67,8 @@ export const loadAllUsers = () => (dispatch, getState) => {
 // Register User
 export const register = ({ name, email, password }) => dispatch => {
   // Headers
+  dispatch({ type: LOADING });
+
   const config = {
     headers: {
       "Content-Type": "application/json"
@@ -98,6 +102,8 @@ export const register = ({ name, email, password }) => dispatch => {
 // Login User
 
 export const login = ({ email, password }) => dispatch => {
+  dispatch({ type: LOADING });
+
   // Headers
   const config = {
     headers: {
@@ -154,6 +160,21 @@ export const tokenConfig = getState => {
   }
 
   return config;
+};
+
+export const deleteUser = id => (dispatch, getState) => {
+  axios
+    .delete(`/api/users/${id}`, tokenConfig(getState))
+    .then(res => {
+      console.log(res);
+      dispatch({
+        type: USER_DELETED,
+        payload: id
+      });
+    })
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
 };
 
 // --------------------------- google 2fa auth . ---------------------------------------------//
@@ -246,7 +267,7 @@ export const TFAVerify = (email, code) => dispatch => {
     .post("/api/TFA/verify", body, config)
     .then(res =>
       dispatch({
-        type: TFA_SUCCESS
+        type: TFA_VERIFED
       })
     )
     .catch(err => {

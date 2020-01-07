@@ -9,21 +9,22 @@ import {
   REGISTER_FAIL,
   TFA_SETUP_FAIL,
   TFA_VERIFY_FAIL,
-  TFA_SUCCESS,
+  TFA_VERIFED,
   TFA_SETUP_SUCCESS,
   TFA_LOADED,
   TFA_ING,
   ALL_USERS_LOADED,
-  TFA_LOAD_FAIL
+  TFA_LOAD_FAIL,
+  LOADING,
+  USER_DELETED
 } from "../actions/types";
 
 const initialState = {
   token: localStorage.getItem("token"),
   isAuthenticated: false,
   isLoading: false,
-  UserLoaded: false,
+  userLoaded: false,
   user: null,
-  users: null,
   TFA: null,
   TFALoaded: false,
   isTFAing: false,
@@ -32,16 +33,21 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case LOADING:
+      return {
+        ...state,
+        isLoading: true
+      };
     case USER_LOADING:
       return {
         ...state,
-        USER_LOADING: true
+        isLoading: true
       };
     case ALL_USERS_LOADED:
       return {
         ...state,
         allUsers: action.payload,
-        USER_LOADING: false
+        isLoading: false
       };
     case USER_LOADED:
       return {
@@ -50,23 +56,38 @@ export default function(state = initialState, action) {
         userLoaded: true,
         user: action.payload
       };
+    case USER_DELETED:
+      return {
+        ...state,
+        allUsers: state.allusers.filter(user => user.email !== action.payload)
+      };
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
       localStorage.setItem("token", action.payload.token);
       return {
         ...state,
         ...action.payload,
-        isLoading: false
+        isLoading: false,
+        userLoaded: true
+      };
+    case LOGOUT_SUCCESS:
+      localStorage.removeItem("token");
+      return {
+        ...state,
+        user: null,
+        token: null,
+        isAuthenticated: false,
+        isLoading: false,
+        userLoaded: false
       };
 
     case AUTH_ERROR:
     case LOGIN_FAIL:
-    case LOGOUT_SUCCESS:
     case REGISTER_FAIL:
-      localStorage.removeItem("token");
+      // localStorage.removeItem("token");
       return {
         ...state,
-        token: null,
+        // token: null,
         user: null,
         isAuthenticated: false,
         isLoading: false,
@@ -90,6 +111,7 @@ export default function(state = initialState, action) {
         ...state,
         isTFAing: false
       };
+    case TFA_SETUP_SUCCESS:
     case TFA_LOADED:
       return {
         ...state,
@@ -97,20 +119,14 @@ export default function(state = initialState, action) {
         TFALoaded: true,
         isTFAing: false
       };
-    case TFA_SUCCESS:
+    case TFA_VERIFED:
       return {
         ...state,
         isAuthenticated: true,
         TFA: null,
         isTFAing: false
       };
-    case TFA_SETUP_SUCCESS:
-      return {
-        ...state,
-        TFA: action.payload,
-        TFALoaded: true,
-        isTFAing: false
-      };
+
     // case TFA_ING:
     //   return {
     //     ...state,

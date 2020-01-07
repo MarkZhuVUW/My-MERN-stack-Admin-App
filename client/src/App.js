@@ -21,7 +21,7 @@ import { loadUser } from "./actions/authActions";
 
 class App extends Component {
   componentDidMount() {
-    // this.props.loadUser();
+    this.props.loadUser();
   }
 
   static propTypes = {
@@ -30,7 +30,26 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <Redirect to="signin" />
+        <Route
+          exact
+          path="/"
+          render={() => {
+            return (
+              <>
+                {this.props.isAuthenticated ? (
+                  <Redirect to="/frame/dashboard" />
+                ) : (
+                  <Redirect to="/signin" />
+                )}
+              </>
+            );
+          }}
+        />
+        <Route
+          exact
+          path="/frame"
+          render={<Redirect to="/frame/dashboard" />}
+        />
         <Route path="/frame" component={Frame} />
         <Switch>
           <Route exact path="/signin" component={SignInSide} />

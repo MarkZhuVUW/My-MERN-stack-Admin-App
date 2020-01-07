@@ -21,6 +21,10 @@ import { clearErrors } from "../../actions/errorActions";
 import ResponsiveDialog from "../ResponsiveDialog";
 import { Route, BrowserRouter as Router, NavLink } from "react-router-dom";
 
+import SimpleBackdrop from "../MyBackdrop";
+import { withRouter } from "react-router-dom";
+import compose from "recompose/compose";
+
 const theme = createMuiTheme({
   spacing: 4
 });
@@ -53,10 +57,17 @@ class SignUp extends Component {
   };
 
   static propTypes = {
-    isAuthenticated: PropTypes.bool,
     error: PropTypes.object.isRequired,
     register: PropTypes.func.isRequired,
-    clearErrors: PropTypes.func.isRequired
+    userLoaded: PropTypes.bool,
+    clearErrors: PropTypes.func.isRequired,
+    isTFAing: PropTypes.bool,
+    isAuthenticated: PropTypes.bool,
+
+    //withRouter
+    match: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
   };
   componentDidUpdate(prevProps) {
     const { error, isAuthenticated } = this.props;
@@ -96,19 +107,31 @@ class SignUp extends Component {
     };
 
     // Attempt to register
-    this.props.register(newUser).then(authPromise => {
-      document.location.href = "/";
-    });
+    this.props.register(newUser);
 
     //clear errors.
     this.toggle();
   };
-  render() {
-    const { classes } = this.props;
 
+  callback = isTFAVerified => {
+    if (isTFAVerified) {
+      this.props.history.push("/frame/dashboard/");
+    }
+  };
+
+  render() {
+    const { classes, isTFAing, userLoaded, error, isLoading } = this.props;
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
+        {userLoaded ? (
+          <ResponsiveDialog
+            alertMsg="enter the code from google authenticator to log in."
+            title="Google Two-Factor Auth"
+            email={this.state.email}
+            cb={this.callback}
+          />
+        ) : null}
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
@@ -117,10 +140,7 @@ class SignUp extends Component {
             Sign up
           </Typography>
           {this.state.msg ? (
-            <ResponsiveDialog
-              alertMsg={this.state.msg}
-              title={this.props.error.id}
-            />
+            <ResponsiveDialog alertMsg={this.state.msg} title={error.id} />
           ) : null}
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
@@ -198,9 +218,12 @@ class SignUp extends Component {
 }
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  error: state.error
+  error: state.error,
+  userLoaded: state.auth.userLoaded,
+  isTFAing: state.auth.isTFAing,
+  isAuthenticated: state.auth.isAuthenticated
 });
-export default connect(mapStateToProps, { register, clearErrors })(
-  withStyles(styles)(SignUp)
-);
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, { register, clearErrors })
+)(withRouter(SignUp));

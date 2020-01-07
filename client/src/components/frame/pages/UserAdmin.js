@@ -1,17 +1,25 @@
 import React, { Component } from "react";
-
+import {
+  Grid,
+  LinearProgress,
+  Select,
+  OutlinedInput,
+  MenuItem
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import { clearErrors } from "../../../actions/errorActions";
 import { loadAllUsers } from "../../../actions/authActions";
+import { deleteUser } from "../../../actions/authActions";
 
 import EditableTable from "../../EditableTable";
 
 const styles = {
   table: {
-    width: "80%"
+    marginLeft: "25px",
+    marginRight: "25px"
   }
 };
 
@@ -22,7 +30,8 @@ class UserAdmin extends Component {
     clearErrors: PropTypes.func.isRequired,
     loadAllUsers: PropTypes.func.isRequired,
     allUsers: PropTypes.array,
-    isAuthenticated: PropTypes.bool.isRequired
+    isAuthenticated: PropTypes.bool.isRequired,
+    deleteUser: PropTypes.func.isRequired
   };
   componentDidMount() {
     this.props.loadAllUsers();
@@ -31,6 +40,14 @@ class UserAdmin extends Component {
   toggle = () => {
     // Clear errors
     this.props.clearErrors();
+  };
+
+  /**
+   * This callback function sends back the email of the user to be deleted
+   * after the delete button is clicked on the mui datatable.
+   */
+  callback = id => {
+    this.props.deleteUser(id);
   };
   onSubmit = e => {
     e.preventDefault();
@@ -41,13 +58,18 @@ class UserAdmin extends Component {
     //clear errors
     this.toggle();
   };
+
   render() {
     const { classes, allUsers } = this.props;
 
     return (
-      <div>
+      <div className={classes.table}>
         {allUsers ? (
-          <EditableTable data={allUsers} className={classes.table} />
+          <EditableTable
+            data={allUsers}
+            className={classes.table}
+            cb={this.callback}
+          />
         ) : null}
       </div>
     );
@@ -61,5 +83,6 @@ const mapStateToProps = state => ({
 });
 export default connect(mapStateToProps, {
   clearErrors,
-  loadAllUsers
+  loadAllUsers,
+  deleteUser
 })(withStyles(styles)(UserAdmin));

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { returnErrors } from "./errorActions";
-import { SWAGGER_UI_LOADED, LOAD_SWAGGER_UI_ERROR } from "./types";
+import { SWAGGER_UI_LOADED, LOAD_SWAGGER_UI_ERROR, LOADING } from "./types";
 
 // Setup config/headers and token
 export const tokenConfig = getState => {
@@ -26,7 +26,9 @@ export const tokenConfig = getState => {
  * load swaggerUI swagger.json file.
  */
 export const loadSwaggerUI = () => (dispatch, getState) => {
-  console.log(123123);
+  dispatch({
+    type: LOADING
+  });
   axios
     .get("/api/swagger", tokenConfig(getState))
     .then(res =>

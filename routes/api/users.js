@@ -11,7 +11,7 @@ const User = require("../../models/User");
 // @route   GET api/users
 // @desc    Get All Registered Users
 // @access  Public
-router.get("/",  (req, res) => {
+router.get("/", (req, res) => {
   User.find()
     .sort({ register_date: -1 })
     .then(users => res.json(users));
@@ -22,7 +22,6 @@ router.get("/",  (req, res) => {
 // @access  Public
 router.post("/", (req, res) => {
   const { name, email, password } = req.body;
-
 
   // Simple validation
   if (!name || !email || !password) {
@@ -67,4 +66,21 @@ router.post("/", (req, res) => {
   });
 });
 
+// @route   DELETE api/users
+// @desc    delete one user
+// @access  Public
+router.delete("/:id", auth, (req, res) => {
+  // Check for existing user
+
+  console.log(req.params);
+  User.findById(req.params.id)
+    .then(user => {
+      if (!user) return res.status(400).json({ msg: "User does not exist" });
+      return user
+        .remove()
+        .then(() => res.json({ success: true }))
+        .catch(err => res.status(404).json({ success: false }));
+    })
+    .catch(err => res.status(400).json({ msg: err }));
+});
 module.exports = router;

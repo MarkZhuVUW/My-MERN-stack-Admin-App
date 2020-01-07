@@ -8,6 +8,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
+import Link from "@material-ui/core/Link";
+
 import { createMuiTheme } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/styles";
 import { connect } from "react-redux";
@@ -21,6 +23,7 @@ import { getTFA } from "../actions/authActions";
 import { clearErrors } from "../actions/errorActions";
 
 import MediaQuery from "react-responsive";
+import Logout from "../components/auth/Logout";
 const theme = createMuiTheme({
   spacing: 4
 });
@@ -52,6 +55,7 @@ class ResponsiveDialog extends Component {
     TFAVerify: PropTypes.func.isRequired,
     TFASetup: PropTypes.func.isRequired,
     getTFA: PropTypes.func.isRequired,
+
     TFA: PropTypes.object
   };
   componentDidMount() {
@@ -62,14 +66,19 @@ class ResponsiveDialog extends Component {
         email,
         domainName
       };
-      this.props.TFASetup(obj);
-
-      this.props.getTFA(obj);
+      if (!this.props.TFA) {
+        this.props.TFASetup(obj);
+        this.props.getTFA(obj);
+      }
     }
   }
   componentDidUpdate(prevProps) {
-    const { error } = this.props;
+    const { error, email, TFA, isAuthenticated } = this.props;
+    const { domainName } = this.state;
 
+    if (isAuthenticated) {
+      this.props.cb(true);
+    }
     if (error !== prevProps.error) {
       // Check for register error
       if (error.id === "LOGIN_FAIL") {
@@ -98,13 +107,11 @@ class ResponsiveDialog extends Component {
     e.preventDefault();
 
     const { code } = this.state;
-    const { email } = this.props;
+    const { alertMsg } = this.props;
+
     // Attempt to login
-    this.props.TFAVerify(email, code).then(verificationPromise => {
-      if (verificationPromise) {
-        this.props.cb(true);
-      }
-    });
+    this.props.TFAVerify(this.props.email, code);
+
     //clear errors
     this.toggle();
   };
@@ -130,10 +137,10 @@ class ResponsiveDialog extends Component {
           <DialogTitle id="responsive-dialog-title">{title}</DialogTitle>
           <DialogContent>
             <DialogContentText>{alertMsg}</DialogContentText>
-          
+
             {TFA ? (
               <div className={classes.centerItems}>
-                <img src={TFA.TFA.dataURL} />
+                <img src={TFA.dataURL} />
               </div>
             ) : null}
           </DialogContent>
@@ -156,7 +163,9 @@ class ResponsiveDialog extends Component {
                     submit
                   </Button>
                 </DialogActions>
-              ) : null}
+              ) : (
+                <Logout />
+              )}
             </div>
           ) : (
             <DialogActions>

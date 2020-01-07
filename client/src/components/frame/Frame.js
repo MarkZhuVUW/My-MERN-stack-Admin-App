@@ -22,6 +22,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import SelectedListItem from "./listItems";
+import { logout } from "../../actions/authActions";
 
 import {
   Route,
@@ -29,7 +30,6 @@ import {
   Switch,
   Redirect
 } from "react-router-dom";
-import Logout from "../auth/Logout";
 import UserMenu from "./UserMenu";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Developer from "./pages/Developer";
@@ -111,7 +111,8 @@ const styles = {
   },
   container: {
     paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4)
+    paddingBottom: theme.spacing(4),
+    overflowX: "auto"
   }
 };
 
@@ -209,9 +210,9 @@ class Frame extends Component {
             <Grid container spacing={3}>
               <Route path="/frame/dashboard" component={Dashboard}></Route>
               <Route path="/frame/developer" component={Developer}></Route>
-              <Route path="/frame/useradmin" component={UserAdmin}></Route>
             </Grid>
           </Container>
+          <Route path="/frame/useradmin" component={UserAdmin}></Route>
         </main>
       </div>
     );

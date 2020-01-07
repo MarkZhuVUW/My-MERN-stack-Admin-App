@@ -108,18 +108,12 @@ export default function Dashboard(props) {
         )}
       </div>
       {/*page title */}
-      <Grid container spacing={4}>
-        <Grid item lg={3} md={4} sm={6} xs={12}></Grid>
 
-        <Grid item xs={12}>
-          {/* <Container className={classes.paper}> */}
-            <Paper className={classes.paper}>
-            <Table data={table.table} />
-
-            </Paper>
-          {/* </Container> */}
-        </Grid>
-      </Grid>
+      <Container className={classes.container}>
+        <Paper className={classes.paper}>
+          <Table data={table.table} />
+        </Paper>
+      </Container>
     </>
   );
 }

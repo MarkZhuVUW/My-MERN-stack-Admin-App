@@ -15,42 +15,63 @@ const tableTheme = () =>
   });
 
 export default function EditableTable(props) {
-  const datatableData = [
-    ["Joe James", "Example Inc.", "Yonkers", "NY"],
-    ["John Walsh", "Example Inc.", "Hartford", "CT"],
-    ["Bob Herm", "Example Inc.", "Tampa", "FL"],
-    ["James Houston", "Example Inc.", "Dallas", "TX"],
-    ["Prabhakar Linwood", "Example Inc.", "Hartford", "CT"],
-    ["Kaui Ignace", "Example Inc.", "Yonkers", "NY"],
-    ["Esperanza Susanne", "Example Inc.", "Hartford", "CT"],
-    ["Christian Birgitte", "Example Inc.", "Tampa", "FL"],
-    ["Meral Elias", "Example Inc.", "Hartford", "CT"],
-    ["Deep Pau", "Example Inc.", "Yonkers", "NY"],
-    ["Sebastiana Hani", "Example Inc.", "Dallas", "TX"],
-    ["Marciano Oihana", "Example Inc.", "Yonkers", "NY"],
-    ["Brigid Ankur", "Example Inc.", "Dallas", "TX"],
-    ["Anna Siranush", "Example Inc.", "Yonkers", "NY"],
-    ["Avram Sylva", "Example Inc.", "Hartford", "CT"],
-    ["Serafima Babatunde", "Example Inc.", "Tampa", "FL"],
-    ["Gaston Festus", "Example Inc.", "Tampa", "FL"]
-  ];
-
   const options = {
     filter: true,
-    responsive: "scrollFullHeight"
+    responsive: "scrollMaxHeight",
+    onRowsDelete: rowsDeleted => {
+      for (var i = 0; i < rowsDeleted.data.length; ++i) {
+        //send back to UserAdmin component the email of the user to be deleted.
+        props.cb(data[rowsDeleted.data[i].index][0]);
+        console.log(rowsDeleted.data[i].index);
+        console.log(data[i]);
+      }
+    }
   };
+
+  const columns = [
+    {
+      name: "id",
+      label: "id",
+      options: {
+        filter: false,
+        sort: false
+      }
+    },
+    {
+      name: "name",
+      label: "name",
+      options: {
+        filter: true,
+        sort: true
+      }
+    },
+    {
+      name: "Email",
+      label: "Email",
+      options: {
+        filter: true,
+        sort: true
+      }
+    },
+    {
+      name: "register date",
+      label: "register date",
+      options: {
+        filter: true,
+        sort: true
+      }
+    }
+  ];
+
+  const data = props.data.map(user => {
+    return [user._id, user.name, user.email, user.register_date];
+  });
+
   return (
     <MUIDataTable
-      title="Employee List"
-      data={props.data.map(user => {
-        return [
-          user._id,
-          user.name,
-          user.email,
-          user.register_date
-        ]
-      })}
-      columns={["id", "Name", "Email", "register date"]}
+      title="User List"
+      data={data}
+      columns={columns}
       options={options}
       theme={tableTheme}
     ></MUIDataTable>
