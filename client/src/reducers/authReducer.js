@@ -99,9 +99,7 @@ export default function(state = initialState, action) {
     case TFA_SETUP_FAIL:
       return {
         ...state,
-        TFA: null,
-        isTFAing: false,
-        TFALoaded: false
+        isTFAing: false
       };
     //do not change state if verification failed
     case TFA_VERIFY_FAIL:

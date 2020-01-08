@@ -40,6 +40,15 @@
       "get": {
         "tags": ["auth"],
         "summary": "gets the current user",
+        "parameters": [
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "description": "an authorization header",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -178,13 +187,13 @@
             "application/json": {
               "schema": {
                 "properties": {
-                    "email": {
-                      "type": "string"
-                    },
-                    "code": {
-                        "type": "string"
-                      }
+                  "email": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
                   }
+                }
               }
             }
           }
@@ -240,6 +249,41 @@
           },
           "400": {
             "description": "Register Failed. Bad user data."
+          }
+        }
+      }
+    },
+    "/api/users/{id}": {
+      "delete": {
+        "summary": "Delete user with given id",
+        "tags": ["users"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Delete user with id",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          },
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "description": "an authorization header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          },
+          "404": {
+            "description": "user not found probably?"
           }
         }
       }
@@ -408,19 +452,19 @@
       }
     },
     "UserReq": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
         }
-      },
+      }
+    },
     "Auth": {
       "type": "object",
       "properties": {
@@ -476,7 +520,7 @@
     },
     "id": {
       "properties": {
-        "uuid": {
+        "_id": {
           "type": "string"
         }
       }
