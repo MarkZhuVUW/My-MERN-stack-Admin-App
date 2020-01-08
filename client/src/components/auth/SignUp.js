@@ -9,6 +9,8 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { createMuiTheme } from "@material-ui/core/styles";
@@ -122,8 +124,9 @@ class SignUp extends Component {
   render() {
     const { classes, isTFAing, userLoaded, error, isLoading } = this.props;
     return (
-      <Container component="main" maxWidth="xs">
+      <Container >
         <CssBaseline />
+        {/* <Paper> */}
         {userLoaded ? (
           <ResponsiveDialog
             alertMsg="enter the code from google authenticator to log in."
@@ -212,6 +215,8 @@ class SignUp extends Component {
             </Grid>
           </form>
         </div>
+        {/* </Paper> */}
+        
       </Container>
     );
   }

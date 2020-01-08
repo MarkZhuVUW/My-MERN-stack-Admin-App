@@ -20,12 +20,6 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now
   }
-  // tfa: {
-  //   secret: String,
-  //   tempSecret: String,
-  //   url: String,
-  //   tfaUrl: String
-  // }
 });
 
 module.exports = User = mongoose.model('user', UserSchema);

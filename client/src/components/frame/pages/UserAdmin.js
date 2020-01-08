@@ -47,6 +47,7 @@ class UserAdmin extends Component {
    * after the delete button is clicked on the mui datatable.
    */
   callback = id => {
+    console.log()
     this.props.deleteUser(id);
   };
   onSubmit = e => {

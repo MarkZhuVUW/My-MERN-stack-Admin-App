@@ -130,10 +130,7 @@ class SignInSide extends Component {
     const { classes, isTFAing, userLoaded, error, isLoading } = this.props;
 
     return (
-      <div>
-        {isTFAing || isLoading ? (
-          <SimpleBackdrop></SimpleBackdrop>
-        ) : (
+      
           <div>
             {/* if user credentials are correct. Do a google 2fa before login to dashboard */}
             {userLoaded ? (
@@ -144,7 +141,6 @@ class SignInSide extends Component {
                 cb={this.callback}
               />
             ) : null}
-
             <Grid container component="main" className={classes.root}>
               <CssBaseline />
 
@@ -229,8 +225,7 @@ class SignInSide extends Component {
               </Grid>
             </Grid>
           </div>
-        )}
-      </div>
+    
     );
   }
 }

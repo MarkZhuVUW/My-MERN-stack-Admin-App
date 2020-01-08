@@ -28,7 +28,7 @@ const initialState = {
   TFA: null,
   TFALoaded: false,
   isTFAing: false,
-  allUsers: null
+  allUsers: []
 };
 
 export default function(state = initialState, action) {
@@ -59,7 +59,10 @@ export default function(state = initialState, action) {
     case USER_DELETED:
       return {
         ...state,
-        allUsers: state.allusers.filter(user => user.email !== action.payload)
+        allUsers: state.allUsers.filter(user => {
+          console.log(user._id);
+          return user._id !== action.payload;
+        })
       };
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
