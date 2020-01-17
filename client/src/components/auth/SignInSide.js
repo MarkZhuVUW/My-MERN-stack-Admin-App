@@ -127,7 +127,7 @@ class SignInSide extends Component {
 
   render() {
     const { classes, isTFAing, userLoaded, error, isLoading } = this.props;
-
+    const { email, msg } = this.state;
     return (
       <div>
         {/* if user credentials are correct. Do a google 2fa before login to dashboard */}
@@ -135,7 +135,7 @@ class SignInSide extends Component {
           <ResponsiveDialog
             alertMsg="enter the code from google authenticator to log in."
             title="Google Two-Factor Auth"
-            email={this.state.email}
+            email={email}
             cb={this.callback}
           />
         ) : null}
@@ -160,7 +160,7 @@ class SignInSide extends Component {
                 Sign in
               </Typography>
               {this.state.msg ? (
-                <ResponsiveDialog alertMsg={this.state.msg} title={error.id} />
+                <ResponsiveDialog alertMsg={msg} title={error.id} />
               ) : null}
 
               <form className={classes.form} noValidate>

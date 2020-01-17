@@ -21,7 +21,7 @@ import {
 
 const initialState = {
   token: localStorage.getItem("token"),
-  isAuthenticated: false,
+  isAuthenticated: localStorage.getItem("authenticated") == "true",
   isLoading: false,
   userLoaded: false,
   user: null,
@@ -75,6 +75,8 @@ export default function(state = initialState, action) {
       };
     case LOGOUT_SUCCESS:
       localStorage.removeItem("token");
+      localStorage.removeItem("authenticated");
+
       return {
         ...state,
         user: null,
@@ -121,6 +123,7 @@ export default function(state = initialState, action) {
         isTFAing: false
       };
     case TFA_VERIFED:
+      localStorage.setItem("authenticated", true);
       return {
         ...state,
         isAuthenticated: true,

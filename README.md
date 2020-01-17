@@ -1,4 +1,4 @@
-# This is meant to be a terminal app for all the fullstack apps I am going to make. (All websites share the same database and changes on my other websites should be pushed to this admin app).
+# This is meant to be a Admin app for all the fullstack apps I am going to make. (All websites share the same database and changes on my other websites should be pushed to this admin app so I can perform analytics on the admin app).
 
 ## milestone 1:
 

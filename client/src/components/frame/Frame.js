@@ -35,11 +35,13 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import Developer from "./pages/Developer";
 import UserAdmin from "./pages/UserAdmin";
 import EditableTable from "../EditableTable";
+import MediaQuery from "react-responsive";
 
 //redux
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { clearErrors } from "../../actions/errorActions";
+import Slide from "@material-ui/core/Slide";
 
 const drawerWidth = 240;
 const theme = createMuiTheme({
@@ -113,6 +115,12 @@ const styles = {
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
     overflowX: "auto"
+  },
+  mobileContainer: {
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    paddingLeft: theme.spacing(1)
   }
 };
 
@@ -206,13 +214,29 @@ class Frame extends Component {
         {FrameDrawer}
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
-          <Container maxWidth="lg" className={classes.container}>
-            <Grid container spacing={3}>
-              <Route path="/frame/dashboard" component={Dashboard}></Route>
-              <Route path="/frame/developer" component={Developer}></Route>
-            </Grid>
-          </Container>
-          <Route path="/frame/useradmin" component={UserAdmin}></Route>
+
+          {/* desktop */}
+          <MediaQuery minDeviceWidth={701}>
+            <Slide timeout={500} direction="left" in={true}>
+              <Container maxWidth="lg" className={classes.container}>
+                <Route path="/frame/dashboard" component={Dashboard} />
+                <Route path="/frame/developer" component={Developer} />
+                <Route path="/frame/useradmin" component={UserAdmin} />
+              </Container>
+            </Slide>
+          </MediaQuery>
+          {/* desktop */}
+
+          {/* mobile */}
+          <MediaQuery maxDeviceWidth={700}>
+            <Slide timeout={500} direction="left" in={!this.state.open}>
+              <Container maxWidth="lg" className={classes.mobileContainer}>
+                <Route path="/frame/dashboard" component={Dashboard} />
+                <Route path="/frame/developer" component={Developer} />
+                <Route path="/frame/useradmin" component={UserAdmin} />
+              </Container>
+            </Slide>
+          </MediaQuery>
         </main>
       </div>
     );

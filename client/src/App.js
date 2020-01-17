@@ -30,48 +30,23 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <Route
-          exact
-          path="/"
-          render={() => {
-            return (
-              <>
-                {this.props.isAuthenticated ? (
-                  <Redirect to="/frame/dashboard" />
-                ) : (
-                  <Redirect to="/signin" />
-                )}
-              </>
-            );
-          }}
-        />
-        <Route
-          exact
-          path="/frame"
-          render={() => <Redirect to="/frame/dashboard" />}
-        />
-        <Route path="/frame" component={Frame} />
         <Switch>
           <Route exact path="/signin" component={SignInSide} />
           <Route exact path="/signup" component={SignUp} />
-
-          {/* <Route
-              exact
-              path="/"
-              render={() => {
-                return (
-                  <>
-               
-                    {this.props.isAuthenticated ? (
-                      <Frame />
-                    ) : (
-                      <Redirect to="/signin" />
-                    )}
-                  </>
-                );
-              }}
-            /> */}
         </Switch>
+        {!this.props.isAuthenticated ? (
+          <Redirect to="/signin" />
+        ) : (
+          <>
+            <Route path="/frame" component={Frame} />
+
+            <Route
+              path="/frame"
+              render={() => <Redirect to="/frame/dashboard" />}
+            />
+            <Route exact path="/" render={() => <Redirect to="/frame" />} />
+          </>
+        )}
       </Router>
     );
   }
