@@ -22,6 +22,7 @@ import { NavLink } from "react-router-dom";
 import SimpleBackdrop from "../MyBackdrop";
 import { withRouter } from "react-router-dom";
 import compose from "recompose/compose";
+import RoleCheckboxes from "./RoleCheckboxes";
 
 const theme = createMuiTheme({
   spacing: 4
@@ -128,6 +129,7 @@ class SignInSide extends Component {
   render() {
     const { classes, isTFAing, userLoaded, error, isLoading } = this.props;
     const { email, msg } = this.state;
+
     return (
       <div>
         {/* if user credentials are correct. Do a google 2fa before login to dashboard */}
@@ -157,7 +159,7 @@ class SignInSide extends Component {
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
-                Sign in
+                Welcome!
               </Typography>
               {this.state.msg ? (
                 <ResponsiveDialog alertMsg={msg} title={error.id} />
@@ -188,10 +190,8 @@ class SignInSide extends Component {
                   autoComplete="current-password"
                   onChange={this.onChange}
                 />
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
+
+                <RoleCheckboxes />
                 <Button
                   type="submit"
                   fullWidth
@@ -200,7 +200,7 @@ class SignInSide extends Component {
                   className={classes.submit}
                   onClick={this.onSubmit}
                 >
-                  Sign In
+                  Sign in
                 </Button>
 
                 <Grid container>

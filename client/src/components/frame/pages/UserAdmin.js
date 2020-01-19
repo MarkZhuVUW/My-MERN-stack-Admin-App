@@ -13,15 +13,12 @@ import PropTypes from "prop-types";
 import { clearErrors } from "../../../actions/errorActions";
 import { loadAllUsers } from "../../../actions/authActions";
 import { deleteUser } from "../../../actions/authActions";
+import { i18n } from "i18n";
 
 import EditableTable from "../../EditableTable";
+import Breadcrumb from "view/shared/Breadcrumb";
 
-const styles = {
-  table: {
-    marginLeft: "25px",
-    marginRight: "25px"
-  }
-};
+const styles = {};
 
 class UserAdmin extends Component {
   state = {};
@@ -47,7 +44,7 @@ class UserAdmin extends Component {
    * after the delete button is clicked on the mui datatable.
    */
   callback = id => {
-    console.log()
+    console.log();
     this.props.deleteUser(id);
   };
   onSubmit = e => {
@@ -64,14 +61,11 @@ class UserAdmin extends Component {
     const { classes, allUsers } = this.props;
 
     return (
-      <div className={classes.table}>
-        {allUsers ? (
-          <EditableTable
-            data={allUsers}
-            className={classes.table}
-            cb={this.callback}
-          />
-        ) : null}
+      <div>
+        <Breadcrumb
+          items={[[i18n("frame.menu"), "/"], [i18n("useradmin.menu")]]}
+        />
+        {allUsers ? <EditableTable data={allUsers} cb={this.callback} /> : null}
       </div>
     );
   }

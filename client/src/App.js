@@ -14,11 +14,10 @@ import {
 import SignInSide from "./components/auth/SignInSide";
 import SignUp from "./components/auth/SignUp";
 
-import { withStyles } from "@material-ui/styles";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { loadUser } from "./actions/authActions";
-
+import withTracker from "./components/withTracker";
 class App extends Component {
   componentDidMount() {
     this.props.loadUser();
@@ -38,9 +37,9 @@ class App extends Component {
           <Redirect to="/signin" />
         ) : (
           <>
-            <Route path="/frame" component={Frame} />
-
+            <Route path="/frame" component={withTracker(Frame)} />
             <Route
+              exact
               path="/frame"
               render={() => <Redirect to="/frame/dashboard" />}
             />
