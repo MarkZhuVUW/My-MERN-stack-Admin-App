@@ -1,0 +1,21 @@
+{
+  "logs": [
+    {
+      "date_logged": "2020-01-19T13:00:37.700Z",
+      "_id": "5e2452f5d00cbf7a93ba32da",
+      "type": "download",
+      "email": "1@1",
+      "name": "1@1",
+      "explanation": "test",
+      "role": "admin"
+    }
+  ],
+  "log": {
+    "_id": "5e2452f5d00cbf7a93ba32da",
+    "type": "download",
+    "email": "1@1",
+    "name": "1@1",
+    "explanation": "test",
+    "role": "admin"
+  }
+}

@@ -254,6 +254,47 @@
       }
     },
     "/api/users/{id}": {
+      "patch": {
+        "summary": "update user profile",
+        "tags": ["users"],
+        "requestBody": {
+          "description": "a user object containing things needed to be updated for the user",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/UserReq"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "update user profile with the id of user"
+          },
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "description": "an authorization header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          },
+          "404": {
+            "description": "user not found probably?"
+          }
+        }
+      },
       "delete": {
         "summary": "Delete user with given id",
         "tags": ["users"],
@@ -288,93 +329,17 @@
         }
       }
     },
-    "/cats": {
-      "get": {
-        "tags": ["Cats"],
-        "summary": "Get all cats in system",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Cats"
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": ["Cats"],
-        "summary": "Create a new cat in system",
+    "/api/users/{id}/logs": {
+      "patch": {
+        "summary": "update logs of a specified user",
+        "tags": ["users"],
         "requestBody": {
-          "description": "Cat Object",
+          "description": "the log to be added to the logs collection of the specified user",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/definitions/Cat"
-              }
-            }
-          }
-        },
-        "produces": ["application/json"],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
-          },
-          "400": {
-            "description": "Failed. Bad post data."
-          }
-        }
-      }
-    },
-    "/cats/{id}": {
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "description": "ID of the cat that we want to match",
-          "type": "string"
-        }
-      ],
-      "get": {
-        "tags": ["Cats"],
-        "summary": "Get cat with given ID",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "Cat with id",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Cat"
-            }
-          },
-          "404": {
-            "description": "Failed. Cat not found."
-          }
-        }
-      },
-      "put": {
-        "summary": "Update cat with given ID",
-        "tags": ["Cats"],
-        "requestBody": {
-          "description": "Cat Object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/definitions/Cat"
+                "$ref": "#/definitions/logsPatchReq"
               }
             }
           }
@@ -384,50 +349,59 @@
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "Cat with new values of properties",
+            "description": "update logs of a specified user with id",
+
             "schema": {
               "$ref": "#/definitions/id"
             }
+          },
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "description": "an authorization header",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/Cat"
+              "$ref": "#/definitions/id"
             }
           },
-          "400": {
-            "description": "Failed. Bad post data."
-          },
           "404": {
-            "description": "Failed. Cat not found."
+            "description": "user not found probably?"
           }
         }
       },
-      "delete": {
-        "summary": "Delete cat with given ID",
-        "tags": ["Cats"],
+      "get": {
+        "tags": ["users"],
+        "summary": "get all logs of a specified user",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "Delete Cat with id",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
+            "description": "get all logs of a specified user"
+          },
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "description": "an authorization header",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/id"
+              "$ref": "#/definitions/Auth"
             }
           },
-          "404": {
-            "description": "Failed. Cat not found."
+          "401": {
+            "description": "unauthorized because of the 'auth' middleware"
           }
         }
       }
@@ -446,8 +420,14 @@
         "password": {
           "type": "string"
         },
+        "logs": {
+          "type": "array"
+        },
         "register_date": {
           "type": "date"
+        },
+        "role": {
+          "type": "string"
         }
       }
     },
@@ -461,6 +441,9 @@
           "type": "string"
         },
         "password": {
+          "type": "string"
+        },
+        "role": {
           "type": "string"
         }
       }
@@ -525,31 +508,40 @@
         }
       }
     },
-    "Cat": {
+    "logsPatchReq": {
       "type": "object",
       "properties": {
-        "genus": {
+        "logs": {
+          "type": "object",
+          "properties": {
+            "insertAnArrayOfLogsHere": {
+              "type": "string"
+            }
+          }
+        },
+        "log": {
+          "$ref": "#/definitions/Log"
+        }
+      }
+    },
+
+    "Log": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "email": {
           "type": "string"
         },
         "name": {
           "type": "string"
         },
-        "isHungry": {
-          "type": "boolean"
-        },
-        "lastFedDate": {
+        "explanation": {
           "type": "string"
-        }
-      }
-    },
-    "Cats": {
-      "type": "object",
-      "properties": {
-        "cats": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/definitions/Cat"
-          }
+        },
+        "role": {
+          "type": "string"
         }
       }
     }

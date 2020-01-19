@@ -80,4 +80,75 @@ router.delete("/:id", auth, (req, res) => {
       .catch(err => res.status(404).json({ success: false }));
   });
 });
+
+// @route   PATCH api/users/:id/logs
+// @desc    update logs for a specific user
+// @access  Public
+router.patch("/:id/logs", auth, (req, res) => {
+  const { logs, log } = req.body;
+
+  newLog = new Log({
+    type: log.type,
+    email: log.email,
+    name: log.name,
+    explanation: log.explanation,
+    role: log.role
+  });
+  logs.push(log);
+
+  // Check for existing user
+  User.findByIdAndUpdate(
+    { _id: req.params.id },
+    {
+      $set: {
+        logs: logs
+      }
+    }
+  )
+    .then(user => {
+      if (!user) return res.status(400).json({ msg: "User does not exist" });
+      res.json(user);
+    })
+    .catch(err => res.status(400).json({ success: false }));
+});
+
+// @route   PATCH api/users/:id
+// @desc    update user (profile)
+// @access  Public
+router.patch("/:id", auth, (req, res) => {
+  // Check for existing user
+  const { email, name, role } = req.body;
+
+  if (!email || !name || !role)
+    return res.status(400).json({
+      msg: "request body should contain the updated user information "
+    });
+
+  User.findByIdAndUpdate(
+    { _id: req.params.id },
+    {
+      $set: {
+        name: name,
+        email: email,
+        role: role
+      }
+    }
+  )
+    .then(user => {
+      if (!user) return res.status(400).json({ msg: "User does not exist" });
+      res.json(user);
+    })
+    .catch(err => res.status(400).json({ success: false }));
+});
+
+// @route   GET api/users/:id/logs
+// @desc    Get All Registered Users
+// @access  Public
+router.get("/:id/logs", auth, (req, res) => {
+  User.findById(req.params.id)
+    .sort({ register_date: -1 })
+    .then(user => res.json(user.logs))
+    .catch(err => res.status(404).json({ msg: "user not found" }));
+});
+
 module.exports = router;
