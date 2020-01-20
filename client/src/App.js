@@ -38,11 +38,7 @@ class App extends Component {
         ) : (
           <>
             <Route path="/frame" component={withTracker(Frame)} />
-            <Route
-              exact
-              path="/frame"
-              render={() => <Redirect to="/frame/dashboard" />}
-            />
+
             <Route exact path="/" render={() => <Redirect to="/frame" />} />
           </>
         )}

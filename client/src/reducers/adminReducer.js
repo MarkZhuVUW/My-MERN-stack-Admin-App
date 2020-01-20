@@ -1,25 +1,29 @@
 import {
   LOADING,
-  LOAD_SWAGGER_UI_ERROR,
-  SWAGGER_UI_LOADED
+  DOWNLOAD_LOGGED,
+  LOGIN_LOGGED,
+  ALL_LOGS_LOADED,
+  LOAD_LOGS_ERROR
 } from "../actions/types";
 
 const initialState = {
   swaggerUIDocs: null,
-  isLoading: false
+  isLoading: false,
+  allLogs: null
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case LOAD_SWAGGER_UI_ERROR:
+    case LOGIN_LOGGED:
+    case DOWNLOAD_LOGGED:
       return {
         ...state,
         isLoading: false
       };
-    case SWAGGER_UI_LOADED:
+    case ALL_LOGS_LOADED:
       return {
         ...state,
-        swaggerUIDocs: action.payload,
+        allLogs: action.payload,
         isLoading: false
       };
     case LOADING:
@@ -29,6 +33,6 @@ export default function(state = initialState, action) {
       };
 
     default:
-      return {...state};
+      return { ...state };
   }
 }

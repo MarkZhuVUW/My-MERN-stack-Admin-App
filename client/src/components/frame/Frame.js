@@ -191,7 +191,6 @@ function FrameContent() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   const FrameAppBar = (
     <AppBar
@@ -257,6 +256,11 @@ function FrameContent() {
         <div className={classes.appBarSpacer} />
         <Slide timeout={500} direction="left" in={!open || !isSmallScreen}>
           <Container maxWidth="lg" className={classes.mobileContainer}>
+            <Route
+              exact
+              path="/frame"
+              render={() => <Redirect to="/frame/dashboard" />}
+            />
             <Route path="/frame/dashboard">
               <Dashboard isSmallScreen={isSmallScreen} />
             </Route>

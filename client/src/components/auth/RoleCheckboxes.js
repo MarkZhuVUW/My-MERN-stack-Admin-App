@@ -63,7 +63,7 @@ export default function RoleCheckboxes() {
             checked={checkedA}
             icon={<DirectionsWalkIcon color="disabled" />}
             checkedIcon={<AccessibilityNewIcon />}
-            onChange={handleChange("checkedA")}
+            onChange={() => handleChange("checkedA")}
             value="checkedA"
           />
         }
@@ -76,7 +76,7 @@ export default function RoleCheckboxes() {
             checked={checkedB}
             icon={<DirectionsWalkIcon color="disabled" />}
             checkedIcon={<DirectionsRunIcon />}
-            onChange={handleChange("checkedB")}
+            onChange={() => handleChange("checkedB")}
             value="checkedB"
           />
         }
@@ -89,7 +89,7 @@ export default function RoleCheckboxes() {
             checked={checkedC}
             icon={<DirectionsWalkIcon color="disabled" />}
             checkedIcon={<BeachAccessIcon />}
-            onChange={handleChange("checkedC")}
+            onChange={() => handleChange("checkedC")}
             value="checkedC"
           />
         }

@@ -49,6 +49,22 @@ class UserAdmin extends Component {
     this.toggle();
   };
 
+  handleDownload = href => {
+    const { _id, name, email, role, logs } = this.props.user;
+
+    const downloadLog = {
+      name: name,
+      email: email,
+      role: role,
+      explanation: href,
+      type: "DOWNLOAD"
+    };
+
+    this.props.logDownload(_id, logs, downloadLog);
+
+    this.toggle();
+  };
+
   render() {
     const { classes, allUsers } = this.props;
 

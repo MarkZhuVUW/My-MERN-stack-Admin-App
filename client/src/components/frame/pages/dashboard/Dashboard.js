@@ -9,7 +9,6 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import Button from "@material-ui/core/Button";
 
-import Table from ".//Table";
 import Chart from "./chart";
 import DoughnutChart from "./DoughnutChart";
 import LineChart from "./LineChart";
@@ -23,7 +22,9 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import { clearErrors } from "../../../../actions/errorActions";
-
+import EditableTable from "components/EditableTable";
+import { loadAllLogsForSpecificUser } from "../../../../actions/adminActions";
+import { loadUser } from "actions/authActions";
 const styles = {};
 
 class Dashboard extends Component {
@@ -31,13 +32,16 @@ class Dashboard extends Component {
 
   static propTypes = {
     clearErrors: PropTypes.func.isRequired,
-    loadAllUsers: PropTypes.func.isRequired,
-    allUsers: PropTypes.array,
+    allLogs: PropTypes.array,
+    loadAllLogsForSpecificUser: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
-    deleteUser: PropTypes.func.isRequired
+    loadUser: PropTypes.func.isRequired,
+    user: PropTypes.object
   };
   componentDidMount() {
-    this.props.loadAllUsers();
+    // this.props.loadUser();
+    if (this.props.user)
+      this.props.loadAllLogsForSpecificUser(this.props.user._id);
   }
   componentDidUpdate(prevProps) {}
   toggle = () => {
@@ -51,8 +55,9 @@ class Dashboard extends Component {
    */
   callback = id => {
     console.log();
-    this.props.deleteUser(id);
+    this.props.deleteLog(id);
   };
+
   onSubmit = e => {
     e.preventDefault();
 
@@ -64,11 +69,11 @@ class Dashboard extends Component {
   };
 
   render() {
-    const { classes, allUsers } = this.props;
+    const { classes } = this.props;
 
     return (
       <div>
-        <DashboardContent />
+        <DashboardContent allLogs={this.props.allLogs} />
       </div>
     );
   }
@@ -77,10 +82,13 @@ class Dashboard extends Component {
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
   error: state.error,
-  allUsers: state.auth.allUsers
+  allLogs: state.admin.allLogs,
+  user: state.auth.user
 });
 export default connect(mapStateToProps, {
-  clearErrors
+  clearErrors,
+  loadAllLogsForSpecificUser,
+  loadUser
 })(withStyles(styles)(Dashboard));
 
 function DashboardContent(props) {
@@ -93,122 +101,180 @@ function DashboardContent(props) {
     },
     fixedHeight: {
       height: 260
+    },
+    smallScreenFixedHeight: {
+      height: 360
     }
   }));
 
-  // Generate Sales Data
-  function createData(time, amount) {
-    return { time, amount };
-  }
-
-  const chartData = [
-    createData("00:00", 0),
-    createData("03:00", 300),
-    createData("06:00", 600),
-    createData("09:00", 800),
-    createData("12:00", 1500),
-    createData("15:00", 2000),
-    createData("18:00", 2400),
-    createData("21:00", 2400),
-    createData("24:00", undefined)
-  ];
-
   const classes = useStyles();
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-  const a = () => {
-    return (
-      <>
-        <Breadcrumb
-          items={[[i18n("frame.menu"), "/"], [i18n("dashboard.menu")]]}
-        />
-        {/*page title */}
-        <div>
-          <Typography variant="h1" size="sm">
-            {props.title}
-          </Typography>
-          {props.button && (
-            <Button variant="contained" size="large" color="secondary">
-              {props.button}
-            </Button>
-          )}
-        </div>
-        <Grid container spacing={props.isSmallScreen ? 1 : 3}>
-          <Grid item xs={12} md={8} lg={8}>
-            <Paper className={fixedHeightPaper}>
-              <Chart data={chartData} />
-            </Paper>
-          </Grid>
-          <Grid item xs={12} md={4} lg={4}>
-            <Paper className={fixedHeightPaper}>
-              <Typography
-                component="h2"
-                variant="h6"
-                color="primary"
-                gutterBottom
-              >
-                doughbut
-              </Typography>
-              <DoughnutChart />
-            </Paper>
-          </Grid>
+  // const fixedHeightPaper = props.isSmallScreen
+  //   ? clsx(classes.paper, classes.fixedHeight)
+  //   : clsx(classes.paper, classes.smallScreenFixedHeight);
 
-          <Grid item xs={12} md={4} lg={4}>
-            <Paper className={fixedHeightPaper}>
-              <Typography
-                component="h2"
-                variant="h6"
-                color="primary"
-                gutterBottom
-              >
-                line
-              </Typography>
-              <LineChart />
-            </Paper>
-          </Grid>
-          <Grid item xs={12} md={4} lg={4}>
-            <Paper className={fixedHeightPaper}>
-              <Typography
-                component="h2"
-                variant="h6"
-                color="primary"
-                gutterBottom
-              >
-                mixone
-              </Typography>
-              <MixChartOne />
-            </Paper>
-          </Grid>
-          <Grid item xs={12} md={4} lg={4}>
-            <Paper className={fixedHeightPaper}>
-              <Typography
-                component="h2"
-                variant="h6"
-                color="primary"
-                gutterBottom
-              >
-                polar
-              </Typography>
-              <PolarChart />
-            </Paper>
-          </Grid>
-
-          <Grid item xs={12}>
-            <Table data={null} />
-          </Grid>
-        </Grid>
-
-        <p
-          style={{
-            width: "100%",
-            textAlign: "center",
-            color: "grey"
-          }}
-        >
-          {i18n("dashboard.message")}
-        </p>
-      </>
-    );
+  const columns = [
+    {
+      name: "Name",
+      label: "Name",
+      options: {
+        filter: true,
+        sort: false
+      }
+    },
+    {
+      name: "Email",
+      label: "Email",
+      options: {
+        filter: true,
+        sort: false
+      }
+    },
+    {
+      name: "Role",
+      label: "Role",
+      options: {
+        filter: true,
+        sort: false
+      }
+    },
+    {
+      name: "Explanation",
+      label: "Explanation",
+      options: {
+        filter: true,
+        sort: false
+      }
+    },
+    {
+      name: "Type",
+      label: "Type",
+      options: {
+        filter: true,
+        sort: true
+      }
+    },
+    {
+      name: "Date_logged",
+      label: "Date_logged",
+      options: {
+        filter: true,
+        sort: false
+      }
+    }
+  ];
+  const data = props.allLogs
+    ? props.allLogs.map(log => {
+        return [
+          log.name,
+          log.email,
+          log.role,
+          log.explanation,
+          log.type,
+          log.date_logged
+        ];
+      })
+    : [];
+  const options = {
+    filter: true,
+    responsive: "scrollMaxHeight",
+    onRowsDelete: rowsDeleted => {
+      for (var i = 0; i < rowsDeleted.data.length; ++i) {
+        //send back to UserAdmin component the email of the user to be deleted.
+        props.cb(data[rowsDeleted.data[i].index][0]);
+        console.log(rowsDeleted.data[i].index);
+        console.log(data[i]);
+      }
+    }
   };
 
-  return <>{a()}</>;
+  return (
+    <>
+      <Breadcrumb
+        items={[[i18n("frame.menu"), "/"], [i18n("dashboard.menu")]]}
+      />
+      {/*page title */}
+      <div>
+        <Typography variant="h1" size="sm">
+          {props.title}
+        </Typography>
+        {props.button && (
+          <Button variant="contained" size="large" color="secondary">
+            {props.button}
+          </Button>
+        )}
+      </div>
+      <Grid container spacing={props.isSmallScreen ? 1 : 3}>
+        <Grid item xs={12} md={8} lg={8}>
+          <Paper>{/* <Chart data={chartData} /> */}</Paper>
+        </Grid>
+        <Grid item xs={12} md={4} lg={4}>
+          <Paper>
+            <Typography
+              component="h2"
+              variant="h6"
+              color="primary"
+              gutterBottom
+            >
+              doughnut
+            </Typography>
+            <DoughnutChart />
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12} md={4} lg={4}>
+          <Paper>
+            <Typography
+              component="h2"
+              variant="h6"
+              color="primary"
+              gutterBottom
+            >
+              line
+            </Typography>
+            <LineChart />
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={4} lg={4}>
+          <Paper>
+            <Typography
+              component="h2"
+              variant="h6"
+              color="primary"
+              gutterBottom
+            >
+              mixone
+            </Typography>
+            <MixChartOne />
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={4} lg={4}>
+          <Paper>
+            <Typography
+              component="h2"
+              variant="h6"
+              color="primary"
+              gutterBottom
+            >
+              polar
+            </Typography>
+            <PolarChart />
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12}>
+          <EditableTable options={options} data={data} columns={columns} />
+        </Grid>
+      </Grid>
+
+      <p
+        style={{
+          width: "100%",
+          textAlign: "center",
+          color: "grey"
+        }}
+      >
+        {i18n("dashboard.message")}
+      </p>
+    </>
+  );
 }

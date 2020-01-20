@@ -17,6 +17,9 @@ router.get("/user", auth, (req, res) => {
     .then(user => res.json(user));
 });
 
+// @route   GET api/auth/
+// @desc    login
+// @access  Private
 router.post("/", (req, res) => {
   const { email, password } = req.body;
 
@@ -37,11 +40,7 @@ router.post("/", (req, res) => {
         if (err) throw err;
         res.json({
           token,
-          user: {
-            id: user.id,
-            name: user.name,
-            email: user.email
-          }
+          user
         });
       });
     });

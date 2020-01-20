@@ -16,6 +16,7 @@ import PropTypes from "prop-types";
 
 import { login } from "../../actions/authActions";
 import { clearErrors } from "../../actions/errorActions";
+import { logLoginSuccess } from "../../actions/adminActions";
 
 import ResponsiveDialog from "../ResponsiveDialog";
 import { NavLink } from "react-router-dom";
@@ -76,6 +77,8 @@ class SignInSide extends Component {
     isTFAing: PropTypes.bool,
     isAuthenticated: PropTypes.bool,
 
+    user: PropTypes.object,
+    logLoginSuccess: PropTypes.object,
     //withRouter
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
@@ -122,8 +125,25 @@ class SignInSide extends Component {
 
   callback = isTFAVerified => {
     if (isTFAVerified) {
+      this.handleLoginSuccess();
       this.props.history.push("/frame/dashboard/");
     }
+  };
+
+  handleLoginSuccess = () => {
+    const { _id, name, email, role, logs } = this.props.user;
+
+    const logLoginSuccess = {
+      name: name,
+      email: email,
+      role: role,
+      explanation: "user logged in",
+      type: "USER_LOGIN"
+    };
+
+    this.props.logLoginSuccess(_id, logs, logLoginSuccess);
+
+    this.toggle();
   };
 
   render() {
@@ -228,9 +248,10 @@ const mapStateToProps = state => ({
   error: state.error,
   userLoaded: state.auth.userLoaded,
   isTFAing: state.auth.isTFAing,
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
+  user: state.auth.user
 });
 export default compose(
   withStyles(styles),
-  connect(mapStateToProps, { login, clearErrors })
+  connect(mapStateToProps, { login, clearErrors, logLoginSuccess })
 )(withRouter(SignInSide));

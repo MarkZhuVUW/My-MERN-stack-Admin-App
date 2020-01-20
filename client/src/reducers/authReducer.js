@@ -145,6 +145,6 @@ export default function(state = initialState, action) {
         isTFAing: false
       };
     default:
-      return state;
+      return { ...state };
   }
 }
