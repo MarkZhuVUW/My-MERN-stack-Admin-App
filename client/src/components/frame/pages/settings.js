@@ -4,13 +4,13 @@ import { withStyles } from "@material-ui/styles";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { clearErrors } from "../../actions/errorActions";
-import { loadAllUsers } from "../../actions/authActions";
-import { deleteUser } from "../../actions/authActions";
+import { clearErrors } from "../../../actions/errorActions";
+import { loadAllUsers } from "../../../actions/authActions";
+import { deleteUser } from "../../../actions/authActions";
 import { i18n } from "i18n";
-import EditableTable from "../../components/EditableTable";
+import EditableTable from "../../../components/EditableTable";
 import { useLayoutEffect, useState, useEffect, setState } from "react";
-import { register } from "../../actions/authActions";
+import { register } from "../../../actions/authActions";
 
 import {
   Typography,

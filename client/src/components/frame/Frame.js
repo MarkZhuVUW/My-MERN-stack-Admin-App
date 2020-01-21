@@ -34,6 +34,8 @@ import UserMenu from "./UserMenu";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Developer from "./pages/Developer";
 import UserAdmin from "./pages/UserAdmin";
+// import Settings from "./pages/Settings";
+
 import EditableTable from "../EditableTable";
 import { MediaQuery, useMediaQuery } from "react-responsive";
 
@@ -264,6 +266,10 @@ function FrameContent() {
             <Route path="/frame/dashboard">
               <Dashboard isSmallScreen={isSmallScreen} />
             </Route>
+            {/* <Route path="/frame/dashboard">
+              <Settings isSmallScreen={isSmallScreen} />
+            </Route> */}
+
             <Route path="/frame/developer">
               <Developer isSmallScreen={isSmallScreen} />
             </Route>

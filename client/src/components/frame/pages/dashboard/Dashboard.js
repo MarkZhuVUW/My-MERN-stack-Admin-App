@@ -27,6 +27,7 @@ import { loadAllLogsForSpecificUser } from "../../../../actions/adminActions";
 import { loadUser } from "../../../../actions/authActions";
 import { deleteLog } from "../../../../actions/authActions";
 
+import moment from "moment-timezone";
 const styles = {};
 
 class Dashboard extends Component {
@@ -187,7 +188,7 @@ function DashboardContent(props) {
           log.role,
           log.explanation,
           log.type,
-          log.date_logged
+          new Date(log.date_logged).toString()
         ];
       })
     : [];

@@ -100,7 +100,7 @@ class UserAdmin extends Component {
             user._id,
             user.name,
             user.email,
-            user.register_date,
+            new Date(user.register_date).toString(),
             user.role,
             user.permissions
           ];
