@@ -24,7 +24,9 @@ import PropTypes from "prop-types";
 import { clearErrors } from "../../../../actions/errorActions";
 import EditableTable from "components/EditableTable";
 import { loadAllLogsForSpecificUser } from "../../../../actions/adminActions";
-import { loadUser } from "actions/authActions";
+import { loadUser } from "../../../../actions/authActions";
+import { deleteLog } from "../../../../actions/authActions";
+
 const styles = {};
 
 class Dashboard extends Component {
@@ -36,13 +38,15 @@ class Dashboard extends Component {
     loadAllLogsForSpecificUser: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
     loadUser: PropTypes.func.isRequired,
-    user: PropTypes.object
+    user: PropTypes.object,
+    deleteLog: PropTypes.func.isRequired
   };
   componentDidMount() {
     // this.props.loadUser();
     if (this.props.user)
       this.props.loadAllLogsForSpecificUser(this.props.user._id);
   }
+
   componentDidUpdate(prevProps) {}
   toggle = () => {
     // Clear errors
@@ -53,15 +57,15 @@ class Dashboard extends Component {
    * This callback function sends back the email of the user to be deleted
    * after the delete button is clicked on the mui datatable.
    */
-  callback = id => {
-    console.log();
-    this.props.deleteLog(id);
+  deleteLogCallback = logid => {
+    this.props.deleteLog(this.props.user._id, logid);
   };
 
   onSubmit = e => {
     e.preventDefault();
 
     const { code } = this.state;
+
     const { email } = this.props;
 
     //clear errors
@@ -73,7 +77,10 @@ class Dashboard extends Component {
 
     return (
       <div>
-        <DashboardContent allLogs={this.props.allLogs} />
+        <DashboardContent
+          allLogs={this.props.allLogs}
+          deleteLogCallback={this.deleteLogCallback}
+        />
       </div>
     );
   }
@@ -88,7 +95,8 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   clearErrors,
   loadAllLogsForSpecificUser,
-  loadUser
+  loadUser,
+  deleteLog
 })(withStyles(styles)(Dashboard));
 
 function DashboardContent(props) {
@@ -114,11 +122,19 @@ function DashboardContent(props) {
 
   const columns = [
     {
+      name: "id",
+      label: "id",
+      options: {
+        filter: true,
+        sort: true
+      }
+    },
+    {
       name: "Name",
       label: "Name",
       options: {
         filter: true,
-        sort: false
+        sort: true
       }
     },
     {
@@ -126,7 +142,7 @@ function DashboardContent(props) {
       label: "Email",
       options: {
         filter: true,
-        sort: false
+        sort: true
       }
     },
     {
@@ -134,7 +150,7 @@ function DashboardContent(props) {
       label: "Role",
       options: {
         filter: true,
-        sort: false
+        sort: true
       }
     },
     {
@@ -142,7 +158,7 @@ function DashboardContent(props) {
       label: "Explanation",
       options: {
         filter: true,
-        sort: false
+        sort: true
       }
     },
     {
@@ -158,13 +174,14 @@ function DashboardContent(props) {
       label: "Date_logged",
       options: {
         filter: true,
-        sort: false
+        sort: true
       }
     }
   ];
   const data = props.allLogs
     ? props.allLogs.map(log => {
         return [
+          log._id,
           log.name,
           log.email,
           log.role,
@@ -180,7 +197,7 @@ function DashboardContent(props) {
     onRowsDelete: rowsDeleted => {
       for (var i = 0; i < rowsDeleted.data.length; ++i) {
         //send back to UserAdmin component the email of the user to be deleted.
-        props.cb(data[rowsDeleted.data[i].index][0]);
+        props.deleteLogCallback(data[rowsDeleted.data[i].index][0]);
         console.log(rowsDeleted.data[i].index);
         console.log(data[i]);
       }
@@ -205,10 +222,12 @@ function DashboardContent(props) {
       </div>
       <Grid container spacing={props.isSmallScreen ? 1 : 3}>
         <Grid item xs={12} md={8} lg={8}>
-          <Paper>{/* <Chart data={chartData} /> */}</Paper>
+          <Paper className={classes.paper}>
+            {/* <Chart data={chartData} /> */}
+          </Paper>
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
-          <Paper>
+          <Paper className={classes.paper}>
             <Typography
               component="h2"
               variant="h6"
@@ -222,7 +241,7 @@ function DashboardContent(props) {
         </Grid>
 
         <Grid item xs={12} md={4} lg={4}>
-          <Paper>
+          <Paper className={classes.paper}>
             <Typography
               component="h2"
               variant="h6"
@@ -235,7 +254,7 @@ function DashboardContent(props) {
           </Paper>
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
-          <Paper>
+          <Paper className={classes.paper}>
             <Typography
               component="h2"
               variant="h6"
@@ -248,7 +267,7 @@ function DashboardContent(props) {
           </Paper>
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
-          <Paper>
+          <Paper className={classes.paper}>
             <Typography
               component="h2"
               variant="h6"
@@ -262,7 +281,12 @@ function DashboardContent(props) {
         </Grid>
 
         <Grid item xs={12}>
-          <EditableTable options={options} data={data} columns={columns} />
+          <EditableTable
+            title="User Actions"
+            options={options}
+            data={data}
+            columns={columns}
+          />
         </Grid>
       </Grid>
 

@@ -124,7 +124,12 @@ class UserAdmin extends Component {
           items={[[i18n("frame.menu"), "/"], [i18n("useradmin.menu")]]}
         />
         {allUsers ? (
-          <EditableTable options={options} data={data} columns={columns} />
+          <EditableTable
+            title="User List"
+            options={options}
+            data={data}
+            columns={columns}
+          />
         ) : null}
       </div>
     );

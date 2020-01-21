@@ -18,7 +18,7 @@ export default function EditableTable(props) {
 
   return (
     <MUIDataTable
-      title="User List"
+      title={props.title}
       data={props.data}
       columns={props.columns}
       options={props.options}

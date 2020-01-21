@@ -3,7 +3,8 @@ import {
   DOWNLOAD_LOGGED,
   LOGIN_LOGGED,
   ALL_LOGS_LOADED,
-  LOAD_LOGS_ERROR
+  LOAD_LOGS_ERROR,
+  LOG_DELETED
 } from "../actions/types";
 
 const initialState = {
@@ -16,6 +17,7 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case LOGIN_LOGGED:
     case DOWNLOAD_LOGGED:
+    case LOG_DELETED:
       return {
         ...state,
         isLoading: false

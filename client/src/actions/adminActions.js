@@ -5,16 +5,13 @@ import {
   DOWNLOAD_LOGGED,
   LOGIN_LOGGED,
   ALL_LOGS_LOADED,
-  LOAD_LOGS_ERROR
+  LOAD_LOGS_ERROR,
+  LOG_DELETED
 } from "./types";
-import uuidv1 from "uuid";
 // Check token & load user
-export const logLoginSuccess = (id, currentLogs, loginLog) => (
-  dispatch,
-  getState
-) => {
+export const logLoginSuccess = (id, loginLog) => (dispatch, getState) => {
   // Request body
-  const body = JSON.stringify({ logs: currentLogs, log: loginLog });
+  const body = JSON.stringify({ log: loginLog });
 
   axios
     .patch(`/api/users/${id}/logs`, body, tokenConfig(getState))
@@ -29,12 +26,9 @@ export const logLoginSuccess = (id, currentLogs, loginLog) => (
 };
 
 // Check token & load user
-export const logDownload = (id, currentLogs, downloadLog) => (
-  dispatch,
-  getState
-) => {
+export const logDownload = (id, downloadLog) => (dispatch, getState) => {
   // Request body
-  const body = JSON.stringify({ logs: currentLogs, log: downloadLog });
+  const body = JSON.stringify({ log: downloadLog });
   axios
     .patch(`/api/users/${id}/logs`, body, tokenConfig(getState))
     .then(res =>

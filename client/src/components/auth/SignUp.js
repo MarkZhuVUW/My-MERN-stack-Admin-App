@@ -32,7 +32,7 @@ const theme = createMuiTheme({
 });
 const styles = {
   paper: {
-    marginTop: theme.spacing(8),
+    padding: theme.spacing(8, 4),
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
@@ -124,99 +124,98 @@ class SignUp extends Component {
   render() {
     const { classes, isTFAing, userLoaded, error, isLoading } = this.props;
     return (
-      <Container >
+      <Container className={classes.paper}>
         <CssBaseline />
-        {/* <Paper> */}
-        {userLoaded ? (
-          <ResponsiveDialog
-            alertMsg="enter the code from google authenticator to log in."
-            title="Google Two-Factor Auth"
-            email={this.state.email}
-            cb={this.callback}
-          />
-        ) : null}
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          {this.state.msg ? (
-            <ResponsiveDialog alertMsg={this.state.msg} title={error.id} />
+        <Paper className={classes.paper}>
+          {userLoaded ? (
+            <ResponsiveDialog
+              alertMsg="enter the code from google authenticator to log in."
+              title="Google Two-Factor Auth"
+              email={this.state.email}
+              cb={this.callback}
+            />
           ) : null}
-          <form className={classes.form} noValidate>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="fname"
-                  name="name"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="name"
-                  label="Name"
-                  autoFocus
-                  onChange={this.onChange}
-                />
-              </Grid>
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign up
+            </Typography>
+            {this.state.msg ? (
+              <ResponsiveDialog alertMsg={this.state.msg} title={error.id} />
+            ) : null}
+            <form className={classes.form} noValidate>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    autoComplete="fname"
+                    name="name"
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="name"
+                    label="Name"
+                    autoFocus
+                    onChange={this.onChange}
+                  />
+                </Grid>
 
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  onChange={this.onChange}
-                />
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    onChange={this.onChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    onChange={this.onChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox value="allowExtraEmails" color="primary" />
+                    }
+                    label="Have not decided what this is"
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  onChange={this.onChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="Have not decided what this is"
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={this.onSubmit}
-            >
-              Sign Up
-            </Button>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={this.onSubmit}
+              >
+                Sign Up
+              </Button>
 
-            <Grid container justify="center">
-              <Grid item>
-                <NavLink to="/signin" variant="body2">
-                  go back
-                </NavLink>
+              <Grid container justify="center">
+                <Grid item>
+                  <NavLink to="/signin" variant="body2">
+                    go back
+                  </NavLink>
+                </Grid>
               </Grid>
-            </Grid>
-          </form>
-        </div>
-        {/* </Paper> */}
-        
+            </form>
+          </div>
+        </Paper>
       </Container>
     );
   }

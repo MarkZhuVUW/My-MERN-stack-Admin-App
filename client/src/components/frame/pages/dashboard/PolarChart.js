@@ -15,7 +15,12 @@ const data = {
     i18n("dashboard.charts.yellow"),
     i18n("dashboard.charts.grey"),
     i18n("dashboard.charts.blue")
-  ]
+  ],
+  options: {
+    tick: {
+      display: false
+    }
+  }
 };
 
 export default class PolarChart extends Component {

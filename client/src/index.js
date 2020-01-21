@@ -10,18 +10,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById("root")
 );
-
-//check if there is network connection. This is used for logging user action.
-// window.addEventListener("offline", () => {
-//   store.dispatch({
-//     type: "UPDATE_CONNECTIVITY",
-//     payload: false
-//   });
-// });
-
-// window.addEventListener("online", () => {
-//   store.dispatch({
-//     type: "UPDATE_CONNECTIVITY",
-//     payload: true
-//   });
-// });

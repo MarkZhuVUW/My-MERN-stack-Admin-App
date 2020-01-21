@@ -6,6 +6,8 @@ import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Paper from "@material-ui/core/Paper";
+import Container from "@material-ui/core/Container";
+
 import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
@@ -20,7 +22,6 @@ import { logLoginSuccess } from "../../actions/adminActions";
 
 import ResponsiveDialog from "../ResponsiveDialog";
 import { NavLink } from "react-router-dom";
-import SimpleBackdrop from "../MyBackdrop";
 import { withRouter } from "react-router-dom";
 import compose from "recompose/compose";
 import RoleCheckboxes from "./RoleCheckboxes";
@@ -44,7 +45,7 @@ const styles = {
     backgroundPosition: "center"
   },
   paper: {
-    margin: theme.spacing(8, 4),
+    padding: theme.spacing(8, 4),
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
@@ -138,10 +139,10 @@ class SignInSide extends Component {
       email: email,
       role: role,
       explanation: "user logged in",
-      type: "USER_LOGIN"
+      type: "LOGIN"
     };
 
-    this.props.logLoginSuccess(_id, logs, logLoginSuccess);
+    this.props.logLoginSuccess(_id, logLoginSuccess);
 
     this.toggle();
   };
@@ -161,6 +162,7 @@ class SignInSide extends Component {
             cb={this.callback}
           />
         ) : null}
+
         <Grid container component="main" className={classes.root}>
           <CssBaseline />
 
@@ -174,69 +176,71 @@ class SignInSide extends Component {
             elevation={6}
             square
           >
-            <div className={classes.paper}>
-              <Avatar className={classes.avatar}>
-                <LockOutlinedIcon />
-              </Avatar>
-              <Typography component="h1" variant="h5">
-                Welcome!
-              </Typography>
-              {this.state.msg ? (
-                <ResponsiveDialog alertMsg={msg} title={error.id} />
-              ) : null}
+            <Container className={classes.paper}>
+              <Paper className={classes.paper}>
+                <Avatar className={classes.avatar}>
+                  <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                  Welcome!
+                </Typography>
+                {this.state.msg ? (
+                  <ResponsiveDialog alertMsg={msg} title={error.id} />
+                ) : null}
 
-              <form className={classes.form} noValidate>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  autoFocus
-                  onChange={this.onChange}
-                />
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  onChange={this.onChange}
-                />
+                <form className={classes.form} noValidate>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    autoFocus
+                    onChange={this.onChange}
+                  />
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    onChange={this.onChange}
+                  />
 
-                <RoleCheckboxes />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                  onClick={this.onSubmit}
-                >
-                  Sign in
-                </Button>
+                  <RoleCheckboxes />
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    onClick={this.onSubmit}
+                  >
+                    Sign in
+                  </Button>
 
-                <Grid container>
-                  <Grid item xs>
-                    <NavLink to="#" variant="body2">
-                      Forgot password?
-                    </NavLink>
+                  <Grid container>
+                    <Grid item xs>
+                      <NavLink to="#" variant="body2">
+                        Forgot password?
+                      </NavLink>
+                    </Grid>
+                    <Grid item>
+                      <NavLink to="./signup" variant="body2">
+                        {"Don't have an account? Sign Up"}
+                      </NavLink>
+                    </Grid>
                   </Grid>
-                  <Grid item>
-                    <NavLink to="./signup" variant="body2">
-                      {"Don't have an account? Sign Up"}
-                    </NavLink>
-                  </Grid>
-                </Grid>
-              </form>
-            </div>
+                </form>
+              </Paper>
+            </Container>
           </Grid>
         </Grid>
       </div>

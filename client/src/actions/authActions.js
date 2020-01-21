@@ -19,7 +19,8 @@ import {
   TFA_ING,
   TFA_LOAD_FAIL,
   LOADING,
-  USER_DELETED
+  USER_DELETED,
+  LOG_DELETED
 } from "./types";
 
 // Check token & load user
@@ -280,4 +281,17 @@ export const TFAVerify = (email, code) => dispatch => {
 
   //not sure if it is the right way to do redux.
   return authPromise;
+};
+
+export const deleteLog = (userid, logid) => (dispatch, getState) => {
+  axios
+    .delete(`/api/users/${userid}/logs/${logid}`, tokenConfig(getState))
+    .then(res =>
+      dispatch({
+        type: LOG_DELETED
+      })
+    )
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
 };

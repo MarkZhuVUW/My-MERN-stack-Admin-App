@@ -7,6 +7,7 @@ const auth = require("../../middleware/auth");
 
 // User Model
 const User = require("../../models/User");
+const Log = require("../../models/Log");
 
 // @route   GET api/users
 // @desc    Get All Registered Users
@@ -85,30 +86,32 @@ router.delete("/:id", auth, (req, res) => {
 // @desc    update logs for a specific user
 // @access  Public
 router.patch("/:id/logs", auth, (req, res) => {
-  const { logs, log } = req.body;
+  const { log } = req.body;
   newLog = new Log({
     type: log.type,
     email: log.email,
     name: log.name,
     explanation: log.explanation,
     role: log.role
-  });
-  logs.push(log);
-
-  // Check for existing user
-  User.findByIdAndUpdate(
-    { _id: req.params.id },
-    {
-      $set: {
-        logs: logs
-      }
-    }
-  )
-    .then(user => {
-      if (!user) return res.status(400).json({ msg: "User does not exist" });
-      res.json(user);
-    })
-    .catch(err => res.status(400).json({ success: false }));
+  })
+    .save()
+    .then(savedLog => {
+      // Check for existing user
+      User.findByIdAndUpdate(
+        { _id: req.params.id },
+        {
+          $push: {
+            logs: savedLog
+          }
+        }
+      )
+        .then(user => {
+          if (!user)
+            return res.status(400).json({ msg: "User does not exist" });
+          res.json(user);
+        })
+        .catch(err => res.status(400).json({ success: false }));
+    });
 });
 
 // @route   PATCH api/users/:id
@@ -134,10 +137,10 @@ router.patch("/:id", auth, (req, res) => {
     }
   )
     .then(user => {
-      if (!user) return res.status(400).json({ msg: "User does not exist" });
+      if (!user) return res.status(404).json({ msg: "User does not exist" });
       res.json(user);
     })
-    .catch(err => res.status(400).json({ success: false }));
+    .catch(err => res.status(404).json({ success: false }));
 });
 
 // @route   GET api/users/:id/logs
@@ -150,4 +153,31 @@ router.get("/:id/logs", auth, (req, res) => {
     .catch(err => res.status(404).json({ msg: "user not found" }));
 });
 
+// @route   DELETE api/users/:userid/logs/logid
+// @desc    delete one log record for a specified user
+// @access  Public
+router.delete("/:userid/logs/:logid", auth, (req, res) => {
+  // Check for existing user
+
+  console.log(req.params.userid);
+  User.findByIdAndUpdate(
+    { _id: req.params.userid },
+    {
+      $pull: {
+        logs: { _id: req.params.logid }
+      }
+    }
+  )
+    .then(() => {
+      Log.findById(req.params.logid)
+        .then(log => {
+          return log
+            .remove()
+            .then(() => res.json({ success: true }))
+            .catch(err => res.status(400).json({ success: false }));
+        })
+        .catch(err => res.status(400).json({ msg: "log not found" }));
+    })
+    .catch(err => res.status(400).json({ msg: "user not found" }));
+});
 module.exports = router;
