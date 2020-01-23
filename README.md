@@ -1,13 +1,17 @@
-# This is meant to be a terminal app for all the fullstack apps I am going to make. (All websites share the same database and the admin app should statiscally analyze the changes on my other websites).
+# This is meant to be a admin app containing a dashboard, my CV for downloading and a page showing my documented REST APIs using Swagger UI. User should be able to login as admin, guest or employer. Currently I plan to monitor login activities, the number of cv downloads and more.
+
+# Have Fun :)
 
 ## milestone 1: 
-### complete a simple admin app with user statistics and github statistics. 
+### 1. complete a simple admin app with four pages Dashboard page, Developer Page and UserAdmin page. Dashboard page should display statistics on user behaviours with charts, Developer page should show swagger ui, UserAdmin should allow adding and deletion of users. 
+### 2. Define three kinds of users and do role-based access control: admin, guest and employee.
+
 
 ## milestone 2: 
-### Make the admin app interact with my portfolio website (user sends messages through the contact form on my-portfolio and I receive them on the admin app. )
+### Make a CV page and monitor views, downloads of the CV.
 
 ## milestone 3: 
-### Host this website with AWS and play with DYNAMO DB.
+### use AWS.
 
 
 # client environment:
