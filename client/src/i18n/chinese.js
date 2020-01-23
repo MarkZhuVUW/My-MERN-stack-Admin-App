@@ -1,4 +1,4 @@
-const en = {
+const chinese = {
   app: {
     title: "MERN-stack App"
   },
@@ -110,4 +110,4 @@ const en = {
   }
 };
 
-export default en;
+export default chinese;

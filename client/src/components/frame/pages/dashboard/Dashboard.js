@@ -224,7 +224,7 @@ function DashboardContent(props) {
       <Grid container spacing={props.isSmallScreen ? 1 : 3}>
         <Grid item xs={12} md={8} lg={8}>
           <Paper className={classes.paper}>
-            {/* <Chart data={chartData} /> */}
+            <Chart data={{}} />
           </Paper>
         </Grid>
         <Grid item xs={12} md={4} lg={4}>

@@ -86,6 +86,13 @@ class Settings extends Component {
   registerCallback = userToBeRegistered => {
     this.props.register(userToBeRegistered);
   };
+
+  /**
+   *
+   *
+   * @returns
+   * @memberof Settings
+   */
   render() {
     const { classes, allUsers } = this.props;
 
@@ -104,6 +111,7 @@ const mapStateToProps = state => ({
   error: state.error,
   allUsers: state.auth.allUsers
 });
+
 export default connect(mapStateToProps, {
   clearErrors,
   loadAllUsers,
@@ -143,6 +151,7 @@ const useStyles = makeStyles(theme => ({
  *
  * @author Mark Zhu <zdy120939259@outlook.com>
  */
+
 function SettingsContent(props) {
   const classes = useStyles();
   const theme = useTheme();
@@ -179,6 +188,11 @@ function SettingsContent(props) {
     props.registerCallback(userToBeRegistered);
   };
 
+  /**
+   *
+   *
+   * @returns
+   */
   function createUserView() {
     const typesOfUser = [
       { type: "Teams", specific: "Sequioa" },

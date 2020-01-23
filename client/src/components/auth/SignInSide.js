@@ -156,7 +156,7 @@ class SignInSide extends Component {
         {/* if user credentials are correct. Do a google 2fa before login to dashboard */}
         {userLoaded ? (
           <ResponsiveDialog
-            alertMsg="enter the code from google authenticator to log in."
+            alertMsg="enter the code from google authenticator app to log in."
             title="Google Two-Factor Auth"
             email={email}
             cb={this.callback}

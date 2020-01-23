@@ -1,15 +1,3 @@
-/**
- * My MERN Stack Admin App.
- * This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters.
- *
- * OpenAPI spec version: 1.0.0
- * Contact: zdy120939259@outlook.com
- *
- * https://github.com/swagger-api/swagger-codegen.git
- * Do not edit the class manually.
- *
- */
-
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
@@ -21,23 +9,7 @@ const app = express();
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocs = require("./routes/api/swagger.json");
-// extended: https://swagger.io/specification/#infoOjbect
-// const swaggerOptions = {
-//   swaggerDefinition: {
-//     info: {
-//       title: "My MERN Stack Admin App API",
-//       description: "My MERN Stack Admin App API Information",
-//       contact: {
-//         name: "Mark Zhu"
-//       },
-//       servers: ["http://localhost:5000"]
-//     }
-//   },
-//   // ['.routes/*.js']
-//   apis: ["./routes/api/*.js"]
-// }
 
-// const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 // Bodyparser Middleware
 app.use(express.json());

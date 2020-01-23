@@ -129,7 +129,7 @@ class SignUp extends Component {
         <Paper className={classes.paper}>
           {userLoaded ? (
             <ResponsiveDialog
-              alertMsg="enter the code from google authenticator to log in."
+              alertMsg="enter the code from google authenticator app to log in."
               title="Google Two-Factor Auth"
               email={this.state.email}
               cb={this.callback}

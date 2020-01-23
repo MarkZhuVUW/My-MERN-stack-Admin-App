@@ -1,34 +1,33 @@
-import React from 'react';
-import _get from 'lodash/get';
-import moment from 'moment';
-import 'moment/locale/pt-br';
-import antd_pt_BR from 'antd/lib/locale-provider/pt_BR';
-import { setLocale as setYupLocale } from 'yup';
-import ptBR from 'i18n/pt-BR';
-import en from 'i18n/en';
+import React from "react";
+import _get from "lodash/get";
+import moment from "moment";
+import "moment/locale/pt-br";
+import antd_pt_BR from "antd/lib/locale-provider/pt_BR";
+import { setLocale as setYupLocale } from "yup";
+import chinese from "i18n/chinese";
+import en from "i18n/en";
 
 let currentLanguageCode = null;
 
 const languages = {
   en: {
-    id: 'en',
-    label: 'en',
-    flag: '/images/flags/24/United-States.png',
+    id: "en",
+    label: "en",
+    flag: "/images/flags/24/United-States.png",
     dictionary: en,
-    antd: undefined,
+    antd: undefined
   },
-  'pt-BR': {
-    id: 'pt-BR',
-    label: 'pt-BR',
-    flag: '/images/flags/24/Brazil.png',
-    dictionary: ptBR,
-    antd: antd_pt_BR,
-  },
+  chinese: {
+    id: "chinese",
+    label: "chinese",
+    flag: "/images/flags/24/Brazil.png",
+    dictionary: chinese,
+    antd: antd_pt_BR
+  }
 };
 
 function init() {
-  currentLanguageCode =
-    localStorage.getItem('language') || 'en';
+  currentLanguageCode = localStorage.getItem("language") || "en";
   setLanguageCode(currentLanguageCode);
 }
 
@@ -42,13 +41,8 @@ function format(message, args) {
   }
 
   try {
-    return message.replace(/{(\d+)}/g, function(
-      match,
-      number,
-    ) {
-      return typeof args[number] != 'undefined'
-        ? args[number]
-        : match;
+    return message.replace(/{(\d+)}/g, function(match, number) {
+      return typeof args[number] != "undefined" ? args[number] : match;
     });
   } catch (error) {
     console.error(message, error);
@@ -57,7 +51,7 @@ function format(message, args) {
 }
 
 export function getLanguages() {
-  return Object.keys(languages).map((language) => {
+  return Object.keys(languages).map(language => {
     return languages[language];
   });
 }
@@ -80,7 +74,7 @@ export function setLanguageCode(arg) {
   }
 
   moment.locale(arg);
-  localStorage.setItem('language', arg);
+  localStorage.setItem("language", arg);
 
   if (getLanguage().dictionary.validation) {
     setYupLocale(getLanguage().dictionary.validation);
@@ -106,7 +100,7 @@ export function i18nHtml(key, ...args) {
   return (
     <span
       dangerouslySetInnerHTML={{
-        __html: i18n(key, ...args),
+        __html: i18n(key, ...args)
       }}
     />
   );

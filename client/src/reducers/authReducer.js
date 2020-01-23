@@ -21,7 +21,8 @@ import {
 
 const initialState = {
   token: localStorage.getItem("token"),
-  isAuthenticated: localStorage.getItem("authenticated") == "true",
+  isAuthenticated:
+    localStorage.getItem("authenticated") == "true" ? true : false,
   isLoading: false,
   userLoaded: false,
   user: null,
@@ -60,7 +61,6 @@ export default function(state = initialState, action) {
       return {
         ...state,
         allUsers: state.allUsers.filter(user => {
-          console.log(user._id);
           return user._id !== action.payload;
         })
       };
@@ -76,20 +76,17 @@ export default function(state = initialState, action) {
     case LOGOUT_SUCCESS:
       localStorage.removeItem("token");
       localStorage.removeItem("authenticated");
+      console.log(123123123);
 
       return {
-        ...state,
-        user: null,
-        token: null,
-        isAuthenticated: false,
-        isLoading: false,
-        userLoaded: false
+        initialState
       };
 
     case AUTH_ERROR:
     case LOGIN_FAIL:
     case REGISTER_FAIL:
-      // localStorage.removeItem("token");
+      localStorage.removeItem("token");
+      localStorage.removeItem("authenticated");
       return {
         ...state,
         // token: null,
@@ -124,9 +121,11 @@ export default function(state = initialState, action) {
       };
     case TFA_VERIFED:
       localStorage.setItem("authenticated", true);
+
       return {
         ...state,
         isAuthenticated: true,
+
         TFA: null,
         isTFAing: false
       };

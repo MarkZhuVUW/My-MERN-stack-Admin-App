@@ -10,7 +10,7 @@ const User = require("../../models/User");
 const Log = require("../../models/Log");
 
 // @route   GET api/users
-// @desc    Get All Registered Users
+// @desc    Get All logs Users
 // @access  Public
 router.get("/logs", (req, res) => {
   Log.find()
