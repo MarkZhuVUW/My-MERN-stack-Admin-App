@@ -27,7 +27,8 @@ import SimpleBackdrop from "../MyBackdrop";
 import { withRouter } from "react-router-dom";
 import compose from "recompose/compose";
 import RoleCheckboxes from "./RoleCheckboxes";
-
+import FacebookProgress from "components/FacebookProgress";
+import "../../css3/bouncingEffect.css";
 const theme = createMuiTheme({
   spacing: 4
 });
@@ -56,7 +57,7 @@ class SignUp extends Component {
     email: "",
     password: "",
     msg: null,
-    selectedRole: "admin",
+    selectedRole: "",
     checked: false
   };
 
@@ -73,7 +74,7 @@ class SignUp extends Component {
     history: PropTypes.object.isRequired
   };
   componentDidUpdate(prevProps) {
-    const { error, isAuthenticated } = this.props;
+    const { error } = this.props;
     if (error !== prevProps.error) {
       // Check for register error
       if (error.id === "REGISTER_FAIL") {
@@ -129,7 +130,7 @@ class SignUp extends Component {
         <CssBaseline />
         <Paper className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
+            <LockOutlinedIcon className="animation" />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign up
@@ -201,7 +202,8 @@ class SignUp extends Component {
               </Grid>
 
               <RoleCheckboxes roleSelectedCallback={roleSelectedCallback} />
-              {this.state.selectedRole !== "admin" ? (
+              {this.state.selectedRole !== "admin" &&
+              this.state.selectedRole !== "" ? (
                 <Grid container>
                   <FormControlLabel
                     control={
@@ -220,9 +222,7 @@ class SignUp extends Component {
               ) : null}
             </Grid>
             <Button
-              disabled={
-                this.state.selectedRole === "employer" && !this.state.checked
-              }
+              disabled={this.state.selectedRole === "" && !this.state.checked}
               type="submit"
               fullWidth
               variant="contained"

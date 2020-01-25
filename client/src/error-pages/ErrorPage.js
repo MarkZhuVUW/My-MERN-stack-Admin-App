@@ -78,25 +78,6 @@ const styles = {
  * @author Mark Zhu <zdy120939259@outlook.com>
  */
 class ErrorPage extends Component {
-  state = {
-    email: "",
-    password: "",
-    msg: null,
-    isLogin: true
-  };
-
-  callback = (bool, msg) => {
-    this.setState({
-      isLogin: bool,
-      msg: msg
-    });
-  };
-
-  tfaCallback = () => {
-    if (this.props.user.role === "admin") this.props.history.push("/admin");
-    else this.props.history.push("/board");
-  };
-
   static propTypes = {
     //withRouter
     match: PropTypes.object.isRequired,
@@ -104,16 +85,8 @@ class ErrorPage extends Component {
     history: PropTypes.object.isRequired
   };
 
-  toggle = () => {
-    // Clear errors
-    this.props.clearErrors();
-  };
-
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
   onSubmit = e => {
-    this.props.history.push("/");
+    this.props.history.goback();
   };
 
   handleCloseSnackbar = () => {
@@ -157,7 +130,7 @@ class ErrorPage extends Component {
             className={classes.submit}
             onClick={this.onSubmit}
           >
-            Go back to Login Page
+            Go back
           </Button>
         </Container>
       </div>

@@ -28,6 +28,8 @@ import RoleCheckboxes from "./RoleCheckboxes";
 
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import FacebookProgress from "components/FacebookProgress";
+import "../../css3/bouncingEffect.css";
 const theme = createMuiTheme({
   spacing: 4
 });
@@ -70,9 +72,10 @@ class SignInSide extends Component {
     email: "",
     password: "",
     msg: null,
-    selectedRole: "admin",
+    selectedRole: "",
     forgotPasswordClicked: false,
-    checked: false
+    checked: false,
+    isLoading: false
   };
 
   static propTypes = {
@@ -117,6 +120,9 @@ class SignInSide extends Component {
   onSubmit = e => {
     e.preventDefault();
 
+    this.setState({
+      isLoading: true
+    });
     const { email, password } = this.state;
 
     const user = {
@@ -131,6 +137,9 @@ class SignInSide extends Component {
 
   callback = isTFAVerified => {
     if (isTFAVerified) {
+      this.setState({
+        isLoading: false
+      });
       this.handleLoginSuccess();
       this.props.history.push("/frame/dashboard/");
     }
@@ -193,6 +202,7 @@ class SignInSide extends Component {
             title="Google Two-Factor Auth"
             email={email}
             cb={this.callback}
+            selectedRole={this.state.selectedRole}
           />
         ) : null}
 
@@ -212,7 +222,7 @@ class SignInSide extends Component {
             <Container className={classes.paper}>
               <Paper className={classes.paper}>
                 <Avatar className={classes.avatar}>
-                  <LockOutlinedIcon />
+                  <LockOutlinedIcon className="animation" />
                 </Avatar>
                 <Typography component="h1" variant="h5">
                   Welcome!
@@ -248,7 +258,8 @@ class SignInSide extends Component {
                   />
 
                   <RoleCheckboxes roleSelectedCallback={roleSelectedCallback} />
-                  {this.state.selectedRole !== "admin" ? (
+                  {this.state.selectedRole !== "admin" &&
+                  this.state.selectedRole !== "" ? (
                     <Grid container>
                       <FormControlLabel
                         control={
@@ -265,10 +276,10 @@ class SignInSide extends Component {
                       />
                     </Grid>
                   ) : null}
+                  {console.log(this.state.checked)}
                   <Button
                     disabled={
-                      this.state.selectedRole === "employer" &&
-                      !this.state.checked
+                      this.state.selectedRole !== "admin" && !this.state.checked
                     }
                     type="submit"
                     fullWidth
@@ -277,7 +288,7 @@ class SignInSide extends Component {
                     className={classes.submit}
                     onClick={this.onSubmit}
                   >
-                    Sign in
+                    Sign in {this.state.isLoading && <FacebookProgress />}
                   </Button>
 
                   <Grid container>

@@ -282,3 +282,9 @@ export const TFAVerify = (email, code) => dispatch => {
   //not sure if it is the right way to do redux.
   return authPromise;
 };
+
+// skip tfa.
+export const skipTFA = (email, code) => dispatch => {
+  // TFAing
+  dispatch({ type: TFA_VERIFED });
+};

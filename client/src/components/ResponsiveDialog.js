@@ -19,6 +19,7 @@ import PropTypes from "prop-types";
 import { TFAVerify } from "../actions/authActions";
 import { TFASetup } from "../actions/authActions";
 import { getTFA } from "../actions/authActions";
+import { skipTFA } from "../actions/authActions";
 
 import { clearErrors } from "../actions/errorActions";
 
@@ -55,7 +56,7 @@ class ResponsiveDialog extends Component {
     TFAVerify: PropTypes.func.isRequired,
     TFASetup: PropTypes.func.isRequired,
     getTFA: PropTypes.func.isRequired,
-
+    skipTFA: PropTypes.func.isRequired,
     TFA: PropTypes.object
   };
   componentDidMount() {
@@ -119,6 +120,10 @@ class ResponsiveDialog extends Component {
     this.setState({ code: e.target.value });
   };
 
+  skipTFA = () => {
+    this.props.skipTFA();
+  };
+
   render() {
     const { classes, title, alertMsg, TFA } = this.props;
 
@@ -162,6 +167,10 @@ class ResponsiveDialog extends Component {
                   <Button onClick={this.onSubmit} color="primary">
                     submit
                   </Button>
+                  {this.props.selectedRole === "employer" ||
+                  this.props.selectedRole === "guest" ? (
+                    <Button onClick={this.skipTFA}>skip TFA</Button>
+                  ) : null}
                 </DialogActions>
               ) : (
                 <Logout />
@@ -201,5 +210,6 @@ export default connect(mapStateToProps, {
   TFAVerify,
   TFASetup,
   getTFA,
-  clearErrors
+  clearErrors,
+  skipTFA
 })(withStyles(styles)(ResponsiveDialog));
