@@ -23,11 +23,8 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { login } from "../../actions/authActions";
-import { clearErrors } from "../../actions/errorActions";
 import compose from "recompose/compose";
 import { Player } from "video-react";
-import Video from "../../Invenco-Company-Overview.mp4";
 import ReactPlayer from "react-player";
 
 // import { logLoginSuccess } from "../../actions/adminActions";
@@ -148,7 +145,7 @@ class ErrorPage extends Component {
 
         <Container maxWidth="lg" className={classes.content}>
           <ReactPlayer
-            url="https://www.youtube.com/watch?v=zI_qBiXxSqU&t=16s"
+            url="https://www.youtube.com/watch?v=6dNho0h_yQQ"
             playing={false}
             width="100%"
           />

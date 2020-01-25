@@ -26,6 +26,7 @@ import { Route, BrowserRouter as Router, NavLink } from "react-router-dom";
 import SimpleBackdrop from "../MyBackdrop";
 import { withRouter } from "react-router-dom";
 import compose from "recompose/compose";
+import RoleCheckboxes from "./RoleCheckboxes";
 
 const theme = createMuiTheme({
   spacing: 4
@@ -51,11 +52,12 @@ const styles = {
 };
 class SignUp extends Component {
   state = {
-    modal: false,
     name: "",
     email: "",
     password: "",
-    msg: null
+    msg: null,
+    selectedRole: "admin",
+    checked: false
   };
 
   static propTypes = {
@@ -63,9 +65,8 @@ class SignUp extends Component {
     register: PropTypes.func.isRequired,
     userLoaded: PropTypes.bool,
     clearErrors: PropTypes.func.isRequired,
-    isTFAing: PropTypes.bool,
     isAuthenticated: PropTypes.bool,
-
+    successMsg: PropTypes.string,
     //withRouter
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
@@ -99,13 +100,14 @@ class SignUp extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email, password } = this.state;
+    const { name, email, password, selectedRole } = this.state;
 
     // Create user object
     const newUser = {
       name,
       email,
-      password
+      password,
+      role: selectedRole
     };
 
     // Attempt to register
@@ -115,106 +117,130 @@ class SignUp extends Component {
     this.toggle();
   };
 
-  callback = isTFAVerified => {
-    if (isTFAVerified) {
-      this.props.history.push("/frame/dashboard/");
-    }
-  };
-
   render() {
-    const { classes, isTFAing, userLoaded, error, isLoading } = this.props;
+    const { classes, error, isLoading } = this.props;
+    const roleSelectedCallback = selectedRole => {
+      this.setState({
+        selectedRole: selectedRole
+      });
+    };
     return (
-      <Container className={classes.paper}>
+      <Container maxWidth="sm" className={classes.paper}>
         <CssBaseline />
         <Paper className={classes.paper}>
-          {userLoaded ? (
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          {this.state.msg ? (
+            <ResponsiveDialog alertMsg={this.state.msg} title={error.id} />
+          ) : null}
+          {!this.state.msg && this.props.successMsg ? (
             <ResponsiveDialog
-              alertMsg="enter the code from google authenticator app to log in."
-              title="Google Two-Factor Auth"
-              email={this.state.email}
-              cb={this.callback}
+              alertMsg={this.props.successMsg}
+              title={"congrads!"}
             />
           ) : null}
-          <div className={classes.paper}>
-            <Avatar className={classes.avatar}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign up
-            </Typography>
-            {this.state.msg ? (
-              <ResponsiveDialog alertMsg={this.state.msg} title={error.id} />
-            ) : null}
-            <form className={classes.form} noValidate>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    autoComplete="fname"
-                    name="name"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="name"
-                    label="Name"
-                    autoFocus
-                    onChange={this.onChange}
-                  />
-                </Grid>
+          <form className={classes.form} noValidate>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  autoComplete="fname"
+                  name="name"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="name"
+                  label="Name"
+                  autoFocus
+                  onChange={this.onChange}
+                />
+              </Grid>
 
-                <Grid item xs={12}>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  onChange={this.onChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  onChange={this.onChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                {this.state.checked &&
+                this.state.selectedRole === "employer" ? (
                   <TextField
                     variant="outlined"
                     required
                     fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
+                    name="company"
+                    label="company"
+                    type="company"
+                    id="company"
                     onChange={this.onChange}
                   />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                    onChange={this.onChange}
-                  />
-                </Grid>
-                <Grid item xs={12}>
+                ) : null}
+              </Grid>
+
+              <RoleCheckboxes roleSelectedCallback={roleSelectedCallback} />
+              {this.state.selectedRole !== "admin" ? (
+                <Grid container>
                   <FormControlLabel
                     control={
-                      <Checkbox value="allowExtraEmails" color="primary" />
+                      <Checkbox
+                        onChange={() => {
+                          this.setState({
+                            checked: !this.state.checked
+                          });
+                        }}
+                        color="primary"
+                      />
                     }
-                    label="Have not decided what this is"
+                    label="Is it ok if I store your login information to my mongodb database?"
                   />
                 </Grid>
-              </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={this.onSubmit}
-              >
-                Sign Up
-              </Button>
+              ) : null}
+            </Grid>
+            <Button
+              disabled={
+                this.state.selectedRole === "employer" && !this.state.checked
+              }
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={this.onSubmit}
+            >
+              Sign Up
+            </Button>
 
-              <Grid container justify="center">
-                <Grid item>
-                  <NavLink to="/signin" variant="body2">
-                    go back
-                  </NavLink>
-                </Grid>
+            <Grid container justify="center">
+              <Grid item>
+                <NavLink to="/signin" variant="body2">
+                  go back
+                </NavLink>
               </Grid>
-            </form>
-          </div>
+            </Grid>
+          </form>
         </Paper>
       </Container>
     );
@@ -224,8 +250,8 @@ class SignUp extends Component {
 const mapStateToProps = state => ({
   error: state.error,
   userLoaded: state.auth.userLoaded,
-  isTFAing: state.auth.isTFAing,
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
+  successMsg: state.auth.successMsg
 });
 export default compose(
   withStyles(styles),

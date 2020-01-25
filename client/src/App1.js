@@ -25,45 +25,100 @@ class App extends Component {
   static propTypes = {
     isAuthenticated: PropTypes.bool
   };
+
+  conditionalRouting = () => {
+    if (!this.props.user) return;
+    const { role } = this.props.user;
+    if (role === "admin") {
+      return (
+        <>
+          <Route exact path="/admin">
+            <AdminDashboard isAdmin={true} />
+          </Route>
+
+          <Route
+            exact
+            path="/"
+            render={() => {
+              return <Redirect to="/admin" />;
+            }}
+          />
+          <Route
+            exact
+            path="/board"
+            render={() => {
+              return (
+                <ErrorPage
+                  errorMsg={`403 Unauthorized. ${role} is not permitted to access this route.`}
+                />
+              );
+            }}
+          />
+        </>
+      );
+    } else if (role === "customer") {
+      return (
+        <>
+          <Route exact path="/board">
+            <CustomerDashboard />
+          </Route>
+
+          <Route
+            exact
+            path="*"
+            render={() => {
+              return (
+                <ErrorPage
+                  errorMsg={`403 Unauthorized. ${role} is not permitted to access this route.`}
+                />
+              );
+            }}
+          />
+        </>
+      );
+    } else if (role === "user") {
+      return (
+        <>
+          <Route exact path="/board">
+            <CustomerDashboard isUser={true} />
+          </Route>
+          <Route
+            exact
+            path="/"
+            render={() => {
+              return <Redirect to="/board" />;
+            }}
+          />
+          <Route
+            exact
+            path="*"
+            render={() => {
+              return (
+                <ErrorPage
+                  errorMsg={`403 Unauthorized. ${role} is not permitted to access this route.`}
+                />
+              );
+            }}
+          />
+        </>
+      );
+    } else {
+      return (
+        <ErrorPage
+          errorMsg={`403 Unauthorized. ${role} is not permitted to access this route.`}
+        />
+      );
+    }
+  };
   render() {
-    const { user, isAuthenticated } = this.props;
+    const { isAuthenticated } = this.props;
     return (
       <Router>
         <Switch>
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
-          {isAuthenticated && user ? (
-            <>
-              {user.role === "admin" ? (
-                <>
-                  <Route exact path="/admin">
-                    <AdminDashboard />
-                  </Route>
-                  <Route
-                    exact
-                    path="/"
-                    render={() => {
-                      return <Redirect to="/admin" />;
-                    }}
-                  />
-                </>
-              ) : (
-                <>
-                  <Route exact path="/board">
-                    <CustomerDashboard
-                      isUser={user.role === "user" ? true : false}
-                    />
-                  </Route>
-                  <Route
-                    exact
-                    path="/"
-                    render={() => {
-                      return <Redirect to="/board" />;
-                    }}
-                  />
-                </>
-              )}
-            </>
+          {isAuthenticated ? (
+            <>{this.conditionalRouting()}</>
           ) : (
             <>
               <Route
@@ -76,7 +131,9 @@ class App extends Component {
               <Route
                 path="*"
                 render={() => {
-                  return <ErrorPage></ErrorPage>;
+                  return (
+                    <ErrorPage errorMsg="401 Unauthorized. Please login first" />
+                  );
                 }}
               />
             </>

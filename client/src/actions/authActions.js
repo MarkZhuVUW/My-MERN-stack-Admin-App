@@ -19,28 +19,30 @@ import {
   TFA_ING,
   TFA_LOAD_FAIL,
   LOADING,
-  USER_DELETED,
-  LOG_DELETED
+  USER_DELETED
 } from "./types";
 
+// Check token & load user
 export const loadUser = () => (dispatch, getState) => {
   // User loading
   dispatch({ type: USER_LOADING });
 
+  const loadUserPromise = axios.get("/api/auth/user", tokenConfig(getState));
   axios
     .get("/api/auth/user", tokenConfig(getState))
-    .then(res =>
-      dispatch({
+    .then(res => {
+      return dispatch({
         type: USER_LOADED,
         payload: res.data
-      })
-    )
+      });
+    })
     .catch(err => {
       dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
         type: AUTH_ERROR
       });
     });
+  return loadUserPromise;
 };
 
 // get all registered users
@@ -65,18 +67,17 @@ export const loadAllUsers = () => (dispatch, getState) => {
 };
 
 // Register User
-export const register = ({ name, email, password }) => dispatch => {
+export const register = user => dispatch => {
   // Headers
   dispatch({ type: LOADING });
-
   const config = {
     headers: {
       "Content-Type": "application/json"
     }
   };
-
+  const { name, email, password, role, company, team } = user;
   // Request body
-  const body = JSON.stringify({ name, email, password });
+  const body = JSON.stringify({ name, email, password, role, company, team });
 
   const authPromise = axios
     .post("/api/users", body, config)
@@ -280,17 +281,4 @@ export const TFAVerify = (email, code) => dispatch => {
 
   //not sure if it is the right way to do redux.
   return authPromise;
-};
-
-export const deleteLog = (userid, logid) => (dispatch, getState) => {
-  axios
-    .delete(`/api/users/${userid}/logs/${logid}`, tokenConfig(getState))
-    .then(res =>
-      dispatch({
-        type: LOG_DELETED
-      })
-    )
-    .catch(err =>
-      dispatch(returnErrors(err.response.data, err.response.status))
-    );
 };

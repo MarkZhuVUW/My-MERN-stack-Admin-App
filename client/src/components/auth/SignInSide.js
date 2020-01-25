@@ -26,6 +26,8 @@ import { withRouter } from "react-router-dom";
 import compose from "recompose/compose";
 import RoleCheckboxes from "./RoleCheckboxes";
 
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 const theme = createMuiTheme({
   spacing: 4
 });
@@ -67,7 +69,10 @@ class SignInSide extends Component {
   state = {
     email: "",
     password: "",
-    msg: null
+    msg: null,
+    selectedRole: "admin",
+    forgotPasswordClicked: false,
+    checked: false
   };
 
   static propTypes = {
@@ -151,9 +156,37 @@ class SignInSide extends Component {
     const { classes, isTFAing, userLoaded, error, isLoading } = this.props;
     const { email, msg } = this.state;
 
+    const roleSelectedCallback = selectedRole => {
+      this.setState({
+        selectedRole: selectedRole
+      });
+    };
+
+    const handleSnackbarClose = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+
+      this.setState({
+        forgotPasswordClicked: false
+      });
+    };
+
+    function Alert(props) {
+      return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
     return (
       <div>
         {/* if user credentials are correct. Do a google 2fa before login to dashboard */}
+        <Snackbar
+          open={this.state.forgotPasswordClicked}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+        >
+          <Alert onClose={handleSnackbarClose} severity="success">
+            Resgister a new one
+          </Alert>
+        </Snackbar>
         {userLoaded ? (
           <ResponsiveDialog
             alertMsg="enter the code from google authenticator app to log in."
@@ -214,8 +247,29 @@ class SignInSide extends Component {
                     onChange={this.onChange}
                   />
 
-                  <RoleCheckboxes />
+                  <RoleCheckboxes roleSelectedCallback={roleSelectedCallback} />
+                  {this.state.selectedRole !== "admin" ? (
+                    <Grid container>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            onChange={() => {
+                              this.setState({
+                                checked: !this.state.checked
+                              });
+                            }}
+                            color="primary"
+                          />
+                        }
+                        label="Do you allow data collection of your login, page views and CV downloads?"
+                      />
+                    </Grid>
+                  ) : null}
                   <Button
+                    disabled={
+                      this.state.selectedRole === "employer" &&
+                      !this.state.checked
+                    }
                     type="submit"
                     fullWidth
                     variant="contained"
@@ -228,7 +282,15 @@ class SignInSide extends Component {
 
                   <Grid container>
                     <Grid item xs>
-                      <NavLink to="#" variant="body2">
+                      <NavLink
+                        to="#"
+                        variant="body2"
+                        onClick={() =>
+                          this.setState({
+                            forgotPasswordClicked: true
+                          })
+                        }
+                      >
                         Forgot password?
                       </NavLink>
                     </Grid>

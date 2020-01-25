@@ -7,14 +7,6 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 
-import Button from "@material-ui/core/Button";
-
-import Chart from "./chart";
-import DoughnutChart from "./DoughnutChart";
-import LineChart from "./LineChart";
-import MixChartOne from "./MixChartOne";
-import PolarChart from "./PolarChart";
-
 import React, { Component } from "react";
 
 import { withStyles } from "@material-ui/styles";
@@ -25,9 +17,12 @@ import { clearErrors } from "../../../../actions/errorActions";
 import EditableTable from "components/EditableTable";
 import { loadAllLogsForSpecificUser } from "../../../../actions/adminActions";
 import { loadUser } from "../../../../actions/authActions";
-import { deleteLog } from "../../../../actions/authActions";
+import { deleteLog } from "../../../../actions/adminActions";
 
-import moment from "moment-timezone";
+import HomeDoughnutChart from "./HomeDoughnutChart";
+import HomePolarChart from "./HomePolarChart";
+import HomeLineChart from "./HomeLineChart";
+
 const styles = {};
 
 class Dashboard extends Component {
@@ -210,23 +205,8 @@ function DashboardContent(props) {
       <Breadcrumb
         items={[[i18n("frame.menu"), "/"], [i18n("dashboard.menu")]]}
       />
-      {/*page title */}
-      <div>
-        <Typography variant="h1" size="sm">
-          {props.title}
-        </Typography>
-        {props.button && (
-          <Button variant="contained" size="large" color="secondary">
-            {props.button}
-          </Button>
-        )}
-      </div>
+
       <Grid container spacing={props.isSmallScreen ? 1 : 3}>
-        <Grid item xs={12} md={8} lg={8}>
-          <Paper className={classes.paper}>
-            <Chart data={{}} />
-          </Paper>
-        </Grid>
         <Grid item xs={12} md={4} lg={4}>
           <Paper className={classes.paper}>
             <Typography
@@ -237,7 +217,8 @@ function DashboardContent(props) {
             >
               doughnut
             </Typography>
-            <DoughnutChart />
+            {/* <DoughnutChart /> */}
+            <HomeDoughnutChart />
           </Paper>
         </Grid>
 
@@ -249,22 +230,10 @@ function DashboardContent(props) {
               color="primary"
               gutterBottom
             >
-              line
+              Website Views
             </Typography>
-            <LineChart />
-          </Paper>
-        </Grid>
-        <Grid item xs={12} md={4} lg={4}>
-          <Paper className={classes.paper}>
-            <Typography
-              component="h2"
-              variant="h6"
-              color="primary"
-              gutterBottom
-            >
-              mixone
-            </Typography>
-            <MixChartOne />
+
+            <HomeLineChart />
           </Paper>
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
@@ -277,13 +246,13 @@ function DashboardContent(props) {
             >
               polar
             </Typography>
-            <PolarChart />
+            <HomePolarChart />
           </Paper>
         </Grid>
 
         <Grid item xs={12}>
           <EditableTable
-            title="User Actions"
+            title="User Activities"
             options={options}
             data={data}
             columns={columns}

@@ -7,7 +7,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import DirectionsWalkIcon from "@material-ui/icons/DirectionsWalk";
 import AccessibilityNewIcon from "@material-ui/icons/AccessibilityNew";
 import BeachAccessIcon from "@material-ui/icons/BeachAccess";
-import DirectionsRunIcon from "@material-ui/icons/DirectionsRun";
+import BusinessCenterIcon from "@material-ui/icons/BusinessCenter";
 const GreenCheckbox = withStyles({
   root: {
     color: green[400],
@@ -38,19 +38,19 @@ const RedCheckbox = withStyles({
   checked: {}
 })(props => <Checkbox color="default" {...props} />);
 
-export default function RoleCheckboxes() {
-  const [checkedA, setCheckedA] = React.useState(false);
-  const [checkedB, setCheckedB] = React.useState(false);
-  const [checkedC, setCheckedC] = React.useState(false);
+export default function RoleCheckboxes(props) {
+  const [admin, setAdmin] = React.useState(false);
+  const [employer, setEmployer] = React.useState(false);
+  const [guest, setGuest] = React.useState(false);
 
   const handleChange = name => {
-    setCheckedA(false);
-    setCheckedB(false);
-    setCheckedC(false);
-
-    if (name === "checkedA") setCheckedA(true);
-    if (name === "checkedB") setCheckedB(true);
-    if (name === "checkedC") setCheckedC(true);
+    setAdmin(false);
+    setEmployer(false);
+    setGuest(false);
+    props.roleSelectedCallback(name);
+    if (name === "admin") setAdmin(true);
+    if (name === "employer") setEmployer(true);
+    if (name === "guest") setGuest(true);
 
     // ({ [name]: event.target.checked });
   };
@@ -60,11 +60,11 @@ export default function RoleCheckboxes() {
       <FormControlLabel
         control={
           <GreenCheckbox
-            checked={checkedA}
+            checked={admin}
             icon={<DirectionsWalkIcon color="disabled" />}
             checkedIcon={<AccessibilityNewIcon />}
-            onChange={() => handleChange("checkedA")}
-            value="checkedA"
+            onChange={() => handleChange("admin")}
+            value="admin"
           />
         }
         label="admin"
@@ -73,11 +73,11 @@ export default function RoleCheckboxes() {
       <FormControlLabel
         control={
           <BlueCheckbox
-            checked={checkedB}
+            checked={employer}
             icon={<DirectionsWalkIcon color="disabled" />}
-            checkedIcon={<DirectionsRunIcon />}
-            onChange={() => handleChange("checkedB")}
-            value="checkedB"
+            checkedIcon={<BusinessCenterIcon />}
+            onChange={() => handleChange("employer")}
+            value="employer"
           />
         }
         label="employer"
@@ -86,11 +86,11 @@ export default function RoleCheckboxes() {
       <FormControlLabel
         control={
           <RedCheckbox
-            checked={checkedC}
+            checked={guest}
             icon={<DirectionsWalkIcon color="disabled" />}
             checkedIcon={<BeachAccessIcon />}
-            onChange={() => handleChange("checkedC")}
-            value="checkedC"
+            onChange={() => handleChange("guest")}
+            value="guest"
           />
         }
         label="guest"

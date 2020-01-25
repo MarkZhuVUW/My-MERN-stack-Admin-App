@@ -12,6 +12,7 @@ import {
   Redirect
 } from "react-router-dom";
 import SignInSide from "./components/auth/SignInSide";
+
 import SignUp from "./components/auth/SignUp";
 
 import { connect } from "react-redux";

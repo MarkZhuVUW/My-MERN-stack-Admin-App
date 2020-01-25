@@ -29,6 +29,7 @@ const initialState = {
   TFA: null,
   TFALoaded: false,
   isTFAing: false,
+  successMsg: null,
   allUsers: []
 };
 
@@ -64,23 +65,23 @@ export default function(state = initialState, action) {
           return user._id !== action.payload;
         })
       };
-    case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
+      return { ...state, successMsg: "registration successfull" };
+    case LOGIN_SUCCESS:
+      console.log(action.payload.token);
       localStorage.setItem("token", action.payload.token);
       return {
         ...state,
         ...action.payload,
         isLoading: false,
-        userLoaded: true
+        userLoaded: true,
+        successMsg: "logged in successfully"
       };
     case LOGOUT_SUCCESS:
       localStorage.removeItem("token");
       localStorage.removeItem("authenticated");
-      console.log(123123123);
 
-      return {
-        initialState
-      };
+      return { ...initialState, token: localStorage.getItem("token") };
 
     case AUTH_ERROR:
     case LOGIN_FAIL:

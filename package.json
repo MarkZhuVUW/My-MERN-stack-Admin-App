@@ -1,7 +1,7 @@
 {
-  "name": "my_portfolio_backend",
+  "name": "My-MERN-Stack-Admin-App-Backend",
   "version": "1.0.0",
-  "description": "backend for my portfolio",
+  "description": "backend for My MERN Stack Admin App",
   "main": "server.js",
   "scripts": {
     "client-install": "npm install --prefix client",
@@ -26,6 +26,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.1",
     "qrcode": "^1.4.4",
+    "react-pdf": "^4.1.0",
     "react-transition-group": "^4.3.0",
     "speakeasy": "^2.0.0",
     "swagger-jsdoc": "^3.5.0",

@@ -17,7 +17,6 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  logs: [Log.schema],
 
   register_date: {
     type: Date,
@@ -25,10 +24,14 @@ const UserSchema = new Schema({
   },
   role: {
     type: String,
-    enum: ["admin", "guest"],
+    enum: ["admin", "guest", "employer"],
     required: true,
     default: "guest"
-  }
+  },
+  company: {
+    type: String
+  },
+  logs: [Log.schema]
 });
 
 module.exports = User = mongoose.model("user", UserSchema);
