@@ -17,14 +17,11 @@ import {
 } from "@material-ui/core";
 import { BrowserRouter as Router, NavLink, withRouter } from "react-router-dom";
 
-import InvencoLogo from "../../images/invenco-logo.svg";
-
 import { createMuiTheme } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import compose from "recompose/compose";
-import { Player } from "video-react";
 import ReactPlayer from "react-player";
 
 // import { logLoginSuccess } from "../../actions/adminActions";
@@ -59,16 +56,9 @@ const styles = {
     height: "100vh",
     overflow: "auto"
   },
-  InvencoLogo: {
-    width: "200px",
-    padding: "10px",
-    marginLeft: "20%"
-    // marginRight: "10px",
-    // display: "flex",
-  },
   topBar: {
     backgroundColor: "white",
-    justifyContent: "flex-start"
+    justifyContent: "center"
   }
 };
 
@@ -85,7 +75,10 @@ class ErrorPage extends Component {
     history: PropTypes.object.isRequired
   };
 
-  onSubmit = e => {
+  onGoToLogin = e => {
+    this.props.history.push("/");
+  };
+  onGoBack = e => {
     this.props.history.goback();
   };
 
@@ -97,24 +90,55 @@ class ErrorPage extends Component {
 
   render() {
     const { classes } = this.props;
-
+    const conditionalRendering = () => {
+      switch (this.props.code) {
+        case "404":
+        case "400":
+          return (
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={this.onGoBack}
+            >
+              Go back
+            </Button>
+          );
+        case "401":
+          return (
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={this.onGoToLogin}
+            >
+              Go to Login Page
+            </Button>
+          );
+        default:
+          return null;
+      }
+    };
     return (
       <div style={{ backgroundColor: "#E9EAED" }}>
         <CssBaseline />
         <AppBar position="relative">
           <Toolbar className={classes.topBar}>
             <Slide direction="right" in={true} timeout={500}>
-              <img className={classes.InvencoLogo} src={InvencoLogo} />
+              <Typography style={{ color: "black" }} variant="h5" noWrap>
+                {this.props.errorMsg +
+                  ': "' +
+                  this.props.location.pathname +
+                  '"   :('}
+              </Typography>
             </Slide>
-
-            <Typography
-              style={{ color: "black" }}
-              variant="h5"
-              noWrap
-            ></Typography>
           </Toolbar>
         </AppBar>
-        <Box style={{ marginTop: "10%" }} />
+        <Box style={{ marginTop: "5%" }} />
 
         <Container maxWidth="lg" className={classes.content}>
           <ReactPlayer
@@ -122,16 +146,7 @@ class ErrorPage extends Component {
             playing={false}
             width="100%"
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={this.onSubmit}
-          >
-            Go back
-          </Button>
+          {conditionalRendering()}
         </Container>
       </div>
     );

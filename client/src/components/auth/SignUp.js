@@ -29,6 +29,8 @@ import compose from "recompose/compose";
 import RoleCheckboxes from "./RoleCheckboxes";
 import FacebookProgress from "components/FacebookProgress";
 import "../../css3/bouncingEffect.css";
+import Tooltip from "@material-ui/core/Tooltip";
+
 const theme = createMuiTheme({
   spacing: 4
 });
@@ -129,9 +131,12 @@ class SignUp extends Component {
       <Container maxWidth="sm" className={classes.paper}>
         <CssBaseline />
         <Paper className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon className="animation" />
-          </Avatar>
+          <Tooltip title="click me :)">
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon className="animation" />
+            </Avatar>
+          </Tooltip>
+
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
