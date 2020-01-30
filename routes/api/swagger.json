@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "Developer Portal API",
-    "description": "REST API documentation for the Developer Protal",
+    "title": "My MERN Stack Admin App API",
+    "description": "REST API documentation for My MERN Stack Admin App",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
