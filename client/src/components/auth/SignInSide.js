@@ -89,7 +89,7 @@ class SignInSide extends Component {
     isAuthenticated: PropTypes.bool,
 
     user: PropTypes.object,
-    logLoginSuccess: PropTypes.object,
+    logLoginSuccess: PropTypes.func,
     //withRouter
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
@@ -148,12 +148,13 @@ class SignInSide extends Component {
   };
 
   handleLoginSuccess = () => {
-    const { _id, name, email, role, logs } = this.props.user;
+    const { _id, name, email, role, company } = this.props.user;
 
     const logLoginSuccess = {
       name: name,
       email: email,
       role: role,
+      company: company,
       explanation: "user logged in",
       type: "LOGIN"
     };

@@ -23,7 +23,6 @@ import { clearErrors } from "../../actions/errorActions";
 import ResponsiveDialog from "../ResponsiveDialog";
 import { Route, BrowserRouter as Router, NavLink } from "react-router-dom";
 
-import SimpleBackdrop from "../MyBackdrop";
 import { withRouter } from "react-router-dom";
 import compose from "recompose/compose";
 import RoleCheckboxes from "./RoleCheckboxes";
@@ -60,7 +59,8 @@ class SignUp extends Component {
     password: "",
     msg: null,
     selectedRole: "",
-    checked: false
+    checked: false,
+    company: ""
   };
 
   static propTypes = {
@@ -103,14 +103,15 @@ class SignUp extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email, password, selectedRole } = this.state;
+    const { name, email, password, selectedRole, company } = this.state;
 
     // Create user object
     const newUser = {
       name,
       email,
       password,
-      role: selectedRole
+      role: selectedRole,
+      company: company
     };
 
     // Attempt to register
@@ -198,7 +199,7 @@ class SignUp extends Component {
                     required
                     fullWidth
                     name="company"
-                    label="company"
+                    label="company(optional)"
                     type="company"
                     id="company"
                     onChange={this.onChange}

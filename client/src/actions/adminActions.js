@@ -8,7 +8,7 @@ import {
   LOAD_LOGS_ERROR,
   LOG_DELETED
 } from "./types";
-import uuidv1 from "uuid";
+
 // Check token & load user
 export const logLoginSuccess = (id, loginLog) => (dispatch, getState) => {
   // Request body
@@ -43,7 +43,7 @@ export const logDownload = (id, downloadLog) => (dispatch, getState) => {
 };
 
 // get all registered users
-export const loadAllLogsForSpecificUser = id => (dispatch, getState) => {
+export const loadAllLogsForSpecificUser = () => (dispatch, getState) => {
   // User loading
   axios
     .get(`/api/admin/logs`, tokenConfig(getState))

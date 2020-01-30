@@ -84,7 +84,7 @@ export default function SelectedListItem(props) {
                 color={selectedIndex === 2 ? "primary" : "action"}
               />
             </ListItemIcon>
-            <ListItemText primary="Useradmin" />
+            <ListItemText primary="UserAdmin" />
           </ListItem>
         </Link>
       </List>

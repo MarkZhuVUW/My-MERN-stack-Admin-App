@@ -17,6 +17,7 @@
     "formik": "^2.1.2",
     "hocify": "^1.0.0",
     "mui-datatables": "^2.13.3",
+    "particles-bg": "^2.4.7",
     "react": "^16.12.0",
     "react-chartjs-2": "^2.8.0",
     "react-dom": "^16.12.0",
