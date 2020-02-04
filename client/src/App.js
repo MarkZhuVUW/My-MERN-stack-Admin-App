@@ -17,7 +17,7 @@ import PropTypes from "prop-types";
 import { loadUser } from "./actions/authActions";
 import ErrorPage from "./error-pages/ErrorPage";
 import Frame from "components/frame/Frame";
-import Particles from "react-particles-js";
+import ParticlesBg from "particles-bg";
 
 class App extends Component {
   componentDidMount() {
@@ -25,12 +25,7 @@ class App extends Component {
   }
 
   static propTypes = {
-    isAuthenticated: PropTypes.bool,
-
-    //withRouter
-    match: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
+    isAuthenticated: PropTypes.bool
   };
 
   // conditionalRouting = () => {
@@ -121,47 +116,43 @@ class App extends Component {
   render() {
     const { isAuthenticated } = this.props;
     return (
-      <Particles />
-      // <Router>
-      //   <Switch>
-      //     <Route exact path="/signin" component={SignInSide} />
-      //     <Route exact path="/signup" component={SignUp} />
-      //     {isAuthenticated ? (
-      //       <>
-      //         <Route exact path="/frame" component={Frame} />
-      //         <Route
-      //           exact
-      //           path="/"
-      //           render={() => {
-      //             return <Redirect to="/frame" />;
-      //           }}
-      //         />
-      //       </>
-      //     ) : (
-      //       <>
-      //         <Route
-      //           exact
-      //           path="/"
-      //           render={() => {
-      //             return <Redirect to="/signin" />;
-      //           }}
-      //         />
-      //         <Route
-      //           path="*"
-      //           render={() => {
-      //             return (
-      //               <ErrorPage
-      //                 errorMsg={`404 page not found`}
-      //                 location={this.props.location}
-      //                 code="401"
-      //               />
-      //             );
-      //           }}
-      //         />
-      //       </>
-      //     )}
-      //   </Switch>
-      // </Router>
+      <>
+        {/* <Router>
+          <Switch>
+            <Route exact path="/signin" component={SignInSide} />
+            <Route exact path="/signup" component={SignUp} />
+            {isAuthenticated ? (
+              <>
+                <Route exact path="/frame" component={Frame} />
+                <Route
+                  exact
+                  path="/"
+                  render={() => {
+                    return <Redirect to="/frame" />;
+                  }}
+                />
+              </>
+            ) : (
+              <>
+                <Route
+                  exact
+                  path="/"
+                  render={() => {
+                    return <Redirect to="/signin" />;
+                  }}
+                />
+                <Route
+                  path="*"
+                  render={() => {
+                    return <ErrorPage code="401" />;
+                  }}
+                />
+              </>
+            )}
+          </Switch>
+        </Router> */}
+        <ParticlesBg type="circle" bg={true} />
+      </>
     );
   }
 }
