@@ -7,6 +7,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import DashboardIcon from "@material-ui/icons/Dashboard";
+import { i18n } from "i18n";
 import {
   Route,
   BrowserRouter as Router,
@@ -49,7 +50,7 @@ export default function SelectedListItem(props) {
                 color={selectedIndex === 0 ? "primary" : "action"}
               />
             </ListItemIcon>
-            <ListItemText primary="Dashboard" />
+            <ListItemText primary={i18n("dashboard.menu")} />
           </ListItem>
         </Link>
         <Divider />
@@ -67,7 +68,7 @@ export default function SelectedListItem(props) {
                 color={selectedIndex === 1 ? "primary" : "action"}
               />
             </ListItemIcon>
-            <ListItemText primary="Developer" />
+            <ListItemText primary={i18n("developer.menu")} />
           </ListItem>
         </Link>
         <Link
@@ -84,7 +85,7 @@ export default function SelectedListItem(props) {
                 color={selectedIndex === 2 ? "primary" : "action"}
               />
             </ListItemIcon>
-            <ListItemText primary="Useradmin" />
+            <ListItemText primary={i18n("useradmin.menu")} />
           </ListItem>
         </Link>
       </List>

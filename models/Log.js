@@ -23,6 +23,7 @@ const LogSchema = new Schema({
     type: String,
     required: true
   },
+  company: { type: String },
   date_logged: {
     type: Date,
     default: Date.now

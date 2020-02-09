@@ -23,13 +23,13 @@ import { clearErrors } from "../../actions/errorActions";
 import ResponsiveDialog from "../ResponsiveDialog";
 import { Route, BrowserRouter as Router, NavLink } from "react-router-dom";
 
-import SimpleBackdrop from "../MyBackdrop";
 import { withRouter } from "react-router-dom";
 import compose from "recompose/compose";
 import RoleCheckboxes from "./RoleCheckboxes";
 import FacebookProgress from "components/FacebookProgress";
 import "../../css3/bouncingEffect.css";
 import Tooltip from "@material-ui/core/Tooltip";
+import { Zoom, Slide } from "@material-ui/core";
 
 const theme = createMuiTheme({
   spacing: 4
@@ -60,7 +60,8 @@ class SignUp extends Component {
     password: "",
     msg: null,
     selectedRole: "",
-    checked: false
+    checked: false,
+    company: ""
   };
 
   static propTypes = {
@@ -103,14 +104,15 @@ class SignUp extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email, password, selectedRole } = this.state;
+    const { name, email, password, selectedRole, company } = this.state;
 
     // Create user object
     const newUser = {
       name,
       email,
       password,
-      role: selectedRole
+      role: selectedRole,
+      company: company
     };
 
     // Attempt to register
@@ -191,39 +193,42 @@ class SignUp extends Component {
                 />
               </Grid>
               <Grid item xs={12}>
-                {this.state.checked &&
-                this.state.selectedRole === "employer" ? (
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    name="company"
-                    label="company"
-                    type="company"
-                    id="company"
-                    onChange={this.onChange}
-                  />
+                {this.state.selectedRole === "employer" ? (
+                  <Slide direction="left" in={true}>
+                    <TextField
+                      variant="outlined"
+                      required
+                      fullWidth
+                      name="company"
+                      label="company(optional)"
+                      type="company"
+                      id="company"
+                      onChange={this.onChange}
+                    />
+                  </Slide>
                 ) : null}
               </Grid>
 
               <RoleCheckboxes roleSelectedCallback={roleSelectedCallback} />
               {this.state.selectedRole !== "admin" &&
               this.state.selectedRole !== "" ? (
-                <Grid container>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        onChange={() => {
-                          this.setState({
-                            checked: !this.state.checked
-                          });
-                        }}
-                        color="primary"
-                      />
-                    }
-                    label="Is it ok if I store your login information to my mongodb database?"
-                  />
-                </Grid>
+                <Slide in={true} direction="right">
+                  <Grid container>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          onChange={() => {
+                            this.setState({
+                              checked: !this.state.checked
+                            });
+                          }}
+                          color="primary"
+                        />
+                      }
+                      label="page views, downloads, login info will be stored in my mongodb database"
+                    />
+                  </Grid>
+                </Slide>
               ) : null}
             </Grid>
             <Button

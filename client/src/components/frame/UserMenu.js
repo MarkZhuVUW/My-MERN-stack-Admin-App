@@ -9,7 +9,11 @@ import {
   Send as SendIcon,
   ArrowBack as ArrowBackIcon
 } from "@material-ui/icons";
+import Brightness4Icon from "@material-ui/icons/Brightness4";
+import Brightness5Icon from "@material-ui/icons/Brightness5";
 import classNames from "classnames";
+import { i18n, setLanguageCode } from "i18n";
+import TranslateIcon from "@material-ui/icons/Translate";
 
 import { Badge, Typography, Button } from "@material-ui/core";
 import UserAvatar from "../../components/UserAvatar";
@@ -49,11 +53,7 @@ const useStyles = makeStyles(theme => ({
   grow: {
     flexGrow: 1
   },
-  
-  
-  
-  
-  
+
   headerMenu: {
     marginTop: theme.spacing(7)
   },
@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column"
   },
-  
+
   headerMenuButton: {
     marginLeft: theme.spacing(2),
     padding: theme.spacing(0.5)
@@ -70,25 +70,23 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2)
   },
   headerIcon: {
-    fontSize: 28,
-    color: "rgba(255, 255, 255, 0.35)"
+    fontSize: 28
   },
   headerIconCollapse: {
     color: "white"
   },
-  profileMenu: {
+  menu: {
     minWidth: 265
   },
-  profileMenuUser: {
+  menuUser: {
     display: "flex",
     flexDirection: "column",
     padding: theme.spacing(2)
   },
-  
-  profileMenuLink: {
+
+  menuLink: {
     fontSize: 16,
     textDecoration: "none"
-    
   },
   messageNotification: {
     height: "auto",
@@ -135,6 +133,9 @@ export default function UserMenu() {
   const [mailMenu, setMailMenu] = useState(null);
   const [isMailsUnread, setIsMailsUnread] = useState(true);
   const [profileMenu, setProfileMenu] = useState(null);
+  const [languageMenu, setLanguageMenu] = useState(null);
+  const [themeMenu, setThemeMenu] = useState(null);
+
   const messages = [
     {
       id: 0,
@@ -165,9 +166,75 @@ export default function UserMenu() {
       time: "9:09"
     }
   ];
+
+  const setLanguage = code => {
+    setLanguageCode(code);
+    window.location.reload();
+  };
   return (
     <div>
-      {/* user menu */}
+      {/* language menu */}
+      <IconButton
+        color="inherit"
+        aria-haspopup="true"
+        aria-controls="language-menu"
+        onClick={e => {
+          setLanguageMenu(e.currentTarget);
+        }}
+        className={classes.headerMenuButton}
+      >
+        <Badge color="secondary">
+          <TranslateIcon classes={{ root: classes.headerIcon }} />
+          <Typography>{i18n("language.language")}</Typography>
+        </Badge>
+      </IconButton>
+      <Menu
+        id="language-menu"
+        open={Boolean(languageMenu)}
+        anchorEl={languageMenu}
+        onClose={() => setLanguageMenu(null)}
+        className={classes.headerMenu}
+        classes={{ paper: classes.menu }}
+        disableAutoFocusItem
+      >
+        <MenuItem
+          onClick={() => {
+            setLanguage("chinese");
+          }}
+        >
+          中文
+        </MenuItem>
+        <MenuItem onClick={() => setLanguage("en")}>english</MenuItem>
+      </Menu>
+      {/* language menu */}
+
+      {/* theme menu */}
+      <IconButton
+        color="inherit"
+        aria-haspopup="true"
+        aria-controls="theme-menu"
+        onClick={e => {
+          if (localStorage.getItem("theme") !== "dark") {
+            localStorage.setItem("theme", "dark");
+            // window.location.reload();
+          } else {
+            localStorage.setItem("theme", "default");
+            // window.location.reload();
+          }
+        }}
+        className={classes.headerMenuButton}
+      >
+        <Badge color="secondary">
+          {localStorage.getItem("theme") == "dark" ? (
+            <Brightness4Icon classes={{ root: classes.headerIcon }} />
+          ) : (
+            <Brightness5Icon classes={{ root: classes.headerIcon }} />
+          )}
+        </Badge>
+      </IconButton>
+      {/* theme menu */}
+
+      {/* messages menu */}
       <IconButton
         color="inherit"
         aria-haspopup="true"
@@ -185,6 +252,57 @@ export default function UserMenu() {
           <MailIcon classes={{ root: classes.headerIcon }} />
         </Badge>
       </IconButton>
+      <Menu
+        id="mail-menu"
+        open={Boolean(mailMenu)}
+        anchorEl={mailMenu}
+        onClose={() => setMailMenu(null)}
+        MenuListProps={{ className: classes.headerMenuList }}
+        className={classes.headerMenu}
+        classes={{ paper: classes.menu }}
+        disableAutoFocusItem
+      >
+        <div className={classes.menuUser}>
+          <Typography variant="h4">New Messages</Typography>
+          <Typography
+            className={classes.menuLink}
+            component="a"
+            color="secondary"
+          >
+            {messages.length} New Messages
+          </Typography>
+        </div>
+        {messages.map(message => (
+          <MenuItem key={message.id} className={classes.messageNotification}>
+            <div className={classes.messageNotificationSide}>
+              <UserAvatar color={message.variant} name={message.name} />
+              <Typography>{message.time}</Typography>
+            </div>
+            <div
+              className={classNames(
+                classes.messageNotificationSide,
+                classes.messageNotificationBodySide
+              )}
+            >
+              <Typography gutterBottom>{message.name}</Typography>
+              <Typography>{message.message}</Typography>
+            </div>
+          </MenuItem>
+        ))}
+        <Fab
+          variant="extended"
+          color="primary"
+          aria-label="Add"
+          className={classes.sendMessageButton}
+        >
+          Send New Message
+          <SendIcon className={classes.sendButtonIcon} />
+        </Fab>
+      </Menu>
+
+      {/* messages menu */}
+
+      {/* user menu */}
       <IconButton
         aria-haspopup="true"
         color="inherit"
@@ -200,15 +318,13 @@ export default function UserMenu() {
         anchorEl={profileMenu}
         onClose={() => setProfileMenu(null)}
         className={classes.headerMenu}
-        classes={{ paper: classes.profileMenu }}
+        classes={{ paper: classes.menu }}
         disableAutoFocusItem
       >
-        <div className={classes.profileMenuUser}>
-          <Typography variant="h4" weight="medium">
-            Mark Zhu
-          </Typography>
+        <div className={classes.menuUser}>
+          <Typography variant="h4">Mark Zhu</Typography>
           <Typography
-            className={classes.profileMenuLink}
+            className={classes.menuLink}
             component="a"
             color="primary"
             href="https://www.linkedin.com/in/mark-zhu-06b807145/"
@@ -216,7 +332,7 @@ export default function UserMenu() {
             https://www.linkedin.com/in/mark-zhu-06b807145/
           </Typography>
           <Typography
-            className={classes.profileMenuLink}
+            className={classes.menuLink}
             component="a"
             color="primary"
             href="https://github.com/MarkZhuVUW"
@@ -224,92 +340,20 @@ export default function UserMenu() {
             https://github.com/MarkZhuVUW/
           </Typography>
         </div>
-        <MenuItem
-          className={classNames(
-            classes.profileMenuItem,
-            classes.headerMenuItem
-          )}
-        >
-          <AccountIcon className={classes.profileMenuIcon} /> Profile
+        <MenuItem>
+          <AccountIcon /> Profile
         </MenuItem>
-        <MenuItem
-          className={classNames(
-            classes.profileMenuItem,
-            classes.headerMenuItem
-          )}
-        >
-          <AccountIcon className={classes.profileMenuIcon} /> Tasks
+        <MenuItem>
+          <AccountIcon /> Tasks
         </MenuItem>
-        <MenuItem
-          className={classNames(
-            classes.profileMenuItem,
-            classes.headerMenuItem
-          )}
-        >
-          <AccountIcon className={classes.profileMenuIcon} /> Messages
+        <MenuItem>
+          <AccountIcon /> Messages
         </MenuItem>
-        <div className={classes.profileMenuUser}>
+        <div className={classes.menuUser}>
           <Logout />
         </div>
       </Menu>
       {/* user menu */}
-
-      {/* messages menu */}
-      <Menu
-        id="mail-menu"
-        open={Boolean(mailMenu)}
-        anchorEl={mailMenu}
-        onClose={() => setMailMenu(null)}
-        MenuListProps={{ className: classes.headerMenuList }}
-        className={classes.headerMenu}
-        classes={{ paper: classes.profileMenu }}
-        disableAutoFocusItem
-      >
-        <div className={classes.profileMenuUser}>
-          <Typography variant="h4" weight="medium">
-            New Messages
-          </Typography>
-          <Typography
-            className={classes.profileMenuLink}
-            component="a"
-            color="secondary"
-          >
-            {messages.length} New Messages
-          </Typography>
-        </div>
-        {messages.map(message => (
-          <MenuItem key={message.id} className={classes.messageNotification}>
-            <div className={classes.messageNotificationSide}>
-              <UserAvatar color={message.variant} name={message.name} />
-              <Typography size="sm" >
-                {message.time}
-              </Typography>
-            </div>
-            <div
-              className={classNames(
-                classes.messageNotificationSide,
-                classes.messageNotificationBodySide
-              )}
-            >
-              <Typography weight="medium" gutterBottom>
-                {message.name}
-              </Typography>
-              <Typography>
-                {message.message}
-              </Typography>
-            </div>
-          </MenuItem>
-        ))}
-        <Fab
-          variant="extended"
-          color="primary"
-          aria-label="Add"
-          className={classes.sendMessageButton}
-        >
-          Send New Message
-          <SendIcon className={classes.sendButtonIcon} />
-        </Fab>
-      </Menu>
     </div>
   );
 }

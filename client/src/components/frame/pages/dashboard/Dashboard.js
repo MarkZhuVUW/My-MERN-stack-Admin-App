@@ -230,7 +230,7 @@ function DashboardContent(props) {
               color="primary"
               gutterBottom
             >
-              Website Views
+              {i18n("dashboard.websiteViews")}
             </Typography>
 
             <HomeLineChart />
@@ -252,7 +252,7 @@ function DashboardContent(props) {
 
         <Grid item xs={12}>
           <EditableTable
-            title="User Activities"
+            title={i18n("dashboard.table.userActivities")}
             options={options}
             data={data}
             columns={columns}

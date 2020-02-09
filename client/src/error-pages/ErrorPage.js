@@ -57,7 +57,6 @@ const styles = {
     overflow: "auto"
   },
   topBar: {
-    backgroundColor: "white",
     justifyContent: "center"
   }
 };
@@ -79,7 +78,7 @@ class ErrorPage extends Component {
     this.props.history.push("/");
   };
   onGoBack = e => {
-    this.props.history.goback();
+    this.props.history.goBack();
   };
 
   handleCloseSnackbar = () => {
@@ -124,23 +123,24 @@ class ErrorPage extends Component {
       }
     };
     return (
-      <div style={{ backgroundColor: "#E9EAED" }}>
+      <div>
         <CssBaseline />
-        <AppBar position="relative">
-          <Toolbar className={classes.topBar}>
-            <Slide direction="right" in={true} timeout={500}>
-              <Typography style={{ color: "black" }} variant="h5" noWrap>
-                {this.props.errorMsg +
-                  ': "' +
-                  this.props.location.pathname +
-                  '"   :('}
-              </Typography>
-            </Slide>
-          </Toolbar>
-        </AppBar>
-        <Box style={{ marginTop: "5%" }} />
+
+        {/* <Box style={{ marginTop: "5%" }} /> */}
 
         <Container maxWidth="lg" className={classes.content}>
+          <AppBar position="relative">
+            <Toolbar className={classes.topBar}>
+              <Slide direction="right" in={true} timeout={500}>
+                <Typography style={{ color: "white" }} variant="h5" noWrap>
+                  {this.props.code +
+                    ': "' +
+                    this.props.location.pathname +
+                    '"   :('}
+                </Typography>
+              </Slide>
+            </Toolbar>
+          </AppBar>
           <ReactPlayer
             url="https://www.youtube.com/watch?v=6dNho0h_yQQ"
             playing={false}

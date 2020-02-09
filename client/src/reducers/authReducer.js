@@ -74,14 +74,17 @@ export default function(state = initialState, action) {
         ...state,
         ...action.payload,
         isLoading: false,
-        userLoaded: true,
-        successMsg: "logged in successfully"
+        userLoaded: true
       };
     case LOGOUT_SUCCESS:
       localStorage.removeItem("token");
       localStorage.removeItem("authenticated");
 
-      return { ...initialState, token: localStorage.getItem("token") };
+      return {
+        ...initialState,
+        token: localStorage.getItem("token"),
+        authenticated: localStorage.getItem("authenticated")
+      };
 
     case AUTH_ERROR:
     case LOGIN_FAIL:
@@ -94,7 +97,9 @@ export default function(state = initialState, action) {
         user: null,
         isAuthenticated: false,
         isLoading: false,
-        userLoaded: false
+        userLoaded: false,
+        token: localStorage.getItem("token"),
+        authenticated: localStorage.getItem("authenticated")
       };
     case TFA_SETUP_FAIL:
       return {

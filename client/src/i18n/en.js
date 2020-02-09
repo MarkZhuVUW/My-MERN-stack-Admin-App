@@ -2,21 +2,30 @@ const en = {
   app: {
     title: "MERN-stack App"
   },
-
+  frame: {
+    menu: "frame"
+  },
   settings: {
     title: "Settings",
     menu: "Settings",
-    save: {
-      success:
-        "Settings saved successfully. The page will reload in {0} seconds for changes to take effect."
-    },
+
     fields: {
       theme: "Theme"
     }
   },
   dashboard: {
     menu: "Home",
-    message: `This page uses fake data for demonstration purposes only. You can edit it at frontend/view/home/HomePage.js.`,
+    message: `This page uses fake data for demonstration purposes only.`,
+    websiteViews: "Website Views",
+    table: {
+      userActivities: "User Activities",
+      name: "name",
+      email: "email",
+      role: "role",
+      explanation: "explanation",
+      type: "type",
+      dateLogged: "date logged"
+    },
     charts: {
       day: "Day",
       red: "Red",
@@ -34,79 +43,43 @@ const en = {
         5: "May",
         6: "June",
         7: "July"
-      },
-      eating: "Eating",
-      drinking: "Drinking",
-      sleeping: "Sleeping",
-      designing: "Designing",
-      coding: "Coding",
-      cycling: "Cycling",
-      running: "Running",
-      customer: "Customer"
+      }
     }
   },
   useradmin: {
-    menu: "UserAdmin",
-    message: `This page uses fake data for demonstration purposes only. You can edit it at frontend/view/home/HomePage.js.`,
-    charts: {
-      day: "Day",
-      red: "Red",
-      green: "Green",
-      yellow: "Yellow",
-      grey: "Grey",
-      blue: "Blue",
-      sales: "Sales",
-      visitor: "Visitors",
-      months: {
-        1: "January",
-        2: "February",
-        3: "March",
-        4: "April",
-        5: "May",
-        6: "June",
-        7: "July"
-      },
-      eating: "Eating",
-      drinking: "Drinking",
-      sleeping: "Sleeping",
-      designing: "Designing",
-      coding: "Coding",
-      cycling: "Cycling",
-      running: "Running",
-      customer: "Customer"
+    menu: "User Admin",
+    message: `This page uses fake data for demonstration purposes only.`,
+    userDetail: "User Detail",
+    email: "email",
+    company: "company",
+    name: "name",
+    role: "role",
+    createUser: "Create User",
+    id: "id",
+    registerDate: "register Date",
+    table: {
+      title: "User List"
     }
   },
   developer: {
     menu: "Developer",
-    message: `This page uses fake data for demonstration purposes only. You can edit it at frontend/view/home/HomePage.js.`,
-    charts: {
-      day: "Day",
-      red: "Red",
-      green: "Green",
-      yellow: "Yellow",
-      grey: "Grey",
-      blue: "Blue",
-      sales: "Sales",
-      visitor: "Visitors",
+    message: `This page uses fake data for demonstration purposes only.`
+  },
 
-      customer: "Customer"
-    }
-  },
-  frame: {
-    menu: "Frame"
-  },
   errors: {
-    backToHome: "Back to home",
-    403: `Sorry, you don't have access to this page`,
-    404: "Sorry, the page you visited does not exist",
-    500: "Sorry, the server is reporting an error",
+    401: "please login first",
+    403: "Do not have to access to this page",
+    404: "Page Not Found",
+    500: "Internal Error",
     forbidden: {
       message: "Forbidden"
     },
     validation: {
       message: "An error occurred"
-    },
-    defaultErrorMessage: "Ops, an error occurred"
+    }
+  },
+  language: {
+    language: "English"
   }
 };
 

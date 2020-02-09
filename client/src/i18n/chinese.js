@@ -1,112 +1,83 @@
 const chinese = {
   app: {
-    title: "MERN-stack App"
+    title: "MERN-stack 应用"
   },
-
+  frame: {
+    menu: "框架"
+  },
   settings: {
-    title: "Settings",
+    title: "设置",
     menu: "Settings",
-    save: {
-      success:
-        "Settings saved successfully. The page will reload in {0} seconds for changes to take effect."
-    },
+
     fields: {
       theme: "Theme"
     }
   },
   dashboard: {
-    menu: "Home",
-    message: `This page uses fake data for demonstration purposes only. You can edit it at frontend/view/home/HomePage.js.`,
+    menu: "主页",
+    message: `本页使用假数据..`,
+    websiteViews: "浏览量",
+    table: {
+      userActivities: "用户活动",
+      name: "名称",
+      email: "邮件",
+      role: "角色",
+      explanation: "解释",
+      type: "类型",
+      dateLogged: "记录日期"
+    },
     charts: {
-      day: "Day",
-      red: "Red",
-      green: "Green",
-      yellow: "Yellow",
-      grey: "Grey",
-      blue: "Blue",
-      sales: "Sales",
-      visitor: "Visitors",
+      day: "日",
+      red: "红",
+      green: "绿",
+      yellow: "黄",
+      grey: "灰",
+      blue: "蓝",
+      visitor: "访问量",
       months: {
-        1: "January",
-        2: "February",
-        3: "March",
-        4: "April",
-        5: "May",
-        6: "June",
-        7: "July"
-      },
-      eating: "Eating",
-      drinking: "Drinking",
-      sleeping: "Sleeping",
-      designing: "Designing",
-      coding: "Coding",
-      cycling: "Cycling",
-      running: "Running",
-      customer: "Customer"
+        1: "一月",
+        2: "二月",
+        3: "三月",
+        4: "四月",
+        5: "五月",
+        6: "六月",
+        7: "七月"
+      }
     }
   },
   useradmin: {
-    menu: "UserAdmin",
-    message: `This page uses fake data for demonstration purposes only. You can edit it at frontend/view/home/HomePage.js.`,
-    charts: {
-      day: "Day",
-      red: "Red",
-      green: "Green",
-      yellow: "Yellow",
-      grey: "Grey",
-      blue: "Blue",
-      sales: "Sales",
-      visitor: "Visitors",
-      months: {
-        1: "January",
-        2: "February",
-        3: "March",
-        4: "April",
-        5: "May",
-        6: "June",
-        7: "July"
-      },
-      eating: "Eating",
-      drinking: "Drinking",
-      sleeping: "Sleeping",
-      designing: "Designing",
-      coding: "Coding",
-      cycling: "Cycling",
-      running: "Running",
-      customer: "Customer"
+    menu: "用户管理",
+    message: `本页使用假数据..`,
+    userDetail: "用户详情",
+    email: "邮箱",
+    company: "公司",
+    name: "名字",
+    role: "角色",
+    id: "id",
+    registerDate: "注册时间",
+    createUser: "创建用户",
+    table: {
+      title: "用户列表"
     }
   },
   developer: {
-    menu: "Developer",
-    message: `This page uses fake data for demonstration purposes only. You can edit it at frontend/view/home/HomePage.js.`,
-    charts: {
-      day: "Day",
-      red: "Red",
-      green: "Green",
-      yellow: "Yellow",
-      grey: "Grey",
-      blue: "Blue",
-      sales: "Sales",
-      visitor: "Visitors",
-
-      customer: "Customer"
-    }
-  },
-  frame: {
-    menu: "Frame"
+    menu: "开发",
+    message: `本页使用假数据..`
   },
   errors: {
-    backToHome: "Back to home",
-    403: `Sorry, you don't have access to this page`,
-    404: "Sorry, the page you visited does not exist",
-    500: "Sorry, the server is reporting an error",
+    401: "请先登录",
+    403: "没有访问权限",
+    404: "页面不存在",
+    500: "服务器出错",
     forbidden: {
       message: "Forbidden"
     },
     validation: {
       message: "An error occurred"
-    },
-    defaultErrorMessage: "Ops, an error occurred"
+    }
+  },
+  language: {
+    language: "中文"
   }
 };
 

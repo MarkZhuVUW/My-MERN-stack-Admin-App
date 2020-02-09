@@ -3,13 +3,16 @@ import SignInSide from "./components/auth/SignInSide";
 import SignUp from "./components/auth/SignUp";
 
 import React, { Component } from "react";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 import "./App.css";
 import {
   Route,
   BrowserRouter as Router,
   Switch,
-  Redirect
+  Redirect,
+  HashRouter
 } from "react-router-dom";
 
 import { connect } from "react-redux";
@@ -17,7 +20,8 @@ import PropTypes from "prop-types";
 import { loadUser } from "./actions/authActions";
 import ErrorPage from "./error-pages/ErrorPage";
 import Frame from "components/frame/Frame";
-import ParticlesBg from "particles-bg";
+// import Particles from "react-particles-js";
+import { zhCN, enUS } from "@material-ui/core/locale";
 
 class App extends Component {
   componentDidMount() {
@@ -113,45 +117,89 @@ class App extends Component {
   //     );
   //   }
   // };
+
   render() {
     const { isAuthenticated } = this.props;
+    const styles = theme => ({
+      palette: {
+        primary: { main: "#1976d2" }
+      }
+    });
+    const chineseTheme = createMuiTheme(
+      {
+        palette: {
+          primary: { main: "#1976d2" },
+          type: localStorage.getItem("theme") == "dark" ? "dark" : "light"
+        }
+      },
+      zhCN
+    );
+    const englishTheme = createMuiTheme(
+      {
+        palette: {
+          primary: { main: "#1976d2" },
+          type: localStorage.getItem("theme") == "dark" ? "dark" : "light"
+        }
+      },
+      zhCN
+    );
+
+    const themeChooser = (language = localStorage.getItem("language")) => {
+      switch (language) {
+        case "en":
+          return englishTheme;
+        case "chinese":
+          return chineseTheme;
+        default:
+          return englishTheme;
+      }
+    };
     return (
       <>
-        {/* <Router>
-          <Switch>
-            <Route exact path="/signin" component={SignInSide} />
-            <Route exact path="/signup" component={SignUp} />
-            {isAuthenticated ? (
-              <>
-                <Route exact path="/frame" component={Frame} />
-                <Route
-                  exact
-                  path="/"
-                  render={() => {
-                    return <Redirect to="/frame" />;
-                  }}
-                />
-              </>
-            ) : (
-              <>
-                <Route
-                  exact
-                  path="/"
-                  render={() => {
-                    return <Redirect to="/signin" />;
-                  }}
-                />
-                <Route
-                  path="*"
-                  render={() => {
-                    return <ErrorPage code="401" />;
-                  }}
-                />
-              </>
-            )}
-          </Switch>
-        </Router> */}
-        <ParticlesBg type="circle" bg={true} />
+        {console.log(typeof themeChooser())}
+        {console.log(typeof chineseTheme)}
+
+        <ThemeProvider
+          theme={
+            localStorage.getItem("language") == "chinese"
+              ? chineseTheme
+              : englishTheme
+          }
+        >
+          <HashRouter basename="/">
+            <Switch>
+              <Route exact path="/signin" component={SignInSide} />
+              <Route exact path="/signup" component={SignUp} />
+              {isAuthenticated ? (
+                <>
+                  <Route path="/frame" component={Frame} />
+                  <Route
+                    exact
+                    path="/"
+                    render={() => {
+                      return <Redirect to="/frame" />;
+                    }}
+                  />
+                </>
+              ) : (
+                <>
+                  <Route
+                    exact
+                    path="/"
+                    render={() => {
+                      return <Redirect to="/signin" />;
+                    }}
+                  />
+                  <Route
+                    render={() => {
+                      return <ErrorPage code="401" />;
+                    }}
+                  />
+                </>
+              )}
+            </Switch>
+          </HashRouter>
+        </ThemeProvider>
       </>
     );
   }

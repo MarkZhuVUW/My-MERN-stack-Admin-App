@@ -3,7 +3,7 @@
   "info": {
     "version": "1.0.0",
     "title": "My MERN Stack Admin App API",
-    "description": "Done with node.js, express.js, REST API and postman.",
+    "description": "REST API documentation for My MERN Stack Admin App",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
@@ -12,11 +12,7 @@
   "servers": [
     {
       "url": "/",
-      "description": "Local Dev, or from Heroku"
-    },
-    {
-      "url": "/api/",
-      "description": "With docker-compose and nginx proxy"
+      "description": "localhost:5001"
     }
   ],
   "tags": [
@@ -31,6 +27,10 @@
     {
       "name": "TFA",
       "description": "google two-factor authentication"
+    },
+    {
+      "name": "admin",
+      "description": "administrative apis, including user activity logs and potentially more"
     }
   ],
   "consumes": ["application/json"],
@@ -51,7 +51,8 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/User" }
           }
         }
       }
@@ -374,34 +375,19 @@
             "description": "user not found probably?"
           }
         }
-      },
+      }
+    },
+    "/api/admin/logs": {
       "get": {
-        "tags": ["users"],
+        "tags": ["admin"],
         "summary": "get all logs of a specified user",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "get all logs of a specified user"
-          },
-          {
-            "name": "x-auth-token",
-            "in": "header",
-            "description": "an authorization header",
-            "required": true,
-            "type": "string"
-          }
-        ],
+
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/Auth"
             }
-          },
-          "401": {
-            "description": "unauthorized because of the 'auth' middleware"
           }
         }
       }
@@ -411,23 +397,33 @@
     "User": {
       "type": "object",
       "properties": {
-        "name": {
+        "role": {
           "type": "string"
+        },
+        "company": {
+          "type": "string"
+        },
+        "support": {
+          "type": "string"
+        },
+        "_id": {
+          "type": "array"
+        },
+        "name": {
+          "type": "date"
         },
         "email": {
           "type": "string"
         },
-        "password": {
+        "team": {
           "type": "string"
-        },
-        "logs": {
-          "type": "array"
         },
         "register_date": {
-          "type": "date"
-        },
-        "role": {
           "type": "string"
+        },
+        "schema": {
+          "type": "array",
+          "logs": { "$ref": "#/definitions/Log" }
         }
       }
     },
@@ -541,6 +537,12 @@
           "type": "string"
         },
         "role": {
+          "type": "string"
+        },
+        "company": {
+          "type": "string"
+        },
+        "date_logged": {
           "type": "string"
         }
       }

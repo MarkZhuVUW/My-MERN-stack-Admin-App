@@ -23,7 +23,6 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import SelectedListItem from "./listItems";
 import { logout } from "../../actions/authActions";
-import withTracker from "../withTracker";
 import {
   Route,
   BrowserRouter as Router,
@@ -48,7 +47,7 @@ import ReactGA from "react-ga";
 import { withRouter } from "react-router-dom";
 
 import compose from "recompose/compose";
-
+import ErrorPage from "error-pages/ErrorPage";
 const theme = createMuiTheme({
   spacing: 4
 });
@@ -82,7 +81,7 @@ class Frame extends Component {
   render() {
     const { classes } = this.props;
 
-    return <FrameContent />;
+    return <FrameContent location={this.props.location} />;
   }
 }
 
@@ -182,7 +181,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function FrameContent() {
+function FrameContent(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const [selectedIndex, setSelectedIndex] = React.useState(true);
@@ -218,11 +217,7 @@ function FrameContent() {
         >
           Admin
         </Typography>
-        {/* <IconButton color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton> */}
+
         <UserMenu />
       </Toolbar>
     </AppBar>
@@ -256,6 +251,7 @@ function FrameContent() {
 
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
+
         <Slide timeout={500} direction="left" in={!open || !isSmallScreen}>
           <Container maxWidth="lg" className={classes.mobileContainer}>
             <Route
@@ -263,19 +259,21 @@ function FrameContent() {
               path="/frame"
               render={() => <Redirect to="/frame/dashboard" />}
             />
-            <Route path="/frame/dashboard">
-              <Dashboard isSmallScreen={isSmallScreen} />
-            </Route>
-            {/* <Route path="/frame/dashboard">
-              <Settings isSmallScreen={isSmallScreen} />
-            </Route> */}
+            <Switch>
+              <Route exact path="/frame/dashboard">
+                <Dashboard isSmallScreen={isSmallScreen} />
+              </Route>
 
-            <Route path="/frame/developer">
-              <Developer isSmallScreen={isSmallScreen} />
-            </Route>
-            <Route path="/frame/useradmin">
-              <UserAdmin isSmallScreen={isSmallScreen} />
-            </Route>
+              <Route exact path="/frame/developer">
+                <Developer isSmallScreen={isSmallScreen} />
+              </Route>
+              <Route exact path="/frame/useradmin">
+                <UserAdmin isSmallScreen={isSmallScreen} />
+              </Route>
+              <Route>
+                <ErrorPage code="404"></ErrorPage>
+              </Route>
+            </Switch>
           </Container>
         </Slide>
       </main>

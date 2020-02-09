@@ -50,8 +50,9 @@ export const loadAllUsers = () => (dispatch, getState) => {
   // User loading
   dispatch({ type: USER_LOADING });
 
-  axios
-    .get("/api/users", tokenConfig(getState))
+  var authPromise = axios.get("/api/users", tokenConfig(getState));
+
+  authPromise
     .then(res =>
       dispatch({
         type: ALL_USERS_LOADED,
@@ -64,6 +65,8 @@ export const loadAllUsers = () => (dispatch, getState) => {
         type: AUTH_ERROR
       });
     });
+
+  return authPromise;
 };
 
 // Register User
@@ -75,9 +78,9 @@ export const register = user => dispatch => {
       "Content-Type": "application/json"
     }
   };
-  const { name, email, password, role, company, team } = user;
+  const { name, email, password, role, company } = user;
   // Request body
-  const body = JSON.stringify({ name, email, password, role, company, team });
+  const body = JSON.stringify({ name, email, password, role, company });
 
   const authPromise = axios
     .post("/api/users", body, config)

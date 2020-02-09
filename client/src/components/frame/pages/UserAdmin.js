@@ -28,14 +28,14 @@ import {
   useTheme
 } from "@material-ui/core";
 
-import MyBackdrop from "../../../components/MyBackdrop";
-// import DropdownSelection from "../../../components/dropdownSelect";
-// import PermissionCheckboxes from "../../../components/permissionCheckboxes";
+import AnimatedProgress from "../../../components/animatedProgress";
+import DropdownSelection from "../../../components/dropdownSelect";
+import Breadcrumb from "view/shared/Breadcrumb";
 
 // import ListOfFirmwares from "../shared/ListOfFirmwares";
 const styles = {};
 
-class Customers extends Component {
+class UserAdmin extends Component {
   state = {};
 
   static propTypes = {
@@ -60,7 +60,7 @@ class Customers extends Component {
   };
 
   /**
-   * This callback function sends back the email of the customer to be deleted
+   * This callback function sends back the email of the user to be deleted
    * after the delete button is clicked on the mui datatable.
    */
   callback = id => {
@@ -68,16 +68,18 @@ class Customers extends Component {
   };
 
   /**
-   * This callback function sends back the email of the customer to be deleted
+   * This callback function sends back the email of the user to be deleted
    * after the delete button is clicked on the mui datatable.
    */
   cb = id => {
     this.props.deleteUser(id);
   };
 
-  registerCallback = customerToBeRegistered => {
-    console.log(customerToBeRegistered);
-    this.props.register(customerToBeRegistered);
+  registerCallback = userToBeRegistered => {
+    console.log(userToBeRegistered);
+    this.props.register(userToBeRegistered).then(() => {
+      this.props.loadAllUsers();
+    });
 
     this.toggle();
   };
@@ -85,7 +87,7 @@ class Customers extends Component {
     const { classes, allUsers, user } = this.props;
 
     return (
-      <CustomersContent
+      <SettingsContent
         cb={this.cb}
         data={allUsers}
         registerCallback={this.registerCallback}
@@ -106,7 +108,7 @@ export default connect(mapStateToProps, {
   loadAllUsers,
   deleteUser,
   register
-})(withStyles(styles)(Customers));
+})(withStyles(styles)(UserAdmin));
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -119,7 +121,7 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: theme.spacing(1)
   },
   paper: {
-    padding: theme.spacing(4),
+    padding: theme.spacing(3),
     display: "flex",
     overflow: "auto",
     flexDirection: "column"
@@ -140,79 +142,70 @@ const useStyles = makeStyles(theme => ({
  *
  * @author Mark Zhu <zdy120939259@outlook.com>
  */
-function CustomersContent(props) {
+function SettingsContent(props) {
   const classes = useStyles();
-  const theme = useTheme();
 
-  const [isCreatingCustomer, setIsCreatingCustomer] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isCreatingUser, setIsCreatingUser] = useState(false);
 
-  const [
-    showCustomerCreationProgress,
-    setShowCustomerCreationProgress
-  ] = useState(false);
-  const [currentCustomer, setCurrentCustomer] = useState({
+  const [showUserCreationProgress, setShowUserCreationProgress] = useState(
+    false
+  );
+  const [currentUser, setCurrentUser] = useState({
     name: "",
     email: "",
     password: "",
-    role: "customer",
-    company: "",
-    team: ""
+    role: "",
+    company: ""
   });
-  const [customerToBeRegistered, setCustomerToBeRegistered] = useState({
+  const [userToBeRegistered, setUserToBeRegistered] = useState({
     name: "",
     email: "",
     password: "",
-    role: "customer",
-    company: "",
-    team: ""
+    role: ""
   });
-  const handlecreateCustomer = event => {
-    setIsCreatingCustomer(true);
-    setShowCustomerCreationProgress(true);
+  const handlecreateUser = event => {
+    setIsCreatingUser(true);
+    setShowUserCreationProgress(true);
   };
 
   const onChange = e => {
-    console.log(e.target.value);
-    setCustomerToBeRegistered({
-      ...customerToBeRegistered,
+    setUserToBeRegistered({
+      ...userToBeRegistered,
       [e.target.name]: e.target.value
     });
   };
 
   const cb = bool => {
-    setShowCustomerCreationProgress(bool);
-    setIsCreatingCustomer(false);
-    props.registerCallback(customerToBeRegistered);
+    setShowUserCreationProgress(bool);
+    setIsCreatingUser(false);
+    props.registerCallback(userToBeRegistered);
   };
 
-  const dropdownSelectedCallback = company => {
-    console.log(customerToBeRegistered);
-    setCustomerToBeRegistered({
-      ...customerToBeRegistered,
-      company: company
+  const dropdownSelectedCallback = role => {
+    setUserToBeRegistered({
+      ...userToBeRegistered,
+      role: role
     });
   };
-  function createCustomerView() {
+  function createUserView() {
     const typesOfUser = [
-      { type: "customer", specific: "NCR" },
-      { type: "customer", specific: "Gallagher" }
+      { type: "roles", specific: "guest" },
+      { type: "roles", specific: "admin" },
+      { type: "roles", specific: "employer" }
     ];
     return (
       <>
-        <Toolbar variant="dense" style={{ backgroundColor: "#3f51b5" }}>
-          <Typography variant="h6" style={{ color: "white" }}>
-            {i18n("customers.customerDetail")}
-          </Typography>
-        </Toolbar>
         <Paper className={classes.paper}>
+          <Typography variant="h6" style={{ marginBottom: "20px" }}>
+            {i18n("useradmin.userDetail")}
+          </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <TextField
                 required
-                id="email"
-                name="email"
-                label="email"
+                id={i18n("useradmin.email")}
+                name={i18n("useradmin.email")}
+                label={i18n("useradmin.email")}
                 fullWidth
                 onChange={onChange}
               />
@@ -221,57 +214,55 @@ function CustomersContent(props) {
             <Grid item xs={12}>
               <TextField
                 required
-                id="name"
+                id={i18n("useradmin.name")}
+                name={i18n("useradmin.name")}
+                label={i18n("useradmin.name")}
                 fullWidth
-                label="name"
-                name="name"
                 onChange={onChange}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 required
-                id="password"
+                id={i18n("useradmin.password")}
+                name={i18n("useradmin.password")}
+                label={i18n("useradmin.password")}
                 fullWidth
-                label="password"
-                name="password"
+                onChange={onChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                id={i18n("useradmin.company")}
+                name={i18n("useradmin.company")}
+                label={i18n("useradmin.company")}
+                fullWidth
                 onChange={onChange}
               />
             </Grid>
 
             {/* <Grid item xs={12}>
-              <TextField required fullWidth label="team" name="team" />
+              <TextField required fullWidth label="role" name="role" />
             </Grid> */}
+            {/* --------------------------------------role-based dropdown menu--------------------------------------  */}
             <Typography variant="h6" style={{ color: "white" }}>
-              {i18n("customers.role")}
+              {i18n("useradmin.role")}
             </Typography>
             <FormControl margin="normal" fullWidth>
-              {/* <DropdownSelection
+              <DropdownSelection
                 disabled={false}
-                label="choose customer"
+                label="role"
                 typesOfUser={typesOfUser}
                 dropdownSelectedCallback={dropdownSelectedCallback}
                 onChange={onChange}
-              /> */}
+              />
             </FormControl>
-            {/* <FormControl margin="normal" fullWidth>
-              <Grid item xs={12}>
-                <ListOfFirmwares isCreatingCustomer={true}></ListOfFirmwares>
-              </Grid>
-            </FormControl> */}
+            {/* --------------------------------------role-based dropdown menu--------------------------------------  */}
 
-            {/* --------------------------------------permission checkboxes--------------------------------------  */}
-            {/* <Typography variant="h6" style={{ color: "white" }}>
-              {i18n("customers.permissions")}
-            </Typography>
-            <FormControl margin="normal" fullWidth>
-              <PermissionCheckboxes />
-              <Divider variant="middle" />
-            </FormControl> */}
-            {/* --------------------------------------permission checkboxes--------------------------------------  */}
             <Grid item xs={12}>
-              {showCustomerCreationProgress ? (
-                <MyBackdrop callback={cb}></MyBackdrop>
+              {showUserCreationProgress ? (
+                <AnimatedProgress callback={cb}></AnimatedProgress>
               ) : null}
             </Grid>
           </Grid>
@@ -280,15 +271,14 @@ function CustomersContent(props) {
     );
   }
 
-  function customerDetailView() {
+  function userDetailView() {
     return (
       <>
-        <Toolbar variant="dense" style={{ backgroundColor: "#3f51b5" }}>
-          <Typography variant="h6" style={{ color: "white" }}>
-            {i18n("customers.customerDetail")}
-          </Typography>
-        </Toolbar>
         <Paper className={classes.paper}>
+          <Typography variant="h6" style={{ marginBottom: "20px" }}>
+            {i18n("useradmin.userDetail")}
+          </Typography>
+
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <TextField
@@ -299,9 +289,10 @@ function CustomersContent(props) {
                 }}
                 fullWidth
                 value={
-                  currentCustomer.email !== "" ? currentCustomer.email : "email"
+                  currentUser.email !== ""
+                    ? currentUser.email
+                    : i18n("useradmin.email")
                 }
-                label="email"
                 name="email"
               />
             </Grid>
@@ -314,9 +305,10 @@ function CustomersContent(props) {
                 }}
                 fullWidth
                 name="name"
-                label="name"
                 value={
-                  currentCustomer.name !== "" ? currentCustomer.name : "name"
+                  currentUser.name !== ""
+                    ? currentUser.name
+                    : i18n("useradmin.name")
                 }
               />
             </Grid>
@@ -329,27 +321,37 @@ function CustomersContent(props) {
                 }}
                 fullWidth
                 value={
-                  currentCustomer.company !== ""
-                    ? currentCustomer.company
-                    : "company"
+                  currentUser.role !== ""
+                    ? currentUser.role
+                    : i18n("useradmin.role")
                 }
-                label="company"
-                name="company"
+                name="role"
               />
             </Grid>
-
             <Grid item xs={12}>
-              {/* <ListOfFirmwares></ListOfFirmwares> */}
+              <TextField
+                key="Confirmation Code"
+                InputProps={{
+                  readOnly: true
+                }}
+                fullWidth
+                value={
+                  currentUser.company !== ""
+                    ? currentUser.company
+                    : i18n("useradmin.company")
+                }
+                name="Email"
+              />
             </Grid>
             <Grid item xs={12}>
               <Zoom in={true}>
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={handlecreateCustomer}
+                  onClick={handlecreateUser}
                 >
                   <Typography variant="body1" style={{ color: "white" }}>
-                    {i18n("customers.createCustomer")}
+                    {i18n("useradmin.createUser")}
                   </Typography>
                 </Button>
               </Zoom>
@@ -370,92 +372,96 @@ function CustomersContent(props) {
       }
     },
     {
-      name: "name",
-      label: "name",
+      name: i18n("useradmin.name"),
+      label: i18n("useradmin.name"),
       options: {
         filter: true,
         sort: true
       }
     },
     {
-      name: "email",
-      label: "email",
+      name: i18n("useradmin.email"),
+      label: i18n("useradmin.email"),
+      options: {
+        filter: true,
+        sort: true
+      }
+    },
+
+    {
+      name: i18n("useradmin.role"),
+      label: i18n("useradmin.role"),
       options: {
         filter: true,
         sort: true
       }
     },
     {
-      name: "register date",
-      label: "register date",
+      name: i18n("useradmin.company"),
+      label: i18n("useradmin.company"),
       options: {
         filter: true,
         sort: true
       }
     },
     {
-      name: "role",
-      label: "role",
-      options: {
-        filter: true,
-        sort: true
-      }
-    },
-    {
-      name: "company",
-      label: "company",
+      name: i18n("useradmin.registerDate"),
+      label: i18n("useradmin.registerDate"),
       options: {
         filter: true,
         sort: true
       }
     }
   ];
-  const data = props.data
-    ? props.data
-        .filter(user => user.role === "customer" && props.user.role === "admin")
-        .map(customer => {
+  const data =
+    props.data && props.user
+      ? props.data.map(user => {
           return [
-            customer._id,
-            customer.name,
-            customer.email,
-            new Date(customer.register_date).toString(),
-            customer.role,
-            customer.company
+            user._id,
+            user.name,
+            user.email,
+            user.role,
+            user.company,
+            new Date(user.register_date).toString()
           ];
         })
-    : [];
+      : [];
+
   const options = {
     filter: true,
     responsive: "scrollMaxHeight",
     onRowsDelete: rowsDeleted => {
       for (var i = 0; i < rowsDeleted.data.length; ++i) {
-        //send back to CustomerAdmin component the email of the customer to be deleted.
+        //send back to UserAdmin component the email of the user to be deleted.
         props.cb(data[rowsDeleted.data[i].index][0]);
         console.log(rowsDeleted.data[i].index);
         console.log(data[i]);
       }
     },
     onRowClick: rowClicked => {
-      var customer = rowClicked;
-      //send back to CustomerAdmin component the email of the customer to be deleted.
-      setCurrentCustomer({
+      //send back to UserAdmin component the email of the user to be deleted.
+      setCurrentUser({
         name: rowClicked[1],
         email: rowClicked[2],
-        company: rowClicked[5]
+        role: rowClicked[3],
+        company: rowClicked[4]
       });
-      // team: rowClicked[6]
-      console.log(currentCustomer);
+      // role: rowClicked[6]
+      console.log(currentUser);
     }
   };
 
   return (
     <div>
+      <Breadcrumb
+        items={[[i18n("frame.menu"), "/"], [i18n("useradmin.menu")]]}
+      />
       <div className={classes.container}>
-        {isCreatingCustomer ? createCustomerView() : customerDetailView()}
+        {isCreatingUser ? createUserView() : userDetailView()}
       </div>
       <div className={classes.container}>
         <EditableTable
-          title="Customer List"
+          title={i18n("useradmin.table.title")}
           data={data}
           cb={props.cb}
           columns={columns}

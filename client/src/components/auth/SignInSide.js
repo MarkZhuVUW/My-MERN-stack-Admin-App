@@ -89,7 +89,7 @@ class SignInSide extends Component {
     isAuthenticated: PropTypes.bool,
 
     user: PropTypes.object,
-    logLoginSuccess: PropTypes.object,
+    logLoginSuccess: PropTypes.func,
     //withRouter
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
@@ -148,12 +148,13 @@ class SignInSide extends Component {
   };
 
   handleLoginSuccess = () => {
-    const { _id, name, email, role, logs } = this.props.user;
+    const { _id, name, email, role, company } = this.props.user;
 
     const logLoginSuccess = {
       name: name,
       email: email,
       role: role,
+      company: company,
       explanation: "user logged in",
       type: "LOGIN"
     };
@@ -167,9 +168,9 @@ class SignInSide extends Component {
     const { classes, isTFAing, userLoaded, error, isLoading } = this.props;
     const { email, msg } = this.state;
 
-    const roleSelectedCallback = selectedRole => {
+    const responsiveDialogCallback = () => {
       this.setState({
-        selectedRole: selectedRole
+        isLoading: false
       });
     };
 
@@ -195,16 +196,17 @@ class SignInSide extends Component {
           onClose={handleSnackbarClose}
         >
           <Alert onClose={handleSnackbarClose} severity="success">
-            Resgister a new one
+            Resgister a new one :)
           </Alert>
         </Snackbar>
         {userLoaded ? (
           <ResponsiveDialog
-            alertMsg="enter the code from google authenticator app to log in."
+            alertMsg="Download google authenticator app from any app store, scan the QRCode, enter the code shown on the app and submit"
             title="Google Two-Factor Auth"
             email={email}
             cb={this.callback}
             selectedRole={this.state.selectedRole}
+            responsiveDialogCallback={responsiveDialogCallback}
           />
         ) : null}
 
@@ -232,7 +234,11 @@ class SignInSide extends Component {
                   Welcome!
                 </Typography>
                 {this.state.msg ? (
-                  <ResponsiveDialog alertMsg={msg} title={error.id} />
+                  <ResponsiveDialog
+                    alertMsg={msg}
+                    title={error.id}
+                    responsiveDialogCallback={responsiveDialogCallback}
+                  />
                 ) : null}
 
                 <form className={classes.form} noValidate>
@@ -261,38 +267,20 @@ class SignInSide extends Component {
                     onChange={this.onChange}
                   />
 
-                  <RoleCheckboxes roleSelectedCallback={roleSelectedCallback} />
-                  {this.state.selectedRole !== "admin" &&
-                  this.state.selectedRole !== "" ? (
-                    <Grid container>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            onChange={() => {
-                              this.setState({
-                                checked: !this.state.checked
-                              });
-                            }}
-                            color="primary"
-                          />
-                        }
-                        label="Do you allow data collection of your login, page views and CV downloads?"
-                      />
-                    </Grid>
-                  ) : null}
-                  {console.log(this.state.checked)}
                   <Button
-                    disabled={
-                      this.state.selectedRole !== "admin" && !this.state.checked
-                    }
                     type="submit"
                     fullWidth
                     variant="contained"
                     color="primary"
+                    disabled={this.state.isLoading}
                     className={classes.submit}
                     onClick={this.onSubmit}
                   >
-                    Sign in {this.state.isLoading && <FacebookProgress />}
+                    {this.state.isLoading ? (
+                      <FacebookProgress />
+                    ) : (
+                      <Typography>Sign In</Typography>
+                    )}
                   </Button>
 
                   <Grid container>

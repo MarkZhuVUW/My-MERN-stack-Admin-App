@@ -57,7 +57,8 @@ class ResponsiveDialog extends Component {
     TFASetup: PropTypes.func.isRequired,
     getTFA: PropTypes.func.isRequired,
     skipTFA: PropTypes.func.isRequired,
-    TFA: PropTypes.object
+    TFA: PropTypes.object,
+    user: PropTypes.object
   };
   componentDidMount() {
     const { email, TFA } = this.props;
@@ -73,6 +74,7 @@ class ResponsiveDialog extends Component {
       }
     }
   }
+
   componentDidUpdate(prevProps) {
     const { error, email, TFA, isAuthenticated } = this.props;
     const { domainName } = this.state;
@@ -82,17 +84,23 @@ class ResponsiveDialog extends Component {
     }
     if (error !== prevProps.error) {
       // Check for register error
-      if (error.id === "LOGIN_FAIL") {
+      if (error.id === "TFA_VERIFY_FAIL") {
+        // //re-enable login button and hide the loading spinner
+
+        // this.props.ResponsiveDialogCallback();
+
         this.setState({ msg: error.msg.msg });
       } else {
         this.setState({ msg: null });
       }
     }
   }
+
   toggle = () => {
     // Clear errors
     this.props.clearErrors();
   };
+
   handleClickOpen = () => {
     this.setState({
       open: true
@@ -100,6 +108,9 @@ class ResponsiveDialog extends Component {
   };
 
   handleClose = () => {
+    //re-enable login button and hide the loading spinner
+    this.props.responsiveDialogCallback();
+
     this.setState({
       open: false
     });
@@ -204,7 +215,8 @@ class ResponsiveDialog extends Component {
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
   error: state.error,
-  TFA: state.auth.TFA
+  TFA: state.auth.TFA,
+  user: state.auth.user
 });
 export default connect(mapStateToProps, {
   TFAVerify,

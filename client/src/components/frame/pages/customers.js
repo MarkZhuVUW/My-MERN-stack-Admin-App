@@ -76,7 +76,6 @@ class Customers extends Component {
   };
 
   registerCallback = customerToBeRegistered => {
-    console.log(customerToBeRegistered);
     this.props.register(customerToBeRegistered);
 
     this.toggle();
@@ -173,7 +172,7 @@ function CustomersContent(props) {
   };
 
   const onChange = e => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setCustomerToBeRegistered({
       ...customerToBeRegistered,
       [e.target.name]: e.target.value
@@ -187,7 +186,7 @@ function CustomersContent(props) {
   };
 
   const dropdownSelectedCallback = company => {
-    console.log(customerToBeRegistered);
+    // console.log(customerToBeRegistered);
     setCustomerToBeRegistered({
       ...customerToBeRegistered,
       company: company
