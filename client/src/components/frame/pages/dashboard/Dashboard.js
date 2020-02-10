@@ -126,48 +126,48 @@ function DashboardContent(props) {
       }
     },
     {
-      name: "Name",
-      label: "Name",
+      name: i18n("dashboard.table.name"),
+      label: i18n("dashboard.table.name"),
       options: {
         filter: true,
         sort: true
       }
     },
     {
-      name: "Email",
-      label: "Email",
+      name: i18n("dashboard.table.email"),
+      label: i18n("dashboard.table.email"),
       options: {
         filter: true,
         sort: true
       }
     },
     {
-      name: "Role",
-      label: "Role",
+      name: i18n("dashboard.table.role"),
+      label: i18n("dashboard.table.role"),
       options: {
         filter: true,
         sort: true
       }
     },
     {
-      name: "Explanation",
-      label: "Explanation",
+      name: i18n("dashboard.table.explanation"),
+      label: i18n("dashboard.table.explanation"),
       options: {
         filter: true,
         sort: true
       }
     },
     {
-      name: "Type",
-      label: "Type",
+      name: i18n("dashboard.table.type"),
+      label: i18n("dashboard.table.type"),
       options: {
         filter: true,
         sort: true
       }
     },
     {
-      name: "Date_logged",
-      label: "Date_logged",
+      name: i18n("dashboard.table.dateLogged"),
+      label: i18n("dashboard.table.dateLogged"),
       options: {
         filter: true,
         sort: true
@@ -209,12 +209,7 @@ function DashboardContent(props) {
       <Grid container spacing={props.isSmallScreen ? 1 : 3}>
         <Grid item xs={12} md={4} lg={4}>
           <Paper className={classes.paper}>
-            <Typography
-              component="h2"
-              variant="h6"
-              color="primary"
-              gutterBottom
-            >
+            <Typography component="h2" variant="h6" gutterBottom>
               doughnut
             </Typography>
             {/* <DoughnutChart /> */}
@@ -224,12 +219,7 @@ function DashboardContent(props) {
 
         <Grid item xs={12} md={4} lg={4}>
           <Paper className={classes.paper}>
-            <Typography
-              component="h2"
-              variant="h6"
-              color="primary"
-              gutterBottom
-            >
+            <Typography component="h2" variant="h6" gutterBottom>
               {i18n("dashboard.websiteViews")}
             </Typography>
 
@@ -238,12 +228,7 @@ function DashboardContent(props) {
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
           <Paper className={classes.paper}>
-            <Typography
-              component="h2"
-              variant="h6"
-              color="primary"
-              gutterBottom
-            >
+            <Typography component="h2" variant="h6" gutterBottom>
               polar
             </Typography>
             <HomePolarChart />

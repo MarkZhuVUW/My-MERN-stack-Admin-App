@@ -68,7 +68,7 @@ export default function SelectedListItem(props) {
                 color={selectedIndex === 1 ? "primary" : "action"}
               />
             </ListItemIcon>
-            <ListItemText primary={i18n("developer.menu")} />
+            <ListItemText>{i18n("developer.menu")}</ListItemText>
           </ListItem>
         </Link>
         <Link

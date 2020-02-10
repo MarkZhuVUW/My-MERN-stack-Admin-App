@@ -48,6 +48,9 @@ import { withRouter } from "react-router-dom";
 
 import compose from "recompose/compose";
 import ErrorPage from "error-pages/ErrorPage";
+import { ThemeProvider } from "styled-components";
+import { zhCN, enUS } from "@material-ui/core/locale";
+
 const theme = createMuiTheme({
   spacing: 4
 });
@@ -56,7 +59,15 @@ const styles = {
     display: "flex"
   }
 };
-
+const englishTheme = createMuiTheme(
+  {
+    palette: {
+      primary: { main: "#1976d2" },
+      type: "light"
+    }
+  },
+  enUS
+);
 class Frame extends Component {
   state = {};
   static propTypes = {
@@ -193,7 +204,7 @@ function FrameContent(props) {
     setOpen(false);
   };
 
-  const FrameAppBar = (
+  const FrameAppBar = () => (
     <AppBar
       position="absolute"
       className={clsx(classes.appBar, open && classes.appBarShift)}
@@ -208,17 +219,27 @@ function FrameContent(props) {
         >
           <MenuIcon />
         </IconButton>
-        <Typography
-          component="h1"
-          variant="h6"
-          color="inherit"
-          noWrap
-          className={classes.title}
-        >
-          Admin
-        </Typography>
+        {isSmallScreen ? null : (
+          <Typography
+            component="h1"
+            variant="h6"
+            color="inherit"
+            noWrap
+            className={classes.title}
+          >
+            Admin
+          </Typography>
+        )}
 
-        <UserMenu />
+        <Slide
+          direction="left"
+          in={(isSmallScreen && !open) || !isSmallScreen}
+          timeout={500}
+        >
+          <div>
+            <UserMenu />
+          </div>
+        </Slide>
       </Toolbar>
     </AppBar>
   );
@@ -226,7 +247,7 @@ function FrameContent(props) {
     setSelectedIndex(selectedIndex);
     if (isSmallScreen) setOpen(false);
   };
-  const FrameDrawer = (
+  const FrameDrawer = () => (
     <Drawer
       variant="permanent"
       classes={{
@@ -246,8 +267,8 @@ function FrameContent(props) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      {FrameAppBar}
-      {FrameDrawer}
+      {FrameAppBar()}
+      {FrameDrawer()}
 
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
@@ -265,7 +286,9 @@ function FrameContent(props) {
               </Route>
 
               <Route exact path="/frame/developer">
-                <Developer isSmallScreen={isSmallScreen} />
+                <ThemeProvider theme={englishTheme}>
+                  <Developer isSmallScreen={isSmallScreen} />
+                </ThemeProvider>
               </Route>
               <Route exact path="/frame/useradmin">
                 <UserAdmin isSmallScreen={isSmallScreen} />

@@ -120,11 +120,7 @@ class App extends Component {
 
   render() {
     const { isAuthenticated } = this.props;
-    const styles = theme => ({
-      palette: {
-        primary: { main: "#1976d2" }
-      }
-    });
+
     const chineseTheme = createMuiTheme(
       {
         palette: {
@@ -141,7 +137,7 @@ class App extends Component {
           type: localStorage.getItem("theme") == "dark" ? "dark" : "light"
         }
       },
-      zhCN
+      enUS
     );
 
     const themeChooser = (language = localStorage.getItem("language")) => {
@@ -155,52 +151,47 @@ class App extends Component {
       }
     };
     return (
-      <>
-        {console.log(typeof themeChooser())}
-        {console.log(typeof chineseTheme)}
-
-        <ThemeProvider
-          theme={
-            localStorage.getItem("language") == "chinese"
-              ? chineseTheme
-              : englishTheme
-          }
-        >
-          <HashRouter basename="/">
-            <Switch>
-              <Route exact path="/signin" component={SignInSide} />
-              <Route exact path="/signup" component={SignUp} />
-              {isAuthenticated ? (
-                <>
-                  <Route path="/frame" component={Frame} />
-                  <Route
-                    exact
-                    path="/"
-                    render={() => {
-                      return <Redirect to="/frame" />;
-                    }}
-                  />
-                </>
-              ) : (
-                <>
-                  <Route
-                    exact
-                    path="/"
-                    render={() => {
-                      return <Redirect to="/signin" />;
-                    }}
-                  />
-                  <Route
-                    render={() => {
-                      return <ErrorPage code="401" />;
-                    }}
-                  />
-                </>
-              )}
-            </Switch>
-          </HashRouter>
-        </ThemeProvider>
-      </>
+      <ThemeProvider
+        theme={
+          localStorage.getItem("language") == "chinese"
+            ? chineseTheme
+            : englishTheme
+        }
+      >
+        <HashRouter basename="/">
+          <Switch>
+            <Route exact path="/signin" component={SignInSide} />
+            <Route exact path="/signup" component={SignUp} />
+            {isAuthenticated ? (
+              <>
+                <Route path="/frame" component={Frame} />
+                <Route
+                  exact
+                  path="/"
+                  render={() => {
+                    return <Redirect to="/frame" />;
+                  }}
+                />
+              </>
+            ) : (
+              <>
+                <Route
+                  exact
+                  path="/"
+                  render={() => {
+                    return <Redirect to="/signin" />;
+                  }}
+                />
+                <Route
+                  render={() => {
+                    return <ErrorPage code="401" />;
+                  }}
+                />
+              </>
+            )}
+          </Switch>
+        </HashRouter>
+      </ThemeProvider>
     );
   }
 }
