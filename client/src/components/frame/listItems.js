@@ -8,12 +8,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import { i18n } from "i18n";
-import {
-  Route,
-  BrowserRouter as Router,
-  NavLink,
-  Link
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 import DeveloperBoardIcon from "@material-ui/icons/DeveloperBoard";
 import AssessmentIcon from "@material-ui/icons/Assessment";
 const useStyles = makeStyles(theme => ({
@@ -26,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function SelectedListItem(props) {
   const classes = useStyles();
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [selectedIndex, setSelectedIndex] = React.useState(props.currentIndex);
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);

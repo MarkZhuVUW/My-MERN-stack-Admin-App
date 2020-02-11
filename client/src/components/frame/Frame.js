@@ -3,40 +3,24 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
-import Box from "@material-ui/core/Box";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Avatar from "@material-ui/core/Avatar";
 import { withStyles } from "@material-ui/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
 
-import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
-import Badge from "@material-ui/core/Badge";
 import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import NotificationsIcon from "@material-ui/icons/Notifications";
 import SelectedListItem from "./listItems";
-import { logout } from "../../actions/authActions";
-import {
-  Route,
-  BrowserRouter as Router,
-  Switch,
-  Redirect
-} from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import UserMenu from "./UserMenu";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Developer from "./pages/Developer";
 import UserAdmin from "./pages/UserAdmin";
-// import Settings from "./pages/Settings";
 
-import EditableTable from "../EditableTable";
-import { MediaQuery, useMediaQuery } from "react-responsive";
+import { useMediaQuery } from "react-responsive";
 
 //redux
 import { connect } from "react-redux";
@@ -181,11 +165,54 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+/**
+ * 
+ *
+ * @param {*} props
+ * @returns
+/**
+ *
+ *
+ * @param {*} props
+ * @returns
+ */
 function FrameContent(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
-  const [selectedIndex, setSelectedIndex] = React.useState(true);
+
+  /**
+   * translate the name of the page to its corresponding index. Used in the listitems.js file
+   * to keep track of what the current page is
+   * so it knows which page should be highlighted in the drawer
+   *
+   * returns
+   *  0: Home Page (if pathname is "/frame" it will redirect to Home Page),
+   *  1: Developer Page,
+   *  2: Developer Page,
+   * -1: Page Not Found
+   */
+  const translatePageToIndex = () => {
+    const { pathname } = props.location;
+    const splittedPathname = pathname.split("/");
+    switch (splittedPathname[splittedPathname.length - 1]) {
+      case "dashboard":
+        return 0;
+      case "developer":
+        return 1;
+      case "useradmin":
+        return 2;
+      case "frame":
+        return 0;
+      default:
+        return -1; // Page Not Found
+    }
+  };
+
+  const [selectedIndex, setSelectedIndex] = React.useState(
+    translatePageToIndex()
+  );
   const isSmallScreen = useMediaQuery({ query: "(max-device-width: 700px)" });
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -218,7 +245,15 @@ function FrameContent(props) {
           Admin
         </Typography>
 
-        <UserMenu />
+        <Slide
+          timeout={500}
+          direction="left"
+          in={(isSmallScreen && open) || !isSmallScreen}
+        >
+          <div>
+            <UserMenu />
+          </div>
+        </Slide>
       </Toolbar>
     </AppBar>
   );
@@ -226,6 +261,7 @@ function FrameContent(props) {
     setSelectedIndex(selectedIndex);
     if (isSmallScreen) setOpen(false);
   };
+
   const FrameDrawer = (
     <Drawer
       variant="permanent"
@@ -239,44 +275,53 @@ function FrameContent(props) {
           <ChevronLeftIcon />
         </IconButton>
       </div>
-      <SelectedListItem callback={cb} />
+      <SelectedListItem callback={cb} currentIndex={translatePageToIndex} />
     </Drawer>
   );
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      {FrameAppBar}
-      {FrameDrawer}
+    <>
+      {console.log(translatePageToIndex())}
+      {translatePageToIndex() === -1 ? (
+        <ErrorPage code="404" />
+      ) : (
+        <div className={classes.root}>
+          <CssBaseline />
+          {FrameAppBar}
+          {FrameDrawer}
 
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
+          <main className={classes.content}>
+            <div className={classes.appBarSpacer} />
 
-        <Slide timeout={500} direction="left" in={!open || !isSmallScreen}>
-          <Container maxWidth="lg" className={classes.mobileContainer}>
-            <Route
-              exact
-              path="/frame"
-              render={() => <Redirect to="/frame/dashboard" />}
-            />
-            <Switch>
-              <Route exact path="/frame/dashboard">
-                <Dashboard isSmallScreen={isSmallScreen} />
-              </Route>
+            <Slide timeout={500} direction="left" in={!open || !isSmallScreen}>
+              <Container
+                maxWidth="xl"
+                className={
+                  isSmallScreen ? classes.mobileContainer : classes.container
+                }
+              >
+                <Route
+                  exact
+                  path="/frame"
+                  render={() => <Redirect to="/frame/dashboard" />}
+                />
+                <Switch>
+                  <Route exact path="/frame/dashboard">
+                    <Dashboard isSmallScreen={isSmallScreen} />
+                  </Route>
 
-              <Route exact path="/frame/developer">
-                <Developer isSmallScreen={isSmallScreen} />
-              </Route>
-              <Route exact path="/frame/useradmin">
-                <UserAdmin isSmallScreen={isSmallScreen} />
-              </Route>
-              <Route>
-                <ErrorPage code="404"></ErrorPage>
-              </Route>
-            </Switch>
-          </Container>
-        </Slide>
-      </main>
-    </div>
+                  <Route exact path="/frame/developer">
+                    <Developer isSmallScreen={isSmallScreen} />
+                  </Route>
+                  <Route exact path="/frame/useradmin">
+                    <UserAdmin isSmallScreen={isSmallScreen} />
+                  </Route>
+                </Switch>
+              </Container>
+            </Slide>
+          </main>
+        </div>
+      )}
+    </>
   );
 }

@@ -53,11 +53,15 @@ const chinese = {
     company: "公司",
     name: "名字",
     role: "角色",
+    password: "密码",
     id: "id",
     registerDate: "注册时间",
     createUser: "创建用户",
     table: {
       title: "用户列表"
+    },
+    doughnutChart: {
+      title: "登录统计"
     }
   },
   developer: {

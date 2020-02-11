@@ -39,8 +39,9 @@ class Dashboard extends Component {
   };
   componentDidMount() {
     // this.props.loadUser();
-    if (this.props.user)
+    setTimeout(() => {
       this.props.loadAllLogsForSpecificUser(this.props.user._id);
+    }, 700);
   }
 
   componentDidUpdate(prevProps) {}
@@ -209,27 +210,16 @@ function DashboardContent(props) {
       <Grid container spacing={props.isSmallScreen ? 1 : 3}>
         <Grid item xs={12} md={4} lg={4}>
           <Paper className={classes.paper}>
-            <Typography
-              component="h2"
-              variant="h6"
-              color="primary"
-              gutterBottom
-            >
-              doughnut
+            <Typography component="h2" variant="h6" color="primary">
+              {i18n("dashboard.doughnutChart.title")}
             </Typography>
-            {/* <DoughnutChart /> */}
             <HomeDoughnutChart />
           </Paper>
         </Grid>
 
         <Grid item xs={12} md={4} lg={4}>
           <Paper className={classes.paper}>
-            <Typography
-              component="h2"
-              variant="h6"
-              color="primary"
-              gutterBottom
-            >
+            <Typography component="h2" variant="h6" color="primary">
               {i18n("dashboard.websiteViews")}
             </Typography>
 
@@ -238,12 +228,7 @@ function DashboardContent(props) {
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
           <Paper className={classes.paper}>
-            <Typography
-              component="h2"
-              variant="h6"
-              color="primary"
-              gutterBottom
-            >
+            <Typography component="h2" variant="h6" color="primary">
               polar
             </Typography>
             <HomePolarChart />

@@ -76,7 +76,6 @@ class UserAdmin extends Component {
   };
 
   registerCallback = userToBeRegistered => {
-    console.log(userToBeRegistered);
     this.props.register(userToBeRegistered).then(() => {
       this.props.loadAllUsers();
     });
