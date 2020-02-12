@@ -37,7 +37,7 @@ class Dashboard extends Component {
     // this.props.loadUser();
     setTimeout(() => {
       this.props.loadAllLogsForSpecificUser(this.props.user._id);
-    }, 700);
+    }, 1000);
   }
 
   componentDidUpdate(prevProps) {}

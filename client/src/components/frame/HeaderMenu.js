@@ -7,20 +7,19 @@ import {
   Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  MailOutline as MailIcon,
-  Person as AccountIcon,
-  Send as SendIcon
-} from "@material-ui/icons";
+import { Person as AccountIcon, Send as SendIcon } from "@material-ui/icons";
+
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 import Brightness5Icon from "@material-ui/icons/Brightness5";
 import TranslateIcon from "@material-ui/icons/Translate";
 import classNames from "classnames";
 import { i18n, setLanguageCode } from "i18n";
 import React, { useState } from "react";
-import UserAvatar from "../../components/UserAvatar";
+import UserAvatar from "../UserAvatar";
 import Logout from "../auth/Logout";
-
+import "../../css3/bouncingEffect.css";
+import DraftsIcon from "@material-ui/icons/Drafts";
+import MailIcon from "@material-ui/icons/Mail";
 const useStyles = makeStyles(theme => ({
   logotype: {
     color: "white",
@@ -115,7 +114,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function UserMenu(props) {
+export default function HeaderMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const classes = useStyles();
 
@@ -224,9 +223,15 @@ export default function UserMenu(props) {
       >
         <Badge color="secondary">
           {localStorage.getItem("theme") == "dark" ? (
-            <Brightness4Icon classes={{ root: classes.headerIcon }} />
+            <Brightness4Icon
+              classes={{ root: classes.headerIcon }}
+              className="swayTranslate"
+            />
           ) : (
-            <Brightness5Icon classes={{ root: classes.headerIcon }} />
+            <Brightness5Icon
+              classes={{ root: classes.headerIcon }}
+              className="swayTranslate"
+            />
           )}
         </Badge>
       </IconButton>
@@ -247,7 +252,17 @@ export default function UserMenu(props) {
           badgeContent={isMailsUnread ? messages.length : null}
           color="secondary"
         >
-          <MailIcon classes={{ root: classes.headerIcon }} />
+          {mailMenu ? (
+            <DraftsIcon
+              classes={{ root: classes.headerIcon }}
+              className="bounce"
+            />
+          ) : (
+            <MailIcon
+              classes={{ root: classes.headerIcon }}
+              className="bounce"
+            />
+          )}{" "}
         </Badge>
       </IconButton>
       <Menu
@@ -308,7 +323,10 @@ export default function UserMenu(props) {
         aria-controls="profile-menu"
         onClick={e => setProfileMenu(e.currentTarget)}
       >
-        <AccountIcon classes={{ root: classes.headerIcon }} />
+        <AccountIcon
+          classes={{ root: classes.headerIcon }}
+          className="swayTranslate"
+        />
       </IconButton>
       <Menu
         id="profile-menu"

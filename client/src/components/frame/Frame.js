@@ -25,7 +25,7 @@ import SelectedListItem from "./listItems";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Developer from "./pages/Developer";
 import UserAdmin from "./pages/UserAdmin";
-import UserMenu from "./UserMenu";
+import HeaderMenu from "./HeaderMenu";
 
 const theme = createMuiTheme({
   spacing: 4
@@ -257,7 +257,7 @@ function FrameContent(props) {
             in={(isSmallScreen && !open) || !isSmallScreen}
           >
             <div>
-              <UserMenu themeCallback={themeCallback} />
+              <HeaderMenu themeCallback={themeCallback} />
             </div>
           </Slide>
         ) : null}
