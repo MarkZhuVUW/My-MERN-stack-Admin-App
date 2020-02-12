@@ -274,7 +274,12 @@ function FrameContent(props) {
         <div className={classes.appBarSpacer} />
 
         <Slide timeout={500} direction="left" in={!open || !isSmallScreen}>
-          <Container maxWidth="lg" className={classes.mobileContainer}>
+          <Container
+            maxWidth="xl"
+            className={
+              isSmallScreen ? classes.mobileContainer : classes.container
+            }
+          >
             <Route
               exact
               path="/frame"
