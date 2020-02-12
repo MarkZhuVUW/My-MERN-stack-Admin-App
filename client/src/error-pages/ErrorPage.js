@@ -1,29 +1,21 @@
-import React, { useState, Component } from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
 import {
-  TextField,
-  CssBaseline,
   AppBar,
-  Toolbar,
-  Typography,
-  Container,
-  Paper,
-  FormControl,
-  Grid,
+  Box,
   Button,
-  Zoom,
+  Container,
+  CssBaseline,
   Slide,
-  Box
+  Toolbar,
+  Typography
 } from "@material-ui/core";
-import { BrowserRouter as Router, NavLink, withRouter } from "react-router-dom";
-
-import { createMuiTheme } from "@material-ui/core/styles";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-
-import compose from "recompose/compose";
-import ReactPlayer from "react-player";
+import { createMuiTheme, withStyles } from "@material-ui/core/styles";
 import { i18n } from "i18n";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import ReactPlayer from "react-player";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import compose from "recompose/compose";
 
 // import { logLoginSuccess } from "../../actions/adminActions";
 const theme = createMuiTheme({

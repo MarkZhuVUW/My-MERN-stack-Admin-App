@@ -1,9 +1,8 @@
 import {
-  LOADING,
-  DOWNLOAD_LOGGED,
-  LOGIN_LOGGED,
   ALL_LOGS_LOADED,
-  LOAD_LOGS_ERROR,
+  DOWNLOAD_LOGGED,
+  LOADING,
+  LOGIN_LOGGED,
   LOG_DELETED
 } from "../actions/types";
 

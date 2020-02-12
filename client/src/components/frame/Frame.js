@@ -1,37 +1,32 @@
-import React, { Component } from "react";
-import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import { withStyles } from "@material-ui/styles";
-import { createMuiTheme } from "@material-ui/core/styles";
-
-import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import Container from "@material-ui/core/Container";
-import MenuIcon from "@material-ui/icons/Menu";
+import Slide from "@material-ui/core/Slide";
+import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import MenuIcon from "@material-ui/icons/Menu";
+import { withStyles } from "@material-ui/styles";
+import clsx from "clsx";
+import ErrorPage from "error-pages/ErrorPage";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import ReactGA from "react-ga";
+//redux
+import { connect } from "react-redux";
+import { useMediaQuery } from "react-responsive";
+import { Redirect, Route, Switch, withRouter } from "react-router-dom";
+import compose from "recompose/compose";
+import { clearErrors } from "../../actions/errorActions";
 import SelectedListItem from "./listItems";
-import { Route, Switch, Redirect } from "react-router-dom";
-import UserMenu from "./UserMenu";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Developer from "./pages/Developer";
 import UserAdmin from "./pages/UserAdmin";
+import UserMenu from "./UserMenu";
 
-import { useMediaQuery } from "react-responsive";
-
-//redux
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { clearErrors } from "../../actions/errorActions";
-import Slide from "@material-ui/core/Slide";
-import ReactGA from "react-ga";
-import { withRouter } from "react-router-dom";
-
-import compose from "recompose/compose";
-import ErrorPage from "error-pages/ErrorPage";
 const theme = createMuiTheme({
   spacing: 4
 });
@@ -65,7 +60,12 @@ class Frame extends Component {
   render() {
     const { classes } = this.props;
 
-    return <FrameContent location={this.props.location} />;
+    return (
+      <FrameContent
+        location={this.props.location}
+        themeCallback={this.props.themeCallback}
+      />
+    );
   }
 }
 
@@ -220,6 +220,9 @@ function FrameContent(props) {
     setOpen(false);
   };
 
+  const themeCallback = theme => {
+    props.themeCallback(theme);
+  };
   const FrameAppBar = (
     <AppBar
       position="absolute"
@@ -235,25 +238,29 @@ function FrameContent(props) {
         >
           <MenuIcon />
         </IconButton>
-        <Typography
-          component="h1"
-          variant="h6"
-          color="inherit"
-          noWrap
-          className={classes.title}
-        >
-          Admin
-        </Typography>
+        {isSmallScreen ? null : (
+          <Typography
+            component="h1"
+            variant="h6"
+            color="inherit"
+            noWrap
+            className={classes.title}
+          >
+            Admin
+          </Typography>
+        )}
 
-        <Slide
-          timeout={500}
-          direction="left"
-          in={(isSmallScreen && open) || !isSmallScreen}
-        >
-          <div>
-            <UserMenu />
-          </div>
-        </Slide>
+        {(isSmallScreen && !open) || !isSmallScreen ? (
+          <Slide
+            timeout={600}
+            direction="left"
+            in={(isSmallScreen && !open) || !isSmallScreen}
+          >
+            <div>
+              <UserMenu themeCallback={themeCallback} />
+            </div>
+          </Slide>
+        ) : null}
       </Toolbar>
     </AppBar>
   );
@@ -281,7 +288,6 @@ function FrameContent(props) {
 
   return (
     <>
-      {console.log(translatePageToIndex())}
       {translatePageToIndex() === -1 ? (
         <ErrorPage code="404" />
       ) : (

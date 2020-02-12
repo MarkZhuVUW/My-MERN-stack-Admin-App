@@ -1,8 +1,7 @@
-import React from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-
 // components
 import { Typography } from "@material-ui/core";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import React from "react";
 
 const useStyles = makeStyles(() => ({
   avatar: {
@@ -27,10 +26,7 @@ export default function UserAvatar({ color = "primary", ...props }) {
     .join("");
 
   return (
-    <div
-      className={classes.avatar}
-      style={{ backgroundColor: "green" }}
->
+    <div className={classes.avatar} style={{ backgroundColor: "green" }}>
       <Typography className={classes.text}>{letters}</Typography>
     </div>
   );

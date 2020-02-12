@@ -1,27 +1,25 @@
-import React, { useState } from "react";
-import { IconButton, Menu, MenuItem, Fab, Link } from "@material-ui/core";
 import {
-  Menu as MenuIcon,
+  Badge,
+  Fab,
+  IconButton,
+  Menu,
+  MenuItem,
+  Typography
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import {
   MailOutline as MailIcon,
-  NotificationsNone as NotificationsIcon,
   Person as AccountIcon,
-  Search as SearchIcon,
-  Send as SendIcon,
-  ArrowBack as ArrowBackIcon
+  Send as SendIcon
 } from "@material-ui/icons";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 import Brightness5Icon from "@material-ui/icons/Brightness5";
+import TranslateIcon from "@material-ui/icons/Translate";
 import classNames from "classnames";
 import { i18n, setLanguageCode } from "i18n";
-import TranslateIcon from "@material-ui/icons/Translate";
-
-import { Badge, Typography, Button } from "@material-ui/core";
+import React, { useState } from "react";
 import UserAvatar from "../../components/UserAvatar";
-
 import Logout from "../auth/Logout";
-
-import { makeStyles } from "@material-ui/core/styles";
-import { fade } from "@material-ui/core/styles/colorManipulator";
 
 const useStyles = makeStyles(theme => ({
   logotype: {
@@ -117,7 +115,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function UserMenu() {
+export default function UserMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const classes = useStyles();
 
@@ -134,7 +132,6 @@ export default function UserMenu() {
   const [isMailsUnread, setIsMailsUnread] = useState(true);
   const [profileMenu, setProfileMenu] = useState(null);
   const [languageMenu, setLanguageMenu] = useState(null);
-  const [themeMenu, setThemeMenu] = useState(null);
 
   const messages = [
     {
@@ -216,10 +213,11 @@ export default function UserMenu() {
         onClick={e => {
           if (localStorage.getItem("theme") !== "dark") {
             localStorage.setItem("theme", "dark");
-            // window.location.reload();
+            props.themeCallback("dark");
           } else {
             localStorage.setItem("theme", "default");
             // window.location.reload();
+            props.themeCallback("light");
           }
         }}
         className={classes.headerMenuButton}

@@ -1,24 +1,24 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Skeleton from '@material-ui/lab/Skeleton';
+import Avatar from "@material-ui/core/Avatar";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardMedia from "@material-ui/core/CardMedia";
+import IconButton from "@material-ui/core/IconButton";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import Skeleton from "@material-ui/lab/Skeleton";
+import PropTypes from "prop-types";
+import React from "react";
 
 const useStyles = makeStyles(theme => ({
   card: {
     maxWidth: 345,
-    margin: theme.spacing(2),
+    margin: theme.spacing(2)
   },
   media: {
-    height: 190,
-  },
+    height: 190
+  }
 }));
 
 function Media(props) {
@@ -45,8 +45,16 @@ function Media(props) {
             </IconButton>
           )
         }
-        title={loading ? <Skeleton height={10} width="80%" style={{ marginBottom: 6 }} /> : 'Ted'}
-        subheader={loading ? <Skeleton height={10} width="40%" /> : '5 hours ago'}
+        title={
+          loading ? (
+            <Skeleton height={10} width="80%" style={{ marginBottom: 6 }} />
+          ) : (
+            "Ted"
+          )
+        }
+        subheader={
+          loading ? <Skeleton height={10} width="40%" /> : "5 hours ago"
+        }
       />
       {loading ? (
         <Skeleton variant="rect" className={classes.media} />
@@ -77,7 +85,7 @@ function Media(props) {
 }
 
 Media.propTypes = {
-  loading: PropTypes.bool,
+  loading: PropTypes.bool
 };
 
 export default function Facebook() {

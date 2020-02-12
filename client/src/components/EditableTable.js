@@ -1,7 +1,6 @@
-import React, { Component } from "react";
-
+import { createMuiTheme } from "@material-ui/core/styles";
 import MUIDataTable from "mui-datatables";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import React from "react";
 
 export default function EditableTable(props) {
   const tableTheme = () =>

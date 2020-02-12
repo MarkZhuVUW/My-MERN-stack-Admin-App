@@ -26,23 +26,8 @@ const chinese = {
       type: "类型",
       dateLogged: "记录日期"
     },
-    charts: {
-      day: "日",
-      red: "红",
-      green: "绿",
-      yellow: "黄",
-      grey: "灰",
-      blue: "蓝",
-      visitor: "访问量",
-      months: {
-        1: "一月",
-        2: "二月",
-        3: "三月",
-        4: "四月",
-        5: "五月",
-        6: "六月",
-        7: "七月"
-      }
+    doughnutChart: {
+      title: "登录统计"
     }
   },
   useradmin: {
@@ -59,9 +44,6 @@ const chinese = {
     createUser: "创建用户",
     table: {
       title: "用户列表"
-    },
-    doughnutChart: {
-      title: "登录统计"
     }
   },
   developer: {

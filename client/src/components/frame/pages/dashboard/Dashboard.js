@@ -1,27 +1,23 @@
-import clsx from "clsx";
-import { i18n } from "i18n";
-import Breadcrumb from "view/shared/Breadcrumb";
 import { Grid } from "@material-ui/core";
-
-import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-
-import React, { Component } from "react";
-
+import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/styles";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-
-import { clearErrors } from "../../../../actions/errorActions";
 import EditableTable from "components/EditableTable";
-import { loadAllLogsForSpecificUser } from "../../../../actions/adminActions";
+import { i18n } from "i18n";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import Breadcrumb from "view/shared/Breadcrumb";
+import {
+  deleteLog,
+  loadAllLogsForSpecificUser
+} from "../../../../actions/adminActions";
 import { loadUser } from "../../../../actions/authActions";
-import { deleteLog } from "../../../../actions/adminActions";
-
+import { clearErrors } from "../../../../actions/errorActions";
 import HomeDoughnutChart from "./HomeDoughnutChart";
-import HomePolarChart from "./HomePolarChart";
 import HomeLineChart from "./HomeLineChart";
+import HomePolarChart from "./HomePolarChart";
 
 const styles = {};
 

@@ -1,37 +1,28 @@
-import React, { Component } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Paper from "@material-ui/core/Paper";
 import Container from "@material-ui/core/Container";
-
+import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
-
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import Snackbar from "@material-ui/core/Snackbar";
 import { createMuiTheme } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Tooltip from "@material-ui/core/Tooltip";
+import Typography from "@material-ui/core/Typography";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import MuiAlert from "@material-ui/lab/Alert";
 import { withStyles } from "@material-ui/styles";
-import { connect } from "react-redux";
+import FacebookProgress from "components/FacebookProgress";
 import PropTypes from "prop-types";
-
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { NavLink, withRouter } from "react-router-dom";
+import compose from "recompose/compose";
+import { logLoginSuccess } from "../../actions/adminActions";
 import { login } from "../../actions/authActions";
 import { clearErrors } from "../../actions/errorActions";
-import { logLoginSuccess } from "../../actions/adminActions";
-
-import ResponsiveDialog from "../ResponsiveDialog";
-import { NavLink } from "react-router-dom";
-import { withRouter } from "react-router-dom";
-import compose from "recompose/compose";
-import RoleCheckboxes from "./RoleCheckboxes";
-
-import Snackbar from "@material-ui/core/Snackbar";
-import MuiAlert from "@material-ui/lab/Alert";
-import FacebookProgress from "components/FacebookProgress";
 import "../../css3/bouncingEffect.css";
-import Tooltip from "@material-ui/core/Tooltip";
+import ResponsiveDialog from "../ResponsiveDialog";
 
 const theme = createMuiTheme({
   spacing: 4

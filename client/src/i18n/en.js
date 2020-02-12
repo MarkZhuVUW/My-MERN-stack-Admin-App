@@ -27,7 +27,7 @@ const en = {
       dateLogged: "date logged"
     },
     doughnutChart: {
-      title: "login statistics"
+      title: "Login Statistics"
     }
   },
   useradmin: {

@@ -1,11 +1,11 @@
+import { i18n } from "i18n";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import SwaggerUI, { presets } from "swagger-ui";
 import "swagger-ui/dist/swagger-ui.css";
-import { i18n } from "i18n";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { loadSwaggerUI } from "../../../actions/developerActions";
 import Breadcrumb from "view/shared/Breadcrumb";
+import { loadSwaggerUI } from "../../../actions/developerActions";
 
 class Developer extends Component {
   componentDidMount() {
