@@ -34,7 +34,7 @@ class Developer extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <React.Fragment style={{ backgroundColor: "white" }}>
         <Breadcrumb
           items={[[i18n("frame.menu"), "/"], [i18n("developer.menu")]]}
         />

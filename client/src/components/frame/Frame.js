@@ -162,6 +162,9 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: theme.spacing(1),
     paddingRight: theme.spacing(1),
     paddingLeft: theme.spacing(1)
+  },
+  developer: {
+    backgroundColor: "white"
   }
 }));
 
@@ -317,7 +320,10 @@ function FrameContent(props) {
                   </Route>
 
                   <Route exact path="/frame/developer">
-                    <Developer isSmallScreen={isSmallScreen} />
+                    <Developer
+                      isSmallScreen={isSmallScreen}
+                      className={classes.developer}
+                    />
                   </Route>
                   <Route exact path="/frame/useradmin">
                     <UserAdmin isSmallScreen={isSmallScreen} />

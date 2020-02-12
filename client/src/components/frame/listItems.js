@@ -33,7 +33,10 @@ export default function SelectedListItem(props) {
       <List component="nav" aria-label="main mailbox folders">
         <Link
           to="/frame/dashboard"
-          style={{ textDecoration: "none", color: "black" }}
+          style={{
+            textDecoration: "none",
+            color: localStorage.getItem("theme") === "dark" ? "white" : "black"
+          }}
         >
           <ListItem
             button
@@ -52,7 +55,10 @@ export default function SelectedListItem(props) {
         <Divider />
         <Link
           to="/frame/developer"
-          style={{ textDecoration: "none", color: "black" }}
+          style={{
+            textDecoration: "none",
+            color: localStorage.getItem("theme") === "dark" ? "white" : "black"
+          }}
         >
           <ListItem
             button
@@ -70,7 +76,10 @@ export default function SelectedListItem(props) {
         </Link>
         <Link
           to="/frame/useradmin"
-          style={{ textDecoration: "none", color: "black" }}
+          style={{
+            textDecoration: "none",
+            color: localStorage.getItem("theme") === "dark" ? "white" : "black"
+          }}
         >
           <ListItem
             button

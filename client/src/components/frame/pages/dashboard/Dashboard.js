@@ -206,7 +206,7 @@ function DashboardContent(props) {
       <Grid container spacing={props.isSmallScreen ? 1 : 3}>
         <Grid item xs={12} md={4} lg={4}>
           <Paper className={classes.paper}>
-            <Typography component="h2" variant="h6" color="primary">
+            <Typography component="h2" variant="h6">
               {i18n("dashboard.doughnutChart.title")}
             </Typography>
             <HomeDoughnutChart />
@@ -215,7 +215,7 @@ function DashboardContent(props) {
 
         <Grid item xs={12} md={4} lg={4}>
           <Paper className={classes.paper}>
-            <Typography component="h2" variant="h6" color="primary">
+            <Typography component="h2" variant="h6">
               {i18n("dashboard.websiteViews")}
             </Typography>
 
@@ -224,7 +224,7 @@ function DashboardContent(props) {
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
           <Paper className={classes.paper}>
-            <Typography component="h2" variant="h6" color="primary">
+            <Typography component="h2" variant="h6">
               polar
             </Typography>
             <HomePolarChart />

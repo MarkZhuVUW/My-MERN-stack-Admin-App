@@ -128,7 +128,8 @@ class App extends Component {
         theme: createMuiTheme(
           {
             palette: {
-              primary: { main: "#1976d2" },
+              primary:
+                theme === "dark" ? { main: "#303f9f" } : { main: "#1976d2" },
               type: theme
             }
           },
