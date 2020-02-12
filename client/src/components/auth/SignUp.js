@@ -1,35 +1,28 @@
-import React, { Component } from "react";
+import { Slide } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-
-import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 import { createMuiTheme } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Tooltip from "@material-ui/core/Tooltip";
+import Typography from "@material-ui/core/Typography";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { withStyles } from "@material-ui/styles";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
-
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { NavLink, withRouter } from "react-router-dom";
+import compose from "recompose/compose";
 import { register } from "../../actions/authActions";
 import { clearErrors } from "../../actions/errorActions";
-import ResponsiveDialog from "../ResponsiveDialog";
-import { Route, BrowserRouter as Router, NavLink } from "react-router-dom";
-
-import { withRouter } from "react-router-dom";
-import compose from "recompose/compose";
-import RoleCheckboxes from "./RoleCheckboxes";
-import FacebookProgress from "components/FacebookProgress";
 import "../../css3/bouncingEffect.css";
-import Tooltip from "@material-ui/core/Tooltip";
-import { Zoom, Slide } from "@material-ui/core";
+import ResponsiveDialog from "../ResponsiveDialog";
+import RoleCheckboxes from "./RoleCheckboxes";
 
 const theme = createMuiTheme({
   spacing: 4

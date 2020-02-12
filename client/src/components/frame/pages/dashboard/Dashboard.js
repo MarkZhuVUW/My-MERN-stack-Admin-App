@@ -1,27 +1,23 @@
-import clsx from "clsx";
-import { i18n } from "i18n";
-import Breadcrumb from "view/shared/Breadcrumb";
 import { Grid } from "@material-ui/core";
-
-import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-
-import React, { Component } from "react";
-
+import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/styles";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-
-import { clearErrors } from "../../../../actions/errorActions";
 import EditableTable from "components/EditableTable";
-import { loadAllLogsForSpecificUser } from "../../../../actions/adminActions";
+import { i18n } from "i18n";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import Breadcrumb from "view/shared/Breadcrumb";
+import {
+  deleteLog,
+  loadAllLogsForSpecificUser
+} from "../../../../actions/adminActions";
 import { loadUser } from "../../../../actions/authActions";
-import { deleteLog } from "../../../../actions/adminActions";
-
+import { clearErrors } from "../../../../actions/errorActions";
 import HomeDoughnutChart from "./HomeDoughnutChart";
-import HomePolarChart from "./HomePolarChart";
 import HomeLineChart from "./HomeLineChart";
+import HomePolarChart from "./HomePolarChart";
 
 const styles = {};
 
@@ -39,8 +35,9 @@ class Dashboard extends Component {
   };
   componentDidMount() {
     // this.props.loadUser();
-    if (this.props.user)
+    setTimeout(() => {
       this.props.loadAllLogsForSpecificUser(this.props.user._id);
+    }, 700);
   }
 
   componentDidUpdate(prevProps) {}
@@ -209,17 +206,16 @@ function DashboardContent(props) {
       <Grid container spacing={props.isSmallScreen ? 1 : 3}>
         <Grid item xs={12} md={4} lg={4}>
           <Paper className={classes.paper}>
-            <Typography component="h2" variant="h6" gutterBottom>
-              doughnut
+            <Typography component="h2" variant="h6" color="primary">
+              {i18n("dashboard.doughnutChart.title")}
             </Typography>
-            {/* <DoughnutChart /> */}
             <HomeDoughnutChart />
           </Paper>
         </Grid>
 
         <Grid item xs={12} md={4} lg={4}>
           <Paper className={classes.paper}>
-            <Typography component="h2" variant="h6" gutterBottom>
+            <Typography component="h2" variant="h6" color="primary">
               {i18n("dashboard.websiteViews")}
             </Typography>
 
@@ -228,7 +224,7 @@ function DashboardContent(props) {
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
           <Paper className={classes.paper}>
-            <Typography component="h2" variant="h6" gutterBottom>
+            <Typography component="h2" variant="h6" color="primary">
               polar
             </Typography>
             <HomePolarChart />

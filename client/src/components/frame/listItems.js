@@ -1,21 +1,16 @@
-import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
-
-import React from "react";
+import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import { i18n } from "i18n";
-import {
-  Route,
-  BrowserRouter as Router,
-  NavLink,
-  Link
-} from "react-router-dom";
-import DeveloperBoardIcon from "@material-ui/icons/DeveloperBoard";
+import { makeStyles } from "@material-ui/core/styles";
 import AssessmentIcon from "@material-ui/icons/Assessment";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import DeveloperBoardIcon from "@material-ui/icons/DeveloperBoard";
+import { i18n } from "i18n";
+import React from "react";
+import { Link } from "react-router-dom";
+import "../../css3/bouncingEffect.css";
 const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
@@ -26,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function SelectedListItem(props) {
   const classes = useStyles();
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [selectedIndex, setSelectedIndex] = React.useState(props.currentIndex);
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
@@ -47,6 +42,7 @@ export default function SelectedListItem(props) {
           >
             <ListItemIcon>
               <DashboardIcon
+                className={selectedIndex === 0 ? "animation" : null}
                 color={selectedIndex === 0 ? "primary" : "action"}
               />
             </ListItemIcon>
@@ -65,6 +61,7 @@ export default function SelectedListItem(props) {
           >
             <ListItemIcon>
               <DeveloperBoardIcon
+                className={selectedIndex === 1 ? "animation" : null}
                 color={selectedIndex === 1 ? "primary" : "action"}
               />
             </ListItemIcon>
@@ -82,6 +79,7 @@ export default function SelectedListItem(props) {
           >
             <ListItemIcon>
               <AssessmentIcon
+                className={selectedIndex === 2 ? "animation" : null}
                 color={selectedIndex === 2 ? "primary" : "action"}
               />
             </ListItemIcon>

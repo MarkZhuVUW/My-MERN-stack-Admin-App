@@ -1,29 +1,32 @@
-import SignInSide from "./components/auth/SignInSide";
-
-import SignUp from "./components/auth/SignUp";
-
-import React, { Component } from "react";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-
-import "./App.css";
-import {
-  Route,
-  BrowserRouter as Router,
-  Switch,
-  Redirect,
-  HashRouter
-} from "react-router-dom";
-
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { loadUser } from "./actions/authActions";
-import ErrorPage from "./error-pages/ErrorPage";
-import Frame from "components/frame/Frame";
 // import Particles from "react-particles-js";
-import { zhCN, enUS } from "@material-ui/core/locale";
+import { enUS, zhCN } from "@material-ui/core/locale";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import Frame from "components/frame/Frame";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
+import { loadUser } from "./actions/authActions";
+import "./App.css";
+import SignInSide from "./components/auth/SignInSide";
+import SignUp from "./components/auth/SignUp";
+import ErrorPage from "./error-pages/ErrorPage";
+
+const theme = createMuiTheme(
+  {
+    palette: {
+      primary: { main: "#1976d2" },
+      type: localStorage.getItem("theme") == "dark" ? "dark" : "light"
+    }
+  },
+  localStorage.getItem("language") === "en" ? enUS : zhCN
+);
 
 class App extends Component {
+  state = {
+    theme: theme
+  };
+
   componentDidMount() {
     this.props.loadUser();
   }
@@ -38,7 +41,6 @@ class App extends Component {
   //   if (role === "admin") {
   //     return (
   //       <>
-
   //         <Route exact path="/admin">
   //           <AdminDashboard isAdmin={true} />
   //         </Route>
@@ -120,51 +122,33 @@ class App extends Component {
 
   render() {
     const { isAuthenticated } = this.props;
-
-    const chineseTheme = createMuiTheme(
-      {
-        palette: {
-          primary: { main: "#1976d2" },
-          type: localStorage.getItem("theme") == "dark" ? "dark" : "light"
-        }
-      },
-      zhCN
-    );
-    const englishTheme = createMuiTheme(
-      {
-        palette: {
-          primary: { main: "#1976d2" },
-          type: localStorage.getItem("theme") == "dark" ? "dark" : "light"
-        }
-      },
-      enUS
-    );
-
-    const themeChooser = (language = localStorage.getItem("language")) => {
-      switch (language) {
-        case "en":
-          return englishTheme;
-        case "chinese":
-          return chineseTheme;
-        default:
-          return englishTheme;
-      }
+    const { theme } = this.state;
+    const themeCallback = theme => {
+      this.setState({
+        theme: createMuiTheme(
+          {
+            palette: {
+              primary: { main: "#1976d2" },
+              type: theme
+            }
+          },
+          localStorage.getItem("language") === "en" ? enUS : zhCN
+        )
+      });
     };
     return (
-      <ThemeProvider
-        theme={
-          localStorage.getItem("language") == "chinese"
-            ? chineseTheme
-            : englishTheme
-        }
-      >
-        <HashRouter basename="/">
-          <Switch>
-            <Route exact path="/signin" component={SignInSide} />
-            <Route exact path="/signup" component={SignUp} />
+      <>
+        <ThemeProvider theme={theme}>
+          <HashRouter basename="/">
+            <Switch>
+              <Route exact path="/signin" component={SignInSide} />
+              <Route exact path="/signup" component={SignUp} />
+            </Switch>
             {isAuthenticated ? (
               <>
-                <Route path="/frame" component={Frame} />
+                <Route path="/frame">
+                  <Frame themeCallback={themeCallback} />
+                </Route>
                 <Route
                   exact
                   path="/"
@@ -174,7 +158,7 @@ class App extends Component {
                 />
               </>
             ) : (
-              <>
+              <Switch>
                 <Route
                   exact
                   path="/"
@@ -187,11 +171,11 @@ class App extends Component {
                     return <ErrorPage code="401" />;
                   }}
                 />
-              </>
+              </Switch>
             )}
-          </Switch>
-        </HashRouter>
-      </ThemeProvider>
+          </HashRouter>
+        </ThemeProvider>
+      </>
     );
   }
 }

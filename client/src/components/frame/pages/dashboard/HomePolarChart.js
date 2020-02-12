@@ -1,6 +1,6 @@
-import React, { Component } from "react";
 import { Chart } from "chart.js";
 import { i18n } from "i18n";
+import React from "react";
 
 export default class HomePolarChart extends React.Component {
   constructor(props) {

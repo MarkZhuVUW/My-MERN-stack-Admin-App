@@ -1,28 +1,21 @@
-import React, { useState, Component } from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
 import {
-  TextField,
-  CssBaseline,
   AppBar,
-  Toolbar,
-  Typography,
-  Container,
-  Paper,
-  FormControl,
-  Grid,
+  Box,
   Button,
-  Zoom,
+  Container,
+  CssBaseline,
   Slide,
-  Box
+  Toolbar,
+  Typography
 } from "@material-ui/core";
-import { BrowserRouter as Router, NavLink, withRouter } from "react-router-dom";
-
-import { createMuiTheme } from "@material-ui/core/styles";
-import { connect } from "react-redux";
+import { createMuiTheme, withStyles } from "@material-ui/core/styles";
+import { i18n } from "i18n";
 import PropTypes from "prop-types";
-
-import compose from "recompose/compose";
+import React, { Component } from "react";
 import ReactPlayer from "react-player";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import compose from "recompose/compose";
 
 // import { logLoginSuccess } from "../../actions/adminActions";
 const theme = createMuiTheme({
@@ -88,9 +81,10 @@ class ErrorPage extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, code } = this.props;
+
     const conditionalRendering = () => {
-      switch (this.props.code) {
+      switch (code) {
         case "404":
         case "400":
           return (
@@ -115,7 +109,7 @@ class ErrorPage extends Component {
               className={classes.submit}
               onClick={this.onGoToLogin}
             >
-              Go to Login Page
+              {i18n("errors.401")}
             </Button>
           );
         default:
@@ -125,22 +119,23 @@ class ErrorPage extends Component {
     return (
       <div>
         <CssBaseline />
-
-        {/* <Box style={{ marginTop: "5%" }} /> */}
+        <AppBar position="relative">
+          <Toolbar className={classes.topBar}>
+            <Slide direction="right" in={true} timeout={500}>
+              <Typography style={{ color: "white" }} variant="h5" noWrap>
+                {code +
+                  " " +
+                  i18n("errors." + code) +
+                  ': "' +
+                  this.props.location.pathname +
+                  '"   :('}
+              </Typography>
+            </Slide>
+          </Toolbar>
+        </AppBar>
+        <Box style={{ marginTop: "5%" }} />
 
         <Container maxWidth="lg" className={classes.content}>
-          <AppBar position="relative">
-            <Toolbar className={classes.topBar}>
-              <Slide direction="right" in={true} timeout={500}>
-                <Typography style={{ color: "white" }} variant="h5" noWrap>
-                  {this.props.code +
-                    ': "' +
-                    this.props.location.pathname +
-                    '"   :('}
-                </Typography>
-              </Slide>
-            </Toolbar>
-          </AppBar>
           <ReactPlayer
             url="https://www.youtube.com/watch?v=6dNho0h_yQQ"
             playing={false}

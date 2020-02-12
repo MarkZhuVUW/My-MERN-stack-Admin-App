@@ -26,34 +26,19 @@ const en = {
       type: "type",
       dateLogged: "date logged"
     },
-    charts: {
-      day: "Day",
-      red: "Red",
-      green: "Green",
-      yellow: "Yellow",
-      grey: "Grey",
-      blue: "Blue",
-      sales: "Sales",
-      visitor: "Visitors",
-      months: {
-        1: "January",
-        2: "February",
-        3: "March",
-        4: "April",
-        5: "May",
-        6: "June",
-        7: "July"
-      }
+    doughnutChart: {
+      title: "Login Statistics"
     }
   },
   useradmin: {
-    menu: "User Admin",
+    menu: "UserAdmin",
     message: `This page uses fake data for demonstration purposes only.`,
     userDetail: "User Detail",
     email: "email",
     company: "company",
     name: "name",
     role: "role",
+    password: "password",
     createUser: "Create User",
     id: "id",
     registerDate: "register Date",
@@ -67,7 +52,7 @@ const en = {
   },
 
   errors: {
-    401: "please login first",
+    401: "Go to login page",
     403: "Do not have to access to this page",
     404: "Page Not Found",
     500: "Internal Error",

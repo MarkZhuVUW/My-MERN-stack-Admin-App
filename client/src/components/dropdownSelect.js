@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
-import React from "react";
+import { TextField, withStyles } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { withStyles, TextField, Divider } from "@material-ui/core";
+import React from "react";
 
 /**
  * The dropdown selection component. Used on page to select which kind of user is logging in.

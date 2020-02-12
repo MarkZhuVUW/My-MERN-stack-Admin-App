@@ -1,30 +1,21 @@
-import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
-import Box from "@material-ui/core/Box";
-
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
-
 import { createMuiTheme } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/styles";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
-
-//redux
-import { TFAVerify } from "../actions/authActions";
-import { TFASetup } from "../actions/authActions";
-import { getTFA } from "../actions/authActions";
-import { skipTFA } from "../actions/authActions";
-
-import { clearErrors } from "../actions/errorActions";
-
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import MediaQuery from "react-responsive";
+//redux
+import { getTFA, skipTFA, TFASetup, TFAVerify } from "../actions/authActions";
+import { clearErrors } from "../actions/errorActions";
 import Logout from "../components/auth/Logout";
+
 const theme = createMuiTheme({
   spacing: 4
 });

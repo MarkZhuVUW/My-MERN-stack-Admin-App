@@ -1,36 +1,28 @@
-import React, { Component } from "react";
-import { Grid, Toolbar } from "@material-ui/core";
-import { withStyles } from "@material-ui/styles";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-
-import { clearErrors } from "../../../actions/errorActions";
-import { loadAllUsers } from "../../../actions/authActions";
-import { deleteUser } from "../../../actions/authActions";
-import { i18n } from "i18n";
-import EditableTable from "../../../components/EditableTable";
-import { useLayoutEffect, useState, useEffect, setState } from "react";
-import { register } from "../../../actions/authActions";
-
 import {
-  Typography,
-  makeStyles,
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  Paper,
-  Container,
   Button,
-  Zoom,
-  Box,
   FormControl,
-  Divider,
-  useTheme
+  Grid,
+  makeStyles,
+  Paper,
+  TextField,
+  Typography,
+  Zoom
 } from "@material-ui/core";
-
+import { withStyles } from "@material-ui/styles";
+import { i18n } from "i18n";
+import PropTypes from "prop-types";
+import React, { Component, useState } from "react";
+import { connect } from "react-redux";
+import Breadcrumb from "view/shared/Breadcrumb";
+import {
+  deleteUser,
+  loadAllUsers,
+  register
+} from "../../../actions/authActions";
+import { clearErrors } from "../../../actions/errorActions";
 import AnimatedProgress from "../../../components/animatedProgress";
 import DropdownSelection from "../../../components/dropdownSelect";
-import Breadcrumb from "view/shared/Breadcrumb";
+import EditableTable from "../../../components/EditableTable";
 
 // import ListOfFirmwares from "../shared/ListOfFirmwares";
 const styles = {};
@@ -76,7 +68,6 @@ class UserAdmin extends Component {
   };
 
   registerCallback = userToBeRegistered => {
-    console.log(userToBeRegistered);
     this.props.register(userToBeRegistered).then(() => {
       this.props.loadAllUsers();
     });
