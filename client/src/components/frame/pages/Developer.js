@@ -6,6 +6,16 @@ import SwaggerUI, { presets } from "swagger-ui";
 import "swagger-ui/dist/swagger-ui.css";
 import Breadcrumb from "view/shared/Breadcrumb";
 import { loadSwaggerUI } from "../../../actions/developerActions";
+import {
+  Button,
+  FormControl,
+  Grid,
+  makeStyles,
+  Paper,
+  TextField,
+  Typography,
+  Zoom
+} from "@material-ui/core";
 
 class Developer extends Component {
   componentDidMount() {
@@ -33,14 +43,7 @@ class Developer extends Component {
   };
 
   render() {
-    return (
-      <React.Fragment style={{ backgroundColor: "white" }}>
-        <Breadcrumb
-          items={[[i18n("frame.menu"), "/"], [i18n("developer.menu")]]}
-        />
-        <div id="swaggerContainer" />
-      </React.Fragment>
-    );
+    return <DeveloperContent />;
   }
 }
 
@@ -49,3 +52,50 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, { loadSwaggerUI })(Developer);
+
+/**
+ * The support component. Used in the drawer list.
+ *
+ * @author Mark Zhu <zdy120939259@outlook.com>
+ */
+function DeveloperContent() {
+  const useStyles = makeStyles(theme => ({
+    root: {
+      backgroundColor: "#E9EAED",
+      width: "100%"
+      //   backgroundColor: "black"
+    },
+    container: {
+      paddingTop: theme.spacing(1),
+      paddingBottom: theme.spacing(1)
+    },
+    paper: {
+      padding: theme.spacing(3),
+      display: "flex",
+      overflow: "auto",
+      flexDirection: "column",
+      backgroundColor: "white"
+    },
+
+    heading: {
+      fontSize: theme.typography.pxToRem(15),
+      fontWeight: theme.typography.fontWeightRegular
+    },
+    expansionPanelHeader: {
+      backgroundColor: "#3F51B5",
+      color: "white"
+    }
+  }));
+
+  const classes = useStyles();
+
+  return (
+    <Paper className={classes.paper}>
+      <Breadcrumb
+        items={[[i18n("frame.menu"), "/"], [i18n("developer.menu")]]}
+      />
+
+      <div id="swaggerContainer" />
+    </Paper>
+  );
+}
