@@ -15,7 +15,10 @@ import ErrorPage from "./error-pages/ErrorPage";
 const theme = createMuiTheme(
   {
     palette: {
-      primary: { main: "#1976d2" },
+      primary:
+        localStorage.getItem("theme") === "dark"
+          ? { main: "#303f9f" }
+          : { main: "#1976d2" },
       type: localStorage.getItem("theme") == "dark" ? "dark" : "light"
     }
   },
@@ -123,17 +126,19 @@ class App extends Component {
   render() {
     const { isAuthenticated } = this.props;
     const { theme } = this.state;
-    const themeCallback = theme => {
+    const themeCallback = () => {
       this.setState({
         theme: createMuiTheme(
           {
             palette: {
               primary:
-                theme === "dark" ? { main: "#303f9f" } : { main: "#1976d2" },
-              type: theme
+                localStorage.getItem("theme") === "dark"
+                  ? { main: "#303f9f" }
+                  : { main: "#1976d2" },
+              type: localStorage.getItem("theme") == "dark" ? "dark" : "light"
             }
           },
-          localStorage.getItem("language") === "en" ? enUS : zhCN
+          localStorage.getItem("language") == "en" ? enUS : zhCN
         )
       });
     };

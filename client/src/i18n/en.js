@@ -3,7 +3,8 @@ const en = {
     title: "MERN-stack App"
   },
   frame: {
-    menu: "frame"
+    menu: "frame",
+    adminApp: "Admin App"
   },
   settings: {
     title: "Settings",
@@ -65,6 +66,23 @@ const en = {
   },
   language: {
     language: "English"
+  },
+  MuiDataTable: {
+    next: "next page",
+    previous: "previous page",
+
+    rowsPerPage: "rows per page: ",
+    displayRows: "of",
+    viewColumns: "view columns",
+    search: "search",
+    downloadCsv: "download CSV",
+    print: "print",
+    filterTable: "filter table",
+    filterTitle: "filters",
+    reset: "reset",
+    viewColumnsTitle: "show columns",
+    selectedRowsText: "rows(s) selected",
+    delete: "delete"
   }
 };
 

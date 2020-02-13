@@ -90,12 +90,14 @@ function DeveloperContent() {
   const classes = useStyles();
 
   return (
-    <Paper className={classes.paper}>
+    <>
       <Breadcrumb
+        // style={{ textColor: "black" }}
         items={[[i18n("frame.menu"), "/"], [i18n("developer.menu")]]}
       />
-
-      <div id="swaggerContainer" />
-    </Paper>
+      <Paper className={classes.paper}>
+        <div id="swaggerContainer" />
+      </Paper>
+    </>
   );
 }

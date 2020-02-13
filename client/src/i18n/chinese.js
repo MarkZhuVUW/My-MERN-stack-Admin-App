@@ -3,14 +3,14 @@ const chinese = {
     title: "MERN-stack 应用"
   },
   frame: {
-    menu: "框架"
+    menu: "框架",
+    adminApp: "管理应用"
   },
   settings: {
     title: "设置",
-    menu: "Settings",
-
+    menu: "设置",
     fields: {
-      theme: "Theme"
+      theme: "主题"
     }
   },
   dashboard: {
@@ -54,16 +54,27 @@ const chinese = {
     401: "请先登录",
     403: "没有访问权限",
     404: "页面不存在",
-    500: "服务器出错",
-    forbidden: {
-      message: "Forbidden"
-    },
-    validation: {
-      message: "An error occurred"
-    }
+    500: "服务器爆炸"
   },
   language: {
     language: "中文"
+  },
+  MuiDataTable: {
+    next: "下页",
+    previous: "上页",
+
+    rowsPerPage: "每页行数",
+    displayRows: "总共",
+    viewColumns: "看列",
+    search: "搜索",
+    downloadCsv: "下载CSV",
+    print: "打印",
+    filterTable: "过滤表格",
+    filterTitle: "过滤",
+    reset: "reset",
+    viewColumnsTitle: "看列",
+    selectedRowsText: "已选中行",
+    delete: "删除"
   }
 };
 

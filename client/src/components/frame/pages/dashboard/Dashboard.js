@@ -187,6 +187,32 @@ function DashboardContent(props) {
   const options = {
     filter: true,
     responsive: "scrollMaxHeight",
+    textLabels: {
+      pagination: {
+        next: i18n("MuiDataTable.nextPage"),
+        previous: i18n("MuiDataTable.previousPage"),
+        rowsPerPage: i18n("MuiDataTable.rowsPerPage"),
+        displayRows: i18n("MuiDataTable.displayRows") // 1-10 of 30
+      },
+      toolbar: {
+        search: i18n("MuiDataTable.search"),
+        downloadCsv: i18n("MuiDataTable.downloadCsv"),
+        print: i18n("MuiDataTable.print"),
+        viewColumns: i18n("MuiDataTable.viewColumns"),
+        filterTable: i18n("MuiDataTable.filterTable")
+      },
+      filter: {
+        title: i18n("MuiDataTable.filterTable"),
+        reset: i18n("MuiDataTable.filterTitle")
+      },
+      viewColumns: {
+        title: i18n("MuiDataTable.viewColumnsTitle")
+      },
+      selectedRows: {
+        text: i18n("MuiDataTable.selectedRowsText"),
+        delete: i18n("MuiDataTable.delete")
+      }
+    },
     onRowsDelete: rowsDeleted => {
       for (var i = 0; i < rowsDeleted.data.length; ++i) {
         //send back to UserAdmin component the email of the user to be deleted.

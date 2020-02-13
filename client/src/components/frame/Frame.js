@@ -26,6 +26,9 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import Developer from "./pages/Developer";
 import UserAdmin from "./pages/UserAdmin";
 import HeaderMenu from "./HeaderMenu";
+import { i18n } from "i18n";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@material-ui/core/TextField";
 
 const theme = createMuiTheme({
   spacing: 4
@@ -168,17 +171,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-/**
- * 
- *
- * @param {*} props
- * @returns
-/**
- *
- *
- * @param {*} props
- * @returns
- */
 function FrameContent(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
@@ -249,7 +241,7 @@ function FrameContent(props) {
             noWrap
             className={classes.title}
           >
-            Admin
+            {i18n("frame.adminApp")}
           </Typography>
         )}
 

@@ -212,12 +212,11 @@ export default function HeaderMenu(props) {
         onClick={e => {
           if (localStorage.getItem("theme") !== "dark") {
             localStorage.setItem("theme", "dark");
-            props.themeCallback("dark");
+            props.themeCallback();
           } else {
             localStorage.setItem("theme", "default");
-            // window.location.reload();
-            props.themeCallback("light");
           }
+          props.themeCallback();
         }}
         className={classes.headerMenuButton}
       >
