@@ -101,39 +101,38 @@ export default connect(mapStateToProps, {
   register
 })(withStyles(styles)(UserAdmin));
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    backgroundColor: "#E9EAED",
-    width: "100%"
-    //   backgroundColor: "black"
-  },
-  container: {
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1)
-  },
-  paper: {
-    padding: theme.spacing(3),
-    display: "flex",
-    overflow: "auto",
-    flexDirection: "column"
-  },
-
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular
-  },
-  expansionPanelHeader: {
-    backgroundColor: "#3F51B5",
-    color: "white"
-  }
-}));
-
 /**
  * The support component. Used in the drawer list.
  *
  * @author Mark Zhu <zdy120939259@outlook.com>
  */
 function SettingsContent(props) {
+  const useStyles = makeStyles(theme => ({
+    root: {
+      backgroundColor: "#E9EAED",
+      width: "100%"
+      //   backgroundColor: "black"
+    },
+    container: {
+      paddingTop: theme.spacing(1),
+      paddingBottom: theme.spacing(1)
+    },
+    paper: {
+      padding: theme.spacing(3),
+      display: "flex",
+      overflow: "auto",
+      flexDirection: "column"
+    },
+
+    heading: {
+      fontSize: theme.typography.pxToRem(15),
+      fontWeight: theme.typography.fontWeightRegular
+    },
+    expansionPanelHeader: {
+      backgroundColor: "#3F51B5",
+      color: "white"
+    }
+  }));
   const classes = useStyles();
 
   const [isCreatingUser, setIsCreatingUser] = useState(false);

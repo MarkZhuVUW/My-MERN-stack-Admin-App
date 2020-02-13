@@ -152,9 +152,17 @@ class App extends Component {
             </Switch>
             {isAuthenticated ? (
               <>
-                <Route path="/frame">
-                  <Frame themeCallback={themeCallback} />
-                </Route>
+                <Switch>
+                  <Route path="/frame">
+                    <Frame themeCallback={themeCallback} />
+                  </Route>
+                  <Route
+                    render={() => {
+                      return <ErrorPage code="404" />;
+                    }}
+                  />
+                </Switch>
+
                 <Route
                   exact
                   path="/"

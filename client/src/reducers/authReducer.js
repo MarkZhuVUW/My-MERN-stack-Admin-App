@@ -88,7 +88,6 @@ export default function(state = initialState, action) {
 
     case AUTH_ERROR:
     case LOGIN_FAIL:
-    case REGISTER_FAIL:
       localStorage.removeItem("token");
       localStorage.removeItem("authenticated");
       return {
@@ -100,6 +99,11 @@ export default function(state = initialState, action) {
         userLoaded: false,
         token: localStorage.getItem("token"),
         authenticated: localStorage.getItem("authenticated")
+      };
+    case REGISTER_FAIL:
+      return {
+        ...state,
+        isLoading: false
       };
     case TFA_SETUP_FAIL:
       return {

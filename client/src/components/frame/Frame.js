@@ -30,9 +30,6 @@ import { i18n } from "i18n";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
 
-const theme = createMuiTheme({
-  spacing: 4
-});
 const styles = {
   root: {
     display: "flex"
@@ -188,7 +185,15 @@ function FrameContent(props) {
    */
   const translatePageToIndex = () => {
     const { pathname } = props.location;
-    const splittedPathname = pathname.split("/");
+    var splittedPathname = pathname.split("/");
+
+    if (splittedPathname[splittedPathname.length - 1] === "") {
+      splittedPathname = splittedPathname.splice(
+        0,
+        splittedPathname.length - 2
+      );
+    }
+    console.log(splittedPathname[splittedPathname.length - 1]);
     switch (splittedPathname[splittedPathname.length - 1]) {
       case "dashboard":
         return 0;

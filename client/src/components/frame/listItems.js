@@ -45,7 +45,7 @@ export default function SelectedListItem(props) {
           >
             <ListItemIcon>
               <DashboardIcon
-                className={selectedIndex === 0 ? "rotate" : null}
+                className={selectedIndex === 0 ? "swirl" : null}
                 color={selectedIndex === 0 ? "primary" : "action"}
               />
             </ListItemIcon>
@@ -67,7 +67,7 @@ export default function SelectedListItem(props) {
           >
             <ListItemIcon>
               <DeveloperBoardIcon
-                className={selectedIndex === 1 ? "rotate" : null}
+                className={selectedIndex === 1 ? "swirl" : null}
                 color={selectedIndex === 1 ? "primary" : "action"}
               />
             </ListItemIcon>
@@ -88,7 +88,7 @@ export default function SelectedListItem(props) {
           >
             <ListItemIcon>
               <AssessmentIcon
-                className={selectedIndex === 2 ? "rotate" : null}
+                className={selectedIndex === 2 ? "swirl" : null}
                 color={selectedIndex === 2 ? "primary" : "action"}
               />
             </ListItemIcon>

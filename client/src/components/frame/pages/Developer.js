@@ -43,7 +43,7 @@ class Developer extends Component {
   };
 
   render() {
-    return <DeveloperContent />;
+    return <DeveloperContent isSmallScreen={this.props.isSmallScreen} />;
   }
 }
 
@@ -58,7 +58,7 @@ export default connect(mapStateToProps, { loadSwaggerUI })(Developer);
  *
  * @author Mark Zhu <zdy120939259@outlook.com>
  */
-function DeveloperContent() {
+function DeveloperContent(props) {
   const useStyles = makeStyles(theme => ({
     root: {
       backgroundColor: "#E9EAED",
@@ -70,7 +70,7 @@ function DeveloperContent() {
       paddingBottom: theme.spacing(1)
     },
     paper: {
-      padding: theme.spacing(3),
+      padding: theme.spacing(props.isSmallScreen ? 1 : 4),
       display: "flex",
       overflow: "auto",
       flexDirection: "column",

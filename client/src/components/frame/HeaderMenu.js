@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Person as AccountIcon, Send as SendIcon } from "@material-ui/icons";
-
+import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 import Brightness5Icon from "@material-ui/icons/Brightness5";
 import TranslateIcon from "@material-ui/icons/Translate";
@@ -261,7 +261,7 @@ export default function HeaderMenu(props) {
               classes={{ root: classes.headerIcon }}
               className="bounce"
             />
-          )}{" "}
+          )}
         </Badge>
       </IconButton>
       <Menu
@@ -322,10 +322,17 @@ export default function HeaderMenu(props) {
         aria-controls="profile-menu"
         onClick={e => setProfileMenu(e.currentTarget)}
       >
-        <AccountIcon
-          classes={{ root: classes.headerIcon }}
-          className="swayTranslate"
-        />
+        {profileMenu ? (
+          <AccountIcon
+            classes={{ root: classes.headerIcon }}
+            className="swirl"
+          />
+        ) : (
+          <PersonOutlineIcon
+            classes={{ root: classes.headerIcon }}
+            className="swirl"
+          />
+        )}
       </IconButton>
       <Menu
         id="profile-menu"
