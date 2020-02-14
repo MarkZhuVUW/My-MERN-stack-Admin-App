@@ -346,17 +346,17 @@ export default function HeaderMenu(props) {
         <div className={classes.menuUser}>
           <Typography variant="h4">Mark Zhu</Typography>
           <Typography
-            className={classes.menuLink}
+            // className={classes.menuLink}
             component="a"
-            color="primary"
+            color="secondary"
             href="https://www.linkedin.com/in/mark-zhu-06b807145/"
           >
             https://www.linkedin.com/in/mark-zhu-06b807145/
           </Typography>
           <Typography
-            className={classes.menuLink}
+            // className={classes.menuLink}
             component="a"
-            color="primary"
+            color="secondary"
             href="https://github.com/MarkZhuVUW"
           >
             https://github.com/MarkZhuVUW/

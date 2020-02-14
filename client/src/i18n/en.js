@@ -9,6 +9,7 @@ const en = {
   settings: {
     title: "Settings",
     menu: "Settings",
+    route: "settings",
 
     fields: {
       theme: "Theme"
@@ -16,8 +17,10 @@ const en = {
   },
   dashboard: {
     menu: "Home",
+    route: "dashboard",
     message: `This page uses fake data for demonstration purposes only.`,
     websiteViews: "Website Views",
+    companies: "Company Statistics",
     table: {
       userActivities: "User Activities",
       name: "name",
@@ -33,6 +36,7 @@ const en = {
   },
   useradmin: {
     menu: "UserAdmin",
+    route: "useradmin",
     message: `This page uses fake data for demonstration purposes only.`,
     userDetail: "User Detail",
     email: "email",
@@ -47,8 +51,10 @@ const en = {
       title: "User List"
     }
   },
+
   developer: {
     menu: "Developer",
+    route: "developer",
     message: `This page uses fake data for demonstration purposes only.`
   },
 

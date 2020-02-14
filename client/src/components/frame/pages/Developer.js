@@ -93,7 +93,7 @@ function DeveloperContent(props) {
     <>
       <Breadcrumb
         // style={{ textColor: "black" }}
-        items={[[i18n("frame.menu"), "/"], [i18n("developer.menu")]]}
+        items={[[i18n("frame.menu"), "/"], [i18n("developer.route")]]}
       />
       <Paper className={classes.paper}>
         <div id="swaggerContainer" />

@@ -25,7 +25,7 @@ router.post("/", (req, res) => {
   const { name, email, password, company, role } = req.body;
 
   // Simple validation
-  if (!name || !email || !password) {
+  if (!name || !email || !password || !role) {
     return res.status(400).json({ msg: "Please enter all fields" });
   }
 

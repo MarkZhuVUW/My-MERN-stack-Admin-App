@@ -67,16 +67,16 @@ class ResponsiveDialog extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { error, email, TFA, isAuthenticated } = this.props;
+    const { error, isAuthenticated, type } = this.props;
     const { domainName } = this.state;
 
-    if (isAuthenticated) {
+    if (isAuthenticated && type !== "User Admin Error Handling") {
       this.props.cb(true);
     }
     if (error !== prevProps.error) {
       // Check for register error
       if (error.id === "TFA_VERIFY_FAIL") {
-        // //re-enable login button and hide the loading spinner
+        // re-enable login button and hide the loading spinner
 
         // this.props.ResponsiveDialogCallback();
 

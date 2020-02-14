@@ -15,8 +15,11 @@ const chinese = {
   },
   dashboard: {
     menu: "主页",
+    route: "主页",
     message: `本页使用假数据..`,
     websiteViews: "浏览量",
+    companies: "公司统计",
+
     table: {
       userActivities: "用户活动",
       name: "名称",
@@ -32,6 +35,7 @@ const chinese = {
   },
   useradmin: {
     menu: "用户管理",
+    route: "用户管理",
     message: `本页使用假数据..`,
     userDetail: "用户详情",
     email: "邮箱",
@@ -47,7 +51,9 @@ const chinese = {
     }
   },
   developer: {
-    menu: "开发",
+    menu: "开发者",
+    route: "开发者",
+
     message: `本页使用假数据..`
   },
   errors: {

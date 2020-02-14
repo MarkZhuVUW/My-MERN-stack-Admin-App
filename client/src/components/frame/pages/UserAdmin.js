@@ -23,12 +23,12 @@ import { clearErrors } from "../../../actions/errorActions";
 import AnimatedProgress from "../../../components/animatedProgress";
 import DropdownSelection from "../../../components/dropdownSelect";
 import EditableTable from "../../../components/EditableTable";
-
+import ResponsiveDialog from "../../../components/ResponsiveDialog";
 // import ListOfFirmwares from "../shared/ListOfFirmwares";
 const styles = {};
 
 class UserAdmin extends Component {
-  state = {};
+  state = { msg: null };
 
   static propTypes = {
     clearErrors: PropTypes.func.isRequired,
@@ -37,15 +37,27 @@ class UserAdmin extends Component {
     isAuthenticated: PropTypes.bool.isRequired,
     deleteUser: PropTypes.func.isRequired,
     register: PropTypes.func.isRequired,
-    user: PropTypes.object.isRequired
+    user: PropTypes.object.isRequired,
+    error: PropTypes.object.isRequired
   };
 
   componentDidMount() {
     this.props.loadAllUsers();
   }
 
-  componentDidUpdate(prevProps) {}
+  componentDidUpdate(prevProps) {
+    const { error } = this.props;
 
+    if (error !== prevProps.error) {
+      // Check for register error
+
+      if (error.id === "REGISTER_FAIL") {
+        this.setState({ msg: error.msg.msg });
+      } else {
+        this.setState({ msg: null });
+      }
+    }
+  }
   toggle = () => {
     // Clear errors
     this.props.clearErrors();
@@ -68,6 +80,8 @@ class UserAdmin extends Component {
   };
 
   registerCallback = userToBeRegistered => {
+    console.log(userToBeRegistered);
+
     this.props.register(userToBeRegistered).then(() => {
       this.props.loadAllUsers();
     });
@@ -75,7 +89,7 @@ class UserAdmin extends Component {
     this.toggle();
   };
   render() {
-    const { classes, allUsers, user } = this.props;
+    const { classes, allUsers, user, error } = this.props;
 
     return (
       <SettingsContent
@@ -83,6 +97,8 @@ class UserAdmin extends Component {
         data={allUsers}
         registerCallback={this.registerCallback}
         user={user}
+        msg={this.state.msg}
+        error={error}
       />
     );
   }
@@ -92,7 +108,8 @@ const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
   error: state.error,
   allUsers: state.auth.allUsers,
-  user: state.auth.user
+  user: state.auth.user,
+  error: state.error
 });
 export default connect(mapStateToProps, {
   clearErrors,
@@ -136,6 +153,7 @@ function SettingsContent(props) {
   const classes = useStyles();
 
   const [isCreatingUser, setIsCreatingUser] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [showUserCreationProgress, setShowUserCreationProgress] = useState(
     false
@@ -403,6 +421,7 @@ function SettingsContent(props) {
       }
     }
   ];
+
   const data =
     props.data && props.user
       ? props.data.map(user => {
@@ -420,6 +439,7 @@ function SettingsContent(props) {
   const options = {
     filter: true,
     responsive: "scrollMaxHeight",
+
     // i18n
     textLabels: {
       pagination: {
@@ -469,10 +489,23 @@ function SettingsContent(props) {
     }
   };
 
+  const responsiveDialogCallback = () => {
+    setIsLoading(false);
+  };
+
   return (
     <div>
+      {props.msg ? (
+        <ResponsiveDialog
+          alertMsg={props.msg}
+          title={props.error.id}
+          responsiveDialogCallback={responsiveDialogCallback}
+          type="User Admin Error Handling"
+        />
+      ) : null}
+
       <Breadcrumb
-        items={[[i18n("frame.menu"), "/"], [i18n("useradmin.menu")]]}
+        items={[[i18n("frame.menu"), "/"], [i18n("useradmin.route")]]}
       />
       <div className={classes.container}>
         {isCreatingUser ? createUserView() : userDetailView()}

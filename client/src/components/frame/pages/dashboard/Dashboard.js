@@ -35,12 +35,15 @@ class Dashboard extends Component {
   };
   componentDidMount() {
     // this.props.loadUser();
+
+    //temporary fix
     setTimeout(() => {
       this.props.loadAllLogsForSpecificUser(this.props.user._id);
     }, 1000);
   }
 
   componentDidUpdate(prevProps) {}
+
   toggle = () => {
     // Clear errors
     this.props.clearErrors();
@@ -56,10 +59,6 @@ class Dashboard extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-
-    const { code } = this.state;
-
-    const { email } = this.props;
 
     //clear errors
     this.toggle();
@@ -226,7 +225,7 @@ function DashboardContent(props) {
   return (
     <>
       <Breadcrumb
-        items={[[i18n("frame.menu"), "/"], [i18n("dashboard.menu")]]}
+        items={[[i18n("frame.menu"), "/"], [i18n("dashboard.route")]]}
       />
 
       <Grid container spacing={props.isSmallScreen ? 1 : 3}>
@@ -251,7 +250,7 @@ function DashboardContent(props) {
         <Grid item xs={12} md={4} lg={4}>
           <Paper className={classes.paper}>
             <Typography component="h2" variant="h6">
-              polar
+              {i18n("dashboard.companies")}
             </Typography>
             <HomePolarChart />
           </Paper>
