@@ -78,7 +78,6 @@ class SignInSide extends Component {
     userLoaded: PropTypes.bool,
     clearErrors: PropTypes.func.isRequired,
     isTFAing: PropTypes.bool,
-    isAuthenticated: PropTypes.bool,
 
     user: PropTypes.object,
     logLoginSuccess: PropTypes.func,
@@ -309,7 +308,6 @@ const mapStateToProps = state => ({
   error: state.error,
   userLoaded: state.auth.userLoaded,
   isTFAing: state.auth.isTFAing,
-  isAuthenticated: state.auth.isAuthenticated,
   user: state.auth.user
 });
 export default compose(

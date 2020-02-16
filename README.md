@@ -2,11 +2,11 @@
 
 ## milestone 1:
 
-### complete a simple admin app with user statistics and github statistics.
+### complete a simple admin app with user statistics.
 
 ## milestone 2:
 
-### Make the admin app interact with my portfolio website (user sends messages through the chatbot on my-portfolio and I receive them on the admin app. )
+### Do Devops on it.
 
 ## milestone 3:
 

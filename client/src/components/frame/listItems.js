@@ -6,6 +6,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { makeStyles } from "@material-ui/core/styles";
 import AssessmentIcon from "@material-ui/icons/Assessment";
 import DashboardIcon from "@material-ui/icons/Dashboard";
+import DescriptionIcon from "@material-ui/icons/Description";
 import DeveloperBoardIcon from "@material-ui/icons/DeveloperBoard";
 import { i18n } from "i18n";
 import React from "react";
@@ -93,6 +94,28 @@ export default function SelectedListItem(props) {
               />
             </ListItemIcon>
             <ListItemText primary={i18n("useradmin.menu")} />
+          </ListItem>
+        </Link>
+
+        <Link
+          to="/frame/cv"
+          style={{
+            textDecoration: "none",
+            color: localStorage.getItem("theme") === "dark" ? "white" : "black"
+          }}
+        >
+          <ListItem
+            button
+            selected={selectedIndex === 3}
+            onClick={event => handleListItemClick(event, 3)}
+          >
+            <ListItemIcon>
+              <DescriptionIcon
+                className={selectedIndex === 3 ? "swirl" : null}
+                color={selectedIndex === 3 ? "primary" : "action"}
+              />
+            </ListItemIcon>
+            <ListItemText primary={i18n("cv.menu")} />
           </ListItem>
         </Link>
       </List>

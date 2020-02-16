@@ -34,7 +34,6 @@ class UserAdmin extends Component {
     clearErrors: PropTypes.func.isRequired,
     loadAllUsers: PropTypes.func.isRequired,
     allUsers: PropTypes.array,
-    isAuthenticated: PropTypes.bool.isRequired,
     deleteUser: PropTypes.func.isRequired,
     register: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
@@ -105,7 +104,6 @@ class UserAdmin extends Component {
 }
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
   error: state.error,
   allUsers: state.auth.allUsers,
   user: state.auth.user,
@@ -212,7 +210,7 @@ function SettingsContent(props) {
               <TextField
                 required
                 id={i18n("useradmin.email")}
-                name={i18n("useradmin.email")}
+                name="email"
                 label={i18n("useradmin.email")}
                 fullWidth
                 onChange={onChange}
@@ -223,7 +221,7 @@ function SettingsContent(props) {
               <TextField
                 required
                 id={i18n("useradmin.name")}
-                name={i18n("useradmin.name")}
+                name="name"
                 label={i18n("useradmin.name")}
                 fullWidth
                 onChange={onChange}
@@ -233,7 +231,7 @@ function SettingsContent(props) {
               <TextField
                 required
                 id={i18n("useradmin.password")}
-                name={i18n("useradmin.password")}
+                name="password"
                 label={i18n("useradmin.password")}
                 fullWidth
                 onChange={onChange}
@@ -243,7 +241,7 @@ function SettingsContent(props) {
               <TextField
                 required
                 id={i18n("useradmin.company")}
-                name={i18n("useradmin.company")}
+                name="company"
                 label={i18n("useradmin.company")}
                 fullWidth
                 onChange={onChange}

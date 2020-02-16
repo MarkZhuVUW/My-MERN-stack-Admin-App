@@ -56,6 +56,13 @@ const chinese = {
 
     message: `本页使用假数据..`
   },
+
+  cv: {
+    menu: "简历",
+    route: "简历",
+    message: `本页使用假数据..`
+  },
+
   errors: {
     401: "请先登录",
     403: "没有访问权限",
@@ -79,7 +86,7 @@ const chinese = {
     filterTitle: "过滤",
     reset: "reset",
     viewColumnsTitle: "看列",
-    selectedRowsText: "已选中行",
+    selectedRowsText: "行已选中",
     delete: "删除"
   }
 };

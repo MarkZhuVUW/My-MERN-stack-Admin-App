@@ -57,6 +57,11 @@ const en = {
     route: "developer",
     message: `This page uses fake data for demonstration purposes only.`
   },
+  cv: {
+    menu: "CV",
+    route: "cv",
+    message: `This page uses fake data for demonstration purposes only.`
+  },
 
   errors: {
     401: "Go to login page",

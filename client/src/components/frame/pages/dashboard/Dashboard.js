@@ -28,7 +28,6 @@ class Dashboard extends Component {
     clearErrors: PropTypes.func.isRequired,
     allLogs: PropTypes.array,
     loadAllLogsForSpecificUser: PropTypes.func.isRequired,
-    isAuthenticated: PropTypes.bool.isRequired,
     loadUser: PropTypes.func.isRequired,
     user: PropTypes.object,
     deleteLog: PropTypes.func.isRequired
@@ -79,7 +78,6 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
   error: state.error,
   allLogs: state.admin.allLogs,
   user: state.auth.user

@@ -40,7 +40,6 @@ class ResponsiveDialog extends Component {
   };
 
   static propTypes = {
-    isAuthenticated: PropTypes.bool,
     error: PropTypes.object.isRequired,
 
     clearErrors: PropTypes.func.isRequired,
@@ -67,8 +66,10 @@ class ResponsiveDialog extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { error, isAuthenticated, type } = this.props;
+    const { error, type } = this.props;
     const { domainName } = this.state;
+    const isAuthenticated =
+      localStorage.getItem("authenticated") == "true" ? true : false;
 
     if (isAuthenticated && type !== "User Admin Error Handling") {
       this.props.cb(true);
@@ -204,7 +205,6 @@ class ResponsiveDialog extends Component {
 }
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
   error: state.error,
   TFA: state.auth.TFA,
   user: state.auth.user

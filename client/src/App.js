@@ -2,7 +2,6 @@
 import { enUS, zhCN } from "@material-ui/core/locale";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import Frame from "components/frame/Frame";
-import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
@@ -34,9 +33,7 @@ class App extends Component {
     this.props.loadUser();
   }
 
-  static propTypes = {
-    isAuthenticated: PropTypes.bool
-  };
+  static propTypes = {};
 
   // conditionalRouting = () => {
   //   if (!this.props.user) return;
@@ -124,8 +121,10 @@ class App extends Component {
   // };
 
   render() {
-    const { isAuthenticated } = this.props;
     const { theme } = this.state;
+    const isAuthenticated =
+      localStorage.getItem("authenticated") == "true" ? true : false;
+    console.log(isAuthenticated);
     const themeCallback = () => {
       this.setState({
         theme: createMuiTheme(
@@ -195,7 +194,6 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
   user: state.auth.user
 });
 export default connect(mapStateToProps, { loadUser })(App);

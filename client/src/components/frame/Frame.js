@@ -4,7 +4,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
 import Slide from "@material-ui/core/Slide";
-import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
@@ -12,6 +12,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { withStyles } from "@material-ui/styles";
 import clsx from "clsx";
 import ErrorPage from "error-pages/ErrorPage";
+import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import ReactGA from "react-ga";
@@ -21,14 +22,12 @@ import { useMediaQuery } from "react-responsive";
 import { Redirect, Route, Switch, withRouter } from "react-router-dom";
 import compose from "recompose/compose";
 import { clearErrors } from "../../actions/errorActions";
+import HeaderMenu from "./HeaderMenu";
 import SelectedListItem from "./listItems";
+import CV from "./pages/CV/CV";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Developer from "./pages/Developer";
 import UserAdmin from "./pages/UserAdmin";
-import HeaderMenu from "./HeaderMenu";
-import { i18n } from "i18n";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import TextField from "@material-ui/core/TextField";
 
 const styles = {
   root: {
@@ -42,7 +41,7 @@ class Frame extends Component {
     auth: PropTypes.object.isRequired,
     clearErrors: PropTypes.func.isRequired,
     swaggerUIDocs: PropTypes.object,
-
+    user: PropTypes.object,
     //withRouter
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
@@ -64,13 +63,15 @@ class Frame extends Component {
       <FrameContent
         location={this.props.location}
         themeCallback={this.props.themeCallback}
+        user={this.props.user}
       />
     );
   }
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  user: state.auth.user
 });
 
 export default compose(
@@ -184,6 +185,7 @@ function FrameContent(props) {
    * -1: Page Not Found
    */
   const translatePageToIndex = () => {
+    if (!props.user) return -1;
     const { pathname } = props.location;
     var splittedPathname = pathname.split("/");
 
@@ -193,7 +195,6 @@ function FrameContent(props) {
         splittedPathname.length - 2
       );
     }
-    console.log(splittedPathname[splittedPathname.length - 1]);
     switch (splittedPathname[splittedPathname.length - 1]) {
       case "dashboard":
         return 0;
@@ -201,8 +202,12 @@ function FrameContent(props) {
         return 1;
       case "useradmin":
         return 2;
+      case "cv":
+        return 3;
+      case "selfIntroduction":
+        return 4;
       case "frame":
-        return 0;
+        return props.user.role === "admin" ? 0 : 3;
       default:
         return -1; // Page Not Found
     }
@@ -282,10 +287,12 @@ function FrameContent(props) {
           <ChevronLeftIcon />
         </IconButton>
       </div>
+      {console.log(translatePageToIndex())}
       <SelectedListItem callback={cb} currentIndex={translatePageToIndex} />
     </Drawer>
   );
-
+  // if user is not loaded yet, return.
+  if (!props.user) return null;
   return (
     <>
       {translatePageToIndex() === -1 ? (
@@ -309,7 +316,13 @@ function FrameContent(props) {
                 <Route
                   exact
                   path="/frame"
-                  render={() => <Redirect to="/frame/dashboard" />}
+                  render={() =>
+                    props.user.role === "admin" ? (
+                      <Redirect to="/frame/dashboard" />
+                    ) : (
+                      <Redirect to="/frame/cv" />
+                    )
+                  }
                 />
                 <Switch>
                   <Route exact path="/frame/dashboard">
@@ -324,6 +337,9 @@ function FrameContent(props) {
                   </Route>
                   <Route exact path="/frame/useradmin">
                     <UserAdmin isSmallScreen={isSmallScreen} />
+                  </Route>
+                  <Route exact path="/frame/cv">
+                    <CV isSmallScreen={isSmallScreen} />
                   </Route>
                 </Switch>
               </Container>

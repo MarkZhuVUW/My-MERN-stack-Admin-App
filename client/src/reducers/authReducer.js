@@ -1,28 +1,25 @@
 import {
-  USER_LOADED,
-  USER_LOADING,
-  AUTH_ERROR,
-  LOGIN_SUCCESS,
-  LOGIN_FAIL,
-  LOGOUT_SUCCESS,
-  REGISTER_SUCCESS,
-  REGISTER_FAIL,
-  TFA_SETUP_FAIL,
-  TFA_VERIFY_FAIL,
-  TFA_VERIFED,
-  TFA_SETUP_SUCCESS,
-  TFA_LOADED,
-  TFA_ING,
   ALL_USERS_LOADED,
-  TFA_LOAD_FAIL,
+  AUTH_ERROR,
   LOADING,
-  USER_DELETED
+  LOGIN_FAIL,
+  LOGIN_SUCCESS,
+  LOGOUT_SUCCESS,
+  REGISTER_FAIL,
+  REGISTER_SUCCESS,
+  TFA_LOADED,
+  TFA_LOAD_FAIL,
+  TFA_SETUP_FAIL,
+  TFA_SETUP_SUCCESS,
+  TFA_VERIFED,
+  TFA_VERIFY_FAIL,
+  USER_DELETED,
+  USER_LOADED,
+  USER_LOADING
 } from "../actions/types";
 
 const initialState = {
   token: localStorage.getItem("token"),
-  isAuthenticated:
-    localStorage.getItem("authenticated") == "true" ? true : false,
   isLoading: false,
   userLoaded: false,
   user: null,
@@ -94,7 +91,6 @@ export default function(state = initialState, action) {
         ...state,
         // token: null,
         user: null,
-        isAuthenticated: false,
         isLoading: false,
         userLoaded: false,
         token: localStorage.getItem("token"),
@@ -134,8 +130,6 @@ export default function(state = initialState, action) {
 
       return {
         ...state,
-        isAuthenticated: true,
-
         TFA: null,
         isTFAing: false
       };

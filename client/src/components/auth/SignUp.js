@@ -62,7 +62,6 @@ class SignUp extends Component {
     register: PropTypes.func.isRequired,
     userLoaded: PropTypes.bool,
     clearErrors: PropTypes.func.isRequired,
-    isAuthenticated: PropTypes.bool,
     successMsg: PropTypes.string,
     //withRouter
     match: PropTypes.object.isRequired,
@@ -79,10 +78,6 @@ class SignUp extends Component {
         this.setState({ msg: null });
       }
     }
-
-    // if (isAuthenticated) {
-    //   this.toggle();
-    // }
   }
 
   toggle = () => {
@@ -253,7 +248,6 @@ class SignUp extends Component {
 const mapStateToProps = state => ({
   error: state.error,
   userLoaded: state.auth.userLoaded,
-  isAuthenticated: state.auth.isAuthenticated,
   successMsg: state.auth.successMsg
 });
 export default compose(
