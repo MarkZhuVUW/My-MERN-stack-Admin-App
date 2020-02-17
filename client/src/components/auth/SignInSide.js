@@ -284,12 +284,29 @@ class SignInSide extends Component {
                             forgotPasswordClicked: true
                           })
                         }
+                        style={{
+                          textDecoration: "none",
+                          color:
+                            localStorage.getItem("theme") === "dark"
+                              ? "white"
+                              : "black"
+                        }}
                       >
                         Forgot password?
                       </NavLink>
                     </Grid>
                     <Grid item>
-                      <NavLink to="./signup" variant="body2">
+                      <NavLink
+                        to="./signup"
+                        variant="body2"
+                        style={{
+                          textDecoration: "none",
+                          color:
+                            localStorage.getItem("theme") === "dark"
+                              ? "white"
+                              : "black"
+                        }}
+                      >
                         {"Don't have an account? Sign Up"}
                       </NavLink>
                     </Grid>

@@ -32,71 +32,77 @@ export default function SelectedListItem(props) {
   return (
     <div className={classes.root}>
       <List component="nav" aria-label="main mailbox folders">
-        <Link
-          to="/frame/dashboard"
-          style={{
-            textDecoration: "none",
-            color: localStorage.getItem("theme") === "dark" ? "white" : "black"
-          }}
-        >
-          <ListItem
-            button
-            selected={selectedIndex === 0}
-            onClick={event => handleListItemClick(event, 0)}
-          >
-            <ListItemIcon>
-              <DashboardIcon
-                className={selectedIndex === 0 ? "swirl" : null}
-                color={selectedIndex === 0 ? "primary" : "action"}
-              />
-            </ListItemIcon>
-            <ListItemText primary={i18n("dashboard.menu")} />
-          </ListItem>
-        </Link>
-        <Divider />
-        <Link
-          to="/frame/developer"
-          style={{
-            textDecoration: "none",
-            color: localStorage.getItem("theme") === "dark" ? "white" : "black"
-          }}
-        >
-          <ListItem
-            button
-            selected={selectedIndex === 1}
-            onClick={event => handleListItemClick(event, 1)}
-          >
-            <ListItemIcon>
-              <DeveloperBoardIcon
-                className={selectedIndex === 1 ? "swirl" : null}
-                color={selectedIndex === 1 ? "primary" : "action"}
-              />
-            </ListItemIcon>
-            <ListItemText>{i18n("developer.menu")}</ListItemText>
-          </ListItem>
-        </Link>
-        <Link
-          to="/frame/useradmin"
-          style={{
-            textDecoration: "none",
-            color: localStorage.getItem("theme") === "dark" ? "white" : "black"
-          }}
-        >
-          <ListItem
-            button
-            selected={selectedIndex === 2}
-            onClick={event => handleListItemClick(event, 2)}
-          >
-            <ListItemIcon>
-              <AssessmentIcon
-                className={selectedIndex === 2 ? "swirl" : null}
-                color={selectedIndex === 2 ? "primary" : "action"}
-              />
-            </ListItemIcon>
-            <ListItemText primary={i18n("useradmin.menu")} />
-          </ListItem>
-        </Link>
-
+        {props.role === "admin" ? (
+          <>
+            <Link
+              to="/frame/dashboard"
+              style={{
+                textDecoration: "none",
+                color:
+                  localStorage.getItem("theme") === "dark" ? "white" : "black"
+              }}
+            >
+              <ListItem
+                button
+                selected={selectedIndex === 0}
+                onClick={event => handleListItemClick(event, 0)}
+              >
+                <ListItemIcon>
+                  <DashboardIcon
+                    className={selectedIndex === 0 ? "swirl" : null}
+                    color={selectedIndex === 0 ? "primary" : "action"}
+                  />
+                </ListItemIcon>
+                <ListItemText primary={i18n("dashboard.menu")} />
+              </ListItem>
+            </Link>
+            <Divider />
+            <Link
+              to="/frame/developer"
+              style={{
+                textDecoration: "none",
+                color:
+                  localStorage.getItem("theme") === "dark" ? "white" : "black"
+              }}
+            >
+              <ListItem
+                button
+                selected={selectedIndex === 1}
+                onClick={event => handleListItemClick(event, 1)}
+              >
+                <ListItemIcon>
+                  <DeveloperBoardIcon
+                    className={selectedIndex === 1 ? "swirl" : null}
+                    color={selectedIndex === 1 ? "primary" : "action"}
+                  />
+                </ListItemIcon>
+                <ListItemText>{i18n("developer.menu")}</ListItemText>
+              </ListItem>
+            </Link>
+            <Link
+              to="/frame/useradmin"
+              style={{
+                textDecoration: "none",
+                color:
+                  localStorage.getItem("theme") === "dark" ? "white" : "black"
+              }}
+            >
+              <ListItem
+                button
+                selected={selectedIndex === 2}
+                onClick={event => handleListItemClick(event, 2)}
+              >
+                <ListItemIcon>
+                  <AssessmentIcon
+                    className={selectedIndex === 2 ? "swirl" : null}
+                    color={selectedIndex === 2 ? "primary" : "action"}
+                  />
+                </ListItemIcon>
+                <ListItemText primary={i18n("useradmin.menu")} />
+              </ListItem>
+            </Link>
+          </>
+        ) : null}
         <Link
           to="/frame/cv"
           style={{

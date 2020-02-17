@@ -228,6 +228,9 @@ function FrameContent(props) {
   const themeCallback = theme => {
     props.themeCallback(theme);
   };
+
+  if (!props.user) return null;
+
   const FrameAppBar = (
     <AppBar
       position="absolute"
@@ -288,11 +291,15 @@ function FrameContent(props) {
         </IconButton>
       </div>
       {console.log(translatePageToIndex())}
-      <SelectedListItem callback={cb} currentIndex={translatePageToIndex} />
+      <SelectedListItem
+        callback={cb}
+        currentIndex={translatePageToIndex}
+        role={props.user.role}
+      />
     </Drawer>
   );
   // if user is not loaded yet, return.
-  if (!props.user) return null;
+
   return (
     <>
       {translatePageToIndex() === -1 ? (

@@ -27,7 +27,8 @@ const initialState = {
   TFALoaded: false,
   isTFAing: false,
   successMsg: null,
-  allUsers: []
+  allUsers: [],
+  authenticated: false
 };
 
 export default function(state = initialState, action) {
@@ -80,7 +81,7 @@ export default function(state = initialState, action) {
       return {
         ...initialState,
         token: localStorage.getItem("token"),
-        authenticated: localStorage.getItem("authenticated")
+        authenticated: false
       };
 
     case AUTH_ERROR:
@@ -94,7 +95,7 @@ export default function(state = initialState, action) {
         isLoading: false,
         userLoaded: false,
         token: localStorage.getItem("token"),
-        authenticated: localStorage.getItem("authenticated")
+        authenticated: false
       };
     case REGISTER_FAIL:
       return {
@@ -131,7 +132,8 @@ export default function(state = initialState, action) {
       return {
         ...state,
         TFA: null,
-        isTFAing: false
+        isTFAing: false,
+        authenticated: true
       };
 
     // case TFA_ING:
@@ -148,6 +150,10 @@ export default function(state = initialState, action) {
         isTFAing: false
       };
     default:
-      return { ...state };
+      return {
+        ...state,
+        authenticated:
+          localStorage.getItem("authenticated") === "true" ? true : false
+      };
   }
 }

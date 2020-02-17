@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.0",
+  "swagger": "2.0",
   "info": {
     "version": "1.0.0",
     "title": "My MERN Stack Admin App API",
@@ -7,12 +7,13 @@
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
-    }
+    },
+    "contact": { "email": "zdy120939259@outlook.com" }
   },
   "servers": [
     {
       "url": "/",
-      "description": "localhost:5000"
+      "description": "localhost:5001"
     }
   ],
   "tags": [
@@ -40,6 +41,7 @@
       "get": {
         "tags": ["auth"],
         "summary": "gets the current user",
+        "operationId": "getUserByName",
         "parameters": [
           {
             "name": "x-auth-token",
@@ -49,10 +51,16 @@
             "type": "string"
           }
         ],
+
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": { "$ref": "#/definitions/User" }
+            "description": "OK ",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "wrong jwt token probably. (can't fix the above error. If anybody sees this and care to fix it please email me the fix. Thanks :))"
           }
         }
       }
@@ -61,24 +69,18 @@
       "post": {
         "tags": ["auth"],
         "summary": "authenticate user by email and password. Email is used to find the user object in db. Password is encrypted with 'bcrypt' and compared with the corresponding encrypted password in db",
-        "requestBody": {
-          "description": "email and password of the user",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  }
-                }
-              }
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "email and password of the user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/EmailAndPassword"
             }
           }
-        },
+        ],
+
         "produces": ["application/json"],
         "responses": {
           "200": {
@@ -97,17 +99,17 @@
       "post": {
         "tags": ["TFA"],
         "summary": "gets the TFA setup if it exists in db using the user email and domainName",
-        "requestBody": {
-          "description": "email of the user and domainName",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/definitions/TFAReq"
-              }
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "email of the user and domainName",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TFAReq"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -125,17 +127,17 @@
       "post": {
         "tags": ["TFA"],
         "summary": "setup TFA using the provided email and domainName.",
-        "requestBody": {
-          "description": "email of the user and domainName",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/definitions/TFAReq"
-              }
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "email of the user and domainName",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TFAReq"
             }
           }
-        },
+        ],
         "produces": ["application/json"],
         "responses": {
           "200": {
@@ -152,21 +154,17 @@
       "delete": {
         "summary": "Delete TFA with given email",
         "tags": ["TFA"],
-        "requestBody": {
-          "description": "email of the user",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  }
-                }
-              }
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "email of the user and domainName",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TFAReq"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "success"
@@ -181,24 +179,17 @@
       "post": {
         "tags": ["TFA"],
         "summary": "verify TFA using the user email and code",
-        "requestBody": {
-          "description": "email of the user and code",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  },
-                  "code": {
-                    "type": "string"
-                  }
-                }
-              }
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "email of the user and code",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TFAVerifyReq"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "verification successfull"
@@ -218,7 +209,8 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/Auth"
+              "type": "array",
+              "items": { "$ref": "#/definitions/Auth" }
             }
           },
           "401": {
@@ -228,25 +220,23 @@
       },
       "post": {
         "tags": ["users"],
-        "summary": "register a user with email, name and password. respond with the name, email, encrypted password and register_date of the user",
-        "requestBody": {
-          "description": "name, email and password",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/definitions/UserReq"
-              }
+        "summary": "register a user with email, name, password and role.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "name, email, password and role",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserReq"
             }
           }
-        },
+        ],
+
         "produces": ["application/json"],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
+            "description": "OK"
           },
           "400": {
             "description": "Register Failed. Bad user data."
@@ -256,7 +246,7 @@
     },
     "/api/users/{id}": {
       "patch": {
-        "summary": "update user profile",
+        "summary": "update user profile (not implemented)",
         "tags": ["users"],
         "requestBody": {
           "description": "a user object containing things needed to be updated for the user",
@@ -286,10 +276,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
+            "description": "OK"
           },
           "404": {
             "description": "user not found probably?"
@@ -323,9 +310,6 @@
             "schema": {
               "$ref": "#/definitions/id"
             }
-          },
-          "404": {
-            "description": "user not found probably?"
           }
         }
       }
@@ -334,27 +318,14 @@
       "patch": {
         "summary": "update logs of a specified user",
         "tags": ["users"],
-        "requestBody": {
-          "description": "the log to be added to the logs collection of the specified user",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/definitions/logsPatchReq"
-              }
-            }
-          }
-        },
+
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
             "description": "update logs of a specified user with id",
-
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
+            "type": "string"
           },
           {
             "name": "x-auth-token",
@@ -362,14 +333,20 @@
             "description": "an authorization header",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "the log to be added to the logs collection of the specified user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LogReq"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
+            "description": "OK"
           },
           "404": {
             "description": "user not found probably?"
@@ -380,14 +357,18 @@
     "/api/admin/logs": {
       "get": {
         "tags": ["admin"],
-        "summary": "get all logs of a specified user",
+        "summary": "get all logs",
 
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/Auth"
+              "type": "array",
+              "items": { "$ref": "#/definitions/Log" }
             }
+          },
+          "401": {
+            "description": "unauthorized because of the 'auth' middleware"
           }
         }
       }
@@ -424,6 +405,17 @@
         "schema": {
           "type": "array",
           "logs": { "$ref": "#/definitions/Log" }
+        }
+      }
+    },
+    "EmailAndPassword": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
         }
       }
     },
@@ -497,6 +489,17 @@
         }
       }
     },
+    "TFAVerifyReq": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        }
+      }
+    },
     "id": {
       "properties": {
         "_id": {
@@ -544,6 +547,34 @@
         },
         "date_logged": {
           "type": "string"
+        }
+      }
+    },
+    "LogReq": {
+      "type": "object",
+      "properties": {
+        "log": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "explanation": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            },
+            "company": {
+              "type": "string"
+            }
+          }
         }
       }
     }

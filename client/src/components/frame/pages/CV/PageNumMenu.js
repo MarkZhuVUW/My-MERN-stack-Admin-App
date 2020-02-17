@@ -2,6 +2,7 @@ import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import React from "react";
+import { Box } from "@material-ui/core";
 
 export default function PageNumMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);

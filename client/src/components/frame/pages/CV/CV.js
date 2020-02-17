@@ -1,5 +1,5 @@
 import { Box, makeStyles, Paper, Typography } from "@material-ui/core";
-import { StyleSheet } from "@react-pdf/renderer";
+// import { StyleSheet } from "@react-pdf/renderer";
 import { i18n } from "i18n";
 import React, { Component } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
@@ -8,28 +8,61 @@ import "swagger-ui/dist/swagger-ui.css";
 import Breadcrumb from "view/shared/Breadcrumb";
 import pdfCV from "./Mark_Zhu_CV.pdf";
 import PageNumMenu from "./PageNumMenu";
+import Link from "@material-ui/core/Link";
+import { logDownload } from "../../../../actions/adminActions";
+import { clearErrors } from "../../../../actions/errorActions";
 
+import { withStyles } from "@material-ui/styles";
+import PropTypes from "prop-types";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 class CV extends Component {
   componentDidMount() {}
   componentDidUpdate() {}
-  static propTypes = {};
+  static propTypes = {
+    user: PropTypes.object.isRequired,
+    clearErrors: PropTypes.func.isRequired
+  };
+  handleDownload = href => {
+    console.log(this.props.user);
 
-  // onDocumentLoadSuccess = ({ numPages }) => {
-  //   this.setState({ numPages });
-  // };
+    const { _id, name, email, role, company } = this.props.user;
+
+    const downloadLog = {
+      name: name,
+      email: email,
+      role: role,
+      explanation: href,
+      type: "DOWNLOAD",
+      company: company
+    };
+
+    this.props.logDownload(_id, downloadLog);
+
+    this.toggle();
+  };
+  toggle = () => {
+    // Clear errors
+    this.props.clearErrors();
+  };
   render() {
-    // return <CVContent isSmallScreen={this.props.isSmallScreen} />;
-    // const { pageNumber, numPages } = this.state;
-
-    return <CVContent isSmallScreen={this.props.isSmallScreen} />;
+    return (
+      <CVContent
+        isSmallScreen={this.props.isSmallScreen}
+        handleDownload={this.handleDownload}
+      />
+    );
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  user: state.auth.user
+});
 
-export default connect(mapStateToProps, {})(CV);
+export default connect(mapStateToProps, {
+  logDownload,
+  clearErrors
+})(CV);
 
 /**
  * The support component. Used in the drawer list.
@@ -47,11 +80,20 @@ function CVContent(props) {
       paddingTop: theme.spacing(1),
       paddingBottom: theme.spacing(1)
     },
-    paper: {
+    smallScreenPaper: {
       padding: theme.spacing(props.isSmallScreen ? 1 : 4),
       display: "flex",
       overflow: "auto",
-      flexDirection: "column",
+      flexDirection: "row",
+      backgroundColor: "white"
+    },
+    paper: {
+      justifyContent: "center",
+      alignItems: "center",
+      padding: theme.spacing(props.isSmallScreen ? 1 : 4),
+      display: "flex",
+      overflow: "auto",
+      flexDirection: "row",
       backgroundColor: "white"
     },
 
@@ -62,17 +104,12 @@ function CVContent(props) {
     expansionPanelHeader: {
       backgroundColor: "#3F51B5",
       color: "white"
+    },
+    box: {
+      justifyContent: "center",
+      alignItems: "center"
     }
   }));
-
-  // Create styles
-  const styles = StyleSheet.create({
-    page: {
-      flexDirection: "row",
-      backgroundColor: "#E4E4E4",
-      width: "100%"
-    }
-  });
 
   const classes = useStyles();
 
@@ -108,22 +145,49 @@ function CVContent(props) {
         items={[[i18n("frame.menu"), "/"], [i18n("cv.route")]]}
       />
 
-      <Paper className={classes.paper}>
+      <Paper
+        className={
+          props.isSmallScreen ? classes.smallScreenPaper : classes.paper
+        }
+      >
         <Document file={pdfCV} onLoadSuccess={onDocumentLoadSuccess}>
-          <Page pageNumber={pageNumber} />
+          <Page
+            pageNumber={pageNumber}
+            width={props.isSmallScreen ? null : 1000}
+          />
         </Document>
       </Paper>
       {numPagesArray ? (
-        <Box display="flex" flexDirection="row" alignItems="center">
+        <Box
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          className={classes.box}
+        >
           <Typography>Page</Typography>
+
           <PageNumMenu
             numPagesArray={numPagesArray}
             setPageNumCallback={setPageNumCallback}
           />
+
           <Typography>of {numPages}</Typography>
-          <a href="./Mark_Zhu_CV.pdf" download>
-            Download CV
-          </a>
+
+          <Link
+            href={`${process.env.PUBLIC_URL}/Mark_Zhu_CV.pdf`}
+            target="_blank"
+            download
+            onClick={() => props.handleDownload("Mark_Zhu_CV.pdf")}
+            style={{
+              textDecoration: "none",
+              color:
+                localStorage.getItem("theme") === "dark" ? "white" : "black"
+            }}
+          >
+            <Box m={2}>
+              <Typography>Download CV</Typography>
+            </Box>
+          </Link>
         </Box>
       ) : null}
     </>

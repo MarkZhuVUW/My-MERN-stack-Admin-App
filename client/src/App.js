@@ -10,6 +10,7 @@ import "./App.css";
 import SignInSide from "./components/auth/SignInSide";
 import SignUp from "./components/auth/SignUp";
 import ErrorPage from "./error-pages/ErrorPage";
+import PropTypes from "prop-types";
 
 const theme = createMuiTheme(
   {
@@ -33,7 +34,9 @@ class App extends Component {
     this.props.loadUser();
   }
 
-  static propTypes = {};
+  static propTypes = {
+    authenticated: PropTypes.object.isRequired
+  };
 
   // conditionalRouting = () => {
   //   if (!this.props.user) return;
@@ -122,9 +125,7 @@ class App extends Component {
 
   render() {
     const { theme } = this.state;
-    const isAuthenticated =
-      localStorage.getItem("authenticated") == "true" ? true : false;
-    console.log(isAuthenticated);
+
     const themeCallback = () => {
       this.setState({
         theme: createMuiTheme(
@@ -145,11 +146,10 @@ class App extends Component {
       <>
         <ThemeProvider theme={theme}>
           <HashRouter basename="/">
-            <Switch>
-              <Route exact path="/signin" component={SignInSide} />
-              <Route exact path="/signup" component={SignUp} />
-            </Switch>
-            {isAuthenticated ? (
+            <Route exact path="/signin" component={SignInSide} />
+            <Route exact path="/signup" component={SignUp} />
+
+            {this.props.authenticated ? (
               <>
                 <Switch>
                   <Route path="/frame">
@@ -179,6 +179,7 @@ class App extends Component {
                     return <Redirect to="/signin" />;
                   }}
                 />
+
                 <Route
                   render={() => {
                     return <ErrorPage code="401" />;
@@ -194,6 +195,7 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.auth.user
+  user: state.auth.user,
+  authenticated: state.auth.authenticated
 });
 export default connect(mapStateToProps, { loadUser })(App);
