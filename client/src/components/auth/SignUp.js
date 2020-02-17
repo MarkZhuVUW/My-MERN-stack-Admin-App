@@ -23,16 +23,23 @@ import { clearErrors } from "../../actions/errorActions";
 import "../../css3/bouncingEffect.css";
 import ResponsiveDialog from "../ResponsiveDialog";
 import RoleCheckboxes from "./RoleCheckboxes";
+import FacebookProgress from "components/FacebookProgress";
 
 const theme = createMuiTheme({
   spacing: 4
 });
 const styles = {
+  content: {
+    flexGrow: 1,
+    height: "100vh",
+    overflow: "auto"
+  },
   paper: {
     padding: theme.spacing(8, 4),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
+    marginTop: "30%"
   },
   avatar: {
     margin: theme.spacing(1),
@@ -54,7 +61,8 @@ class SignUp extends Component {
     msg: null,
     selectedRole: "",
     checked: false,
-    company: ""
+    company: "",
+    isLoading: false
   };
 
   static propTypes = {
@@ -93,7 +101,9 @@ class SignUp extends Component {
     e.preventDefault();
 
     const { name, email, password, selectedRole, company } = this.state;
-
+    this.setState({
+      isLoading: true
+    });
     // Create user object
     const newUser = {
       name,
@@ -117,8 +127,13 @@ class SignUp extends Component {
         selectedRole: selectedRole
       });
     };
+    const responsiveDialogCallback = () => {
+      this.setState({
+        isLoading: false
+      });
+    };
     return (
-      <Container maxWidth="sm" className={classes.paper}>
+      <Container maxWidth="sm" className={classes.content}>
         <CssBaseline />
         <Paper className={classes.paper}>
           <Tooltip title="click me :)">
@@ -131,12 +146,17 @@ class SignUp extends Component {
             Sign up
           </Typography>
           {this.state.msg ? (
-            <ResponsiveDialog alertMsg={this.state.msg} title={error.id} />
+            <ResponsiveDialog
+              alertMsg={this.state.msg}
+              title={error.id}
+              responsiveDialogCallback={responsiveDialogCallback}
+            />
           ) : null}
           {!this.state.msg && this.props.successMsg ? (
             <ResponsiveDialog
               alertMsg={this.props.successMsg}
               title={"congrads!"}
+              responsiveDialogCallback={responsiveDialogCallback}
             />
           ) : null}
           <form className={classes.form} noValidate>
@@ -220,7 +240,11 @@ class SignUp extends Component {
               ) : null}
             </Grid>
             <Button
-              disabled={this.state.selectedRole === "" && !this.state.checked}
+              disabled={
+                (this.state.selectedRole === "employer" &&
+                  !this.state.checked) ||
+                this.state.isLoading
+              }
               type="submit"
               fullWidth
               variant="contained"
@@ -228,12 +252,26 @@ class SignUp extends Component {
               className={classes.submit}
               onClick={this.onSubmit}
             >
-              Sign Up
+              {this.state.isLoading ? (
+                <FacebookProgress />
+              ) : (
+                <Typography>Sign Up</Typography>
+              )}
             </Button>
 
             <Grid container justify="center">
               <Grid item>
-                <NavLink to="/signin" variant="body2">
+                <NavLink
+                  to="/signin"
+                  variant="body2"
+                  style={{
+                    textDecoration: "none",
+                    color:
+                      localStorage.getItem("theme") === "dark"
+                        ? "white"
+                        : "black"
+                  }}
+                >
                   go back
                 </NavLink>
               </Grid>

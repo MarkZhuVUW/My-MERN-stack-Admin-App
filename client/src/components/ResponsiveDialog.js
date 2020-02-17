@@ -181,7 +181,13 @@ class ResponsiveDialog extends Component {
             </div>
           ) : (
             <DialogActions>
-              <Button onClick={this.handleClose} color="primary" autoFocus>
+              <Button
+                onClick={this.handleClose}
+                color={
+                  localStorage.getItem("theme") === "dark" ? "white" : "primary"
+                }
+                autoFocus
+              >
                 OK
               </Button>
             </DialogActions>
