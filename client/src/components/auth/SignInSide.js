@@ -30,15 +30,18 @@ const theme = createMuiTheme({
 
 const styles = {
   root: {
-    height: "100vh"
+    backgroundColor: "black",
+    flexGrow: 1,
+    height: "100vh",
+    overflow: "auto"
   },
   image: {
     backgroundImage: "url(https://source.unsplash.com/random)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
-      theme.palette.type === "dark"
+      localStorage.getItem("theme") === "dark"
         ? theme.palette.grey[900]
-        : theme.palette.grey[50],
+        : theme.palette.grey[300],
     backgroundSize: "cover",
     backgroundPosition: "center"
   },
@@ -47,6 +50,13 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
+  },
+  content: {
+    padding: theme.spacing(4, 4),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    marginTop: "20%"
   },
   avatar: {
     margin: theme.spacing(1),
@@ -134,7 +144,7 @@ class SignInSide extends Component {
         isLoading: false
       });
       this.handleLoginSuccess();
-      this.props.history.push("/frame/dashboard/");
+      this.props.history.push("/frame/");
     }
   };
 
@@ -179,7 +189,7 @@ class SignInSide extends Component {
       return <MuiAlert elevation={6} variant="filled" {...props} />;
     }
     return (
-      <div>
+      <div style={{ backgroundColor: "#E9EAED" }}>
         {/* if user credentials are correct. Do a google 2fa before login to dashboard */}
         <Snackbar
           open={this.state.forgotPasswordClicked}
@@ -201,7 +211,7 @@ class SignInSide extends Component {
           />
         ) : null}
 
-        <Grid container component="main" className={classes.root}>
+        <Grid container className={classes.root}>
           <CssBaseline />
 
           <Grid item xs={false} sm={4} md={7} className={classes.image} />
@@ -213,8 +223,14 @@ class SignInSide extends Component {
             component={Paper}
             elevation={6}
             square
+            style={{
+              backgroundColor:
+                localStorage.getItem("theme") === "dark"
+                  ? theme.palette.grey[700]
+                  : theme.palette.grey[300]
+            }}
           >
-            <Container className={classes.paper}>
+            <Container className={classes.content}>
               <Paper className={classes.paper}>
                 <Tooltip title="click me :)">
                   <Avatar className={classes.avatar}>

@@ -106,8 +106,7 @@ class UserAdmin extends Component {
 const mapStateToProps = state => ({
   error: state.error,
   allUsers: state.auth.allUsers,
-  user: state.auth.user,
-  error: state.error
+  user: state.auth.user
 });
 export default connect(mapStateToProps, {
   clearErrors,

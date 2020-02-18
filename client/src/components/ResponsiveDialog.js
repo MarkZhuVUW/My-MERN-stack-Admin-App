@@ -14,7 +14,8 @@ import MediaQuery from "react-responsive";
 //redux
 import { getTFA, skipTFA, TFASetup, TFAVerify } from "../actions/authActions";
 import { clearErrors } from "../actions/errorActions";
-import Logout from "../components/auth/Logout";
+import { logout } from "../actions/authActions";
+import { Typography } from "@material-ui/core";
 
 const theme = createMuiTheme({
   spacing: 4
@@ -48,7 +49,8 @@ class ResponsiveDialog extends Component {
     getTFA: PropTypes.func.isRequired,
     skipTFA: PropTypes.func.isRequired,
     TFA: PropTypes.object,
-    user: PropTypes.object
+    user: PropTypes.object,
+    logout: PropTypes.func.isRequired
   };
   componentDidMount() {
     const { email, TFA } = this.props;
@@ -141,6 +143,9 @@ class ResponsiveDialog extends Component {
           fullScreen={isFullScreen}
           onClose={this.handleClose}
           aria-labelledby="responsive-dialog-title"
+          onBackdropClick={() => {
+            this.props.logout();
+          }}
         >
           <DialogTitle id="responsive-dialog-title">{title}</DialogTitle>
           <DialogContent>
@@ -167,16 +172,24 @@ class ResponsiveDialog extends Component {
                     fullWidth
                     onChange={this.onChange}
                   />
-                  <Button onClick={this.onSubmit} color="primary">
+                  <Button
+                    onClick={this.onSubmit}
+                    type="submit"
+                    color={
+                      localStorage.getItem("theme") === "dark"
+                        ? "default"
+                        : "primary"
+                    }
+                  >
                     submit
                   </Button>
-                  {this.props.selectedRole === "employer" ||
-                  this.props.selectedRole === "guest" ? (
-                    <Button onClick={this.skipTFA}>skip TFA</Button>
-                  ) : null}
+
+                  <Button onClick={this.skipTFA}>skip TFA</Button>
                 </DialogActions>
               ) : (
-                <Logout />
+                <Typography>
+                  Please click on the backdrop to close this dialog
+                </Typography>
               )}
             </div>
           ) : (
@@ -184,7 +197,9 @@ class ResponsiveDialog extends Component {
               <Button
                 onClick={this.handleClose}
                 color={
-                  localStorage.getItem("theme") === "dark" ? "white" : "primary"
+                  localStorage.getItem("theme") === "dark"
+                    ? "default"
+                    : "primary"
                 }
                 autoFocus
               >
@@ -220,5 +235,6 @@ export default connect(mapStateToProps, {
   TFASetup,
   getTFA,
   clearErrors,
-  skipTFA
+  skipTFA,
+  logout
 })(withStyles(styles)(ResponsiveDialog));

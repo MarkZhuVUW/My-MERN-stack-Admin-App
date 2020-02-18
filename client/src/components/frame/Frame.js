@@ -58,7 +58,7 @@ class Frame extends Component {
   }
   render() {
     const { classes } = this.props;
-
+    if (!this.props.user) return null;
     return (
       <FrameContent
         location={this.props.location}
@@ -172,7 +172,6 @@ const useStyles = makeStyles(theme => ({
 function FrameContent(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
-
   /**
    * translate the name of the page to its corresponding index. Used in the listitems.js file
    * to keep track of what the current page is
@@ -187,21 +186,23 @@ function FrameContent(props) {
   const translatePageToIndex = () => {
     if (!props.user) return -1;
     const { pathname } = props.location;
+    //trim out the "" in the last index of the array
     var splittedPathname = pathname.split("/");
+    console.log(splittedPathname);
 
-    if (splittedPathname[splittedPathname.length - 1] === "") {
-      splittedPathname = splittedPathname.splice(
-        0,
-        splittedPathname.length - 2
-      );
+    while (splittedPathname[splittedPathname.length - 1] === "") {
+      if (splittedPathname.length - 1 === 0) break;
+      splittedPathname.splice(splittedPathname.length - 1, 1);
+      console.log(splittedPathname);
     }
+
     switch (splittedPathname[splittedPathname.length - 1]) {
       case "dashboard":
-        return 0;
+        return props.user.role === "admin" ? 0 : 403;
       case "developer":
-        return 1;
+        return props.user.role === "admin" ? 1 : 403;
       case "useradmin":
-        return 2;
+        return props.user.role === "admin" ? 2 : 403;
       case "cv":
         return 3;
       case "selfIntroduction":
@@ -209,10 +210,9 @@ function FrameContent(props) {
       case "frame":
         return props.user.role === "admin" ? 0 : 3;
       default:
-        return -1; // Page Not Found
+        return 404; // Page Not Found
     }
   };
-
   const [selectedIndex, setSelectedIndex] = React.useState(
     translatePageToIndex()
   );
@@ -228,8 +228,6 @@ function FrameContent(props) {
   const themeCallback = theme => {
     props.themeCallback(theme);
   };
-
-  if (!props.user) return null;
 
   const FrameAppBar = (
     <AppBar
@@ -290,7 +288,6 @@ function FrameContent(props) {
           <ChevronLeftIcon />
         </IconButton>
       </div>
-      {console.log(translatePageToIndex())}
       <SelectedListItem
         callback={cb}
         currentIndex={translatePageToIndex}
@@ -300,10 +297,12 @@ function FrameContent(props) {
   );
   // if user is not loaded yet, return.
 
+  const index = translatePageToIndex();
+  const isIndexInvalid = index === 403 || index === 404;
   return (
     <>
-      {translatePageToIndex() === -1 ? (
-        <ErrorPage code="404" />
+      {isIndexInvalid ? (
+        <ErrorPage code={index} />
       ) : (
         <div className={classes.root}>
           <CssBaseline />
@@ -323,32 +322,42 @@ function FrameContent(props) {
                 <Route
                   exact
                   path="/frame"
-                  render={() =>
-                    props.user.role === "admin" ? (
+                  render={() => {
+                    console.log(props.user.role);
+
+                    return props.user.role === "admin" ? (
                       <Redirect to="/frame/dashboard" />
                     ) : (
                       <Redirect to="/frame/cv" />
-                    )
-                  }
+                    );
+                  }}
                 />
-                <Switch>
-                  <Route exact path="/frame/dashboard">
-                    <Dashboard isSmallScreen={isSmallScreen} />
-                  </Route>
 
-                  <Route exact path="/frame/developer">
-                    <Developer
-                      isSmallScreen={isSmallScreen}
-                      className={classes.developer}
-                    />
-                  </Route>
-                  <Route exact path="/frame/useradmin">
-                    <UserAdmin isSmallScreen={isSmallScreen} />
-                  </Route>
-                  <Route exact path="/frame/cv">
-                    <CV isSmallScreen={isSmallScreen} />
-                  </Route>
-                </Switch>
+                {props.user.role === "admin" ? (
+                  <Switch>
+                    <Route exact path="/frame/dashboard">
+                      <Dashboard isSmallScreen={isSmallScreen} />
+                    </Route>
+                    <Route exact path="/frame/developer">
+                      <Developer
+                        isSmallScreen={isSmallScreen}
+                        className={classes.developer}
+                      />
+                    </Route>
+                    <Route exact path="/frame/useradmin">
+                      <UserAdmin isSmallScreen={isSmallScreen} />
+                    </Route>
+                    <Route exact path="/frame/cv">
+                      <CV isSmallScreen={isSmallScreen} />
+                    </Route>
+                  </Switch>
+                ) : (
+                  <Switch>
+                    <Route exact path="/frame/cv">
+                      <CV isSmallScreen={isSmallScreen} />
+                    </Route>
+                  </Switch>
+                )}
               </Container>
             </Slide>
           </main>

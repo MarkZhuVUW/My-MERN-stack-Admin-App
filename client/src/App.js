@@ -35,7 +35,7 @@ class App extends Component {
   }
 
   static propTypes = {
-    authenticated: PropTypes.object.isRequired
+    authenticated: PropTypes.bool.isRequired
   };
 
   // conditionalRouting = () => {
@@ -157,6 +157,7 @@ class App extends Component {
                   </Route>
                   <Route
                     render={() => {
+                      console.log(123132);
                       return <ErrorPage code="404" />;
                     }}
                   />
