@@ -1,36 +1,114 @@
+// import Particles from "react-particles-js";
+import { enUS, zhCN } from "@material-ui/core/locale";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import Frame from "components/frame/Frame";
 import React, { Component } from "react";
-import { Container } from "reactstrap";
-
-import { Provider } from "react-redux";
-import store from "./store";
+import { connect } from "react-redux";
+import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
 import { loadUser } from "./actions/authActions";
-
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import Frame from "./components/frame/Frame";
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import SignInSide from "./components/auth/SignInSide";
 import SignUp from "./components/auth/SignUp";
-import { createMuiTheme } from "@material-ui/core/styles";
+import ErrorPage from "./error-pages/ErrorPage";
+
+const theme = createMuiTheme(
+  {
+    palette: {
+      primary:
+        localStorage.getItem("theme") === "dark"
+          ? { main: "#303f9f" }
+          : { main: "#1976d2" },
+      type: localStorage.getItem("theme") == "dark" ? "dark" : "light"
+    }
+  },
+  localStorage.getItem("language") === "en" ? enUS : zhCN
+);
 
 class App extends Component {
+  state = {
+    theme: theme
+  };
+
   componentDidMount() {
-    store.dispatch(loadUser());
+    this.props.loadUser();
   }
 
+  static propTypes = {};
+
   render() {
+    const { theme } = this.state;
+    const isAuthenticated =
+      localStorage.getItem("authenticated") == "true" ? true : false;
+    console.log(isAuthenticated);
+    const themeCallback = () => {
+      this.setState({
+        theme: createMuiTheme(
+          {
+            palette: {
+              primary:
+                localStorage.getItem("theme") === "dark"
+                  ? { main: "#303f9f" }
+                  : { main: "#1976d2" },
+              type: localStorage.getItem("theme") == "dark" ? "dark" : "light"
+            }
+          },
+          localStorage.getItem("language") == "en" ? enUS : zhCN
+        )
+      });
+    };
     return (
-      <Provider store={store}>
-        <Router>
-          <Switch>
-            <Route exact path="/" component={Frame}></Route>
-            <Route path="/signin" component={SignInSide}></Route>
-            <Route path="/signup" component={SignUp}></Route>
-          </Switch>
-        </Router>
-      </Provider>
+      <>
+        <ThemeProvider theme={theme}>
+          <HashRouter basename="/">
+            <Switch>
+              <Route exact path="/signin" component={SignInSide} />
+              <Route exact path="/signup" component={SignUp} />
+            </Switch>
+            {isAuthenticated ? (
+              <>
+                <Switch>
+                  <Route path="/frame">
+                    <Frame themeCallback={themeCallback} />
+                  </Route>
+                  <Route
+                    render={() => {
+                      return <ErrorPage code="404" />;
+                    }}
+                  />
+                </Switch>
+
+                <Route
+                  exact
+                  path="/"
+                  render={() => {
+                    return <Redirect to="/frame" />;
+                  }}
+                />
+              </>
+            ) : (
+              <Switch>
+                <Route
+                  exact
+                  path="/"
+                  render={() => {
+                    return <Redirect to="/signin" />;
+                  }}
+                />
+                <Route
+                  render={() => {
+                    return <ErrorPage code="401" />;
+                  }}
+                />
+              </Switch>
+            )}
+          </HashRouter>
+        </ThemeProvider>
+      </>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  user: state.auth.user
+});
+export default connect(mapStateToProps, { loadUser })(App);

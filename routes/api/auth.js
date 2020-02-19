@@ -8,9 +8,19 @@ const auth = require("../../middleware/auth");
 // User Model
 const User = require("../../models/User");
 
-// @route   POST api/auth
-// @desc    Auth user
-// @access  Public
+// @route   GET api/auth/user
+// @desc    Get user data
+// @access  Private
+router.get("/user", auth, (req, res) => {
+  User.findById(req.user.id)
+    .select("-password")
+    .then(user => res.json(user))
+    .catch(err => res.json({ msg: "user not found" }));
+});
+
+// @route   GET api/auth/
+// @desc    login
+// @access  Private
 router.post("/", (req, res) => {
   const { email, password } = req.body;
 
@@ -31,28 +41,11 @@ router.post("/", (req, res) => {
         if (err) throw err;
         res.json({
           token,
-          user: {
-            id: user.id,
-            name: user.name,
-            email: user.email
-          }
+          user
         });
       });
     });
   });
 });
-
-// @route   GET api/auth/user
-// @desc    Get user data
-// @access  Private
-router.get("/user", auth, (req, res) => {
-  User.findById(req.user.id)
-    .select("-password")
-    .then(user => res.json(user));
-});
-
-
-
-
 
 module.exports = router;

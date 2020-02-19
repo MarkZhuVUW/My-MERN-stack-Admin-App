@@ -1,109 +1,99 @@
-# This is meant to be a admin app containing a dashboard, my CV for downloading and a page showing my documented REST APIs using Swagger UI. User should be able to login as admin, guest or employer. Currently I plan to monitor login activities, the number of cv downloads and more.
+# This is meant to be a Admin app for all the fullstack apps I am going to make. (All websites share the same database.).
 
-# Have Fun :)
+## milestone 1:
 
-## milestone 1: 
-### 1. complete a simple admin app with four pages Dashboard page, Developer Page and UserAdmin page. Dashboard page should display statistics on user behaviours with charts, Developer page should show swagger ui, UserAdmin should allow adding and deletion of users. 
-### 2. Define three kinds of users and do role-based access control: admin, guest and employee.
+### complete a simple admin app with user statistics and message passing.
 
+## milestone 2:
 
-## milestone 2: 
-### Make a CV page and monitor views, downloads of the CV.
+### Do Devops on it.
 
-## milestone 3: 
-### use AWS.
+## milestone 3:
 
+### Host this website with AWS and play with DYNAMO DB.
 
 # client environment:
 
-npm i redux react-redux redux-thunk
-npm i bootstrap reactstrap uuid react-transition-group
-npm i axios
-npm install recharts
-npm install @material-ui/core
-npm install @material-ui/icons
-npm install react-router-dom
+## npm i redux react-redux redux-thunk
+
+## npm i bootstrap reactstrap uuid react-transition-group
+
+## npm i axios
+
+## npm install recharts
+
+## npm install @material-ui/core
+
+## npm install @material-ui/icons
+
+## npm install react-router-dom
+
+## npm install material-table --save
+
+## npm i -s recompose
 
 # server environment:
 
-npm i bcryptjs
-npm i jsonwebtoken
-npm i config
+## npm i bcryptjs
 
+## npm i jsonwebtoken
 
+## npm i config
 
+## npm install -g swagger
 
+## npm i swagger-jsdoc swagger-ui-express
 
+# vscode extensions:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## code --install-extension Arjun.swagger-viewer
 
-## Available Scripts
+## code --install-extension austin.code-gnu-global
 
-In the project directory, you can run:
+## code --install-extension christian-kohler.npm-intellisense
 
-### `npm start`
+## code --install-extension christian-kohler.path-intellisense
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## code --install-extension cmborchert.local-import-intellisense
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## code --install-extension CoenraadS.bracket-pair-colorizer-2
 
-### `npm test`
+## code --install-extension dsznajder.es7-react-js-snippets
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## code --install-extension eg2.vscode-npm-script
 
-### `npm run build`
+## code --install-extension esbenp.prettier-vscode
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## code --install-extension formulahendry.code-runner
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## code --install-extension leizongmin.node-module-intellisense
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## code --install-extension lukas-tr.materialdesignicons-intellisense
 
-### `npm run eject`
+## code --install-extension mrmlnc.vscode-scss
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## code --install-extension ms-vscode.cpptools
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## code --install-extension msjsdiag.debugger-for-chrome
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## code --install-extension OfHumanBondage.react-proptypes-intellisense
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## code --install-extension ritwickdey.LiveServer
 
-## Learn More
+## code --install-extension salesforce.salesforcedx-vscode-apex
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## code --install-extension salesforce.salesforcedx-vscode-apex-debugger
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## code --install-extension salesforce.salesforcedx-vscode-core
 
-### Code Splitting
+## code --install-extension sburg.vscode-javascript-booster
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## code --install-extension trinm1709.dracula-theme-from-intellij
 
-### Analyzing the Bundle Size
+## code --install-extension VisualStudioExptTeam.vscodeintellicode
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+## code --install-extension xabikos.JavaScriptSnippets
 
-### Making a Progressive Web App
+## code --install-extension zh9528.file-size
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
-
-
-
-
+## code --install-extension Zignd.html-css-class-completion

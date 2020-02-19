@@ -1,63 +1,17 @@
-// import React from "react";
-// import ListItem from "@material-ui/core/ListItem";
-// import ListItemIcon from "@material-ui/core/ListItemIcon";
-// import ListItemText from "@material-ui/core/ListItemText";
-// import ListSubheader from "@material-ui/core/ListSubheader";
-// import DashboardIcon from "@material-ui/icons/Dashboard";
-// import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-// import PeopleIcon from "@material-ui/icons/People";
-// import BarChartIcon from "@material-ui/icons/BarChart";
-// import LayersIcon from "@material-ui/icons/Layers";
-// import AssignmentIcon from "@material-ui/icons/Assignment";
-// import { Route, BrowserRouter as Router, NavLink } from "react-router-dom";
-// import Logout from "../auth/Logout";
-
-// const [selectedIndex, setSelectedIndex] = React.useState(1);
-
-// const handleListItemClick = (event, index) => {
-//   setSelectedIndex(index);
-// };
-
-// export const mainListItems = (
-//   <div>
-//     <ListItem button>
-//       <ListItemIcon>
-//         <DashboardIcon />
-//       </ListItemIcon>
-//       <ListItemText primary="Dashboard" />
-//     </ListItem>
-//   </div>
-// );
-
-// export const secondaryListItems = (
-//   <div>
-//     <ListItem button>
-//       <ListItemIcon>
-//         <ShoppingCartIcon />
-//       </ListItemIcon>
-//       <ListItemText primary="developer" />
-//     </ListItem>
-//     <ListItem button>
-//       <ListItemIcon>
-//         <PeopleIcon />
-//       </ListItemIcon>
-//       <ListItemText primary="admin" />
-//     </ListItem>
-//   </div>
-// );
-import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
-
-import React from "react";
+import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import { makeStyles } from "@material-ui/core/styles";
+import AssessmentIcon from "@material-ui/icons/Assessment";
 import DashboardIcon from "@material-ui/icons/Dashboard";
-import { Route, BrowserRouter as Router, NavLink } from "react-router-dom";
-import Logout from "../auth/Logout";
-import DeveloperBoardIcon from '@material-ui/icons/DeveloperBoard';
-import AssessmentIcon from '@material-ui/icons/Assessment';
+import DescriptionIcon from "@material-ui/icons/Description";
+import DeveloperBoardIcon from "@material-ui/icons/DeveloperBoard";
+import { i18n } from "i18n";
+import React from "react";
+import { Link } from "react-router-dom";
+import "../../css3/bouncingEffect.css";
 const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
@@ -68,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function SelectedListItem(props) {
   const classes = useStyles();
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = React.useState(props.currentIndex);
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
@@ -78,37 +32,98 @@ export default function SelectedListItem(props) {
   return (
     <div className={classes.root}>
       <List component="nav" aria-label="main mailbox folders">
-        <ListItem
-          button
-          selected={selectedIndex === 0}
-          onClick={event => handleListItemClick(event, 0)}
+        {props.role === "admin" ? (
+          <>
+            <Link
+              to="/frame/dashboard"
+              style={{
+                textDecoration: "none",
+                color:
+                  localStorage.getItem("theme") === "dark" ? "white" : "black"
+              }}
+            >
+              <ListItem
+                button
+                selected={selectedIndex === 0}
+                onClick={event => handleListItemClick(event, 0)}
+              >
+                <ListItemIcon>
+                  <DashboardIcon
+                    className={selectedIndex === 0 ? "swirl" : null}
+                    color={selectedIndex === 0 ? "primary" : "action"}
+                  />
+                </ListItemIcon>
+                <ListItemText primary={i18n("dashboard.menu")} />
+              </ListItem>
+            </Link>
+            <Divider />
+            <Link
+              to="/frame/developer"
+              style={{
+                textDecoration: "none",
+                color:
+                  localStorage.getItem("theme") === "dark" ? "white" : "black"
+              }}
+            >
+              <ListItem
+                button
+                selected={selectedIndex === 1}
+                onClick={event => handleListItemClick(event, 1)}
+              >
+                <ListItemIcon>
+                  <DeveloperBoardIcon
+                    className={selectedIndex === 1 ? "swirl" : null}
+                    color={selectedIndex === 1 ? "primary" : "action"}
+                  />
+                </ListItemIcon>
+                <ListItemText>{i18n("developer.menu")}</ListItemText>
+              </ListItem>
+            </Link>
+            <Link
+              to="/frame/useradmin"
+              style={{
+                textDecoration: "none",
+                color:
+                  localStorage.getItem("theme") === "dark" ? "white" : "black"
+              }}
+            >
+              <ListItem
+                button
+                selected={selectedIndex === 2}
+                onClick={event => handleListItemClick(event, 2)}
+              >
+                <ListItemIcon>
+                  <AssessmentIcon
+                    className={selectedIndex === 2 ? "swirl" : null}
+                    color={selectedIndex === 2 ? "primary" : "action"}
+                  />
+                </ListItemIcon>
+                <ListItemText primary={i18n("useradmin.menu")} />
+              </ListItem>
+            </Link>
+          </>
+        ) : null}
+        <Link
+          to="/frame/cv"
+          style={{
+            textDecoration: "none",
+            color: localStorage.getItem("theme") === "dark" ? "white" : "black"
+          }}
         >
-          <ListItemIcon>
-            <DashboardIcon color={selectedIndex === 0 ? "primary" : "action"} />
-          </ListItemIcon>
-          <ListItemText primary="Dashboard" />
-        </ListItem>
-        <Divider />
-        <ListItem
-          button
-          selected={selectedIndex === 1}
-          onClick={event => handleListItemClick(event, 1)}
-        >
-           <ListItemIcon>
-            <DeveloperBoardIcon color={selectedIndex === 1 ? "primary" : "action"} />
-          </ListItemIcon>
-          <ListItemText primary="Developer" />
-        </ListItem>
-        <ListItem
-          button
-          selected={selectedIndex === 2}
-          onClick={event => handleListItemClick(event, 2)}
-        >
-           <ListItemIcon>
-            <AssessmentIcon color={selectedIndex === 2 ? "primary" : "action"} />
-          </ListItemIcon>
-          <ListItemText primary="admin" />
-        </ListItem>
+          <ListItem
+            button
+            selected={selectedIndex === 3}
+            onClick={event => handleListItemClick(event, 3)}
+          >
+            <ListItemIcon>
+              <DescriptionIcon
+                className={selectedIndex === 3 ? "swirl" : null}
+                color={selectedIndex === 3 ? "primary" : "action"}
+              />
+            </ListItemIcon>
+            <ListItemText primary={i18n("cv.menu")} />
+          </ListItem>
+        </Link>
       </List>
     </div>
   );
