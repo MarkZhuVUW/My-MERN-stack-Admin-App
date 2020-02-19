@@ -1,10 +1,8 @@
-# This is meant to be a terminal app for all the fullstack apps I am going to make. (All websites share the same database and the admin app should statiscally analyze the changes on my other websites).
+# This is meant to be a Admin app for all the fullstack apps I am going to make. (All websites share the same database.).
 
 ## milestone 1:
 
-## milestone 2:
-
-### Make the admin app interact with my portfolio website (user sends messages through the contact form on my-portfolio and I receive them on the admin app. )
+### complete a simple admin app with user statistics and message passing.
 
 ## milestone 2:
 
