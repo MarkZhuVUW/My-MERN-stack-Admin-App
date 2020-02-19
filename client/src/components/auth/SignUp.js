@@ -1,4 +1,4 @@
-import { Slide } from "@material-ui/core";
+import { Slide, Zoom } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -41,7 +41,7 @@ const styles = {
         : theme.palette.grey[300]
   },
   paper: {
-    padding: theme.spacing(8, 4),
+    padding: theme.spacing(10, 10),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -140,152 +140,155 @@ class SignUp extends Component {
     };
     return (
       <div className={classes.root}>
-        <Container maxWidth="sm" className={classes.content}>
-          <CssBaseline />
-          <Paper className={classes.paper}>
-            <Tooltip title="click me :)">
-              <Avatar className={classes.avatar}>
-                <LockOutlinedIcon className="animation" />
-              </Avatar>
-            </Tooltip>
+        {this.state.msg ? (
+          <ResponsiveDialog
+            alertMsg={this.state.msg}
+            title={error.id}
+            responsiveDialogCallback={responsiveDialogCallback}
+          />
+        ) : null}
+        {!this.state.msg && this.props.successMsg ? (
+          <ResponsiveDialog
+            alertMsg={this.props.successMsg}
+            title={"congrads!"}
+            responsiveDialogCallback={responsiveDialogCallback}
+          />
+        ) : null}
+        <Zoom in={true} timeout={500}>
+          <Container maxWidth="sm" className={classes.content}>
+            <CssBaseline />
+            <Paper className={classes.paper}>
+              <Tooltip title="click me :)">
+                <Avatar className={classes.avatar}>
+                  <LockOutlinedIcon className="animation" />
+                </Avatar>
+              </Tooltip>
 
-            <Typography component="h1" variant="h5">
-              Sign up
-            </Typography>
-            {this.state.msg ? (
-              <ResponsiveDialog
-                alertMsg={this.state.msg}
-                title={error.id}
-                responsiveDialogCallback={responsiveDialogCallback}
-              />
-            ) : null}
-            {!this.state.msg && this.props.successMsg ? (
-              <ResponsiveDialog
-                alertMsg={this.props.successMsg}
-                title={"congrads!"}
-                responsiveDialogCallback={responsiveDialogCallback}
-              />
-            ) : null}
-            <form className={classes.form} noValidate>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    autoComplete="fname"
-                    name="name"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="name"
-                    label="Name"
-                    autoFocus
-                    onChange={this.onChange}
-                  />
-                </Grid>
+              <Typography component="h1" variant="h5">
+                Sign up
+              </Typography>
 
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                    onChange={this.onChange}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                    onChange={this.onChange}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  {this.state.selectedRole === "employer" ? (
-                    <Slide direction="left" in={true}>
-                      <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        name="company"
-                        label="company(optional)"
-                        type="company"
-                        id="company"
-                        onChange={this.onChange}
-                      />
+              <form className={classes.form} noValidate>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <TextField
+                      autoComplete="fname"
+                      name="name"
+                      variant="outlined"
+                      required
+                      fullWidth
+                      id="name"
+                      label="Name"
+                      autoFocus
+                      onChange={this.onChange}
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <TextField
+                      variant="outlined"
+                      required
+                      fullWidth
+                      id="email"
+                      label="Email Address"
+                      name="email"
+                      autoComplete="email"
+                      onChange={this.onChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      variant="outlined"
+                      required
+                      fullWidth
+                      name="password"
+                      label="Password"
+                      type="password"
+                      id="password"
+                      autoComplete="current-password"
+                      onChange={this.onChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    {this.state.selectedRole === "employer" ? (
+                      <Slide direction="left" in={true}>
+                        <TextField
+                          variant="outlined"
+                          required
+                          fullWidth
+                          name="company"
+                          label="company(optional)"
+                          type="company"
+                          id="company"
+                          onChange={this.onChange}
+                        />
+                      </Slide>
+                    ) : null}
+                  </Grid>
+
+                  <RoleCheckboxes roleSelectedCallback={roleSelectedCallback} />
+                  {this.state.selectedRole !== "admin" &&
+                  this.state.selectedRole !== "" ? (
+                    <Slide in={true} direction="right">
+                      <Grid container>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              onChange={() => {
+                                this.setState({
+                                  checked: !this.state.checked
+                                });
+                              }}
+                              color="primary"
+                            />
+                          }
+                          label="page views, downloads, login info will be stored in my mongodb database"
+                        />
+                      </Grid>
                     </Slide>
                   ) : null}
                 </Grid>
+                <Button
+                  disabled={
+                    (this.state.selectedRole === "employer" &&
+                      !this.state.checked) ||
+                    this.state.isLoading
+                  }
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={this.onSubmit}
+                >
+                  {this.state.isLoading ? (
+                    <FacebookProgress />
+                  ) : (
+                    <Typography>Sign Up</Typography>
+                  )}
+                </Button>
 
-                <RoleCheckboxes roleSelectedCallback={roleSelectedCallback} />
-                {this.state.selectedRole !== "admin" &&
-                this.state.selectedRole !== "" ? (
-                  <Slide in={true} direction="right">
-                    <Grid container>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            onChange={() => {
-                              this.setState({
-                                checked: !this.state.checked
-                              });
-                            }}
-                            color="primary"
-                          />
-                        }
-                        label="page views, downloads, login info will be stored in my mongodb database"
-                      />
-                    </Grid>
-                  </Slide>
-                ) : null}
-              </Grid>
-              <Button
-                disabled={
-                  (this.state.selectedRole === "employer" &&
-                    !this.state.checked) ||
-                  this.state.isLoading
-                }
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={this.onSubmit}
-              >
-                {this.state.isLoading ? (
-                  <FacebookProgress />
-                ) : (
-                  <Typography>Sign Up</Typography>
-                )}
-              </Button>
-
-              <Grid container justify="center">
-                <Grid item>
-                  <NavLink
-                    to="/signin"
-                    variant="body2"
-                    style={{
-                      textDecoration: "none",
-                      color:
-                        localStorage.getItem("theme") === "dark"
-                          ? "white"
-                          : "black"
-                    }}
-                  >
-                    go back
-                  </NavLink>
+                <Grid container justify="center">
+                  <Grid item>
+                    <NavLink
+                      to="/signin"
+                      variant="body2"
+                      style={{
+                        textDecoration: "none",
+                        color:
+                          localStorage.getItem("theme") === "dark"
+                            ? "white"
+                            : "black"
+                      }}
+                    >
+                      go back
+                    </NavLink>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </form>
-          </Paper>
-        </Container>
+              </form>
+            </Paper>
+          </Container>
+        </Zoom>
       </div>
     );
   }

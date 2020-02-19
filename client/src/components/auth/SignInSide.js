@@ -23,6 +23,7 @@ import { login } from "../../actions/authActions";
 import { clearErrors } from "../../actions/errorActions";
 import "../../css3/bouncingEffect.css";
 import ResponsiveDialog from "../ResponsiveDialog";
+import { Zoom } from "@material-ui/core";
 
 const theme = createMuiTheme({
   spacing: 4
@@ -230,106 +231,108 @@ class SignInSide extends Component {
                   : theme.palette.grey[300]
             }}
           >
-            <Container className={classes.content}>
-              <Paper className={classes.paper}>
-                <Tooltip title="click me :)">
-                  <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon className="animation" />
-                  </Avatar>
-                </Tooltip>
-                <Typography component="h1" variant="h5">
-                  Welcome!
-                </Typography>
-                {this.state.msg ? (
-                  <ResponsiveDialog
-                    alertMsg={msg}
-                    title={error.id}
-                    responsiveDialogCallback={responsiveDialogCallback}
-                  />
-                ) : null}
+            <Zoom in={true} timeout={500}>
+              <Container className={classes.content}>
+                <Paper className={classes.paper}>
+                  <Tooltip title="click me :)">
+                    <Avatar className={classes.avatar}>
+                      <LockOutlinedIcon className="animation" />
+                    </Avatar>
+                  </Tooltip>
+                  <Typography component="h1" variant="h5">
+                    Welcome!
+                  </Typography>
+                  {this.state.msg ? (
+                    <ResponsiveDialog
+                      alertMsg={msg}
+                      title={error.id}
+                      responsiveDialogCallback={responsiveDialogCallback}
+                    />
+                  ) : null}
 
-                <form className={classes.form} noValidate>
-                  <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                    autoFocus
-                    onChange={this.onChange}
-                  />
-                  <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                    onChange={this.onChange}
-                  />
+                  <form className={classes.form} noValidate>
+                    <TextField
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="email"
+                      label="Email Address"
+                      name="email"
+                      autoComplete="email"
+                      autoFocus
+                      onChange={this.onChange}
+                    />
+                    <TextField
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      name="password"
+                      label="Password"
+                      type="password"
+                      id="password"
+                      autoComplete="current-password"
+                      onChange={this.onChange}
+                    />
 
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    disabled={this.state.isLoading}
-                    className={classes.submit}
-                    onClick={this.onSubmit}
-                  >
-                    {this.state.isLoading ? (
-                      <FacebookProgress />
-                    ) : (
-                      <Typography>Sign In</Typography>
-                    )}
-                  </Button>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      disabled={this.state.isLoading}
+                      className={classes.submit}
+                      onClick={this.onSubmit}
+                    >
+                      {this.state.isLoading ? (
+                        <FacebookProgress />
+                      ) : (
+                        <Typography>Sign In</Typography>
+                      )}
+                    </Button>
 
-                  <Grid container>
-                    <Grid item xs>
-                      <NavLink
-                        to="#"
-                        variant="body2"
-                        onClick={() =>
-                          this.setState({
-                            forgotPasswordClicked: true
-                          })
-                        }
-                        style={{
-                          textDecoration: "none",
-                          color:
-                            localStorage.getItem("theme") === "dark"
-                              ? "white"
-                              : "black"
-                        }}
-                      >
-                        Forgot password?
-                      </NavLink>
+                    <Grid container>
+                      <Grid item xs>
+                        <NavLink
+                          to="#"
+                          variant="body2"
+                          onClick={() =>
+                            this.setState({
+                              forgotPasswordClicked: true
+                            })
+                          }
+                          style={{
+                            textDecoration: "none",
+                            color:
+                              localStorage.getItem("theme") === "dark"
+                                ? "white"
+                                : "black"
+                          }}
+                        >
+                          Forgot password?
+                        </NavLink>
+                      </Grid>
+                      <Grid item>
+                        <NavLink
+                          to="./signup"
+                          variant="body2"
+                          style={{
+                            textDecoration: "none",
+                            color:
+                              localStorage.getItem("theme") === "dark"
+                                ? "white"
+                                : "black"
+                          }}
+                        >
+                          {"Don't have an account? Sign Up"}
+                        </NavLink>
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <NavLink
-                        to="./signup"
-                        variant="body2"
-                        style={{
-                          textDecoration: "none",
-                          color:
-                            localStorage.getItem("theme") === "dark"
-                              ? "white"
-                              : "black"
-                        }}
-                      >
-                        {"Don't have an account? Sign Up"}
-                      </NavLink>
-                    </Grid>
-                  </Grid>
-                </form>
-              </Paper>
-            </Container>
+                  </form>
+                </Paper>
+              </Container>
+            </Zoom>
           </Grid>
         </Grid>
       </div>

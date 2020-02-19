@@ -38,91 +38,6 @@ class App extends Component {
     authenticated: PropTypes.bool.isRequired
   };
 
-  // conditionalRouting = () => {
-  //   if (!this.props.user) return;
-  //   const { role } = this.props.user;
-  //   if (role === "admin") {
-  //     return (
-  //       <>
-  //         <Route exact path="/admin">
-  //           <AdminDashboard isAdmin={true} />
-  //         </Route>
-
-  //         <Route
-  //           exact
-  //           path="/"
-  //           render={() => {
-  //             return <Redirect to="/admin" />;
-  //           }}
-  //         />
-  //         <Route
-  //           exact
-  //           path="/board"
-  //           render={() => {
-  //             return (
-  //               <ErrorPage
-  //                 errorMsg={`403 Unauthorized. ${role} is not permitted to access this route.`}
-  //               />
-  //             );
-  //           }}
-  //         />
-  //       </>
-  //     );
-  //   } else if (role === "customer") {
-  //     return (
-  //       <>
-  //         <Route exact path="/board">
-  //           <CustomerDashboard />
-  //         </Route>
-
-  //         <Route
-  //           exact
-  //           path="*"
-  //           render={() => {
-  //             return (
-  //               <ErrorPage
-  //                 errorMsg={`403 Unauthorized. ${role} is not permitted to access this route.`}
-  //               />
-  //             );
-  //           }}
-  //         />
-  //       </>
-  //     );
-  //   } else if (role === "user") {
-  //     return (
-  //       <>
-  //         <Route exact path="/board">
-  //           <CustomerDashboard isUser={true} />
-  //         </Route>
-  //         <Route
-  //           exact
-  //           path="/"
-  //           render={() => {
-  //             return <Redirect to="/board" />;
-  //           }}
-  //         />
-  //         <Route
-  //           exact
-  //           path="*"
-  //           render={() => {
-  //             return (
-  //               <ErrorPage
-  //                 errorMsg={`403 Unauthorized. ${role} is not permitted to access this route.`}
-  //               />
-  //             );
-  //           }}
-  //         />
-  //       </>
-  //     );
-  //   } else {
-  //     return (
-  //       <ErrorPage
-  //         errorMsg={`403 Unauthorized. ${role} is not permitted to access this route.`}
-  //       />
-  //     );
-  //   }
-  // };
-
   render() {
     const { theme } = this.state;
 
@@ -157,7 +72,7 @@ class App extends Component {
                   </Route>
                   <Route
                     render={() => {
-                      return <ErrorPage code="404" />;
+                      return <ErrorPage code={404} />;
                     }}
                   />
                 </Switch>
@@ -182,7 +97,7 @@ class App extends Component {
 
                 <Route
                   render={() => {
-                    return <ErrorPage code="401" />;
+                    return <ErrorPage code={401} />;
                   }}
                 />
               </Switch>

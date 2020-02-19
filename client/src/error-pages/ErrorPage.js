@@ -85,8 +85,8 @@ class ErrorPage extends Component {
 
     const conditionalRendering = () => {
       switch (code) {
-        case "404":
-        case "400":
+        case 404:
+        case 403:
           return (
             <Button
               type="submit"
@@ -99,7 +99,7 @@ class ErrorPage extends Component {
               Go back
             </Button>
           );
-        case "401":
+        case 401:
           return (
             <Button
               type="submit"
