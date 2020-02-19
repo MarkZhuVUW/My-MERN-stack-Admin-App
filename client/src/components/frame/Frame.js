@@ -188,12 +188,10 @@ function FrameContent(props) {
     const { pathname } = props.location;
     //trim out the "" in the last index of the array
     var splittedPathname = pathname.split("/");
-    console.log(splittedPathname);
 
     while (splittedPathname[splittedPathname.length - 1] === "") {
       if (splittedPathname.length - 1 === 0) break;
       splittedPathname.splice(splittedPathname.length - 1, 1);
-      console.log(splittedPathname);
     }
 
     switch (splittedPathname[splittedPathname.length - 1]) {

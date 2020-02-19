@@ -157,7 +157,6 @@ class App extends Component {
                   </Route>
                   <Route
                     render={() => {
-                      console.log(123132);
                       return <ErrorPage code="404" />;
                     }}
                   />
