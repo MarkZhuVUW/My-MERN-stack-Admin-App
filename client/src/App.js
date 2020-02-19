@@ -2,6 +2,7 @@
 import { enUS, zhCN } from "@material-ui/core/locale";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import Frame from "components/frame/Frame";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
@@ -33,13 +34,13 @@ class App extends Component {
     this.props.loadUser();
   }
 
-  static propTypes = {};
+  static propTypes = {
+    authenticated: PropTypes.bool.isRequired
+  };
 
   render() {
     const { theme } = this.state;
-    const isAuthenticated =
-      localStorage.getItem("authenticated") == "true" ? true : false;
-    console.log(isAuthenticated);
+
     const themeCallback = () => {
       this.setState({
         theme: createMuiTheme(
@@ -60,11 +61,10 @@ class App extends Component {
       <>
         <ThemeProvider theme={theme}>
           <HashRouter basename="/">
-            <Switch>
-              <Route exact path="/signin" component={SignInSide} />
-              <Route exact path="/signup" component={SignUp} />
-            </Switch>
-            {isAuthenticated ? (
+            <Route exact path="/signin" component={SignInSide} />
+            <Route exact path="/signup" component={SignUp} />
+
+            {this.props.authenticated ? (
               <>
                 <Switch>
                   <Route path="/frame">
@@ -72,7 +72,7 @@ class App extends Component {
                   </Route>
                   <Route
                     render={() => {
-                      return <ErrorPage code="404" />;
+                      return <ErrorPage code={404} />;
                     }}
                   />
                 </Switch>
@@ -94,9 +94,10 @@ class App extends Component {
                     return <Redirect to="/signin" />;
                   }}
                 />
+
                 <Route
                   render={() => {
-                    return <ErrorPage code="401" />;
+                    return <ErrorPage code={401} />;
                   }}
                 />
               </Switch>
@@ -109,6 +110,7 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.auth.user
+  user: state.auth.user,
+  authenticated: state.auth.authenticated
 });
 export default connect(mapStateToProps, { loadUser })(App);
