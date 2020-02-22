@@ -18,7 +18,7 @@ const en = {
   dashboard: {
     menu: "Home",
     route: "dashboard",
-    message: `This page uses fake data for demonstration purposes only.`,
+    message: `The graphs use fake data for demonstration purposes only.`,
     websiteViews: "Website Views",
     companies: "Company Statistics",
     table: {

@@ -96,19 +96,10 @@ function DashboardContent(props) {
       display: "flex",
       overflow: "auto",
       flexDirection: "column"
-    },
-    fixedHeight: {
-      height: 260
-    },
-    smallScreenFixedHeight: {
-      height: 360
     }
   }));
 
   const classes = useStyles();
-  // const fixedHeightPaper = props.isSmallScreen
-  //   ? clsx(classes.paper, classes.fixedHeight)
-  //   : clsx(classes.paper, classes.smallScreenFixedHeight);
 
   const columns = [
     {
@@ -221,7 +212,7 @@ function DashboardContent(props) {
   };
 
   return (
-    <>
+    <div>
       <Breadcrumb
         items={[[i18n("frame.menu"), "/"], [i18n("dashboard.route")]]}
       />
@@ -267,12 +258,11 @@ function DashboardContent(props) {
       <p
         style={{
           width: "100%",
-          textAlign: "center",
-          color: "grey"
+          textAlign: "center"
         }}
       >
         {i18n("dashboard.message")}
       </p>
-    </>
+    </div>
   );
 }

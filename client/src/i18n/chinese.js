@@ -16,7 +16,7 @@ const chinese = {
   dashboard: {
     menu: "主页",
     route: "主页",
-    message: `本页使用假数据..`,
+    message: `统计图用的假数据..有空再做`,
     websiteViews: "浏览量",
     companies: "公司统计",
 
