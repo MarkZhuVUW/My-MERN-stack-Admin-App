@@ -1,20 +1,15 @@
-import { Box, makeStyles, Paper, Typography } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 // import { StyleSheet } from "@react-pdf/renderer";
 import { i18n } from "i18n";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Document, Page, pdfjs } from "react-pdf";
 import { connect } from "react-redux";
 import "swagger-ui/dist/swagger-ui.css";
 import Breadcrumb from "view/shared/Breadcrumb";
-import pdfCV from "./Mark_Zhu_CV.pdf";
-import PageNumMenu from "./PageNumMenu";
-import Link from "@material-ui/core/Link";
 import { logDownload } from "../../../../actions/adminActions";
 import { clearErrors } from "../../../../actions/errorActions";
 
-import { withStyles } from "@material-ui/styles";
-import PropTypes from "prop-types";
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+// pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 class CV extends Component {
   componentDidMount() {}
@@ -145,7 +140,10 @@ function CVContent(props) {
         items={[[i18n("frame.menu"), "/"], [i18n("cv.route")]]}
       />
 
-      <Paper
+      <Typography>
+        Oops it appears I dont want you guys to see my CV for now :)
+      </Typography>
+      {/* <Paper
         className={
           props.isSmallScreen ? classes.smallScreenPaper : classes.paper
         }
@@ -189,7 +187,7 @@ function CVContent(props) {
             </Box>
           </Link>
         </Box>
-      ) : null}
+      ) : null} */}
     </>
   );
 }

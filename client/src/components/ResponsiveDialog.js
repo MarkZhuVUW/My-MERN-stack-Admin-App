@@ -1,3 +1,4 @@
+import { Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -12,10 +13,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import MediaQuery from "react-responsive";
 //redux
-import { getTFA, skipTFA, TFASetup, TFAVerify } from "../actions/authActions";
+import {
+  getTFA,
+  logout,
+  skipTFA,
+  TFASetup,
+  TFAVerify
+} from "../actions/authActions";
 import { clearErrors } from "../actions/errorActions";
-import { logout } from "../actions/authActions";
-import { Typography } from "@material-ui/core";
 
 const theme = createMuiTheme({
   spacing: 4
@@ -127,6 +132,7 @@ class ResponsiveDialog extends Component {
 
   skipTFA = () => {
     this.props.skipTFA();
+    this.props.loginSuccessCallback(true);
   };
 
   render() {
@@ -187,9 +193,19 @@ class ResponsiveDialog extends Component {
                   <Button onClick={this.skipTFA}>skip TFA</Button>
                 </DialogActions>
               ) : (
-                <Typography>
-                  Please click on the backdrop to close this dialog
-                </Typography>
+                <>
+                  <Typography>
+                    Please click on the backdrop to close this dialog or click
+                    the button
+                  </Typography>
+                  <Button
+                    onClick={() => {
+                      this.props.logout();
+                    }}
+                  >
+                    logout
+                  </Button>
+                </>
               )}
             </div>
           ) : (

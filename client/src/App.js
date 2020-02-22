@@ -4,6 +4,7 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import Frame from "components/frame/Frame";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
+import Particles from "react-particles-js";
 import { connect } from "react-redux";
 import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
 import { loadUser } from "./actions/authActions";
@@ -11,7 +12,6 @@ import "./App.css";
 import SignInSide from "./components/auth/SignInSide";
 import SignUp from "./components/auth/SignUp";
 import ErrorPage from "./error-pages/ErrorPage";
-
 const theme = createMuiTheme(
   {
     palette: {
@@ -19,7 +19,7 @@ const theme = createMuiTheme(
         localStorage.getItem("theme") === "dark"
           ? { main: "#303f9f" }
           : { main: "#1976d2" },
-      type: localStorage.getItem("theme") == "dark" ? "dark" : "light"
+      type: localStorage.getItem("theme") === "dark" ? "dark" : "light"
     }
   },
   localStorage.getItem("language") === "en" ? enUS : zhCN
@@ -50,7 +50,7 @@ class App extends Component {
                 localStorage.getItem("theme") === "dark"
                   ? { main: "#303f9f" }
                   : { main: "#1976d2" },
-              type: localStorage.getItem("theme") == "dark" ? "dark" : "light"
+              type: localStorage.getItem("theme") === "dark" ? "dark" : "light"
             }
           },
           localStorage.getItem("language") == "en" ? enUS : zhCN
@@ -61,11 +61,8 @@ class App extends Component {
       <>
         <ThemeProvider theme={theme}>
           <HashRouter basename="/">
-            <Route exact path="/signin" component={SignInSide} />
-            <Route exact path="/signup" component={SignUp} />
-
             {this.props.authenticated ? (
-              <>
+              <div>
                 <Switch>
                   <Route path="/frame">
                     <Frame themeCallback={themeCallback} />
@@ -84,23 +81,60 @@ class App extends Component {
                     return <Redirect to="/frame" />;
                   }}
                 />
-              </>
+              </div>
             ) : (
-              <Switch>
-                <Route
-                  exact
-                  path="/"
-                  render={() => {
-                    return <Redirect to="/signin" />;
+              <>
+                <Particles
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%"
+                  }}
+                  params={{
+                    particles: {
+                      number: {
+                        value: 50
+                      },
+                      size: {
+                        value: 3
+                      }
+                    },
+                    interactivity: {
+                      events: {
+                        onhover: {
+                          enable: true,
+                          mode: "repulse"
+                        }
+                      }
+                    }
                   }}
                 />
-
-                <Route
-                  render={() => {
-                    return <ErrorPage code={401} />;
+                <div
+                  style={{
+                    zIndex: 1,
+                    position: "relative"
                   }}
-                />
-              </Switch>
+                >
+                  <Switch>
+                    <Route exact path="/signin" component={SignInSide} />
+                    <Route exact path="/signup" component={SignUp} />
+                    <Route
+                      render={() => {
+                        return <ErrorPage code={401} />;
+                      }}
+                    />
+                  </Switch>
+                  <Route
+                    exact
+                    path="/"
+                    render={() => {
+                      return <Redirect to="/signin" />;
+                    }}
+                  />
+                </div>
+              </>
             )}
           </HashRouter>
         </ThemeProvider>

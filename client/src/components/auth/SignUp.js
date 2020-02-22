@@ -13,6 +13,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { withStyles } from "@material-ui/styles";
+import FacebookProgress from "components/FacebookProgress";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -23,7 +24,6 @@ import { clearErrors } from "../../actions/errorActions";
 import "../../css3/bouncingEffect.css";
 import ResponsiveDialog from "../ResponsiveDialog";
 import RoleCheckboxes from "./RoleCheckboxes";
-import FacebookProgress from "components/FacebookProgress";
 
 const theme = createMuiTheme({
   spacing: 4
@@ -32,20 +32,24 @@ const styles = {
   content: {
     flexGrow: 1,
     height: "100vh",
-    overflow: "auto"
+    overflow: "auto",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center"
   },
   root: {
     backgroundColor:
       localStorage.getItem("theme") === "dark"
         ? theme.palette.grey[900]
-        : theme.palette.grey[300]
+        : theme.palette.grey[600]
   },
   paper: {
-    padding: theme.spacing(10, 10),
+    padding: theme.spacing(8, 4),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    marginTop: "30%"
+    justifyContent: "center"
   },
   avatar: {
     margin: theme.spacing(1),
@@ -278,7 +282,9 @@ class SignUp extends Component {
                         color:
                           localStorage.getItem("theme") === "dark"
                             ? "white"
-                            : "black"
+                            : "black",
+                        position: "relative",
+                        zIndex: 1
                       }}
                     >
                       go back

@@ -1,3 +1,4 @@
+import { Zoom } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
@@ -23,7 +24,6 @@ import { login } from "../../actions/authActions";
 import { clearErrors } from "../../actions/errorActions";
 import "../../css3/bouncingEffect.css";
 import ResponsiveDialog from "../ResponsiveDialog";
-import { Zoom } from "@material-ui/core";
 
 const theme = createMuiTheme({
   spacing: 4
@@ -31,7 +31,10 @@ const theme = createMuiTheme({
 
 const styles = {
   root: {
-    backgroundColor: "black",
+    backgroundColor:
+      localStorage.getItem("theme") === "dark"
+        ? theme.palette.grey[900]
+        : theme.palette.grey[600],
     flexGrow: 1,
     height: "100vh",
     overflow: "auto"
@@ -42,7 +45,7 @@ const styles = {
     backgroundColor:
       localStorage.getItem("theme") === "dark"
         ? theme.palette.grey[900]
-        : theme.palette.grey[300],
+        : theme.palette.grey[600],
     backgroundSize: "cover",
     backgroundPosition: "center"
   },
@@ -56,8 +59,7 @@ const styles = {
     padding: theme.spacing(4, 4),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    marginTop: "20%"
+    alignItems: "center"
   },
   avatar: {
     margin: theme.spacing(1),
@@ -145,7 +147,7 @@ class SignInSide extends Component {
         isLoading: false
       });
       this.handleLoginSuccess();
-      this.props.history.push("/frame/");
+      this.props.history.push("/");
     }
   };
 
@@ -190,7 +192,7 @@ class SignInSide extends Component {
       return <MuiAlert elevation={6} variant="filled" {...props} />;
     }
     return (
-      <div style={{ backgroundColor: "#E9EAED" }}>
+      <div>
         {/* if user credentials are correct. Do a google 2fa before login to dashboard */}
         <Snackbar
           open={this.state.forgotPasswordClicked}
@@ -209,6 +211,7 @@ class SignInSide extends Component {
             cb={this.callback}
             selectedRole={this.state.selectedRole}
             responsiveDialogCallback={responsiveDialogCallback}
+            loginSuccessCallback={this.callback}
           />
         ) : null}
 
@@ -227,8 +230,12 @@ class SignInSide extends Component {
             style={{
               backgroundColor:
                 localStorage.getItem("theme") === "dark"
-                  ? theme.palette.grey[700]
-                  : theme.palette.grey[300]
+                  ? theme.palette.grey[900]
+                  : theme.palette.grey[600],
+              alignItems: "center",
+              justifyContent: "center",
+              display: "flex",
+              flexDirection: "column"
             }}
           >
             <Zoom in={true} timeout={500}>
@@ -296,7 +303,6 @@ class SignInSide extends Component {
                       <Grid item xs>
                         <NavLink
                           to="#"
-                          variant="body2"
                           onClick={() =>
                             this.setState({
                               forgotPasswordClicked: true
@@ -307,7 +313,9 @@ class SignInSide extends Component {
                             color:
                               localStorage.getItem("theme") === "dark"
                                 ? "white"
-                                : "black"
+                                : "black",
+                            zIndex: 1,
+                            position: "relative"
                           }}
                         >
                           Forgot password?
@@ -315,17 +323,19 @@ class SignInSide extends Component {
                       </Grid>
                       <Grid item>
                         <NavLink
-                          to="./signup"
+                          to="/signup"
                           variant="body2"
                           style={{
                             textDecoration: "none",
                             color:
                               localStorage.getItem("theme") === "dark"
                                 ? "white"
-                                : "black"
+                                : "black",
+                            zIndex: 1,
+                            position: "relative"
                           }}
                         >
-                          {"Don't have an account? Sign Up"}
+                          Don't have an account? Sign Up
                         </NavLink>
                       </Grid>
                     </Grid>

@@ -16,6 +16,7 @@ import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import ReactGA from "react-ga";
+import Particles from "react-particles-js";
 //redux
 import { connect } from "react-redux";
 import { useMediaQuery } from "react-responsive";
@@ -299,68 +300,103 @@ function FrameContent(props) {
   const isIndexInvalid = index === 403 || index === 404;
   return (
     <>
-      {isIndexInvalid ? (
-        <ErrorPage code={index} />
-      ) : (
-        <div className={classes.root}>
-          <CssBaseline />
-          {FrameAppBar}
-          {FrameDrawer}
-
-          <main className={classes.content}>
-            <div className={classes.appBarSpacer} />
-
-            <Slide timeout={500} direction="left" in={!open || !isSmallScreen}>
-              <Container
-                maxWidth="xl"
-                className={
-                  isSmallScreen ? classes.mobileContainer : classes.container
+      {localStorage.getItem("theme") == "dark" ? (
+        <Particles
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%"
+          }}
+          params={{
+            particles: {
+              number: {
+                value: 50
+              },
+              size: {
+                value: 3
+              }
+            },
+            interactivity: {
+              events: {
+                onhover: {
+                  enable: true,
+                  mode: "repulse"
                 }
+              }
+            }
+          }}
+        />
+      ) : null}
+      <div style={{ zIndex: 1, position: "relative" }}>
+        {isIndexInvalid ? (
+          <ErrorPage code={index} />
+        ) : (
+          <div className={classes.root}>
+            <CssBaseline />
+            {FrameAppBar}
+            {FrameDrawer}
+
+            <main className={classes.content}>
+              <div className={classes.appBarSpacer} />
+
+              <Slide
+                timeout={500}
+                direction="left"
+                in={!open || !isSmallScreen}
               >
-                <Route
-                  exact
-                  path="/frame"
-                  render={() => {
-                    console.log(props.user.role);
+                <Container
+                  maxWidth="xl"
+                  className={
+                    isSmallScreen ? classes.mobileContainer : classes.container
+                  }
+                >
+                  <Route
+                    exact
+                    path="/frame"
+                    render={() => {
+                      console.log(props.user.role);
 
-                    return props.user.role === "admin" ? (
-                      <Redirect to="/frame/dashboard" />
-                    ) : (
-                      <Redirect to="/frame/cv" />
-                    );
-                  }}
-                />
+                      return props.user.role === "admin" ? (
+                        <Redirect to="/frame/dashboard" />
+                      ) : (
+                        <Redirect to="/frame/cv" />
+                      );
+                    }}
+                  />
 
-                {props.user.role === "admin" ? (
-                  <Switch>
-                    <Route exact path="/frame/dashboard">
-                      <Dashboard isSmallScreen={isSmallScreen} />
-                    </Route>
-                    <Route exact path="/frame/developer">
-                      <Developer
-                        isSmallScreen={isSmallScreen}
-                        className={classes.developer}
-                      />
-                    </Route>
-                    <Route exact path="/frame/useradmin">
-                      <UserAdmin isSmallScreen={isSmallScreen} />
-                    </Route>
-                    <Route exact path="/frame/cv">
-                      <CV isSmallScreen={isSmallScreen} />
-                    </Route>
-                  </Switch>
-                ) : (
-                  <Switch>
-                    <Route exact path="/frame/cv">
-                      <CV isSmallScreen={isSmallScreen} />
-                    </Route>
-                  </Switch>
-                )}
-              </Container>
-            </Slide>
-          </main>
-        </div>
-      )}
+                  {props.user.role === "admin" ? (
+                    <Switch>
+                      <Route exact path="/frame/dashboard">
+                        <Dashboard isSmallScreen={isSmallScreen} />
+                      </Route>
+                      <Route exact path="/frame/developer">
+                        <Developer
+                          isSmallScreen={isSmallScreen}
+                          className={classes.developer}
+                        />
+                      </Route>
+                      <Route exact path="/frame/useradmin">
+                        <UserAdmin isSmallScreen={isSmallScreen} />
+                      </Route>
+                      <Route exact path="/frame/cv">
+                        <CV isSmallScreen={isSmallScreen} />
+                      </Route>
+                    </Switch>
+                  ) : (
+                    <Switch>
+                      <Route exact path="/frame/cv">
+                        <CV isSmallScreen={isSmallScreen} />
+                      </Route>
+                    </Switch>
+                  )}
+                </Container>
+              </Slide>
+            </main>
+          </div>
+        )}
+      </div>
     </>
   );
 }
