@@ -64,7 +64,7 @@ const en = {
   },
 
   errors: {
-    401: "Go to login page",
+    401: "Please login first",
     403: "Do not have to access to this page",
     404: "Page Not Found",
     500: "Internal Error",

@@ -111,29 +111,24 @@ class App extends Component {
                     }
                   }}
                 />
-                <div
-                  style={{
-                    zIndex: 1,
-                    position: "relative"
-                  }}
-                >
-                  <Switch>
-                    <Route exact path="/signin" component={SignInSide} />
-                    <Route exact path="/signup" component={SignUp} />
-                    <Route
-                      render={() => {
-                        return <ErrorPage code={401} />;
-                      }}
-                    />
-                  </Switch>
+
+                <Switch>
+                  <Route exact path="/signin" component={SignInSide} />
+                  <Route exact path="/signup" component={SignUp} />
+
                   <Route
-                    exact
-                    path="/"
                     render={() => {
-                      return <Redirect to="/signin" />;
+                      return <ErrorPage code={401} />;
                     }}
                   />
-                </div>
+                </Switch>
+                <Route
+                  exact
+                  path="/"
+                  render={() => {
+                    return <Redirect to="/signin" />;
+                  }}
+                />
               </>
             )}
           </HashRouter>

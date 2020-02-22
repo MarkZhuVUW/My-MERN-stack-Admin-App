@@ -117,7 +117,12 @@ class ErrorPage extends Component {
       }
     };
     return (
-      <div>
+      <div
+        style={{
+          zIndex: 1,
+          position: "relative"
+        }}
+      >
         <CssBaseline />
         <AppBar position="relative">
           <Toolbar className={classes.topBar}>

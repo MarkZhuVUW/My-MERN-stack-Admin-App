@@ -329,7 +329,7 @@ function FrameContent(props) {
           }}
         />
       ) : null}
-      <div style={{ zIndex: 1, position: "relative" }}>
+      <div>
         {isIndexInvalid ? (
           <ErrorPage code={index} />
         ) : (
