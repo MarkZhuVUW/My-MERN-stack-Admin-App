@@ -19,7 +19,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { NavLink, withRouter } from "react-router-dom";
 import compose from "recompose/compose";
-import { register } from "../../actions/authActions";
+import { clearSuccessMsg, register } from "../../actions/authActions";
 import { clearErrors } from "../../actions/errorActions";
 import "../../css3/bouncingEffect.css";
 import ResponsiveDialog from "../ResponsiveDialog";
@@ -36,7 +36,9 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    zIndex: 1,
+    position: "relative"
   },
   root: {
     backgroundColor:
@@ -72,7 +74,10 @@ class SignUp extends Component {
     selectedRole: "",
     checked: false,
     company: "",
-    isLoading: false
+    isLoading: false,
+    emailErrorMsg: null,
+    passwordErrorMsg: null,
+    nameErrorMsg: null
   };
 
   static propTypes = {
@@ -81,6 +86,8 @@ class SignUp extends Component {
     userLoaded: PropTypes.bool,
     clearErrors: PropTypes.func.isRequired,
     successMsg: PropTypes.string,
+    clearSuccessMsg: PropTypes.func.isRequired,
+
     //withRouter
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
@@ -102,15 +109,49 @@ class SignUp extends Component {
     // Clear errors
     this.props.clearErrors();
   };
+  validateName = name => {
+    if (name === "") this.setState({ nameErrorMsg: "Name cannot be empty." });
+    else this.setState({ nameErrorMsg: null });
+  };
+  validateEmail = email => {
+    if (email === "")
+      this.setState({ emailErrorMsg: "Email cannot be empty." });
+    else if (!email.includes("@"))
+      this.setState({ emailErrorMsg: "Incorrect format" });
+    else this.setState({ emailErrorMsg: null });
+  };
+  validatePassword = password => {
+    if (password === "")
+      this.setState({ passwordErrorMsg: "Password cannot be empty." });
+    else this.setState({ passwordErrorMsg: null });
+  };
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
+    if (e.target.name === "name") this.validateName(e.target.value);
+    else if (e.target.name === "email") this.validateEmail(e.target.value);
+    else if (e.target.name === "password")
+      this.validatePassword(e.target.value);
   };
 
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email, password, selectedRole, company } = this.state;
+    const {
+      name,
+      email,
+      password,
+      selectedRole,
+      company,
+      nameErrorMsg,
+      emailErrorMsg,
+      passwordErrorMsg
+    } = this.state;
+    this.validateName(name);
+    this.validateEmail(email);
+    this.validatePassword(password);
+    if (emailErrorMsg || passwordErrorMsg || nameErrorMsg) return;
+
     this.setState({
       isLoading: true
     });
@@ -124,10 +165,13 @@ class SignUp extends Component {
     };
 
     // Attempt to register
-    this.props.register(newUser);
+    this.props.register(newUser).then();
 
     //clear errors.
     this.toggle();
+
+    //clear success message
+    this.props.clearSuccessMsg();
   };
 
   render() {
@@ -141,6 +185,8 @@ class SignUp extends Component {
       this.setState({
         isLoading: false
       });
+      //clear success msg
+      this.props.clearSuccessMsg();
     };
     return (
       <div className={classes.root}>
@@ -176,14 +222,14 @@ class SignUp extends Component {
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <TextField
-                      autoComplete="fname"
                       name="name"
                       variant="outlined"
                       required
                       fullWidth
                       id="name"
                       label="Name"
-                      autoFocus
+                      error={this.state.nameErrorMsg ? true : false}
+                      helperText={this.state.nameErrorMsg}
                       onChange={this.onChange}
                     />
                   </Grid>
@@ -196,7 +242,8 @@ class SignUp extends Component {
                       id="email"
                       label="Email Address"
                       name="email"
-                      autoComplete="email"
+                      error={this.state.emailErrorMsg ? true : false}
+                      helperText={this.state.emailErrorMsg}
                       onChange={this.onChange}
                     />
                   </Grid>
@@ -209,7 +256,8 @@ class SignUp extends Component {
                       label="Password"
                       type="password"
                       id="password"
-                      autoComplete="current-password"
+                      error={this.state.passwordErrorMsg ? true : false}
+                      helperText={this.state.passwordErrorMsg}
                       onChange={this.onChange}
                     />
                   </Grid>
@@ -218,7 +266,6 @@ class SignUp extends Component {
                       <Slide direction="left" in={true}>
                         <TextField
                           variant="outlined"
-                          required
                           fullWidth
                           name="company"
                           label="company(optional)"
@@ -256,7 +303,8 @@ class SignUp extends Component {
                   disabled={
                     (this.state.selectedRole === "employer" &&
                       !this.state.checked) ||
-                    this.state.isLoading
+                    this.state.isLoading ||
+                    this.state.selectedRole == ""
                   }
                   type="submit"
                   fullWidth
@@ -307,5 +355,5 @@ const mapStateToProps = state => ({
 });
 export default compose(
   withStyles(styles),
-  connect(mapStateToProps, { register, clearErrors })
+  connect(mapStateToProps, { register, clearErrors, clearSuccessMsg })
 )(withRouter(SignUp));

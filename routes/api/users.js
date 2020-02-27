@@ -85,7 +85,8 @@ router.patch("/:id/logs", auth, (req, res) => {
     email: log.email,
     name: log.name,
     explanation: log.explanation,
-    role: log.role
+    role: log.role,
+    company: log.company
   })
     .save()
     .then(savedLog => {

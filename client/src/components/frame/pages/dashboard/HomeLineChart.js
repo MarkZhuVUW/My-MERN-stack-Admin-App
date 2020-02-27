@@ -5,8 +5,37 @@ import React from "react";
 export default class HomeLineChart extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      //group by role of user.
+      // pageViewData: this.groupByRole()
+    };
     this.chartRef = React.createRef();
   }
+
+  /**
+   *Group logs by page.
+   * Example value:
+   * {
+   *  dashboard: 10,
+   *  developer: 25,
+   *  useradmin: 5,
+   *  cv: 20,
+   *  portfolio: 30
+   * }
+   *
+   * @memberof HomeLineChart
+   */
+  // groupByPage = () => {
+  //   var groupedRoles = [];
+  //   this.props.data
+  //     .map(log => log[4])
+  //     .forEach(element => {
+  //       if (groupedRoles[element]) ++groupedRoles[element];
+  //       else groupedRoles[element] = 1;
+  //     });
+
+  //   return groupedRoles;
+  // };
 
   componentDidUpdate() {
     this.myChart.update();
@@ -29,11 +58,11 @@ export default class HomeLineChart extends React.Component {
           }
         ],
         labels: [
-          i18n("home.charts.red"),
-          i18n("home.charts.green"),
-          i18n("home.charts.yellow"),
-          i18n("home.charts.grey"),
-          i18n("home.charts.blue")
+          i18n("dashboard.lineChart.dashboard"),
+          i18n("dashboard.lineChart.developer"),
+          i18n("dashboard.lineChart.useradmin"),
+          i18n("dashboard.lineChart.cv"),
+          i18n("dashboard.lineChart.portfolio")
         ]
       },
       options: {

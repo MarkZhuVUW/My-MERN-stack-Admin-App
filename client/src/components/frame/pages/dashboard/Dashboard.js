@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/styles";
 import EditableTable from "components/EditableTable";
+import FacebookProgress from "components/FacebookProgress";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
@@ -64,12 +65,24 @@ class Dashboard extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, allLogs } = this.props;
+    if (!allLogs)
+      return (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <FacebookProgress />
+        </div>
+      );
 
     return (
       <div>
         <DashboardContent
-          allLogs={this.props.allLogs}
+          allLogs={allLogs}
           deleteLogCallback={this.deleteLogCallback}
         />
       </div>
@@ -135,6 +148,14 @@ function DashboardContent(props) {
       }
     },
     {
+      name: i18n("dashboard.table.company"),
+      label: i18n("dashboard.table.company"),
+      options: {
+        filter: true,
+        sort: true
+      }
+    },
+    {
       name: i18n("dashboard.table.explanation"),
       label: i18n("dashboard.table.explanation"),
       options: {
@@ -166,6 +187,7 @@ function DashboardContent(props) {
           log.name,
           log.email,
           log.role,
+          log.company,
           log.explanation,
           log.type,
           new Date(log.date_logged).toString()
@@ -223,25 +245,25 @@ function DashboardContent(props) {
             <Typography component="h2" variant="h6">
               {i18n("dashboard.doughnutChart.title")}
             </Typography>
-            <HomeDoughnutChart />
+            <HomeDoughnutChart data={data} />
           </Paper>
         </Grid>
 
         <Grid item xs={12} md={4} lg={4}>
           <Paper className={classes.paper}>
             <Typography component="h2" variant="h6">
-              {i18n("dashboard.websiteViews")}
+              {i18n("dashboard.lineChart.title")}
             </Typography>
 
-            <HomeLineChart />
+            <HomeLineChart data={data} />
           </Paper>
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
           <Paper className={classes.paper}>
             <Typography component="h2" variant="h6">
-              {i18n("dashboard.companies")}
+              {i18n("dashboard.polarChart.title")}
             </Typography>
-            <HomePolarChart />
+            <HomePolarChart data={data} />
           </Paper>
         </Grid>
 

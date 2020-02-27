@@ -2,6 +2,8 @@ const en = {
   app: {
     title: "MERN-stack App"
   },
+  loginPage: {},
+  registerPage: {},
   frame: {
     menu: "frame",
     adminApp: "Admin App"
@@ -19,8 +21,7 @@ const en = {
     menu: "Home",
     route: "dashboard",
     message: `The graphs use fake data for demonstration purposes only.`,
-    websiteViews: "Website Views",
-    companies: "Company Statistics",
+
     table: {
       userActivities: "User Activities",
       name: "name",
@@ -31,13 +32,27 @@ const en = {
       dateLogged: "date logged"
     },
     doughnutChart: {
-      title: "Login Statistics"
+      title: "Login Statistics",
+      employer: "employer",
+      admin: "admin",
+      guest: "guest"
+    },
+    lineChart: {
+      title: "Website Views",
+      dashboard: "dashboard",
+      developer: "developer",
+      useradmin: "useradmin",
+      cv: "cv",
+      portfolio: "portfolio"
+    },
+    polarChart: {
+      title: "Employer Action Statistics"
     }
   },
   useradmin: {
     menu: "UserAdmin",
     route: "useradmin",
-    message: `This page uses fake data for demonstration purposes only.`,
+    message: `This page uses data from my mongodb database`,
     userDetail: "User Detail",
     email: "email",
     company: "company",

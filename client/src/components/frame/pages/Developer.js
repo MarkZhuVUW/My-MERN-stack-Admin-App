@@ -61,11 +61,8 @@ function DeveloperContent(props) {
       paddingBottom: theme.spacing(1)
     },
     paper: {
-      padding: theme.spacing(props.isSmallScreen ? 1 : 4),
-      display: "flex",
-      overflow: "auto",
-      flexDirection: "column",
-      backgroundColor: "white"
+      backgroundColor: "white",
+      padding: theme.spacing(1, 1)
     },
 
     heading: {

@@ -16,9 +16,7 @@ const chinese = {
   dashboard: {
     menu: "主页",
     route: "主页",
-    message: `统计图用的假数据..有空再做`,
-    websiteViews: "浏览量",
-    companies: "公司统计",
+    message: `统计图数据来自mongodb database.`,
 
     table: {
       userActivities: "用户活动",
@@ -30,7 +28,21 @@ const chinese = {
       dateLogged: "记录日期"
     },
     doughnutChart: {
-      title: "登录统计"
+      title: "登录统计",
+      employer: "老板",
+      admin: "管理员",
+      guest: "游客"
+    },
+    lineChart: {
+      title: "页面浏览统计",
+      dashboard: "主页",
+      developer: "开发者",
+      useradmin: "用户管理",
+      cv: "简历",
+      portfolio: "个人主页"
+    },
+    polarChart: {
+      title: "老板活动统计"
     }
   },
   useradmin: {

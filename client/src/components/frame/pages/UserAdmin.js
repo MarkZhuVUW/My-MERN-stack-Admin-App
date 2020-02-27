@@ -24,7 +24,6 @@ import AnimatedProgress from "../../../components/animatedProgress";
 import DropdownSelection from "../../../components/dropdownSelect";
 import EditableTable from "../../../components/EditableTable";
 import ResponsiveDialog from "../../../components/ResponsiveDialog";
-// import ListOfFirmwares from "../shared/ListOfFirmwares";
 const styles = {};
 
 class UserAdmin extends Component {

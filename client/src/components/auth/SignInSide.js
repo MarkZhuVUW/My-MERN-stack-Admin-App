@@ -59,7 +59,9 @@ const styles = {
     padding: theme.spacing(4, 4),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
+    zIndex: 1,
+    position: "relative"
   },
   avatar: {
     margin: theme.spacing(1),
@@ -82,7 +84,9 @@ class SignInSide extends Component {
     selectedRole: "",
     forgotPasswordClicked: false,
     checked: false,
-    isLoading: false
+    isLoading: false,
+    emailErrorMsg: null,
+    passwordErrorMsg: null
   };
 
   static propTypes = {
@@ -94,6 +98,7 @@ class SignInSide extends Component {
 
     user: PropTypes.object,
     logLoginSuccess: PropTypes.func,
+
     //withRouter
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
@@ -119,17 +124,16 @@ class SignInSide extends Component {
     this.props.clearErrors();
   };
 
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
   onSubmit = e => {
     e.preventDefault();
 
+    const { email, password, emailErrorMsg, passwordErrorMsg } = this.state;
+    this.validateEmail(email);
+    this.validatePassword(password);
+    if (emailErrorMsg || passwordErrorMsg) return;
     this.setState({
       isLoading: true
     });
-    const { email, password } = this.state;
 
     const user = {
       email,
@@ -167,9 +171,27 @@ class SignInSide extends Component {
 
     this.toggle();
   };
+  validateEmail = email => {
+    if (email === "")
+      this.setState({ emailErrorMsg: "Email cannot be empty." });
+    else if (!email.includes("@"))
+      this.setState({ emailErrorMsg: "Incorrect format" });
+    else this.setState({ emailErrorMsg: null });
+  };
+  validatePassword = password => {
+    if (password === "")
+      this.setState({ passwordErrorMsg: "Password cannot be empty." });
+    else this.setState({ passwordErrorMsg: null });
+  };
 
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+    if (e.target.name === "email") this.validateEmail(e.target.value);
+    else if (e.target.name === "password")
+      this.validatePassword(e.target.value);
+  };
   render() {
-    const { classes, isTFAing, userLoaded, error, isLoading } = this.props;
+    const { classes, userLoaded, error } = this.props;
     const { email, msg } = this.state;
 
     const responsiveDialogCallback = () => {
@@ -191,6 +213,7 @@ class SignInSide extends Component {
     function Alert(props) {
       return <MuiAlert elevation={6} variant="filled" {...props} />;
     }
+
     return (
       <div>
         {/* if user credentials are correct. Do a google 2fa before login to dashboard */}
@@ -257,17 +280,17 @@ class SignInSide extends Component {
                     />
                   ) : null}
 
-                  <form className={classes.form} noValidate>
+                  <form className={classes.form}>
                     <TextField
                       variant="outlined"
                       margin="normal"
-                      required
                       fullWidth
+                      required
                       id="email"
                       label="Email Address"
                       name="email"
-                      autoComplete="email"
-                      autoFocus
+                      error={this.state.emailErrorMsg ? true : false}
+                      helperText={this.state.emailErrorMsg}
                       onChange={this.onChange}
                     />
                     <TextField
@@ -279,7 +302,8 @@ class SignInSide extends Component {
                       label="Password"
                       type="password"
                       id="password"
-                      autoComplete="current-password"
+                      error={this.state.passwordErrorMsg ? true : false}
+                      helperText={this.state.passwordErrorMsg}
                       onChange={this.onChange}
                     />
 

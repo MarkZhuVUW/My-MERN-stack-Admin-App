@@ -1,26 +1,33 @@
 import axios from "axios";
 import { returnErrors } from "./errorActions";
-
 import {
-  USER_LOADED,
-  USER_LOADING,
-  AUTH_ERROR,
-  LOGIN_SUCCESS,
-  LOGIN_FAIL,
-  LOGOUT_SUCCESS,
-  REGISTER_SUCCESS,
-  REGISTER_FAIL,
-  TFA_VERIFED,
-  TFA_SETUP_FAIL,
-  TFA_VERIFY_FAIL,
-  TFA_SETUP_SUCCESS,
-  TFA_LOADED,
   ALL_USERS_LOADED,
-  TFA_ING,
-  TFA_LOAD_FAIL,
+  AUTH_ERROR,
+  CLEAR_SUCCESS_MSG,
   LOADING,
-  USER_DELETED
+  LOGIN_FAIL,
+  LOGIN_SUCCESS,
+  LOGOUT_SUCCESS,
+  REGISTER_FAIL,
+  REGISTER_SUCCESS,
+  TFA_ING,
+  TFA_LOADED,
+  TFA_LOAD_FAIL,
+  TFA_SETUP_FAIL,
+  TFA_SETUP_SUCCESS,
+  TFA_VERIFED,
+  TFA_VERIFY_FAIL,
+  USER_DELETED,
+  USER_LOADED,
+  USER_LOADING
 } from "./types";
+
+// CLEAR Success message
+export const clearSuccessMsg = () => {
+  return {
+    type: CLEAR_SUCCESS_MSG
+  };
+};
 
 // Check token & load user
 export const loadUser = () => (dispatch, getState) => {

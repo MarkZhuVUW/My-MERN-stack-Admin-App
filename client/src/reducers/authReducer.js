@@ -1,6 +1,7 @@
 import {
   ALL_USERS_LOADED,
   AUTH_ERROR,
+  CLEAR_SUCCESS_MSG,
   LOADING,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
@@ -33,6 +34,12 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case CLEAR_SUCCESS_MSG:
+      return {
+        ...state,
+        successMsg: null
+      };
+
     case LOADING:
       return {
         ...state,
