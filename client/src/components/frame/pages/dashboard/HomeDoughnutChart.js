@@ -70,7 +70,7 @@ export default class HomeDoughnutChart extends React.Component {
    * @param {*} index
    */
   colorChooser = index => {
-    console.log(index);
+    // console.log(index);
     switch (index) {
       case 0:
         return "#FF6384";

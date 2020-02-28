@@ -19,7 +19,7 @@ class CV extends Component {
     clearErrors: PropTypes.func.isRequired
   };
   handleDownload = href => {
-    console.log(this.props.user);
+    // console.log(this.props.user);
 
     const { _id, name, email, role, company } = this.props.user;
 

@@ -7,6 +7,7 @@ import AccessibilityNewIcon from "@material-ui/icons/AccessibilityNew";
 import BeachAccessIcon from "@material-ui/icons/BeachAccess";
 import BusinessCenterIcon from "@material-ui/icons/BusinessCenter";
 import DirectionsWalkIcon from "@material-ui/icons/DirectionsWalk";
+import { i18n } from "i18n";
 import React from "react";
 const GreenCheckbox = withStyles({
   root: {
@@ -67,7 +68,7 @@ export default function RoleCheckboxes(props) {
             value="admin"
           />
         }
-        label="admin"
+        label={i18n("admin")}
       />
 
       <FormControlLabel
@@ -80,7 +81,7 @@ export default function RoleCheckboxes(props) {
             value="employer"
           />
         }
-        label="employer"
+        label={i18n("employer")}
       />
 
       <FormControlLabel
@@ -93,7 +94,7 @@ export default function RoleCheckboxes(props) {
             value="guest"
           />
         }
-        label="guest"
+        label={i18n("guest")}
       />
     </FormGroup>
   );

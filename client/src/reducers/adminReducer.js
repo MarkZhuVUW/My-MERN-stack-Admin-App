@@ -3,7 +3,8 @@ import {
   DOWNLOAD_LOGGED,
   LOADING,
   LOGIN_LOGGED,
-  LOG_DELETED
+  LOG_DELETED,
+  PAGE_VIEW_LOGGED
 } from "../actions/types";
 
 const initialState = {
@@ -16,6 +17,7 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case LOGIN_LOGGED:
     case DOWNLOAD_LOGGED:
+    case PAGE_VIEW_LOGGED:
     case LOG_DELETED:
       return {
         ...state,

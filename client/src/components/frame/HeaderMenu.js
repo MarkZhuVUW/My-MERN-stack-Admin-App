@@ -8,18 +8,18 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Person as AccountIcon, Send as SendIcon } from "@material-ui/icons";
-import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 import Brightness5Icon from "@material-ui/icons/Brightness5";
+import DraftsIcon from "@material-ui/icons/Drafts";
+import MailIcon from "@material-ui/icons/Mail";
+import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
 import TranslateIcon from "@material-ui/icons/Translate";
 import classNames from "classnames";
 import { i18n, setLanguageCode } from "i18n";
 import React, { useState } from "react";
-import UserAvatar from "../UserAvatar";
-import Logout from "../auth/Logout";
 import "../../css3/bouncingEffect.css";
-import DraftsIcon from "@material-ui/icons/Drafts";
-import MailIcon from "@material-ui/icons/Mail";
+import Logout from "../auth/Logout";
+import UserAvatar from "../UserAvatar";
 const useStyles = makeStyles(theme => ({
   logotype: {
     color: "white",
@@ -344,7 +344,7 @@ export default function HeaderMenu(props) {
         disableAutoFocusItem
       >
         <div className={classes.menuUser}>
-          <Typography variant="h4">Mark Zhu</Typography>
+          <Typography variant="h4">{i18n("developerName")}</Typography>
           <Typography
             // className={classes.menuLink}
             component="a"
@@ -363,13 +363,11 @@ export default function HeaderMenu(props) {
           </Typography>
         </div>
         <MenuItem>
-          <AccountIcon /> Profile
+          <AccountIcon /> {i18n("profile")}
         </MenuItem>
+
         <MenuItem>
-          <AccountIcon /> Tasks
-        </MenuItem>
-        <MenuItem>
-          <AccountIcon /> Messages
+          <AccountIcon /> {i18n("messages")}
         </MenuItem>
         <div className={classes.menuUser}>
           <Logout />

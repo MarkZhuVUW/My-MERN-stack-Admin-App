@@ -40,7 +40,7 @@ router.post("/", (req, res) => {
       role: role,
       company: company ? company : ""
     });
-    console.log(user);
+    // console.log(user);
     // Create salt & hash
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -153,7 +153,7 @@ router.get("/:id/logs", auth, (req, res) => {
 router.delete("/:userid/logs/:logid", auth, (req, res) => {
   // Check for existing user
 
-  console.log(req.params.userid);
+  // console.log(req.params.userid);
   User.findByIdAndUpdate(
     { _id: req.params.userid },
     {

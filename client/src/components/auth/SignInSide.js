@@ -14,6 +14,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import MuiAlert from "@material-ui/lab/Alert";
 import { withStyles } from "@material-ui/styles";
 import FacebookProgress from "components/FacebookProgress";
+import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -264,13 +265,13 @@ class SignInSide extends Component {
             <Zoom in={true} timeout={500}>
               <Container className={classes.content}>
                 <Paper className={classes.paper}>
-                  <Tooltip title="click me :)">
+                  <Tooltip title={i18n("clickme")}>
                     <Avatar className={classes.avatar}>
                       <LockOutlinedIcon className="animation" />
                     </Avatar>
                   </Tooltip>
                   <Typography component="h1" variant="h5">
-                    Welcome!
+                    {i18n("loginPage.welcome")}
                   </Typography>
                   {this.state.msg ? (
                     <ResponsiveDialog
@@ -287,7 +288,7 @@ class SignInSide extends Component {
                       fullWidth
                       required
                       id="email"
-                      label="Email Address"
+                      label={i18n("loginPage.email")}
                       name="email"
                       error={this.state.emailErrorMsg ? true : false}
                       helperText={this.state.emailErrorMsg}
@@ -299,7 +300,7 @@ class SignInSide extends Component {
                       required
                       fullWidth
                       name="password"
-                      label="Password"
+                      label={i18n("loginPage.password")}
                       type="password"
                       id="password"
                       error={this.state.passwordErrorMsg ? true : false}
@@ -319,7 +320,7 @@ class SignInSide extends Component {
                       {this.state.isLoading ? (
                         <FacebookProgress />
                       ) : (
-                        <Typography>Sign In</Typography>
+                        <Typography>{i18n("loginPage.signin")}</Typography>
                       )}
                     </Button>
 
@@ -342,7 +343,7 @@ class SignInSide extends Component {
                             position: "relative"
                           }}
                         >
-                          Forgot password?
+                          {i18n("loginPage.forgotPassword")}
                         </NavLink>
                       </Grid>
                       <Grid item>
@@ -359,7 +360,7 @@ class SignInSide extends Component {
                             position: "relative"
                           }}
                         >
-                          Don't have an account? Sign Up
+                          {i18n("loginPage.noAccount")}
                         </NavLink>
                       </Grid>
                     </Grid>

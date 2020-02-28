@@ -35,3 +35,4 @@ export const LOGIN_LOGGED = "LOGIN_LOGGED";
 export const ALL_LOGS_LOADED = "ALL_LOGS_LOADED";
 export const LOAD_LOGS_ERROR = "LOAD_LOGS_ERROR";
 export const LOG_DELETED = "LOG_DELETED";
+export const PAGE_VIEW_LOGGED = "PAGE_VIEW_LOGGED";

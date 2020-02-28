@@ -11,17 +11,18 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import MenuIcon from "@material-ui/icons/Menu";
 import { withStyles } from "@material-ui/styles";
 import clsx from "clsx";
+import FacebookProgress from "components/FacebookProgress";
 import ErrorPage from "error-pages/ErrorPage";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import ReactGA from "react-ga";
 import Particles from "react-particles-js";
 //redux
 import { connect } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { Redirect, Route, Switch, withRouter } from "react-router-dom";
 import compose from "recompose/compose";
+import { logPageView } from "../../actions/adminActions";
 import { clearErrors } from "../../actions/errorActions";
 import HeaderMenu from "./HeaderMenu";
 import SelectedListItem from "./listItems";
@@ -37,12 +38,17 @@ const styles = {
 };
 
 class Frame extends Component {
-  state = {};
+  state = {
+    // keeps track of whether the page is logged.
+    pageLogged: false
+  };
   static propTypes = {
     auth: PropTypes.object.isRequired,
     clearErrors: PropTypes.func.isRequired,
     swaggerUIDocs: PropTypes.object,
     user: PropTypes.object,
+    logPageView: PropTypes.func,
+
     //withRouter
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
@@ -50,16 +56,96 @@ class Frame extends Component {
   };
 
   componentDidMount() {
-    ReactGA.initialize("G-0LQBCYS7PM");
-
-    this.props.history.listen(location => {
-      ReactGA.set({ page: location.pathname });
-      ReactGA.pageview(location.pathname);
-    });
+    // if (this.props.user) this.handlePageView();
   }
+  componentDidUpdate(prevProps) {
+    if (prevProps.user !== this.props.user) this.handlePageView();
+    if (
+      prevProps.location.pathname !== this.props.location.pathname &&
+      this.props.user
+    )
+      this.handlePageView();
+  }
+  /**
+   * Log employer page view and make api call to update corresponding documents in my mongodb database
+   */
+  logPageView = page => {
+    // Using my own REST API to log page views.
+    // Ideally I will implement google analytics in the future.
+    // I am only interested in logging employer page views
+
+    const { _id, name, email, role, company } = this.props.user;
+
+    const logPageView = {
+      name: name,
+      email: email,
+      role: role,
+      company: company,
+      explanation: page,
+      type: "PAGE VIEW"
+    };
+
+    this.props.logPageView(_id, logPageView);
+
+    // TODO: implement google analytics.
+    // ReactGA.initialize("G-0LQBCYS7PM");
+
+    // if (this.props.user && this.props.user.role === "employer")
+    //   this.props.history.listen(location => {
+    //     ReactGA.set({ page: location.pathname });
+    //     ReactGA.pageview(location.pathname);
+    //   });
+
+    this.toggle();
+  };
+
+  handlePageView = () => {
+    if (this.props.user.role !== "employer") return;
+    const { pathname } = this.props.location;
+
+    //do not log frame page.
+    if (pathname === "frame") return;
+    this.setState({ pageLogged: true });
+
+    var splittedPathname = pathname.split("/");
+
+    while (splittedPathname[splittedPathname.length - 1] === "") {
+      if (splittedPathname.length - 1 === 0) break;
+      splittedPathname.splice(splittedPathname.length - 1, 1);
+    }
+
+    const path = splittedPathname[splittedPathname.length - 1];
+    if (path === "cv" || path === "portfolio") this.logPageView(path);
+    else if (
+      path === "dashboard" ||
+      path === "useradmin" ||
+      path === "developer"
+    )
+      this.logPageView(403);
+    else this.logPageView(404);
+  };
+
+  toggle = () => {
+    // Clear errors
+    this.props.clearErrors();
+  };
+
   render() {
     const { classes } = this.props;
-    if (!this.props.user) return null;
+    if (!this.props.user)
+      return (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100vh"
+          }}
+        >
+          <FacebookProgress />
+        </div>
+      );
+
     return (
       <FrameContent
         location={this.props.location}
@@ -77,7 +163,7 @@ const mapStateToProps = state => ({
 
 export default compose(
   withStyles(styles),
-  connect(mapStateToProps, { clearErrors })
+  connect(mapStateToProps, { clearErrors, logPageView })
 )(withRouter(Frame));
 
 const drawerWidth = 240;
@@ -173,6 +259,7 @@ const useStyles = makeStyles(theme => ({
 function FrameContent(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+
   /**
    * translate the name of the page to its corresponding index. Used in the listitems.js file
    * to keep track of what the current page is
@@ -185,7 +272,6 @@ function FrameContent(props) {
    * -1: Page Not Found
    */
   const translatePageToIndex = () => {
-    if (!props.user) return -1;
     const { pathname } = props.location;
     //trim out the "" in the last index of the array
     var splittedPathname = pathname.split("/");
@@ -204,14 +290,16 @@ function FrameContent(props) {
         return props.user.role === "admin" ? 2 : 403;
       case "cv":
         return 3;
-      case "selfIntroduction":
+      case "portfolio":
         return 4;
       case "frame":
         return props.user.role === "admin" ? 0 : 3;
+
       default:
         return 404; // Page Not Found
     }
   };
+
   const [selectedIndex, setSelectedIndex] = React.useState(
     translatePageToIndex()
   );
@@ -294,8 +382,6 @@ function FrameContent(props) {
       />
     </Drawer>
   );
-  // if user is not loaded yet, return.
-
   const index = translatePageToIndex();
   const isIndexInvalid = index === 403 || index === 404;
   return (
@@ -329,10 +415,12 @@ function FrameContent(props) {
           }}
         />
       ) : null}
-      <div  style={{
+      <div
+        style={{
           zIndex: 1,
           position: "relative"
-        }}>
+        }}
+      >
         {isIndexInvalid ? (
           <ErrorPage code={index} />
         ) : (
@@ -359,8 +447,6 @@ function FrameContent(props) {
                     exact
                     path="/frame"
                     render={() => {
-                      console.log(props.user.role);
-
                       return props.user.role === "admin" ? (
                         <Redirect to="/frame/dashboard" />
                       ) : (

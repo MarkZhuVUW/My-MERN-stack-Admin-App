@@ -73,7 +73,7 @@ export default function(state = initialState, action) {
     case REGISTER_SUCCESS:
       return { ...state, successMsg: "registration successfull" };
     case LOGIN_SUCCESS:
-      console.log(action.payload.token);
+      // console.log(action.payload.token);
       localStorage.setItem("token", action.payload.token);
       return {
         ...state,

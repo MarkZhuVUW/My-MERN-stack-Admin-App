@@ -1,9 +1,36 @@
 const en = {
+  developerName: "Mark Zhu",
+  logout: "Log Out",
+  profile: "Profile",
+  messages: "Messages",
+  clickme: "click me :)",
+  admin: "admin",
+  guest: "guest",
+  employer: "employer",
   app: {
     title: "MERN-stack App"
   },
-  loginPage: {},
-  registerPage: {},
+  loginPage: {
+    welcome: "Welcome!",
+    email: "Email Address",
+    password: "Password",
+
+    forgotPassword: "Forgot Password?",
+    registerANewOne: "register a new one :)",
+    signin: "Sign In",
+    noAccount: "Don't have an account? Sign Up"
+  },
+  registerPage: {
+    signUp: "Sign Up",
+    name: "Name",
+    email: "Email Address",
+    password: "Password",
+    admin: "admin",
+    guest: "guest",
+    employer: "employer",
+    company: "company(optional)",
+    goBack: "go back"
+  },
   frame: {
     menu: "frame",
     adminApp: "Admin App"
@@ -29,7 +56,8 @@ const en = {
       role: "role",
       explanation: "explanation",
       type: "type",
-      dateLogged: "date logged"
+      dateLogged: "date logged",
+      company: "company"
     },
     doughnutChart: {
       title: "Login Statistics",
@@ -38,7 +66,7 @@ const en = {
       guest: "guest"
     },
     lineChart: {
-      title: "Website Views",
+      title: "Page Views and Downloads",
       dashboard: "dashboard",
       developer: "developer",
       useradmin: "useradmin",

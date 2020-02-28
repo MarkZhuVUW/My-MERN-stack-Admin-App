@@ -78,8 +78,6 @@ class UserAdmin extends Component {
   };
 
   registerCallback = userToBeRegistered => {
-    console.log(userToBeRegistered);
-
     this.props.register(userToBeRegistered).then(() => {
       this.props.loadAllUsers();
     });
@@ -465,10 +463,13 @@ function SettingsContent(props) {
     },
     onRowsDelete: rowsDeleted => {
       for (var i = 0; i < rowsDeleted.data.length; ++i) {
+        // TODO: current way of deleting logs is not ideal because it is deleting logs one by one.
+        // find a way to batch delete logs.
+
         //send back to UserAdmin component the email of the user to be deleted.
         props.cb(data[rowsDeleted.data[i].index][0]);
-        console.log(rowsDeleted.data[i].index);
-        console.log(data[i]);
+        // console.log(rowsDeleted.data[i].index);
+        // console.log(data[i]);
       }
     },
 
@@ -481,7 +482,7 @@ function SettingsContent(props) {
         company: rowClicked[4]
       });
       // role: rowClicked[6]
-      console.log(currentUser);
+      // console.log(currentUser);
     }
   };
 

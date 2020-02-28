@@ -26,7 +26,8 @@ export default class HomePolarChart extends React.Component {
    * @memberof HomePolarChart
    */
   groupByCompany = () => {
-    var groupedCompanies = [];
+    var groupedCompanies = {};
+
     this.props.data
       .map(log => log[4])
       .filter(company => company !== "")
@@ -46,7 +47,6 @@ export default class HomePolarChart extends React.Component {
 
   componentDidMount() {
     const { companyData } = this.state;
-    console.log(companyData);
     this.myChart = new Chart(this.chartRef.current, {
       type: "polarArea",
       data: {
@@ -75,7 +75,7 @@ export default class HomePolarChart extends React.Component {
    * @param {*} index
    */
   colorChooser = index => {
-    console.log(index);
+    // console.log(index);
     switch (index) {
       case 0:
         return "#a83236";

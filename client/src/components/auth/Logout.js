@@ -1,4 +1,5 @@
 import Link from "@material-ui/core/Link";
+import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 // import { NavLink } from 'reactstrap';
@@ -23,7 +24,7 @@ export class Logout extends Component {
   render() {
     return (
       <Link onClick={this.handleOnClick} color="inherit">
-        Log Out
+        {i18n("logout")}
       </Link>
     );
   }

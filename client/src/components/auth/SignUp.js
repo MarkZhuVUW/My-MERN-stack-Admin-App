@@ -14,6 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { withStyles } from "@material-ui/styles";
 import FacebookProgress from "components/FacebookProgress";
+import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -208,14 +209,14 @@ class SignUp extends Component {
           <Container maxWidth="sm" className={classes.content}>
             <CssBaseline />
             <Paper className={classes.paper}>
-              <Tooltip title="click me :)">
+              <Tooltip title={i18n("clickme")}>
                 <Avatar className={classes.avatar}>
                   <LockOutlinedIcon className="animation" />
                 </Avatar>
               </Tooltip>
 
               <Typography component="h1" variant="h5">
-                Sign up
+                {i18n("registerPage.signup")}
               </Typography>
 
               <form className={classes.form} noValidate>
@@ -227,7 +228,7 @@ class SignUp extends Component {
                       required
                       fullWidth
                       id="name"
-                      label="Name"
+                      label={i18n("registerPage.name")}
                       error={this.state.nameErrorMsg ? true : false}
                       helperText={this.state.nameErrorMsg}
                       onChange={this.onChange}
@@ -240,7 +241,7 @@ class SignUp extends Component {
                       required
                       fullWidth
                       id="email"
-                      label="Email Address"
+                      label={i18n("registerPage.email")}
                       name="email"
                       error={this.state.emailErrorMsg ? true : false}
                       helperText={this.state.emailErrorMsg}
@@ -253,7 +254,7 @@ class SignUp extends Component {
                       required
                       fullWidth
                       name="password"
-                      label="Password"
+                      label={i18n("registerPage.password")}
                       type="password"
                       id="password"
                       error={this.state.passwordErrorMsg ? true : false}
@@ -268,7 +269,7 @@ class SignUp extends Component {
                           variant="outlined"
                           fullWidth
                           name="company"
-                          label="company(optional)"
+                          label={i18n("registerPage.company")}
                           type="company"
                           id="company"
                           onChange={this.onChange}
@@ -316,7 +317,7 @@ class SignUp extends Component {
                   {this.state.isLoading ? (
                     <FacebookProgress />
                   ) : (
-                    <Typography>Sign Up</Typography>
+                    <Typography>{i18n("registerPage.signup")}</Typography>
                   )}
                 </Button>
 
@@ -335,7 +336,7 @@ class SignUp extends Component {
                         zIndex: 1
                       }}
                     >
-                      go back
+                      {i18n("registerPage.goBack")}
                     </NavLink>
                   </Grid>
                 </Grid>

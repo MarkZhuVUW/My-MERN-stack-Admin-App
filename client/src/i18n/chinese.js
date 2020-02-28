@@ -1,4 +1,30 @@
 const chinese = {
+  developerName: "朱鑫宇",
+  logout: "登出",
+  profile: "个人中心",
+  messages: "消息",
+  clickme: "点我 :)",
+  admin: "管理员",
+  guest: "游客",
+  employer: "老板",
+  loginPage: {
+    welcome: "欢迎光临",
+    email: "邮箱",
+    password: "密码",
+
+    forgotPassword: "忘记密码?",
+    registerANewOne: "整个新的",
+    signin: "登录",
+    noAccount: "没有帐号?点击注册"
+  },
+  registerPage: {
+    signup: "注册",
+    name: "名字",
+    email: "邮箱",
+    password: "密码",
+
+    goBack: "返回"
+  },
   app: {
     title: "MERN-stack 应用"
   },
@@ -13,10 +39,11 @@ const chinese = {
       theme: "主题"
     }
   },
+
   dashboard: {
     menu: "主页",
     route: "主页",
-    message: `统计图数据来自mongodb database.`,
+    message: `统计图数据来自我的mongodb database.`,
 
     table: {
       userActivities: "用户活动",
@@ -25,7 +52,8 @@ const chinese = {
       role: "角色",
       explanation: "解释",
       type: "类型",
-      dateLogged: "记录日期"
+      dateLogged: "记录日期",
+      company: "公司"
     },
     doughnutChart: {
       title: "登录统计",

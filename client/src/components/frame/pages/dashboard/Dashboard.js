@@ -34,8 +34,6 @@ class Dashboard extends Component {
     deleteLog: PropTypes.func.isRequired
   };
   componentDidMount() {
-    // this.props.loadUser();
-
     //temporary fix
     setTimeout(() => {
       this.props.loadAllLogsForSpecificUser(this.props.user._id);
@@ -65,8 +63,8 @@ class Dashboard extends Component {
   };
 
   render() {
-    const { classes, allLogs } = this.props;
-    if (!allLogs)
+    const { classes, allLogs, user } = this.props;
+    if (!user || !allLogs)
       return (
         <div
           style={{
@@ -84,6 +82,7 @@ class Dashboard extends Component {
         <DashboardContent
           allLogs={allLogs}
           deleteLogCallback={this.deleteLogCallback}
+          user={user}
         />
       </div>
     );
@@ -225,10 +224,19 @@ function DashboardContent(props) {
     },
     onRowsDelete: rowsDeleted => {
       for (var i = 0; i < rowsDeleted.data.length; ++i) {
+        // TODO: show responsive dialog on UI indicating user is not allowed to delete log.
+        if (props.user.role !== "admin") {
+          console.log(props.user.role + " is not allowed to delete logs");
+          return;
+        }
+
+        // TODO: current way of deleting logs is not ideal because it is deleting logs one by one.
+        // find a way to batch delete logs.
         //send back to UserAdmin component the email of the user to be deleted.
+
         props.deleteLogCallback(data[rowsDeleted.data[i].index][0]);
-        console.log(rowsDeleted.data[i].index);
-        console.log(data[i]);
+        // console.log(rowsDeleted.data[i].index);
+        // console.log(data[i]);
       }
     }
   };

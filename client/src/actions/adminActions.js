@@ -1,15 +1,31 @@
 import axios from "axios";
-import { returnErrors } from "./errorActions";
 import { tokenConfig } from "./authActions";
+import { returnErrors } from "./errorActions";
 import {
-  DOWNLOAD_LOGGED,
-  LOGIN_LOGGED,
   ALL_LOGS_LOADED,
+  DOWNLOAD_LOGGED,
   LOAD_LOGS_ERROR,
-  LOG_DELETED
+  LOGIN_LOGGED,
+  LOG_DELETED,
+  PAGE_VIEW_LOGGED
 } from "./types";
 
-// Check token & load user
+export const logPageView = (id, pageViewLog) => (dispatch, getState) => {
+  // Request body
+  const body = JSON.stringify({ log: pageViewLog });
+
+  axios
+    .patch(`/api/users/${id}/logs`, body, tokenConfig(getState))
+    .then(res =>
+      dispatch({
+        type: PAGE_VIEW_LOGGED
+      })
+    )
+    .catch(err => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+    });
+};
+
 export const logLoginSuccess = (id, loginLog) => (dispatch, getState) => {
   // Request body
   const body = JSON.stringify({ log: loginLog });
@@ -26,7 +42,6 @@ export const logLoginSuccess = (id, loginLog) => (dispatch, getState) => {
     });
 };
 
-// Check token & load user
 export const logDownload = (id, downloadLog) => (dispatch, getState) => {
   // Request body
   const body = JSON.stringify({ log: downloadLog });
