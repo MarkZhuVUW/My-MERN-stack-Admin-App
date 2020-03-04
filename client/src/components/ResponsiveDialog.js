@@ -1,26 +1,27 @@
-import React, { Component } from "react";
+import { Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
-import Box from "@material-ui/core/Box";
-
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import TextField from "@material-ui/core/TextField";
 import { createMuiTheme } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/styles";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
-
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import MediaQuery from "react-responsive";
 //redux
-import { TFAVerify } from "../actions/authActions";
-import { TFASetup } from "../actions/authActions";
-import { getTFA } from "../actions/authActions";
-
+import {
+  getTFA,
+  logout,
+  skipTFA,
+  TFASetup,
+  TFAVerify
+} from "../actions/authActions";
 import { clearErrors } from "../actions/errorActions";
 
-import MediaQuery from "react-responsive";
 const theme = createMuiTheme({
   spacing: 4
 });
@@ -45,14 +46,16 @@ class ResponsiveDialog extends Component {
   };
 
   static propTypes = {
-    isAuthenticated: PropTypes.bool,
     error: PropTypes.object.isRequired,
 
     clearErrors: PropTypes.func.isRequired,
     TFAVerify: PropTypes.func.isRequired,
     TFASetup: PropTypes.func.isRequired,
     getTFA: PropTypes.func.isRequired,
-    TFA: PropTypes.object
+    skipTFA: PropTypes.func.isRequired,
+    TFA: PropTypes.object,
+    user: PropTypes.object,
+    logout: PropTypes.func.isRequired
   };
   componentDidMount() {
     const { email, TFA } = this.props;
@@ -62,35 +65,41 @@ class ResponsiveDialog extends Component {
         email,
         domainName
       };
-      this.props.getTFA(obj).then(() => {
-        console.log(TFA);
-        console.log(email);
-
-        if (!TFA && email) {
-          this.props.TFASetup(obj).then(() => {
-            this.props.getTFA(obj);
-          });
-        }
-      });
-      // this.props.TFASetup();
+      if (!this.props.TFA) {
+        this.props.TFASetup(obj);
+        this.props.getTFA(obj);
+      }
     }
   }
-  componentDidUpdate(prevProps) {
-    const { error } = this.props;
 
+  componentDidUpdate(prevProps) {
+    const { error, type } = this.props;
+    const { domainName } = this.state;
+    const isAuthenticated =
+      localStorage.getItem("authenticated") == "true" ? true : false;
+
+    if (isAuthenticated && type !== "User Admin Error Handling") {
+      this.props.cb(true);
+    }
     if (error !== prevProps.error) {
       // Check for register error
-      if (error.id === "LOGIN_FAIL") {
+      if (error.id === "TFA_VERIFY_FAIL") {
+        // re-enable login button and hide the loading spinner
+
+        // this.props.ResponsiveDialogCallback();
+
         this.setState({ msg: error.msg.msg });
       } else {
         this.setState({ msg: null });
       }
     }
   }
+
   toggle = () => {
     // Clear errors
     this.props.clearErrors();
   };
+
   handleClickOpen = () => {
     this.setState({
       open: true
@@ -98,6 +107,9 @@ class ResponsiveDialog extends Component {
   };
 
   handleClose = () => {
+    //re-enable login button and hide the loading spinner
+    this.props.responsiveDialogCallback();
+
     this.setState({
       open: false
     });
@@ -106,18 +118,21 @@ class ResponsiveDialog extends Component {
     e.preventDefault();
 
     const { code } = this.state;
-    const { email } = this.props;
+    const { alertMsg } = this.props;
+
     // Attempt to login
-    this.props.TFAVerify(email, code).then(verificationPromise => {
-      if (verificationPromise) {
-        document.location.href = "/";
-      }
-    });
+    this.props.TFAVerify(this.props.email, code);
+
     //clear errors
     this.toggle();
   };
   onChange = e => {
     this.setState({ code: e.target.value });
+  };
+
+  skipTFA = () => {
+    this.props.skipTFA();
+    this.props.loginSuccessCallback(true);
   };
 
   render() {
@@ -134,13 +149,17 @@ class ResponsiveDialog extends Component {
           fullScreen={isFullScreen}
           onClose={this.handleClose}
           aria-labelledby="responsive-dialog-title"
+          onBackdropClick={() => {
+            this.props.logout();
+          }}
         >
           <DialogTitle id="responsive-dialog-title">{title}</DialogTitle>
           <DialogContent>
             <DialogContentText>{alertMsg}</DialogContentText>
+
             {TFA ? (
               <div className={classes.centerItems}>
-                <img src={TFA.TFA.dataURL} />
+                <img src={TFA.dataURL} />
               </div>
             ) : null}
           </DialogContent>
@@ -159,15 +178,47 @@ class ResponsiveDialog extends Component {
                     fullWidth
                     onChange={this.onChange}
                   />
-                  <Button onClick={this.onSubmit} color="primary">
+                  <Button
+                    onClick={this.onSubmit}
+                    type="submit"
+                    color={
+                      localStorage.getItem("theme") === "dark"
+                        ? "default"
+                        : "primary"
+                    }
+                  >
                     submit
                   </Button>
+
+                  <Button onClick={this.skipTFA}>skip TFA</Button>
                 </DialogActions>
-              ) : null}
+              ) : (
+                <>
+                  <Typography>
+                    Please click on the backdrop to close this dialog or click
+                    the button
+                  </Typography>
+                  <Button
+                    onClick={() => {
+                      this.props.logout();
+                    }}
+                  >
+                    logout
+                  </Button>
+                </>
+              )}
             </div>
           ) : (
             <DialogActions>
-              <Button onClick={this.handleClose} color="primary" autoFocus>
+              <Button
+                onClick={this.handleClose}
+                color={
+                  localStorage.getItem("theme") === "dark"
+                    ? "default"
+                    : "primary"
+                }
+                autoFocus
+              >
                 OK
               </Button>
             </DialogActions>
@@ -191,13 +242,15 @@ class ResponsiveDialog extends Component {
 }
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
   error: state.error,
-  TFA: state.auth.TFA
+  TFA: state.auth.TFA,
+  user: state.auth.user
 });
 export default connect(mapStateToProps, {
   TFAVerify,
   TFASetup,
   getTFA,
-  clearErrors
+  clearErrors,
+  skipTFA,
+  logout
 })(withStyles(styles)(ResponsiveDialog));

@@ -1,25 +1,22 @@
-import React from "react";
-import { useTheme } from "@material-ui/styles";
-import { makeStyles } from "@material-ui/styles";
-
 // components
-import { Typography } from "../components/Wrappers/Wrappers";
+import { Typography } from "@material-ui/core";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import React from "react";
 
 const useStyles = makeStyles(() => ({
-    avatar: {
-      width: 30,
-      height: 30,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      borderRadius: "50%"
-    },
-    text: {
-      color: "white"
-    }
-  }));
+  avatar: {
+    width: 30,
+    height: 30,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: "50%"
+  },
+  text: {
+    color: "white"
+  }
+}));
 export default function UserAvatar({ color = "primary", ...props }) {
-    
   var classes = useStyles();
   var theme = useTheme();
 
@@ -29,10 +26,7 @@ export default function UserAvatar({ color = "primary", ...props }) {
     .join("");
 
   return (
-    <div
-      className={classes.avatar}
-      style={{ backgroundColor: theme.palette[color].main }}
-    >
+    <div className={classes.avatar} style={{ backgroundColor: "green" }}>
       <Typography className={classes.text}>{letters}</Typography>
     </div>
   );

@@ -1,10 +1,12 @@
-import { combineReducers } from 'redux';
-import itemReducer from './itemReducer';
-import errorReducer from './errorReducer';
-import authReducer from './authReducer';
+import { combineReducers } from "redux";
+import errorReducer from "./errorReducer";
+import authReducer from "./authReducer";
+import developerReducer from "./developerReducer";
+import adminReducer from "./adminReducer";
 
 export default combineReducers({
-  item: itemReducer,
   error: errorReducer,
-  auth: authReducer
+  auth: authReducer,
+  developer: developerReducer,
+  admin: adminReducer
 });

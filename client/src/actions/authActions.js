@@ -1,51 +1,65 @@
 import axios from "axios";
 import { returnErrors } from "./errorActions";
-
 import {
-  USER_LOADED,
-  GET_USERS,
-  USER_LOADING,
+  ALL_USERS_LOADED,
   AUTH_ERROR,
-  LOGIN_SUCCESS,
+  CLEAR_SUCCESS_MSG,
+  LOADING,
   LOGIN_FAIL,
+  LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
-  REGISTER_SUCCESS,
   REGISTER_FAIL,
-  TFA_SUCCESS,
-  TFA_FAIL,
-  TFA_SETUP_SUCCESS,
+  REGISTER_SUCCESS,
+  TFA_ING,
   TFA_LOADED,
-  ALL_USERS_LOADED
+  TFA_LOAD_FAIL,
+  TFA_SETUP_FAIL,
+  TFA_SETUP_SUCCESS,
+  TFA_VERIFED,
+  TFA_VERIFY_FAIL,
+  USER_DELETED,
+  USER_LOADED,
+  USER_LOADING
 } from "./types";
+
+// CLEAR Success message
+export const clearSuccessMsg = () => {
+  return {
+    type: CLEAR_SUCCESS_MSG
+  };
+};
 
 // Check token & load user
 export const loadUser = () => (dispatch, getState) => {
   // User loading
   dispatch({ type: USER_LOADING });
 
+  const loadUserPromise = axios.get("/api/auth/user", tokenConfig(getState));
   axios
     .get("/api/auth/user", tokenConfig(getState))
-    .then(res =>
-      dispatch({
+    .then(res => {
+      return dispatch({
         type: USER_LOADED,
         payload: res.data
-      })
-    )
+      });
+    })
     .catch(err => {
       dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
         type: AUTH_ERROR
       });
     });
+  return loadUserPromise;
 };
 
 // get all registered users
-export const getAllUsers = () => (dispatch, getState) => {
+export const loadAllUsers = () => (dispatch, getState) => {
   // User loading
   dispatch({ type: USER_LOADING });
 
-  axios
-    .get("/api/users", tokenConfig(getState))
+  var authPromise = axios.get("/api/users", tokenConfig(getState));
+
+  authPromise
     .then(res =>
       dispatch({
         type: ALL_USERS_LOADED,
@@ -58,19 +72,22 @@ export const getAllUsers = () => (dispatch, getState) => {
         type: AUTH_ERROR
       });
     });
+
+  return authPromise;
 };
 
 // Register User
-export const register = ({ name, email, password }) => dispatch => {
+export const register = user => dispatch => {
   // Headers
+  dispatch({ type: LOADING });
   const config = {
     headers: {
       "Content-Type": "application/json"
     }
   };
-
+  const { name, email, password, role, company } = user;
   // Request body
-  const body = JSON.stringify({ name, email, password });
+  const body = JSON.stringify({ name, email, password, role, company });
 
   const authPromise = axios
     .post("/api/users", body, config)
@@ -96,6 +113,8 @@ export const register = ({ name, email, password }) => dispatch => {
 // Login User
 
 export const login = ({ email, password }) => dispatch => {
+  dispatch({ type: LOADING });
+
   // Headers
   const config = {
     headers: {
@@ -154,6 +173,20 @@ export const tokenConfig = getState => {
   return config;
 };
 
+export const deleteUser = id => (dispatch, getState) => {
+  axios
+    .delete(`/api/users/${id}`, tokenConfig(getState))
+    .then(res =>
+      dispatch({
+        type: USER_DELETED,
+        payload: id
+      })
+    )
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
+};
+
 // --------------------------- google 2fa auth . ---------------------------------------------//
 // --------------------------- google 2fa auth . ---------------------------------------------//
 // --------------------------- google 2fa auth . ---------------------------------------------//
@@ -161,7 +194,7 @@ export const tokenConfig = getState => {
 
 export const getTFA = ({ email, domainName }) => dispatch => {
   // TFAing
-  // dispatch({ type: TFA_ING });
+  dispatch({ type: TFA_ING });
   // Headers
   const config = {
     headers: {
@@ -181,10 +214,10 @@ export const getTFA = ({ email, domainName }) => dispatch => {
     })
     .catch(err => {
       dispatch(
-        returnErrors(err.response.data, err.response.status, "TFA_FAIL")
+        returnErrors(err.response.data, err.response.status, "TFA_LOAD_FAIL")
       );
       dispatch({
-        type: TFA_FAIL
+        type: TFA_LOAD_FAIL
       });
     });
 
@@ -195,8 +228,9 @@ export const getTFA = ({ email, domainName }) => dispatch => {
 // google 2fa auth setup.
 export const TFASetup = ({ email, domainName }) => dispatch => {
   // TFAing
-  // dispatch({ type: TFA_ING });
+  dispatch({ type: TFA_ING });
   // Headers
+
   const config = {
     headers: {
       "Content-Type": "application/json"
@@ -210,15 +244,15 @@ export const TFASetup = ({ email, domainName }) => dispatch => {
     .then(res => {
       dispatch({
         type: TFA_SETUP_SUCCESS,
+        payload: res.data
       });
-      
     })
     .catch(err => {
       dispatch(
-        returnErrors(err.response.data, err.response.status, "TFA_FAIL")
+        returnErrors(err.response.data, err.response.status, "TFA_SETUP_FAIL")
       );
       dispatch({
-        type: TFA_FAIL
+        type: TFA_SETUP_FAIL
       });
     });
 
@@ -229,7 +263,7 @@ export const TFASetup = ({ email, domainName }) => dispatch => {
 // google 2fa auth verify.
 export const TFAVerify = (email, code) => dispatch => {
   // TFAing
-  // dispatch({ type: TFA_ING });
+  dispatch({ type: TFA_ING });
   // Headers
   const config = {
     headers: {
@@ -243,18 +277,24 @@ export const TFAVerify = (email, code) => dispatch => {
     .post("/api/TFA/verify", body, config)
     .then(res =>
       dispatch({
-        type: TFA_SUCCESS
+        type: TFA_VERIFED
       })
     )
     .catch(err => {
       dispatch(
-        returnErrors(err.response.data, err.response.status, "TFA_FAIL")
+        returnErrors(err.response.data, err.response.status, "TFA_VERIFY_FAIL")
       );
       dispatch({
-        type: TFA_FAIL
+        type: TFA_VERIFY_FAIL
       });
     });
 
   //not sure if it is the right way to do redux.
   return authPromise;
+};
+
+// skip tfa.
+export const skipTFA = (email, code) => dispatch => {
+  // TFAing
+  dispatch({ type: TFA_VERIFED });
 };

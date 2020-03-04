@@ -13,12 +13,10 @@ const auth = require("../../middleware/auth");
 router.post("/", (req, res) => {
   const { email, domainName } = req.body;
   TFA.findOne({ email })
-    .then(TFADoc => {
-      if (!TFADoc)
+    .then(TFA => {
+      if (!TFA)
         return res.status(400).json({ msg: "TFA document Does not exist" });
-      res.json({
-        TFA: TFADoc
-      });
+      res.send(TFA);
     })
     .catch(err => res.status(400).json({ msg: err }));
 });
@@ -28,43 +26,50 @@ router.post("/", (req, res) => {
 // @access  Private
 router.post("/setup", (req, res) => {
   const { email, domainName } = req.body;
-  console.log(email);
+  User.findOne({ email }).then(user => {
+    if (!user) {
+      //return 400 if user does not even exist.
+      return res.status(400).json({ msg: "user does not even exist!" });
+    }
+  });
   TFA.findOne({ email })
-    .then(TFA => {
-      if (TFA) return res.status(400).json({ msg: "TFA already exists" });
+    .then(TFADoc => {
+      if (TFADoc) return res.status(400).json({ msg: "TFA already exists" });
+      //if tfa does not exist, create a new one and send it out as response.
+      const secret = speakeasy.generateSecret({
+        length: 10,
+        name: email,
+        issuer: "My Admin App"
+      });
+      var url = speakeasy.otpauthURL({
+        secret: secret.base32,
+        label: email,
+        issuer: "domain name",
+        encoding: "base32"
+      });
+      QRCode.toDataURL(url, (err, dataURL) => {
+        const newTFA = new TFA({
+          secret: secret.base32,
+          dataURL: dataURL,
+          TFAURL: url,
+          email: email
+        });
+        newTFA
+          .save()
+          .then(data => {
+            TFA.findOne({ email }).then(TFADoc => res.send(TFADoc));
+          })
+          .catch(err => res.status(400).json({ msg: err }));
+      });
     })
     .catch(err => res.status(400).json({ msg: err }));
-
-  const secret = speakeasy.generateSecret({
-    length: 10,
-    name: email,
-    issuer: "My Admin App"
-  });
-  var url = speakeasy.otpauthURL({
-    secret: secret.base32,
-    label: email,
-    issuer: "domain name",
-    encoding: "base32"
-  });
-  QRCode.toDataURL(url, auth, (err, dataURL) => {
-    const newTFA = new TFA({
-      secret: secret.base32,
-      dataURL: dataURL,
-      TFAURL: url,
-      email: email
-    });
-    newTFA
-      .save()
-      .then(data => res.json(data))
-      .catch(err => res.status(400).json({ msg: err }));
-  });
 });
 
 // @route   DELETE api/TFA/setup
 // @desc    Delete a TFA document
 // @access  Private
 router.delete("/setup", (req, res) => {
-  const email = req.body;
+  const { email } = req.body;
 
   TFA.findOne({ email })
     .then(TFA => TFA.remove().then(() => res.json({ success: true })))
@@ -76,11 +81,10 @@ router.delete("/setup", (req, res) => {
 // @access  Private
 router.post("/verify", (req, res) => {
   const { email, code } = req.body;
-  var token = speakeasy.totp({
-    secret: TFA.secret,
-    encoding: "base32"
-  });
-  console.log("token: " + token + " || " + "code: " + code);
+  // var token = speakeasy.totp({
+  //   secret: TFA.secret,
+  //   encoding: "base32"
+  // });
 
   TFA.findOne({ email })
     .then(TFA => {
@@ -94,11 +98,14 @@ router.post("/verify", (req, res) => {
         return res.status(200).json({
           msg: "verification successfull"
         });
+      } else {
+        return res.status(400).json({
+          msg:
+            "verification unsuccessfull. Probably because wrong code is provided"
+        });
       }
     })
     .catch(err => {
-      console.log(err);
-
       res.status(403).json({
         msg: err
       });
