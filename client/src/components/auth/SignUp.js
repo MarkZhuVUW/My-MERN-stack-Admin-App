@@ -331,9 +331,7 @@ class SignUp extends Component {
                         color:
                           localStorage.getItem("theme") === "dark"
                             ? "white"
-                            : "black",
-                        position: "relative",
-                        zIndex: 1
+                            : "black"
                       }}
                     >
                       {i18n("registerPage.goBack")}

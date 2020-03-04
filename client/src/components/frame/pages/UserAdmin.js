@@ -462,15 +462,16 @@ function SettingsContent(props) {
       }
     },
     onRowsDelete: rowsDeleted => {
-      for (var i = 0; i < rowsDeleted.data.length; ++i) {
-        // TODO: current way of deleting logs is not ideal because it is deleting logs one by one.
-        // find a way to batch delete logs.
-
-        //send back to UserAdmin component the email of the user to be deleted.
-        props.cb(data[rowsDeleted.data[i].index][0]);
-        // console.log(rowsDeleted.data[i].index);
-        // console.log(data[i]);
+      if (props.user.role !== "admin") {
+        console.log(props.user.role + " is not allowed to delete users");
+        return;
       }
+      //rowdDeleted.lookup gets the actual indexes that are deleted in the users data.
+      //loop through each index and delete them one by one.
+      Object.keys(rowsDeleted.lookup).forEach(index => {
+        console.log(data[index][0]);
+        props.cb(data[index][0]);
+      });
     },
 
     onRowClick: rowClicked => {

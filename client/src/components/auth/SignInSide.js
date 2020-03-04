@@ -338,9 +338,7 @@ class SignInSide extends Component {
                             color:
                               localStorage.getItem("theme") === "dark"
                                 ? "white"
-                                : "black",
-                            zIndex: 1,
-                            position: "relative"
+                                : "black"
                           }}
                         >
                           {i18n("loginPage.forgotPassword")}
@@ -355,9 +353,7 @@ class SignInSide extends Component {
                             color:
                               localStorage.getItem("theme") === "dark"
                                 ? "white"
-                                : "black",
-                            zIndex: 1,
-                            position: "relative"
+                                : "black"
                           }}
                         >
                           {i18n("loginPage.noAccount")}

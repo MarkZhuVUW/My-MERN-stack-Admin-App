@@ -26,7 +26,7 @@ export default class HomeLineChart extends React.Component {
    */
   groupPageViewsByCompany = () => {
     var groupedPages = [0, 0, 0, 0];
-    console.log(this.props.data);
+    // console.log(this.props.data);
     this.props.data
       .filter(log => log[3] === "employer")
       .filter(log => log[6] === "PAGE VIEW")
