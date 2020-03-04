@@ -51,8 +51,27 @@ export default class HomeLineChart extends React.Component {
         return 3;
     }
   };
-  componentDidUpdate() {
-    this.myChart.update();
+  componentDidUpdate(prevProp) {
+    if (prevProp.data !== this.props.data) {
+      this.setState({
+        pageViewData: this.groupPageViewsByCompany()
+      });
+      this.myChart.data.datasets = [
+        {
+          data: Object.entries(this.groupPageViewsByCompany()).map(
+            pageEntry => pageEntry[1]
+          ),
+          backgroundColor: [
+            "#FF6384",
+            "#4BC0C0",
+            "#FFCE56",
+            "#E7E9ED",
+            "#36A2EB"
+          ]
+        }
+      ];
+      this.myChart.update();
+    }
   }
 
   componentDidMount() {

@@ -34,10 +34,11 @@ class Dashboard extends Component {
     deleteLog: PropTypes.func.isRequired
   };
   componentDidMount() {
-    //temporary fix
     setTimeout(() => {
       this.props.loadAllLogsForSpecificUser(this.props.user._id);
     }, 1000);
+    // if (this.props.user)
+    //   this.props.loadAllLogsForSpecificUser(this.props.user._id);
   }
 
   componentDidUpdate(prevProps) {}
