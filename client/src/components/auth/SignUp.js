@@ -216,7 +216,7 @@ class SignUp extends Component {
               </Tooltip>
 
               <Typography component="h1" variant="h5">
-                {i18n("registerPage.signup")}
+                {i18n("registerPage.signUp")}
               </Typography>
 
               <form className={classes.form} noValidate>
@@ -294,7 +294,7 @@ class SignUp extends Component {
                               color="primary"
                             />
                           }
-                          label="page views, downloads, login info will be stored in my mongodb database"
+                          label={i18n("registerPage.warning")}
                         />
                       </Grid>
                     </Slide>
@@ -317,7 +317,7 @@ class SignUp extends Component {
                   {this.state.isLoading ? (
                     <FacebookProgress />
                   ) : (
-                    <Typography>{i18n("registerPage.signup")}</Typography>
+                    <Typography>{i18n("registerPage.signUp")}</Typography>
                   )}
                 </Button>
 

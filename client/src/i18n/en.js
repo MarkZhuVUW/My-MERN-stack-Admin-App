@@ -25,10 +25,10 @@ const en = {
     name: "Name",
     email: "Email Address",
     password: "Password",
-    admin: "admin",
-    guest: "guest",
-    employer: "employer",
+
     company: "company(optional)",
+    warning:
+      "page views, downloads, login info will be stored in my mongodb database",
     goBack: "go back"
   },
   frame: {

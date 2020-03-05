@@ -13,16 +13,18 @@ const chinese = {
     password: "密码",
 
     forgotPassword: "忘记密码?",
-    registerANewOne: "整个新的",
-    signin: "登录",
+    registerANewOne: "注册",
+    signIn: "登录",
     noAccount: "没有帐号?点击注册"
   },
   registerPage: {
-    signup: "注册",
+    signUp: "注册",
     name: "名字",
     email: "邮箱",
     password: "密码",
+    company: "公司(可选)",
 
+    warning: "登录数据, 浏览数据会被存在我的mongodb数据库",
     goBack: "返回"
   },
   app: {

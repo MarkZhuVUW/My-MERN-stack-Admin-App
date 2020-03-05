@@ -224,7 +224,7 @@ class SignInSide extends Component {
           onClose={handleSnackbarClose}
         >
           <Alert onClose={handleSnackbarClose} severity="success">
-            Resgister a new one :)
+            {i18n("loginPage.registerANewOne")}
           </Alert>
         </Snackbar>
         {userLoaded ? (
@@ -320,7 +320,7 @@ class SignInSide extends Component {
                       {this.state.isLoading ? (
                         <FacebookProgress />
                       ) : (
-                        <Typography>{i18n("loginPage.signin")}</Typography>
+                        <Typography>{i18n("loginPage.signIn")}</Typography>
                       )}
                     </Button>
 

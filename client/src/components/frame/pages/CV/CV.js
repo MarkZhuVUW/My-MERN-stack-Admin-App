@@ -1,4 +1,4 @@
-import { makeStyles, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 // import { StyleSheet } from "@react-pdf/renderer";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
@@ -112,27 +112,6 @@ function CVContent(props) {
   const [numPages, setNumPages] = React.useState(null);
   const [numPagesArray, setNumPagesArray] = React.useState(null);
 
-  // const { pageNumber, numPages } = this.state;
-  const onDocumentLoadSuccess = ({ numPages }) => {
-    setNumPages(numPages);
-    setNumPagesArray(turnNumPagesToArray(numPages));
-  };
-
-  /**
-   * Converts an integer number into a list of integer numbers.
-   * For example. 3 will be converted to [1, 2, 3]
-   */
-  const turnNumPagesToArray = numPages => {
-    var arrayOfNums = [];
-    for (var i = 1; i <= numPages; ++i) {
-      arrayOfNums.push(i);
-    }
-    return arrayOfNums;
-  };
-
-  const setPageNumCallback = num => {
-    setPageNumber(num);
-  };
   return (
     <>
       <Breadcrumb
@@ -140,54 +119,13 @@ function CVContent(props) {
         items={[[i18n("frame.menu"), "/"], [i18n("cv.route")]]}
       />
 
-      <Typography>
+      {/* <Typography>
         Oops it appears I dont want you guys to see my CV for now :)
-      </Typography>
-      {/* <Paper
-        className={
-          props.isSmallScreen ? classes.smallScreenPaper : classes.paper
-        }
-      >
-        <Document file={pdfCV} onLoadSuccess={onDocumentLoadSuccess}>
-          <Page
-            pageNumber={pageNumber}
-            width={props.isSmallScreen ? null : 1000}
-          />
-        </Document>
-      </Paper>
-      {numPagesArray ? (
-        <Box
-          display="flex"
-          flexDirection="row"
-          alignItems="center"
-          className={classes.box}
-        >
-          <Typography>Page</Typography>
-
-          <PageNumMenu
-            numPagesArray={numPagesArray}
-            setPageNumCallback={setPageNumCallback}
-          />
-
-          <Typography>of {numPages}</Typography>
-
-          <Link
-            href={`${process.env.PUBLIC_URL}/Mark_Zhu_CV.pdf`}
-            target="_blank"
-            download
-            onClick={() => props.handleDownload("Mark_Zhu_CV.pdf")}
-            style={{
-              textDecoration: "none",
-              color:
-                localStorage.getItem("theme") === "dark" ? "white" : "black"
-            }}
-          >
-            <Box m={2}>
-              <Typography>Download CV</Typography>
-            </Box>
-          </Link>
-        </Box>
-      ) : null} */}
+      </Typography> */}
+      <iframe
+        style={{ width: "100%", height: "800px" }}
+        src="./Mark_Zhu_CV.pdf"
+      ></iframe>
     </>
   );
 }
