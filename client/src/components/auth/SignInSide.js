@@ -87,7 +87,9 @@ class SignInSide extends Component {
     checked: false,
     isLoading: false,
     emailErrorMsg: null,
-    passwordErrorMsg: null
+    passwordErrorMsg: null,
+    copyRightOpened: false,
+    copyRightText: "Dont know what should be in here"
   };
 
   static propTypes = {
@@ -197,7 +199,8 @@ class SignInSide extends Component {
 
     const responsiveDialogCallback = () => {
       this.setState({
-        isLoading: false
+        isLoading: false,
+        copyRightOpened: false
       });
     };
 
@@ -347,7 +350,6 @@ class SignInSide extends Component {
                       <Grid item>
                         <NavLink
                           to="/signup"
-                          variant="body2"
                           style={{
                             textDecoration: "none",
                             color:
@@ -358,6 +360,52 @@ class SignInSide extends Component {
                         >
                           {i18n("loginPage.noAccount")}
                         </NavLink>
+                      </Grid>
+                    </Grid>
+                    {/* open the copyright dialog if the "MIT" license link is clicked */}
+                    {this.state.copyRightOpened ? (
+                      <ResponsiveDialog
+                        title="MIT License"
+                        alertMsg={this.state.copyRightText}
+                        responsiveDialogCallback={responsiveDialogCallback}
+                      />
+                    ) : null}
+                    <Grid container style={{ marginTop: 30 }}>
+                      <Grid item xs>
+                        <Typography
+                          component="a"
+                          href="#"
+                          onClick={() => {
+                            this.setState({ copyRightOpened: true });
+                          }}
+                          style={{
+                            textDecoration: "none",
+                            color:
+                              localStorage.getItem("theme") === "dark"
+                                ? "white"
+                                : "black"
+                          }}
+                        >
+                          {i18n("loginPage.mit")}
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <Typography
+                          component="a"
+                          href="#"
+                          style={{
+                            textDecoration: "none",
+                            color:
+                              localStorage.getItem("theme") === "dark"
+                                ? "white"
+                                : "black"
+                          }}
+                          onClick={() => {
+                            window.location.href = `mailto:zdy120939259@outlook.com`;
+                          }}
+                        >
+                          {i18n("loginPage.contactDeveloper")}
+                        </Typography>
                       </Grid>
                     </Grid>
                   </form>

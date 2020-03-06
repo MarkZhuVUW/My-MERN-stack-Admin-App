@@ -7,6 +7,8 @@ const en = {
   admin: "admin",
   guest: "guest",
   employer: "employer",
+  adminPages: "Admin Pages",
+  employerGuestPages: "Employer&Guest Pages",
   app: {
     title: "MERN-stack App"
   },
@@ -17,8 +19,10 @@ const en = {
 
     forgotPassword: "Forgot Password?",
     registerANewOne: "register a new one :)",
-    signin: "Sign In",
-    noAccount: "Don't have an account? Sign Up"
+    signIn: "Sign In",
+    noAccount: "Don't have an account? Sign Up",
+    mit: "MIT",
+    contactDeveloper: "Contact The Developer"
   },
   registerPage: {
     signUp: "Sign Up",
@@ -33,7 +37,8 @@ const en = {
   },
   frame: {
     menu: "frame",
-    adminApp: "Admin App"
+    adminApp: "Admin App",
+    welcome: "Welcome!"
   },
   settings: {
     title: "Settings",
@@ -67,11 +72,12 @@ const en = {
     },
     lineChart: {
       title: "Page Views and Downloads",
-      dashboard: "dashboard",
-      developer: "developer",
-      useradmin: "useradmin",
-      cv: "cv",
-      portfolio: "portfolio"
+      dashboard: "Dashboard",
+      developer: "Developer",
+      useradmin: "UserAdmin",
+      welcomePage: "Welcome Page",
+      cv: "CV",
+      portfolio: "Portfolio"
     },
     polarChart: {
       title: "Employer Action Statistics"
@@ -102,10 +108,17 @@ const en = {
   },
   cv: {
     menu: "CV",
-    route: "cv",
-    message: `This page uses fake data for demonstration purposes only.`
+    route: "cv"
   },
 
+  welcomePage: {
+    menu: "Welcome Page",
+    route: "welcomepage"
+  },
+  portfolio: {
+    menu: "Portfolio",
+    route: "portfolio"
+  },
   errors: {
     401: "Please login first",
     403: "Do not have to access to this page",

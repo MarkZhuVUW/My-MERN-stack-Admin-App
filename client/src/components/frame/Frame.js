@@ -7,6 +7,7 @@ import Slide from "@material-ui/core/Slide";
 import { makeStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import MenuIcon from "@material-ui/icons/Menu";
 import { withStyles } from "@material-ui/styles";
@@ -29,7 +30,9 @@ import SelectedListItem from "./listItems";
 import CV from "./pages/CV/CV";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Developer from "./pages/Developer";
+import Portfolio from "./pages/Portfolio";
 import UserAdmin from "./pages/UserAdmin";
+import WelcomePage from "./pages/WelcomePage";
 
 const styles = {
   root: {
@@ -115,7 +118,8 @@ class Frame extends Component {
     }
 
     const path = splittedPathname[splittedPathname.length - 1];
-    if (path === "cv" || path === "portfolio") this.logPageView(path);
+    if (path === "cv" || path === "portfolio" || path === "welcomepage")
+      this.logPageView(path);
     else if (
       path === "dashboard" ||
       path === "useradmin" ||
@@ -288,10 +292,12 @@ function FrameContent(props) {
         return props.user.role === "admin" ? 1 : 403;
       case "useradmin":
         return props.user.role === "admin" ? 2 : 403;
-      case "cv":
+      case "welcomepage":
         return 3;
       case "portfolio":
         return 4;
+      case "cv":
+        return 5;
       case "frame":
         return props.user.role === "admin" ? 0 : 3;
 
@@ -316,7 +322,35 @@ function FrameContent(props) {
     props.themeCallback(theme);
   };
 
+  /**
+   * Hide on scroll
+   * @param {*} props
+   */
+  function HideOnScroll(props) {
+    const { children, window } = props;
+    // Note that you normally won't need to set the window ref as useScrollTrigger
+    // will default to window.
+    // This is only being set here because the demo is in an iframe.
+    const trigger = useScrollTrigger({ target: window ? window() : undefined });
+
+    return (
+      <Slide appear={false} direction="down" in={!trigger}>
+        {children}
+      </Slide>
+    );
+  }
+
+  HideOnScroll.propTypes = {
+    children: PropTypes.element.isRequired,
+    /**
+     * Injected by the documentation to work in an iframe.
+     * You won't need it on your project.
+     */
+    window: PropTypes.func
+  };
   const FrameAppBar = (
+    // <ElevationScroll {...props}>
+
     <AppBar
       position="absolute"
       className={clsx(classes.appBar, open && classes.appBarShift)}
@@ -339,7 +373,9 @@ function FrameContent(props) {
             noWrap
             className={classes.title}
           >
-            {i18n("frame.adminApp")}
+            {props.user.role === "admin"
+              ? i18n("frame.adminApp")
+              : i18n("frame.welcome")}
           </Typography>
         )}
 
@@ -469,12 +505,24 @@ function FrameContent(props) {
                       <Route exact path="/frame/useradmin">
                         <UserAdmin isSmallScreen={isSmallScreen} />
                       </Route>
+                      <Route exact path="/frame/welcomepage">
+                        <WelcomePage isSmallScreen={isSmallScreen} />
+                      </Route>
+                      <Route exact path="/frame/portfolio">
+                        <Portfolio isSmallScreen={isSmallScreen} />
+                      </Route>
                       <Route exact path="/frame/cv">
                         <CV isSmallScreen={isSmallScreen} />
                       </Route>
                     </Switch>
                   ) : (
                     <Switch>
+                      <Route exact path="/frame/welcomepage">
+                        <WelcomePage isSmallScreen={isSmallScreen} />
+                      </Route>
+                      <Route exact path="/frame/portfolio">
+                        <Portfolio isSmallScreen={isSmallScreen} />
+                      </Route>
                       <Route exact path="/frame/cv">
                         <CV isSmallScreen={isSmallScreen} />
                       </Route>

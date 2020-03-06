@@ -7,15 +7,19 @@ const chinese = {
   admin: "管理员",
   guest: "游客",
   employer: "老板",
+  adminPages: "管理员页面",
+  employerGuestPages: "游客老板页面",
   loginPage: {
     welcome: "欢迎光临",
     email: "邮箱",
     password: "密码",
 
     forgotPassword: "忘记密码?",
-    registerANewOne: "注册",
+    registerANewOne: "注册个新的",
     signIn: "登录",
-    noAccount: "没有帐号?点击注册"
+    noAccount: "没有帐号?点击注册",
+    mit: "MIT",
+    contactDeveloper: "联系我"
   },
   registerPage: {
     signUp: "注册",
@@ -32,7 +36,8 @@ const chinese = {
   },
   frame: {
     menu: "框架",
-    adminApp: "管理应用"
+    adminApp: "管理应用",
+    welcome: "欢迎!"
   },
   settings: {
     title: "设置",
@@ -68,8 +73,9 @@ const chinese = {
       dashboard: "主页",
       developer: "开发者",
       useradmin: "用户管理",
+      welcomePage: "欢迎页",
       cv: "简历",
-      portfolio: "个人主页"
+      portfolio: "档案"
     },
     polarChart: {
       title: "老板活动统计"
@@ -105,6 +111,14 @@ const chinese = {
     message: `本页使用假数据..`
   },
 
+  welcomePage: {
+    menu: "欢迎页",
+    route: "欢迎页"
+  },
+  portfolio: {
+    menu: "档案",
+    route: "档案"
+  },
   errors: {
     401: "请先登录",
     403: "没有访问权限",

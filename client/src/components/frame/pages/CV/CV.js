@@ -1,15 +1,19 @@
-import { makeStyles } from "@material-ui/core";
+import { Box, makeStyles, Paper, Typography } from "@material-ui/core";
+import Link from "@material-ui/core/Link";
 // import { StyleSheet } from "@react-pdf/renderer";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
+import { Document, Page, pdfjs } from "react-pdf";
 import { connect } from "react-redux";
 import "swagger-ui/dist/swagger-ui.css";
 import Breadcrumb from "view/shared/Breadcrumb";
 import { logDownload } from "../../../../actions/adminActions";
 import { clearErrors } from "../../../../actions/errorActions";
+import pdfCV from "./Mark_Zhu_CV.pdf";
+import PageNumMenu from "./PageNumMenu";
 
-// pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 class CV extends Component {
   componentDidMount() {}
@@ -19,7 +23,7 @@ class CV extends Component {
     clearErrors: PropTypes.func.isRequired
   };
   handleDownload = href => {
-    // console.log(this.props.user);
+    console.log(this.props.user);
 
     const { _id, name, email, role, company } = this.props.user;
 
@@ -112,6 +116,27 @@ function CVContent(props) {
   const [numPages, setNumPages] = React.useState(null);
   const [numPagesArray, setNumPagesArray] = React.useState(null);
 
+  // const { pageNumber, numPages } = this.state;
+  const onDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+    setNumPagesArray(turnNumPagesToArray(numPages));
+  };
+
+  /**
+   * Converts an integer number into a list of integer numbers.
+   * For example. 3 will be converted to [1, 2, 3]
+   */
+  const turnNumPagesToArray = numPages => {
+    var arrayOfNums = [];
+    for (var i = 1; i <= numPages; ++i) {
+      arrayOfNums.push(i);
+    }
+    return arrayOfNums;
+  };
+
+  const setPageNumCallback = num => {
+    setPageNumber(num);
+  };
   return (
     <>
       <Breadcrumb
@@ -119,13 +144,51 @@ function CVContent(props) {
         items={[[i18n("frame.menu"), "/"], [i18n("cv.route")]]}
       />
 
-      {/* <Typography>
-        Oops it appears I dont want you guys to see my CV for now :)
-      </Typography> */}
-      <iframe
-        style={{ width: "100%", height: "800px" }}
-        src="./Mark_Zhu_CV.pdf"
-      ></iframe>
+      <Paper
+        className={
+          props.isSmallScreen ? classes.smallScreenPaper : classes.paper
+        }
+      >
+        <Document file={pdfCV} onLoadSuccess={onDocumentLoadSuccess}>
+          <Page
+            pageNumber={pageNumber}
+            width={props.isSmallScreen ? null : 1000}
+          />
+        </Document>
+      </Paper>
+      {numPagesArray ? (
+        <Box
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          className={classes.box}
+        >
+          <Typography>Page</Typography>
+
+          <PageNumMenu
+            numPagesArray={numPagesArray}
+            setPageNumCallback={setPageNumCallback}
+          />
+
+          <Typography>of {numPages}</Typography>
+
+          <Link
+            href={`${process.env.PUBLIC_URL}/Mark_Zhu_CV.pdf`}
+            target="_blank"
+            download
+            onClick={() => props.handleDownload("Mark_Zhu_CV.pdf")}
+            style={{
+              textDecoration: "none",
+              color:
+                localStorage.getItem("theme") === "dark" ? "white" : "black"
+            }}
+          >
+            <Box m={2}>
+              <Typography>Download CV</Typography>
+            </Box>
+          </Link>
+        </Box>
+      ) : null}
     </>
   );
 }

@@ -46,54 +46,10 @@
 
 # vscode extensions:
 
-## code --install-extension Arjun.swagger-viewer
+## under root directory there is a bash script: "my_vscode_extensions.sh" which contains all the vs code extensions I am using.
 
-## code --install-extension austin.code-gnu-global
+## On cmd run the bash script:
 
-## code --install-extension christian-kohler.npm-intellisense
+## bash my_vscode_extensions.sh
 
-## code --install-extension christian-kohler.path-intellisense
-
-## code --install-extension cmborchert.local-import-intellisense
-
-## code --install-extension CoenraadS.bracket-pair-colorizer-2
-
-## code --install-extension dsznajder.es7-react-js-snippets
-
-## code --install-extension eg2.vscode-npm-script
-
-## code --install-extension esbenp.prettier-vscode
-
-## code --install-extension formulahendry.code-runner
-
-## code --install-extension leizongmin.node-module-intellisense
-
-## code --install-extension lukas-tr.materialdesignicons-intellisense
-
-## code --install-extension mrmlnc.vscode-scss
-
-## code --install-extension ms-vscode.cpptools
-
-## code --install-extension msjsdiag.debugger-for-chrome
-
-## code --install-extension OfHumanBondage.react-proptypes-intellisense
-
-## code --install-extension ritwickdey.LiveServer
-
-## code --install-extension salesforce.salesforcedx-vscode-apex
-
-## code --install-extension salesforce.salesforcedx-vscode-apex-debugger
-
-## code --install-extension salesforce.salesforcedx-vscode-core
-
-## code --install-extension sburg.vscode-javascript-booster
-
-## code --install-extension trinm1709.dracula-theme-from-intellij
-
-## code --install-extension VisualStudioExptTeam.vscodeintellicode
-
-## code --install-extension xabikos.JavaScriptSnippets
-
-## code --install-extension zh9528.file-size
-
-## code --install-extension Zignd.html-css-class-completion
+## https://gist.github.com/joseluisq/4740e37a9f2358357381e308aa39c52d
