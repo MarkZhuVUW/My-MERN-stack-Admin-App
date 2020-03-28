@@ -1,17 +1,14 @@
-import { Box, makeStyles, Paper, Typography } from "@material-ui/core";
-import Link from "@material-ui/core/Link";
+import { makeStyles } from "@material-ui/core";
 // import { StyleSheet } from "@react-pdf/renderer";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Document, Page, pdfjs } from "react-pdf";
+import { pdfjs } from "react-pdf";
 import { connect } from "react-redux";
 import "swagger-ui/dist/swagger-ui.css";
 import Breadcrumb from "view/shared/Breadcrumb";
 import { logDownload } from "../../../../actions/adminActions";
 import { clearErrors } from "../../../../actions/errorActions";
-import pdfCV from "./Mark_Zhu_CV.pdf";
-import PageNumMenu from "./PageNumMenu";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -143,8 +140,8 @@ function CVContent(props) {
         // style={{ textColor: "black" }}
         items={[[i18n("frame.menu"), "/"], [i18n("cv.route")]]}
       />
-
-      <Paper
+      Still Working on pdf.js.
+      {/* <Paper
         className={
           props.isSmallScreen ? classes.smallScreenPaper : classes.paper
         }
@@ -188,7 +185,7 @@ function CVContent(props) {
             </Box>
           </Link>
         </Box>
-      ) : null}
+      ) : null} */}
     </>
   );
 }
