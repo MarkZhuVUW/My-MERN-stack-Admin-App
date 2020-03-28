@@ -114,10 +114,7 @@ function PortfolioContent(props) {
         // style={{ textColor: "black" }}
         items={[[i18n("frame.menu"), "/"], [i18n("portfolio.menu")]]}
       />
-
-      {/* <Typography>
-        Oops it appears I dont want you guys to see my CV for now :)
-      </Typography> */}
+      Not impleted yet.
     </>
   );
 }

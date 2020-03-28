@@ -3,14 +3,13 @@ import { makeStyles } from "@material-ui/core";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { pdfjs } from "react-pdf";
 import { connect } from "react-redux";
 import "swagger-ui/dist/swagger-ui.css";
 import Breadcrumb from "view/shared/Breadcrumb";
 import { logDownload } from "../../../../actions/adminActions";
 import { clearErrors } from "../../../../actions/errorActions";
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+// pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 class CV extends Component {
   componentDidMount() {}
