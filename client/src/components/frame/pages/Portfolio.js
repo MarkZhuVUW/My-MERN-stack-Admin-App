@@ -112,7 +112,7 @@ function PortfolioContent(props) {
     <>
       <Breadcrumb
         // style={{ textColor: "black" }}
-        items={[[i18n("frame.menu"), "/"], [i18n("portfolio.menu")]]}
+        items={[[i18n("frame.menu"), "/"], [i18n("portfolio.route")]]}
       />
       Not impleted yet.
     </>

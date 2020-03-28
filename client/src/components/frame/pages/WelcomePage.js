@@ -19,8 +19,6 @@ class WelcomePage extends Component {
     clearErrors: PropTypes.func.isRequired
   };
   handleDownload = href => {
-    // console.log(this.props.user);
-
     const { _id, name, email, role, company } = this.props.user;
 
     const downloadLog = {
@@ -112,7 +110,7 @@ function WelcomePageContent(props) {
     <>
       <Breadcrumb
         // style={{ textColor: "black" }}
-        items={[[i18n("frame.menu"), "/"], [i18n("welcomePage.menu")]]}
+        items={[[i18n("frame.menu"), "/"], [i18n("welcomePage.route")]]}
       />
 
       {/* <Typography>

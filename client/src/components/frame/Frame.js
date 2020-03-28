@@ -486,7 +486,7 @@ function FrameContent(props) {
                       return props.user.role === "admin" ? (
                         <Redirect to="/frame/dashboard" />
                       ) : (
-                        <Redirect to="/frame/cv" />
+                        <Redirect to="/frame/welcomepage" />
                       );
                     }}
                   />
