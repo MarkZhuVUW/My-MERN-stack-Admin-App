@@ -16,9 +16,9 @@ class CV extends Component {
   componentDidUpdate() {}
   static propTypes = {
     user: PropTypes.object.isRequired,
-    clearErrors: PropTypes.func.isRequired
+    clearErrors: PropTypes.func.isRequired,
   };
-  handleDownload = href => {
+  handleDownload = (href) => {
     console.log(this.props.user);
 
     const { _id, name, email, role, company } = this.props.user;
@@ -29,7 +29,7 @@ class CV extends Component {
       role: role,
       explanation: href,
       type: "DOWNLOAD",
-      company: company
+      company: company,
     };
 
     this.props.logDownload(_id, downloadLog);
@@ -50,13 +50,13 @@ class CV extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  user: state.auth.user
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
 });
 
 export default connect(mapStateToProps, {
   logDownload,
-  clearErrors
+  clearErrors,
 })(CV);
 
 /**
@@ -65,22 +65,24 @@ export default connect(mapStateToProps, {
  * @author Mark Zhu <zdy120939259@outlook.com>
  */
 function CVContent(props) {
-  const useStyles = makeStyles(theme => ({
+  const useStyles = makeStyles((theme) => ({
     root: {
       backgroundColor: "#E9EAED",
-      width: "100%"
+      width: "100%",
       //   backgroundColor: "black"
     },
     container: {
       paddingTop: theme.spacing(1),
-      paddingBottom: theme.spacing(1)
+      paddingBottom: theme.spacing(1),
     },
     smallScreenPaper: {
       padding: theme.spacing(props.isSmallScreen ? 1 : 4),
       display: "flex",
       overflow: "auto",
       flexDirection: "row",
-      backgroundColor: "white"
+      backgroundColor: "white",
+      zIndex: 1,
+      position: "relative",
     },
     paper: {
       justifyContent: "center",
@@ -89,21 +91,23 @@ function CVContent(props) {
       display: "flex",
       overflow: "auto",
       flexDirection: "row",
-      backgroundColor: "white"
+      backgroundColor: "white",
+      zIndex: 1,
+      position: "relative",
     },
 
     heading: {
       fontSize: theme.typography.pxToRem(15),
-      fontWeight: theme.typography.fontWeightRegular
+      fontWeight: theme.typography.fontWeightRegular,
     },
     expansionPanelHeader: {
       backgroundColor: "#3F51B5",
-      color: "white"
+      color: "white",
     },
     box: {
       justifyContent: "center",
-      alignItems: "center"
-    }
+      alignItems: "center",
+    },
   }));
 
   const classes = useStyles();
@@ -122,7 +126,7 @@ function CVContent(props) {
    * Converts an integer number into a list of integer numbers.
    * For example. 3 will be converted to [1, 2, 3]
    */
-  const turnNumPagesToArray = numPages => {
+  const turnNumPagesToArray = (numPages) => {
     var arrayOfNums = [];
     for (var i = 1; i <= numPages; ++i) {
       arrayOfNums.push(i);
@@ -130,7 +134,7 @@ function CVContent(props) {
     return arrayOfNums;
   };
 
-  const setPageNumCallback = num => {
+  const setPageNumCallback = (num) => {
     setPageNumber(num);
   };
   return (
@@ -139,7 +143,7 @@ function CVContent(props) {
         // style={{ textColor: "black" }}
         items={[[i18n("frame.menu"), "/"], [i18n("cv.route")]]}
       />
-      Still Working on pdf.js.
+      Having a webpack issue with pdf.js. Still working on it.
       {/* <Paper
         className={
           props.isSmallScreen ? classes.smallScreenPaper : classes.paper

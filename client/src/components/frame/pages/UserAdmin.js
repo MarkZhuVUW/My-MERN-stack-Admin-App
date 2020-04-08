@@ -6,7 +6,7 @@ import {
   Paper,
   TextField,
   Typography,
-  Zoom
+  Zoom,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import { i18n } from "i18n";
@@ -17,7 +17,7 @@ import Breadcrumb from "view/shared/Breadcrumb";
 import {
   deleteUser,
   loadAllUsers,
-  register
+  register,
 } from "../../../actions/authActions";
 import { clearErrors } from "../../../actions/errorActions";
 import AnimatedProgress from "../../../components/animatedProgress";
@@ -36,7 +36,7 @@ class UserAdmin extends Component {
     deleteUser: PropTypes.func.isRequired,
     register: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
-    error: PropTypes.object.isRequired
+    error: PropTypes.object.isRequired,
   };
 
   componentDidMount() {
@@ -65,7 +65,7 @@ class UserAdmin extends Component {
    * This callback function sends back the email of the user to be deleted
    * after the delete button is clicked on the mui datatable.
    */
-  callback = id => {
+  callback = (id) => {
     this.props.deleteUser(id);
   };
 
@@ -73,11 +73,11 @@ class UserAdmin extends Component {
    * This callback function sends back the email of the user to be deleted
    * after the delete button is clicked on the mui datatable.
    */
-  cb = id => {
+  cb = (id) => {
     this.props.deleteUser(id);
   };
 
-  registerCallback = userToBeRegistered => {
+  registerCallback = (userToBeRegistered) => {
     this.props.register(userToBeRegistered).then(() => {
       this.props.loadAllUsers();
     });
@@ -100,16 +100,16 @@ class UserAdmin extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   error: state.error,
   allUsers: state.auth.allUsers,
-  user: state.auth.user
+  user: state.auth.user,
 });
 export default connect(mapStateToProps, {
   clearErrors,
   loadAllUsers,
   deleteUser,
-  register
+  register,
 })(withStyles(styles)(UserAdmin));
 
 /**
@@ -118,31 +118,33 @@ export default connect(mapStateToProps, {
  * @author Mark Zhu <zdy120939259@outlook.com>
  */
 function SettingsContent(props) {
-  const useStyles = makeStyles(theme => ({
+  const useStyles = makeStyles((theme) => ({
     root: {
       backgroundColor: "#E9EAED",
-      width: "100%"
+      width: "100%",
       //   backgroundColor: "black"
     },
     container: {
       paddingTop: theme.spacing(1),
-      paddingBottom: theme.spacing(1)
+      paddingBottom: theme.spacing(1),
     },
     paper: {
       padding: theme.spacing(3),
       display: "flex",
       overflow: "auto",
-      flexDirection: "column"
+      flexDirection: "column",
+      zIndex: 1,
+      position: "relative",
     },
 
     heading: {
       fontSize: theme.typography.pxToRem(15),
-      fontWeight: theme.typography.fontWeightRegular
+      fontWeight: theme.typography.fontWeightRegular,
     },
     expansionPanelHeader: {
       backgroundColor: "#3F51B5",
-      color: "white"
-    }
+      color: "white",
+    },
   }));
   const classes = useStyles();
 
@@ -157,43 +159,43 @@ function SettingsContent(props) {
     email: "",
     password: "",
     role: "",
-    company: ""
+    company: "",
   });
   const [userToBeRegistered, setUserToBeRegistered] = useState({
     name: "",
     email: "",
     password: "",
-    role: ""
+    role: "",
   });
-  const handlecreateUser = event => {
+  const handlecreateUser = (event) => {
     setIsCreatingUser(true);
     setShowUserCreationProgress(true);
   };
 
-  const onChange = e => {
+  const onChange = (e) => {
     setUserToBeRegistered({
       ...userToBeRegistered,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  const cb = bool => {
+  const cb = (bool) => {
     setShowUserCreationProgress(bool);
     setIsCreatingUser(false);
     props.registerCallback(userToBeRegistered);
   };
 
-  const dropdownSelectedCallback = role => {
+  const dropdownSelectedCallback = (role) => {
     setUserToBeRegistered({
       ...userToBeRegistered,
-      role: role
+      role: role,
     });
   };
   function createUserView() {
     const typesOfUser = [
       { type: "roles", specific: "guest" },
       { type: "roles", specific: "admin" },
-      { type: "roles", specific: "employer" }
+      { type: "roles", specific: "employer" },
     ];
     return (
       <>
@@ -287,7 +289,7 @@ function SettingsContent(props) {
                 // a workaround to fix the value overlapping with label
                 key="Confirmation Code"
                 InputProps={{
-                  readOnly: true
+                  readOnly: true,
                 }}
                 fullWidth
                 value={
@@ -303,7 +305,7 @@ function SettingsContent(props) {
                 // a workaround to fix the value overlapping with label
                 key="Confirmation Code"
                 InputProps={{
-                  readOnly: true
+                  readOnly: true,
                 }}
                 fullWidth
                 name="name"
@@ -319,7 +321,7 @@ function SettingsContent(props) {
                 // a workaround to fix the value overlapping with label
                 key="Confirmation Code"
                 InputProps={{
-                  readOnly: true
+                  readOnly: true,
                 }}
                 fullWidth
                 value={
@@ -334,7 +336,7 @@ function SettingsContent(props) {
               <TextField
                 key="Confirmation Code"
                 InputProps={{
-                  readOnly: true
+                  readOnly: true,
                 }}
                 fullWidth
                 value={
@@ -370,24 +372,24 @@ function SettingsContent(props) {
       label: "id",
       options: {
         filter: false,
-        sort: false
-      }
+        sort: false,
+      },
     },
     {
       name: i18n("useradmin.name"),
       label: i18n("useradmin.name"),
       options: {
         filter: true,
-        sort: true
-      }
+        sort: true,
+      },
     },
     {
       name: i18n("useradmin.email"),
       label: i18n("useradmin.email"),
       options: {
         filter: true,
-        sort: true
-      }
+        sort: true,
+      },
     },
 
     {
@@ -395,37 +397,37 @@ function SettingsContent(props) {
       label: i18n("useradmin.role"),
       options: {
         filter: true,
-        sort: true
-      }
+        sort: true,
+      },
     },
     {
       name: i18n("useradmin.company"),
       label: i18n("useradmin.company"),
       options: {
         filter: true,
-        sort: true
-      }
+        sort: true,
+      },
     },
     {
       name: i18n("useradmin.registerDate"),
       label: i18n("useradmin.registerDate"),
       options: {
         filter: true,
-        sort: true
-      }
-    }
+        sort: true,
+      },
+    },
   ];
 
   const data =
     props.data && props.user
-      ? props.data.map(user => {
+      ? props.data.map((user) => {
           return [
             user._id,
             user.name,
             user.email,
             user.role,
             user.company,
-            new Date(user.register_date).toString()
+            new Date(user.register_date).toString(),
           ];
         })
       : [];
@@ -440,51 +442,51 @@ function SettingsContent(props) {
         next: i18n("MuiDataTable.nextPage"),
         previous: i18n("MuiDataTable.previousPage"),
         rowsPerPage: i18n("MuiDataTable.rowsPerPage"),
-        displayRows: i18n("MuiDataTable.displayRows") // 1-10 of 30
+        displayRows: i18n("MuiDataTable.displayRows"), // 1-10 of 30
       },
       toolbar: {
         search: i18n("MuiDataTable.search"),
         downloadCsv: i18n("MuiDataTable.downloadCsv"),
         print: i18n("MuiDataTable.print"),
         viewColumns: i18n("MuiDataTable.viewColumns"),
-        filterTable: i18n("MuiDataTable.filterTable")
+        filterTable: i18n("MuiDataTable.filterTable"),
       },
       filter: {
         title: i18n("MuiDataTable.filterTable"),
-        reset: i18n("MuiDataTable.filterTitle")
+        reset: i18n("MuiDataTable.filterTitle"),
       },
       viewColumns: {
-        title: i18n("MuiDataTable.viewColumnsTitle")
+        title: i18n("MuiDataTable.viewColumnsTitle"),
       },
       selectedRows: {
         text: i18n("MuiDataTable.selectedRowsText"),
-        delete: i18n("MuiDataTable.delete")
-      }
+        delete: i18n("MuiDataTable.delete"),
+      },
     },
-    onRowsDelete: rowsDeleted => {
+    onRowsDelete: (rowsDeleted) => {
       if (props.user.role !== "admin") {
         console.log(props.user.role + " is not allowed to delete users");
         return;
       }
       //rowdDeleted.lookup gets the actual indexes that are deleted in the users data.
       //loop through each index and delete them one by one.
-      Object.keys(rowsDeleted.lookup).forEach(index => {
+      Object.keys(rowsDeleted.lookup).forEach((index) => {
         console.log(data[index][0]);
         props.cb(data[index][0]);
       });
     },
 
-    onRowClick: rowClicked => {
+    onRowClick: (rowClicked) => {
       //send back to UserAdmin component the email of the user to be deleted.
       setCurrentUser({
         name: rowClicked[1],
         email: rowClicked[2],
         role: rowClicked[3],
-        company: rowClicked[4]
+        company: rowClicked[4],
       });
       // role: rowClicked[6]
       // console.log(currentUser);
-    }
+    },
   };
 
   const responsiveDialogCallback = () => {

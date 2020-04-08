@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import Breadcrumb from "view/shared/Breadcrumb";
 import {
   deleteLog,
-  loadAllLogsForSpecificUser
+  loadAllLogsForSpecificUser,
 } from "../../../../actions/adminActions";
 import { loadUser } from "../../../../actions/authActions";
 import { clearErrors } from "../../../../actions/errorActions";
@@ -31,7 +31,7 @@ class Dashboard extends Component {
     loadAllLogsForSpecificUser: PropTypes.func.isRequired,
     loadUser: PropTypes.func.isRequired,
     user: PropTypes.object,
-    deleteLog: PropTypes.func.isRequired
+    deleteLog: PropTypes.func.isRequired,
   };
   componentDidMount() {
     setTimeout(() => {
@@ -52,11 +52,11 @@ class Dashboard extends Component {
    * This callback function sends back the email of the user to be deleted
    * after the delete button is clicked on the mui datatable.
    */
-  deleteLogCallback = logid => {
+  deleteLogCallback = (logid) => {
     this.props.deleteLog(this.props.user._id, logid);
   };
 
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault();
 
     //clear errors
@@ -71,7 +71,7 @@ class Dashboard extends Component {
           style={{
             display: "flex",
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
           }}
         >
           <FacebookProgress />
@@ -90,26 +90,28 @@ class Dashboard extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   error: state.error,
   allLogs: state.admin.allLogs,
-  user: state.auth.user
+  user: state.auth.user,
 });
 export default connect(mapStateToProps, {
   clearErrors,
   loadAllLogsForSpecificUser,
   loadUser,
-  deleteLog
+  deleteLog,
 })(withStyles(styles)(Dashboard));
 
 function DashboardContent(props) {
-  const useStyles = makeStyles(theme => ({
+  const useStyles = makeStyles((theme) => ({
     paper: {
       padding: theme.spacing(2),
       display: "flex",
       overflow: "auto",
-      flexDirection: "column"
-    }
+      flexDirection: "column",
+      zIndex: 1,
+      position: "relative",
+    },
   }));
 
   const classes = useStyles();
@@ -120,68 +122,68 @@ function DashboardContent(props) {
       label: "id",
       options: {
         filter: true,
-        sort: true
-      }
+        sort: true,
+      },
     },
     {
       name: i18n("dashboard.table.name"),
       label: i18n("dashboard.table.name"),
       options: {
         filter: true,
-        sort: true
-      }
+        sort: true,
+      },
     },
     {
       name: i18n("dashboard.table.email"),
       label: i18n("dashboard.table.email"),
       options: {
         filter: true,
-        sort: true
-      }
+        sort: true,
+      },
     },
     {
       name: i18n("dashboard.table.role"),
       label: i18n("dashboard.table.role"),
       options: {
         filter: true,
-        sort: true
-      }
+        sort: true,
+      },
     },
     {
       name: i18n("dashboard.table.company"),
       label: i18n("dashboard.table.company"),
       options: {
         filter: true,
-        sort: true
-      }
+        sort: true,
+      },
     },
     {
       name: i18n("dashboard.table.explanation"),
       label: i18n("dashboard.table.explanation"),
       options: {
         filter: true,
-        sort: true
-      }
+        sort: true,
+      },
     },
     {
       name: i18n("dashboard.table.type"),
       label: i18n("dashboard.table.type"),
       options: {
         filter: true,
-        sort: true
-      }
+        sort: true,
+      },
     },
     {
       name: i18n("dashboard.table.dateLogged"),
       label: i18n("dashboard.table.dateLogged"),
       options: {
         filter: true,
-        sort: true
-      }
-    }
+        sort: true,
+      },
+    },
   ];
   const data = props.allLogs
-    ? props.allLogs.map(log => {
+    ? props.allLogs.map((log) => {
         return [
           log._id,
           log.name,
@@ -190,7 +192,7 @@ function DashboardContent(props) {
           log.company,
           log.explanation,
           log.type,
-          new Date(log.date_logged).toString()
+          new Date(log.date_logged).toString(),
         ];
       })
     : [];
@@ -202,28 +204,28 @@ function DashboardContent(props) {
         next: i18n("MuiDataTable.nextPage"),
         previous: i18n("MuiDataTable.previousPage"),
         rowsPerPage: i18n("MuiDataTable.rowsPerPage"),
-        displayRows: i18n("MuiDataTable.displayRows") // 1-10 of 30
+        displayRows: i18n("MuiDataTable.displayRows"), // 1-10 of 30
       },
       toolbar: {
         search: i18n("MuiDataTable.search"),
         downloadCsv: i18n("MuiDataTable.downloadCsv"),
         print: i18n("MuiDataTable.print"),
         viewColumns: i18n("MuiDataTable.viewColumns"),
-        filterTable: i18n("MuiDataTable.filterTable")
+        filterTable: i18n("MuiDataTable.filterTable"),
       },
       filter: {
         title: i18n("MuiDataTable.filterTable"),
-        reset: i18n("MuiDataTable.filterTitle")
+        reset: i18n("MuiDataTable.filterTitle"),
       },
       viewColumns: {
-        title: i18n("MuiDataTable.viewColumnsTitle")
+        title: i18n("MuiDataTable.viewColumnsTitle"),
       },
       selectedRows: {
         text: i18n("MuiDataTable.selectedRowsText"),
-        delete: i18n("MuiDataTable.delete")
-      }
+        delete: i18n("MuiDataTable.delete"),
+      },
     },
-    onRowsDelete: rowsDeleted => {
+    onRowsDelete: (rowsDeleted) => {
       console.log(data);
       if (props.user.role !== "admin") {
         console.log(props.user.role + " is not allowed to delete logs");
@@ -231,12 +233,12 @@ function DashboardContent(props) {
       }
       //rowdDeleted.lookup gets the actual indexes that are deleted in the log data.
       //loop through each index and delete them one by one.
-      Object.keys(rowsDeleted.lookup).forEach(index => {
+      Object.keys(rowsDeleted.lookup).forEach((index) => {
         console.log(data[index][0]);
 
         props.deleteLogCallback(data[index][0]);
       });
-    }
+    },
   };
 
   return (
@@ -286,7 +288,7 @@ function DashboardContent(props) {
       <p
         style={{
           width: "100%",
-          textAlign: "center"
+          textAlign: "center",
         }}
       >
         {i18n("dashboard.message")}

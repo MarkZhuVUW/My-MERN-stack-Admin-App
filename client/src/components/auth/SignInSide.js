@@ -27,7 +27,7 @@ import "../../css3/bouncingEffect.css";
 import ResponsiveDialog from "../ResponsiveDialog";
 
 const theme = createMuiTheme({
-  spacing: 4
+  spacing: 4,
 });
 
 const styles = {
@@ -38,7 +38,7 @@ const styles = {
         : theme.palette.grey[600],
     flexGrow: 1,
     height: "100vh",
-    overflow: "auto"
+    overflow: "auto",
   },
   image: {
     backgroundImage: "url(https://source.unsplash.com/random)",
@@ -48,13 +48,13 @@ const styles = {
         ? theme.palette.grey[900]
         : theme.palette.grey[600],
     backgroundSize: "cover",
-    backgroundPosition: "center"
+    backgroundPosition: "center",
   },
   paper: {
     padding: theme.spacing(8, 4),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   content: {
     padding: theme.spacing(4, 4),
@@ -62,19 +62,19 @@ const styles = {
     flexDirection: "column",
     alignItems: "center",
     zIndex: 1,
-    position: "relative"
+    position: "relative",
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
-  }
+    margin: theme.spacing(3, 0, 2),
+  },
 };
 
 class SignInSide extends Component {
@@ -89,7 +89,7 @@ class SignInSide extends Component {
     emailErrorMsg: null,
     passwordErrorMsg: null,
     copyRightOpened: false,
-    copyRightText: "Dont know what should be in here"
+    copyRightText: "Dont know what should be in here",
   };
 
   static propTypes = {
@@ -105,7 +105,7 @@ class SignInSide extends Component {
     //withRouter
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
   };
 
   componentDidUpdate(prevProps) {
@@ -127,7 +127,7 @@ class SignInSide extends Component {
     this.props.clearErrors();
   };
 
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault();
 
     const { email, password, emailErrorMsg, passwordErrorMsg } = this.state;
@@ -135,12 +135,12 @@ class SignInSide extends Component {
     this.validatePassword(password);
     if (emailErrorMsg || passwordErrorMsg) return;
     this.setState({
-      isLoading: true
+      isLoading: true,
     });
 
     const user = {
       email,
-      password
+      password,
     };
 
     // Attempt to login
@@ -148,10 +148,10 @@ class SignInSide extends Component {
     this.toggle();
   };
 
-  callback = isTFAVerified => {
+  callback = (isTFAVerified) => {
     if (isTFAVerified) {
       this.setState({
-        isLoading: false
+        isLoading: false,
       });
       this.handleLoginSuccess();
       this.props.history.push("/");
@@ -167,27 +167,27 @@ class SignInSide extends Component {
       role: role,
       company: company,
       explanation: "user logged in",
-      type: "LOGIN"
+      type: "LOGIN",
     };
 
     this.props.logLoginSuccess(_id, logLoginSuccess);
 
     this.toggle();
   };
-  validateEmail = email => {
+  validateEmail = (email) => {
     if (email === "")
       this.setState({ emailErrorMsg: "Email cannot be empty." });
     else if (!email.includes("@"))
       this.setState({ emailErrorMsg: "Incorrect format" });
     else this.setState({ emailErrorMsg: null });
   };
-  validatePassword = password => {
+  validatePassword = (password) => {
     if (password === "")
       this.setState({ passwordErrorMsg: "Password cannot be empty." });
     else this.setState({ passwordErrorMsg: null });
   };
 
-  onChange = e => {
+  onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
     if (e.target.name === "email") this.validateEmail(e.target.value);
     else if (e.target.name === "password")
@@ -200,7 +200,7 @@ class SignInSide extends Component {
     const responsiveDialogCallback = () => {
       this.setState({
         isLoading: false,
-        copyRightOpened: false
+        copyRightOpened: false,
       });
     };
 
@@ -210,7 +210,7 @@ class SignInSide extends Component {
       }
 
       this.setState({
-        forgotPasswordClicked: false
+        forgotPasswordClicked: false,
       });
     };
 
@@ -262,7 +262,7 @@ class SignInSide extends Component {
               alignItems: "center",
               justifyContent: "center",
               display: "flex",
-              flexDirection: "column"
+              flexDirection: "column",
             }}
           >
             <Zoom in={true} timeout={500}>
@@ -333,7 +333,7 @@ class SignInSide extends Component {
                           to="#"
                           onClick={() =>
                             this.setState({
-                              forgotPasswordClicked: true
+                              forgotPasswordClicked: true,
                             })
                           }
                           style={{
@@ -341,7 +341,7 @@ class SignInSide extends Component {
                             color:
                               localStorage.getItem("theme") === "dark"
                                 ? "white"
-                                : "black"
+                                : "black",
                           }}
                         >
                           {i18n("loginPage.forgotPassword")}
@@ -355,7 +355,7 @@ class SignInSide extends Component {
                             color:
                               localStorage.getItem("theme") === "dark"
                                 ? "white"
-                                : "black"
+                                : "black",
                           }}
                         >
                           {i18n("loginPage.noAccount")}
@@ -383,7 +383,7 @@ class SignInSide extends Component {
                             color:
                               localStorage.getItem("theme") === "dark"
                                 ? "white"
-                                : "black"
+                                : "black",
                           }}
                         >
                           {i18n("loginPage.mit")}
@@ -398,10 +398,10 @@ class SignInSide extends Component {
                             color:
                               localStorage.getItem("theme") === "dark"
                                 ? "white"
-                                : "black"
+                                : "black",
                           }}
                           onClick={() => {
-                            window.location.href = `mailto:zdy120939259@outlook.com`;
+                            window.location.href = `mailto:zdy120939259@outlook.com?subject=I want to hire you :)`;
                           }}
                         >
                           {i18n("loginPage.contactDeveloper")}
@@ -419,11 +419,11 @@ class SignInSide extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   error: state.error,
   userLoaded: state.auth.userLoaded,
   isTFAing: state.auth.isTFAing,
-  user: state.auth.user
+  user: state.auth.user,
 });
 export default compose(
   withStyles(styles),

@@ -36,14 +36,14 @@ import WelcomePage from "./pages/WelcomePage";
 
 const styles = {
   root: {
-    display: "flex"
-  }
+    display: "flex",
+  },
 };
 
 class Frame extends Component {
   state = {
     // keeps track of whether the page is logged.
-    pageLogged: false
+    pageLogged: false,
   };
   static propTypes = {
     auth: PropTypes.object.isRequired,
@@ -55,7 +55,7 @@ class Frame extends Component {
     //withRouter
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
   };
 
   componentDidMount() {
@@ -72,7 +72,7 @@ class Frame extends Component {
   /**
    * Log employer page view and make api call to update corresponding documents in my mongodb database
    */
-  logPageView = page => {
+  logPageView = (page) => {
     // Using my own REST API to log page views.
     // Ideally I will implement google analytics in the future.
     // I am only interested in logging employer page views
@@ -85,7 +85,7 @@ class Frame extends Component {
       role: role,
       company: company,
       explanation: page,
-      type: "PAGE VIEW"
+      type: "PAGE VIEW",
     };
 
     this.props.logPageView(_id, logPageView);
@@ -143,7 +143,7 @@ class Frame extends Component {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            height: "100vh"
+            height: "100vh",
           }}
         >
           <FacebookProgress />
@@ -160,9 +160,9 @@ class Frame extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   auth: state.auth,
-  user: state.auth.user
+  user: state.auth.user,
 });
 
 export default compose(
@@ -172,9 +172,9 @@ export default compose(
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex"
+    display: "flex",
   },
   toolbar: {
     // paddingRight: 24 // keep right padding when drawer closed
@@ -184,31 +184,31 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     justifyContent: "flex-end",
     padding: "0 8px",
-    ...theme.mixins.toolbar
+    ...theme.mixins.toolbar,
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
+      duration: theme.transitions.duration.leavingScreen,
+    }),
   },
   appBarShift: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   menuButton: {
     // marginRight: 36
   },
   menuButtonHidden: {
-    display: "none"
+    display: "none",
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   drawerPaper: {
     position: "relative",
@@ -216,48 +216,48 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   drawerPaperClose: {
     overflowX: "hidden",
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
+      duration: theme.transitions.duration.leavingScreen,
     }),
     width: theme.spacing(7),
     [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9)
-    }
+      width: theme.spacing(9),
+    },
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
     height: "100vh",
-    overflow: "auto"
+    overflow: "auto",
   },
   container: {
     paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4)
+    paddingBottom: theme.spacing(4),
   },
   paper: {
     padding: theme.spacing(2),
     display: "flex",
     overflow: "auto",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   fixedHeight: {
-    height: 240
+    height: 240,
   },
   mobileContainer: {
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
     paddingRight: theme.spacing(1),
-    paddingLeft: theme.spacing(1)
+    paddingLeft: theme.spacing(1),
   },
   developer: {
-    backgroundColor: "white"
-  }
+    backgroundColor: "white",
+  },
 }));
 
 function FrameContent(props) {
@@ -318,7 +318,7 @@ function FrameContent(props) {
     setOpen(false);
   };
 
-  const themeCallback = theme => {
+  const themeCallback = (theme) => {
     props.themeCallback(theme);
   };
 
@@ -346,7 +346,7 @@ function FrameContent(props) {
      * Injected by the documentation to work in an iframe.
      * You won't need it on your project.
      */
-    window: PropTypes.func
+    window: PropTypes.func,
   };
   const FrameAppBar = (
     // <ElevationScroll {...props}>
@@ -393,7 +393,7 @@ function FrameContent(props) {
       </Toolbar>
     </AppBar>
   );
-  const cb = selectedIndex => {
+  const cb = (selectedIndex) => {
     setSelectedIndex(selectedIndex);
     if (isSmallScreen) setOpen(false);
   };
@@ -402,7 +402,7 @@ function FrameContent(props) {
     <Drawer
       variant="permanent"
       classes={{
-        paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)
+        paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
       }}
       open={open}
     >
@@ -429,34 +429,29 @@ function FrameContent(props) {
             top: 0,
             left: 0,
             width: "100%",
-            height: "100%"
+            height: "100%",
           }}
           params={{
             particles: {
               number: {
-                value: 50
+                value: 50,
               },
               size: {
-                value: 3
-              }
+                value: 3,
+              },
             },
             interactivity: {
               events: {
                 onhover: {
                   enable: true,
-                  mode: "repulse"
-                }
-              }
-            }
+                  mode: "repulse",
+                },
+              },
+            },
           }}
         />
       ) : null}
-      <div
-        style={{
-          zIndex: 1,
-          position: "relative"
-        }}
-      >
+      <div>
         {isIndexInvalid ? (
           <ErrorPage code={index} />
         ) : (
