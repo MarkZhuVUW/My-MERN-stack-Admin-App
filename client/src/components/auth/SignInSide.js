@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import MuiAlert from "@material-ui/lab/Alert";
 import { withStyles } from "@material-ui/styles";
+import AnimatedIcons from "components/AnimatedIcons/AnimatedIcons";
 import FacebookProgress from "components/FacebookProgress";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
@@ -25,7 +26,6 @@ import { login } from "../../actions/authActions";
 import { clearErrors } from "../../actions/errorActions";
 import "../../css3/bouncingEffect.css";
 import ResponsiveDialog from "../ResponsiveDialog";
-
 const theme = createMuiTheme({
   spacing: 4,
 });
@@ -133,7 +133,6 @@ class SignInSide extends Component {
     const { email, password, emailErrorMsg, passwordErrorMsg } = this.state;
     this.validateEmail(email);
     this.validatePassword(password);
-    if (emailErrorMsg || passwordErrorMsg) return;
     this.setState({
       isLoading: true,
     });
@@ -245,7 +244,7 @@ class SignInSide extends Component {
         <Grid container className={classes.root}>
           <CssBaseline />
 
-          <Grid item xs={false} sm={4} md={7} className={classes.image} />
+          <Grid item xs={false} sm={4} md={7} className={classes.image}></Grid>
           <Grid
             item
             xs={12}
@@ -316,7 +315,11 @@ class SignInSide extends Component {
                       fullWidth
                       variant="contained"
                       color="primary"
-                      disabled={this.state.isLoading}
+                      disabled={
+                        this.state.isLoading ||
+                        this.state.emailErrorMsg ||
+                        this.state.passwordErrorMsg
+                      }
                       className={classes.submit}
                       onClick={this.onSubmit}
                     >
@@ -375,6 +378,7 @@ class SignInSide extends Component {
                         <Typography
                           component="a"
                           href="#"
+                          variant="caption"
                           onClick={() => {
                             this.setState({ copyRightOpened: true });
                           }}
@@ -401,7 +405,7 @@ class SignInSide extends Component {
                                 : "black",
                           }}
                           onClick={() => {
-                            window.location.href = `mailto:zdy120939259@outlook.com?subject=I want to hire you :)`;
+                            window.location.href = `mailto:zdy120939259@outlook.com?subject=interview invitation`;
                           }}
                         >
                           {i18n("loginPage.contactDeveloper")}
@@ -412,6 +416,7 @@ class SignInSide extends Component {
                 </Paper>
               </Container>
             </Zoom>
+            <AnimatedIcons />
           </Grid>
         </Grid>
       </div>
