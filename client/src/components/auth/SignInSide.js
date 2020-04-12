@@ -15,6 +15,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 import { withStyles } from "@material-ui/styles";
 import AnimatedIcons from "components/AnimatedIcons/AnimatedIcons";
 import FacebookProgress from "components/FacebookProgress";
+import ImageRevealEffect from "components/ImageRevealEffect/ImageRevealEffect";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
@@ -26,6 +27,7 @@ import { login } from "../../actions/authActions";
 import { clearErrors } from "../../actions/errorActions";
 import "../../css3/bouncingEffect.css";
 import ResponsiveDialog from "../ResponsiveDialog";
+
 const theme = createMuiTheme({
   spacing: 4,
 });
@@ -39,7 +41,7 @@ const styles = {
   },
   image: {
     backgroundImage: "url(https://source.unsplash.com/random)",
-    backgroundRepeat: "no-repeat",
+
     backgroundColor: theme.palette.grey[600],
     backgroundSize: "cover",
     backgroundPosition: "center",
@@ -239,7 +241,10 @@ class SignInSide extends Component {
         <Grid container className={classes.root}>
           <CssBaseline />
 
-          <Grid item xs={false} sm={4} md={7} className={classes.image}></Grid>
+          <Grid item xs={false} sm={4} md={7} className={classes.image}>
+            <ImageRevealEffect imageUrl="url(https://source.unsplash.com/random)" />
+          </Grid>
+
           <Grid
             item
             xs={12}

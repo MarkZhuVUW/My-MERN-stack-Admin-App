@@ -302,7 +302,11 @@ class SignUp extends Component {
                     (this.state.selectedRole === "employer" &&
                       !this.state.checked) ||
                     this.state.isLoading ||
-                    this.state.selectedRole == ""
+                    this.state.selectedRole == "" ||
+                    this.state.email === "" ||
+                    this.state.password === "" ||
+                    this.state.passwordErrorMsg !== null ||
+                    this.state.emailErrorMsg !== null
                   }
                   type="submit"
                   fullWidth
