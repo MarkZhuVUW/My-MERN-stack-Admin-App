@@ -1,6 +1,6 @@
-import { makeStyles } from "@material-ui/core";
+import { Box, makeStyles } from "@material-ui/core";
 import { Power3, TweenMax } from "gsap";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import expressjsLogo from "../../icons/expressjs-logo.svg";
 import gitLogo from "../../icons/git-logo.svg";
 import herokuLogo from "../../icons/heroku-logo.svg";
@@ -11,7 +11,6 @@ import reduxLogo from "../../icons/redux-logo.svg";
 import sassLogo from "../../icons/sass-logo.svg";
 import sourcetreeLogo from "../../icons/sourcetree-logo.svg";
 import "./AnimatedIcons.scss";
-
 export default function AnimatedIcons(props) {
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,9 +40,11 @@ export default function AnimatedIcons(props) {
   }));
 
   const classes = useStyles();
-  let reactLogoItem = useRef(null);
-  let reduxLogoItem = useRef(null);
-  let nodejsLogoItem = useRef(null);
+  let animatedIcons,
+    reactLogoItem,
+    reduxLogoItem,
+    nodejsLogoItem = useRef(null);
+
   let herokuLogoItem = useRef(null);
   let sassLogoItem = useRef(null);
   let expressjsLogoItem = useRef(null);
@@ -51,141 +52,192 @@ export default function AnimatedIcons(props) {
   let sourcetreeLogoItem = useRef(null);
   let materialuiLogoItem = useRef(null);
 
+  const [expanded, setExpanded] = useState(false);
   useEffect(() => {
-    TweenMax.to(reactLogoItem, 2, {
-      opacity: 1,
-      y: -20,
-      ease: Power3.easeOut,
-    });
+    TweenMax.to(animatedIcons, 0, { css: { visibility: "visible" } });
 
-    TweenMax.to(reduxLogoItem, 2, {
-      opacity: 1,
-      y: -20,
-      ease: Power3.easeOut,
-    });
+    TweenMax.staggerFrom(
+      [
+        reactLogoItem,
+        reduxLogoItem,
+        nodejsLogoItem,
+        herokuLogoItem,
+        sassLogoItem,
+        expressjsLogoItem,
+        gitLogoItem,
+        sourcetreeLogoItem,
+        materialuiLogoItem,
+      ],
+      0.8,
+      { opacity: 0, y: 100, ease: Power3.easeOut },
+      0.4
+    );
+  }, []);
 
-    TweenMax.to(nodejsLogoItem, 2, {
-      opacity: 1,
-      y: -20,
+  const handleExpand = (logoItem) => {
+    TweenMax.to(logoItem, 0.8, {
+      width: "100px",
+      height: "100px",
       ease: Power3.easeOut,
     });
+    setExpanded(true);
+  };
 
-    TweenMax.to(herokuLogoItem, 2, {
-      opacity: 1,
-      y: -20,
+  const handleShrink = (logoItem) => {
+    TweenMax.to(logoItem, 0.8, {
+      width: "50px",
+      height: "50px",
       ease: Power3.easeOut,
     });
-
-    TweenMax.to(sassLogoItem, 2, {
-      opacity: 1,
-      y: -20,
-      ease: Power3.easeOut,
-    });
-
-    TweenMax.to(expressjsLogoItem, 2, {
-      opacity: 1,
-      y: -20,
-      ease: Power3.easeOut,
-    });
-
-    TweenMax.to(gitLogoItem, 2, {
-      opacity: 1,
-      y: -20,
-      ease: Power3.easeOut,
-    });
-
-    TweenMax.to(sourcetreeLogoItem, 2, {
-      opacity: 1,
-      y: -20,
-      ease: Power3.easeOut,
-    });
-
-    TweenMax.to(materialuiLogoItem, 2, {
-      opacity: 1,
-      y: -20,
-      ease: Power3.easeOut,
-    });
-  });
+    setExpanded(false);
+  };
   return (
-    <>
-      <img
-        ref={(el) => {
-          reactLogoItem = el;
-        }}
-        src={reactLogo}
-        className="react-logo"
-        alt="logo"
-      />
-      <img
-        ref={(el) => {
-          reduxLogoItem = el;
-        }}
-        src={reduxLogo}
-        className="redux-logo"
-        alt="logo"
-      />
-      <img
-        ref={(el) => {
-          nodejsLogoItem = el;
-        }}
-        src={nodejsLogo}
-        className="nodejs-logo"
-        alt="logo"
-      />
+    <Box
+      style={{
+        width: "100%",
+        flexWrap: "wrap",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "row",
+        textAlign: "center",
+      }}
+      className="animated-icons"
+    >
+      <Box
+        onMouseEnter={() => handleExpand(reactLogoItem)}
+        onMouseOut={() => handleShrink(reactLogoItem)}
+        style={{ width: "33%", alignSelf: "center" }}
+      >
+        <img
+          ref={(el) => {
+            reactLogoItem = el;
+          }}
+          src={reactLogo}
+          className="react-logo"
+          alt="logo"
+        />
+      </Box>
+      <Box
+        onMouseEnter={() => handleExpand(reduxLogoItem)}
+        onMouseOut={() => handleShrink(reduxLogoItem)}
+        style={{ width: "33%" }}
+      >
+        <img
+          ref={(el) => {
+            reduxLogoItem = el;
+          }}
+          src={reduxLogo}
+          className="redux-logo"
+          alt="logo"
+        />
+      </Box>
 
-      <img
-        ref={(el) => {
-          herokuLogoItem = el;
-        }}
-        src={herokuLogo}
-        className="heroku-logo"
-        alt="logo"
-      />
+      <Box
+        onMouseEnter={() => handleExpand(nodejsLogoItem)}
+        onMouseOut={() => handleShrink(nodejsLogoItem)}
+        style={{ width: "33%" }}
+      >
+        <img
+          ref={(el) => {
+            nodejsLogoItem = el;
+          }}
+          src={nodejsLogo}
+          className="nodejs-logo"
+          alt="logo"
+        />
+      </Box>
 
-      <img
-        ref={(el) => {
-          sassLogoItem = el;
-        }}
-        src={sassLogo}
-        className="sass-logo"
-        alt="logo"
-      />
+      <Box
+        onMouseEnter={() => handleExpand(herokuLogoItem)}
+        onMouseOut={() => handleShrink(herokuLogoItem)}
+        style={{ width: "33%" }}
+      >
+        <img
+          ref={(el) => {
+            herokuLogoItem = el;
+          }}
+          src={herokuLogo}
+          className="heroku-logo"
+          alt="logo"
+        />
+      </Box>
 
-      <img
-        ref={(el) => {
-          expressjsLogoItem = el;
-        }}
-        src={expressjsLogo}
-        className="expressjs-logo"
-        alt="logo"
-      />
+      <Box
+        onMouseEnter={() => handleExpand(sassLogoItem)}
+        onMouseOut={() => handleShrink(sassLogoItem)}
+        style={{ width: "33%" }}
+      >
+        <img
+          ref={(el) => {
+            sassLogoItem = el;
+          }}
+          src={sassLogo}
+          className="sass-logo"
+          alt="logo"
+        />
+      </Box>
 
-      <img
-        ref={(el) => {
-          gitLogoItem = el;
-        }}
-        src={gitLogo}
-        className="git-logo"
-        alt="logo"
-      />
+      <Box
+        p={1}
+        onMouseEnter={() => handleExpand(expressjsLogoItem)}
+        onMouseOut={() => handleShrink(expressjsLogoItem)}
+        style={{ width: "33%" }}
+      >
+        <img
+          ref={(el) => {
+            expressjsLogoItem = el;
+          }}
+          src={expressjsLogo}
+          className="expressjs-logo"
+          alt="logo"
+        />
+      </Box>
 
-      <img
-        ref={(el) => {
-          sourcetreeLogoItem = el;
-        }}
-        src={sourcetreeLogo}
-        className="sourcetree-logo"
-        alt="logo"
-      />
+      <Box
+        onMouseEnter={() => handleExpand(gitLogoItem)}
+        onMouseOut={() => handleShrink(gitLogoItem)}
+        style={{ width: "33%" }}
+      >
+        <img
+          ref={(el) => {
+            gitLogoItem = el;
+          }}
+          src={gitLogo}
+          className="git-logo"
+          alt="logo"
+        />
+      </Box>
 
-      <img
-        ref={(el) => {
-          materialuiLogoItem = el;
-        }}
-        src={materialuiLogo}
-        className="materialui-logo"
-        alt="logo"
-      />
-    </>
+      <Box
+        onMouseEnter={() => handleExpand(sourcetreeLogoItem)}
+        onMouseOut={() => handleShrink(sourcetreeLogoItem)}
+        style={{ width: "33%" }}
+      >
+        <img
+          ref={(el) => {
+            sourcetreeLogoItem = el;
+          }}
+          src={sourcetreeLogo}
+          className="sourcetree-logo"
+          alt="logo"
+        />
+      </Box>
+
+      <Box
+        onMouseEnter={() => handleExpand(materialuiLogoItem)}
+        onMouseOut={() => handleShrink(materialuiLogoItem)}
+        style={{ width: "33%" }}
+      >
+        <img
+          ref={(el) => {
+            materialuiLogoItem = el;
+          }}
+          src={materialuiLogo}
+          className="materialui-logo"
+          alt="logo"
+        />
+      </Box>
+    </Box>
   );
 }

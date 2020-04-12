@@ -32,10 +32,7 @@ const theme = createMuiTheme({
 
 const styles = {
   root: {
-    backgroundColor:
-      localStorage.getItem("theme") === "dark"
-        ? theme.palette.grey[900]
-        : theme.palette.grey[600],
+    backgroundColor: theme.palette.grey[600],
     flexGrow: 1,
     height: "100vh",
     overflow: "auto",
@@ -43,10 +40,7 @@ const styles = {
   image: {
     backgroundImage: "url(https://source.unsplash.com/random)",
     backgroundRepeat: "no-repeat",
-    backgroundColor:
-      localStorage.getItem("theme") === "dark"
-        ? theme.palette.grey[900]
-        : theme.palette.grey[600],
+    backgroundColor: theme.palette.grey[600],
     backgroundSize: "cover",
     backgroundPosition: "center",
   },
@@ -89,7 +83,8 @@ class SignInSide extends Component {
     emailErrorMsg: null,
     passwordErrorMsg: null,
     copyRightOpened: false,
-    copyRightText: "Dont know what should be in here",
+    copyRightText:
+      "This website is MIT licensed. https://opensource.org/licenses/MIT",
   };
 
   static propTypes = {
@@ -254,10 +249,7 @@ class SignInSide extends Component {
             elevation={6}
             square
             style={{
-              backgroundColor:
-                localStorage.getItem("theme") === "dark"
-                  ? theme.palette.grey[900]
-                  : theme.palette.grey[600],
+              backgroundColor: theme.palette.grey[600],
               alignItems: "center",
               justifyContent: "center",
               display: "flex",
@@ -317,8 +309,10 @@ class SignInSide extends Component {
                       color="primary"
                       disabled={
                         this.state.isLoading ||
-                        this.state.emailErrorMsg ||
-                        this.state.passwordErrorMsg
+                        this.state.email === "" ||
+                        this.state.password === "" ||
+                        this.state.passwordErrorMsg !== null ||
+                        this.state.emailErrorMsg !== null
                       }
                       className={classes.submit}
                       onClick={this.onSubmit}
@@ -373,7 +367,7 @@ class SignInSide extends Component {
                         responsiveDialogCallback={responsiveDialogCallback}
                       />
                     ) : null}
-                    <Grid container style={{ marginTop: 30 }}>
+                    <Grid container style={{ marginTop: 15 }}>
                       <Grid item xs>
                         <Typography
                           component="a"
@@ -416,7 +410,9 @@ class SignInSide extends Component {
                 </Paper>
               </Container>
             </Zoom>
-            <AnimatedIcons />
+            <Container className={classes.content}>
+              <AnimatedIcons className="animated-icons" />
+            </Container>
           </Grid>
         </Grid>
       </div>

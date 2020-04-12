@@ -111,6 +111,7 @@ function DashboardContent(props) {
       flexDirection: "column",
       zIndex: 1,
       position: "relative",
+      height: "100%",
     },
   }));
 
