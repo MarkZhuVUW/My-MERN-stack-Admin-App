@@ -3,7 +3,7 @@
   "info": {
     "version": "1.0.0",
     "title": "My MERN Stack Admin App API",
-    "description": "REST API documentation for My MERN Stack Admin App",
+    "description": "REST API documentation for My MERN Stack Admin App. (auth token for the current logged in user is in local storage)",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"

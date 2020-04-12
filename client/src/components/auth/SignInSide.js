@@ -20,12 +20,14 @@ import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import MediaQuery from "react-responsive";
 import { NavLink, withRouter } from "react-router-dom";
 import compose from "recompose/compose";
 import { logLoginSuccess } from "../../actions/adminActions";
 import { login } from "../../actions/authActions";
 import { clearErrors } from "../../actions/errorActions";
 import "../../css3/bouncingEffect.css";
+import image from "../../images/404.png";
 import ResponsiveDialog from "../ResponsiveDialog";
 
 const theme = createMuiTheme({
@@ -39,13 +41,7 @@ const styles = {
     height: "100vh",
     overflow: "auto",
   },
-  image: {
-    backgroundImage: "url(https://source.unsplash.com/random)",
 
-    backgroundColor: theme.palette.grey[600],
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-  },
   paper: {
     padding: theme.spacing(8, 4),
     display: "flex",
@@ -240,16 +236,18 @@ class SignInSide extends Component {
 
         <Grid container className={classes.root}>
           <CssBaseline />
-
-          <Grid item xs={false} sm={4} md={7} className={classes.image}>
-            <ImageRevealEffect imageUrl="url(https://source.unsplash.com/random)" />
-          </Grid>
+          <MediaQuery query="(min-device-width: 1224px)">
+            <Grid item lg={7}>
+              <ImageRevealEffect image={image} />
+            </Grid>
+          </MediaQuery>
 
           <Grid
             item
             xs={12}
-            sm={8}
-            md={5}
+            sm={12}
+            md={12}
+            lg={5}
             component={Paper}
             elevation={6}
             square
