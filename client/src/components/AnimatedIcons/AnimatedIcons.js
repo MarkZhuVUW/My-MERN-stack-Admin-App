@@ -1,4 +1,4 @@
-import { Box, makeStyles } from "@material-ui/core";
+import { Box, makeStyles, Tooltip } from "@material-ui/core";
 import { Power3, TweenMax } from "gsap";
 import React, { useEffect, useRef, useState } from "react";
 import expressjsLogo from "../../icons/expressjs-logo.svg";
@@ -11,6 +11,7 @@ import reduxLogo from "../../icons/redux-logo.svg";
 import sassLogo from "../../icons/sass-logo.svg";
 import sourcetreeLogo from "../../icons/sourcetree-logo.svg";
 import "./AnimatedIcons.scss";
+
 export default function AnimatedIcons(props) {
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -104,140 +105,162 @@ export default function AnimatedIcons(props) {
       }}
       className="animated-icons"
     >
-      <Box
-        onMouseEnter={() => handleExpand(reactLogoItem)}
-        onMouseOut={() => handleShrink(reactLogoItem)}
-        style={{ width: "33%", alignSelf: "center" }}
-      >
-        <img
-          ref={(el) => {
-            reactLogoItem = el;
-          }}
-          src={reactLogo}
-          className="react-logo"
-          alt="logo"
-        />
-      </Box>
-      <Box
-        onMouseEnter={() => handleExpand(reduxLogoItem)}
-        onMouseOut={() => handleShrink(reduxLogoItem)}
-        style={{ width: "33%" }}
-      >
-        <img
-          ref={(el) => {
-            reduxLogoItem = el;
-          }}
-          src={reduxLogo}
-          className="redux-logo"
-          alt="logo"
-        />
-      </Box>
+      <Tooltip title="React" aria-label="React">
+        <Box
+          onMouseEnter={() => handleExpand(reactLogoItem)}
+          onMouseOut={() => handleShrink(reactLogoItem)}
+          style={{ width: "33%", alignSelf: "center" }}
+        >
+          <img
+            ref={(el) => {
+              reactLogoItem = el;
+            }}
+            src={reactLogo}
+            className="react-logo"
+            alt="logo"
+          />
+        </Box>
+      </Tooltip>
 
-      <Box
-        onMouseEnter={() => handleExpand(nodejsLogoItem)}
-        onMouseOut={() => handleShrink(nodejsLogoItem)}
-        style={{ width: "33%" }}
-      >
-        <img
-          ref={(el) => {
-            nodejsLogoItem = el;
-          }}
-          src={nodejsLogo}
-          className="nodejs-logo"
-          alt="logo"
-        />
-      </Box>
+      <Tooltip title="Redux" aria-label="Redux">
+        <Box
+          onMouseEnter={() => handleExpand(reduxLogoItem)}
+          onMouseOut={() => handleShrink(reduxLogoItem)}
+          style={{ width: "33%" }}
+        >
+          <img
+            ref={(el) => {
+              reduxLogoItem = el;
+            }}
+            src={reduxLogo}
+            className="redux-logo"
+            alt="logo"
+          />
+        </Box>
+      </Tooltip>
 
-      <Box
-        onMouseEnter={() => handleExpand(herokuLogoItem)}
-        onMouseOut={() => handleShrink(herokuLogoItem)}
-        style={{ width: "33%" }}
-      >
-        <img
-          ref={(el) => {
-            herokuLogoItem = el;
-          }}
-          src={herokuLogo}
-          className="heroku-logo"
-          alt="logo"
-        />
-      </Box>
+      <Tooltip title="Nodejs" aria-label="Nodejs">
+        <Box
+          onMouseEnter={() => handleExpand(nodejsLogoItem)}
+          onMouseOut={() => handleShrink(nodejsLogoItem)}
+          style={{ width: "33%" }}
+        >
+          <img
+            ref={(el) => {
+              nodejsLogoItem = el;
+            }}
+            src={nodejsLogo}
+            className="nodejs-logo"
+            alt="logo"
+          />
+        </Box>
+      </Tooltip>
 
-      <Box
-        onMouseEnter={() => handleExpand(sassLogoItem)}
-        onMouseOut={() => handleShrink(sassLogoItem)}
-        style={{ width: "33%" }}
-      >
-        <img
-          ref={(el) => {
-            sassLogoItem = el;
-          }}
-          src={sassLogo}
-          className="sass-logo"
-          alt="logo"
-        />
-      </Box>
+      <Tooltip title="Heroku" aria-label="Heroku">
+        <Box
+          onMouseEnter={() => handleExpand(herokuLogoItem)}
+          onMouseOut={() => handleShrink(herokuLogoItem)}
+          style={{ width: "33%" }}
+        >
+          <img
+            ref={(el) => {
+              herokuLogoItem = el;
+            }}
+            src={herokuLogo}
+            className="heroku-logo"
+            alt="logo"
+          />
+        </Box>
+      </Tooltip>
 
-      <Box
-        p={1}
-        onMouseEnter={() => handleExpand(expressjsLogoItem)}
-        onMouseOut={() => handleShrink(expressjsLogoItem)}
-        style={{ width: "33%" }}
-      >
-        <img
-          ref={(el) => {
-            expressjsLogoItem = el;
-          }}
-          src={expressjsLogo}
-          className="expressjs-logo"
-          alt="logo"
-        />
-      </Box>
+      <Tooltip title="SASS" aria-label="SASS">
+        <Box
+          onMouseEnter={() => handleExpand(sassLogoItem)}
+          onMouseOut={() => handleShrink(sassLogoItem)}
+          style={{ width: "33%" }}
+        >
+          <img
+            ref={(el) => {
+              sassLogoItem = el;
+            }}
+            src={sassLogo}
+            className="sass-logo"
+            alt="logo"
+          />
+        </Box>
+      </Tooltip>
 
-      <Box
-        onMouseEnter={() => handleExpand(gitLogoItem)}
-        onMouseOut={() => handleShrink(gitLogoItem)}
-        style={{ width: "33%" }}
-      >
-        <img
-          ref={(el) => {
-            gitLogoItem = el;
-          }}
-          src={gitLogo}
-          className="git-logo"
-          alt="logo"
-        />
-      </Box>
+      <Tooltip title="Expressjs" aria-label="Expressjs">
+        <Box
+          p={1}
+          onMouseEnter={() => handleExpand(expressjsLogoItem)}
+          onMouseOut={() => handleShrink(expressjsLogoItem)}
+          style={{ width: "33%" }}
+        >
+          <img
+            ref={(el) => {
+              expressjsLogoItem = el;
+            }}
+            src={expressjsLogo}
+            className="expressjs-logo"
+            alt="logo"
+          />
+        </Box>
+      </Tooltip>
 
-      <Box
-        onMouseEnter={() => handleExpand(sourcetreeLogoItem)}
-        onMouseOut={() => handleShrink(sourcetreeLogoItem)}
-        style={{ width: "33%" }}
+      <Tooltip
+        title="Git. Applied simple git workflow on this website"
+        aria-label="Git"
       >
-        <img
-          ref={(el) => {
-            sourcetreeLogoItem = el;
-          }}
-          src={sourcetreeLogo}
-          className="sourcetree-logo"
-          alt="logo"
-        />
-      </Box>
+        <Box
+          onMouseEnter={() => handleExpand(gitLogoItem)}
+          onMouseOut={() => handleShrink(gitLogoItem)}
+          style={{ width: "33%" }}
+        >
+          <img
+            ref={(el) => {
+              gitLogoItem = el;
+            }}
+            src={gitLogo}
+            className="git-logo"
+            alt="logo"
+          />
+        </Box>
+      </Tooltip>
 
-      <Box
-        onMouseEnter={() => handleExpand(materialuiLogoItem)}
-        onMouseOut={() => handleShrink(materialuiLogoItem)}
-        style={{ width: "33%" }}
-      >
-        <img
-          ref={(el) => {
-            materialuiLogoItem = el;
-          }}
-          src={materialuiLogo}
-          className="materialui-logo"
-          alt="logo"
-        />
-      </Box>
+      <Tooltip title="Sourcetree. An Atlassian git GUI" aria-label="Sourcetree">
+        <Box
+          onMouseEnter={() => handleExpand(sourcetreeLogoItem)}
+          onMouseOut={() => handleShrink(sourcetreeLogoItem)}
+          style={{ width: "33%" }}
+        >
+          <img
+            ref={(el) => {
+              sourcetreeLogoItem = el;
+            }}
+            src={sourcetreeLogo}
+            className="sourcetree-logo"
+            alt="logo"
+          />
+        </Box>
+      </Tooltip>
+
+      <Tooltip title="Material UI. A React UI library" aria-label="Sourcetree">
+        <Box
+          onMouseEnter={() => handleExpand(materialuiLogoItem)}
+          onMouseOut={() => handleShrink(materialuiLogoItem)}
+          style={{ width: "33%" }}
+        >
+          <img
+            ref={(el) => {
+              materialuiLogoItem = el;
+            }}
+            src={materialuiLogo}
+            className="materialui-logo"
+            alt="logo"
+          />
+        </Box>
+      </Tooltip>
     </Box>
   );
 }
