@@ -71,7 +71,7 @@ export default function AnimatedIcons(props) {
       ],
       0.8,
       { opacity: 0, y: 100, ease: Power3.easeOut },
-      0.4
+      0.3
     );
   }, []);
 

@@ -444,7 +444,7 @@ function FrameContent(props) {
               events: {
                 onhover: {
                   enable: true,
-                  mode: "repulse",
+                  mode: "grab",
                 },
               },
             },

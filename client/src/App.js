@@ -91,21 +91,34 @@ class App extends Component {
                     left: 0,
                     width: "100%",
                     height: "100%",
+                    zIndex: 1,
                   }}
                   params={{
                     particles: {
                       number: {
-                        value: 50,
+                        value: 100,
                       },
                       size: {
                         value: 3,
+                      },
+                      line_linked: {
+                        opacity: 0.35,
+                        shadow: {
+                          enable: true,
+                          color: "#3CA9D1",
+                          blur: 100,
+                        },
+                      },
+                      move: {
+                        enable: true,
+                        speed: 6,
                       },
                     },
                     interactivity: {
                       events: {
                         onhover: {
                           enable: true,
-                          mode: "repulse",
+                          mode: "bubble",
                         },
                       },
                     },

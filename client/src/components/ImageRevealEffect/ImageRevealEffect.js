@@ -15,6 +15,7 @@ export default function ImageRevealEffect(props) {
     tl.from(container, 0, { css: { visibility: "visible" } })
       .to(imageReveal, 1.4, {
         width: "0%",
+        // height: "0%",
         ease: Power2.easeIn,
         scale: 0.01,
       })

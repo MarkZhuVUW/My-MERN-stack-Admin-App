@@ -227,15 +227,15 @@ function DashboardContent(props) {
       },
     },
     onRowsDelete: (rowsDeleted) => {
-      console.log(data);
+      // console.log(data);
       if (props.user.role !== "admin") {
-        console.log(props.user.role + " is not allowed to delete logs");
+        // console.log(props.user.role + " is not allowed to delete logs");
         return;
       }
       //rowdDeleted.lookup gets the actual indexes that are deleted in the log data.
       //loop through each index and delete them one by one.
       Object.keys(rowsDeleted.lookup).forEach((index) => {
-        console.log(data[index][0]);
+        // console.log(data[index][0]);
 
         props.deleteLogCallback(data[index][0]);
       });

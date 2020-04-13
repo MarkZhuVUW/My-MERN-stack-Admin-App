@@ -47,14 +47,14 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    zIndex: 2,
+    position: "relative",
   },
   content: {
     padding: theme.spacing(4, 4),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    zIndex: 1,
-    position: "relative",
   },
   avatar: {
     margin: theme.spacing(1),
@@ -66,6 +66,10 @@ const styles = {
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+  },
+  animatedIcons: {
+    zIndex: 2,
+    position: "relative",
   },
 };
 
@@ -413,9 +417,20 @@ class SignInSide extends Component {
                 </Paper>
               </Container>
             </Zoom>
-            <Container className={classes.content}>
+            <Container className={classes.animatedIcons}>
               <AnimatedIcons className="animated-icons" />
             </Container>
+            <Typography
+              style={{
+                width: "100%",
+                textAlign: "center",
+                position: "relative",
+                color:
+                  localStorage.getItem("theme") === "dark" ? "white" : "black",
+              }}
+            >
+              {i18n("loginPage.inspiredBy")}
+            </Typography>
           </Grid>
         </Grid>
       </div>

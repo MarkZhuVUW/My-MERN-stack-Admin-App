@@ -465,13 +465,13 @@ function SettingsContent(props) {
     },
     onRowsDelete: (rowsDeleted) => {
       if (props.user.role !== "admin") {
-        console.log(props.user.role + " is not allowed to delete users");
+        // console.log(props.user.role + " is not allowed to delete users");
         return;
       }
       //rowdDeleted.lookup gets the actual indexes that are deleted in the users data.
       //loop through each index and delete them one by one.
       Object.keys(rowsDeleted.lookup).forEach((index) => {
-        console.log(data[index][0]);
+        // console.log(data[index][0]);
         props.cb(data[index][0]);
       });
     },
