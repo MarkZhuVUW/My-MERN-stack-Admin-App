@@ -14,12 +14,14 @@ export class Logout extends Component {
     //withRouter
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
   };
 
   handleOnClick = () => {
     this.props.logout();
-    this.props.history.push("/signin");
+
+    this.props.history.push("/");
+    // window.location.href = "/";
   };
   render() {
     return (

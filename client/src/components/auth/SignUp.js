@@ -27,7 +27,7 @@ import ResponsiveDialog from "../ResponsiveDialog";
 import RoleCheckboxes from "./RoleCheckboxes";
 
 const theme = createMuiTheme({
-  spacing: 4
+  spacing: 4,
 });
 const styles = {
   content: {
@@ -39,32 +39,29 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     zIndex: 1,
-    position: "relative"
+    position: "relative",
   },
   root: {
-    backgroundColor:
-      localStorage.getItem("theme") === "dark"
-        ? theme.palette.grey[900]
-        : theme.palette.grey[600]
+    backgroundColor: theme.palette.grey[600],
   },
   paper: {
     padding: theme.spacing(8, 4),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(3)
+    marginTop: theme.spacing(3),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
-  }
+    margin: theme.spacing(3, 0, 2),
+  },
 };
 class SignUp extends Component {
   state = {
@@ -78,7 +75,7 @@ class SignUp extends Component {
     isLoading: false,
     emailErrorMsg: null,
     passwordErrorMsg: null,
-    nameErrorMsg: null
+    nameErrorMsg: null,
   };
 
   static propTypes = {
@@ -92,7 +89,7 @@ class SignUp extends Component {
     //withRouter
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
   };
   componentDidUpdate(prevProps) {
     const { error } = this.props;
@@ -110,24 +107,24 @@ class SignUp extends Component {
     // Clear errors
     this.props.clearErrors();
   };
-  validateName = name => {
+  validateName = (name) => {
     if (name === "") this.setState({ nameErrorMsg: "Name cannot be empty." });
     else this.setState({ nameErrorMsg: null });
   };
-  validateEmail = email => {
+  validateEmail = (email) => {
     if (email === "")
       this.setState({ emailErrorMsg: "Email cannot be empty." });
     else if (!email.includes("@"))
       this.setState({ emailErrorMsg: "Incorrect format" });
     else this.setState({ emailErrorMsg: null });
   };
-  validatePassword = password => {
+  validatePassword = (password) => {
     if (password === "")
       this.setState({ passwordErrorMsg: "Password cannot be empty." });
     else this.setState({ passwordErrorMsg: null });
   };
 
-  onChange = e => {
+  onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
     if (e.target.name === "name") this.validateName(e.target.value);
     else if (e.target.name === "email") this.validateEmail(e.target.value);
@@ -135,7 +132,7 @@ class SignUp extends Component {
       this.validatePassword(e.target.value);
   };
 
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault();
 
     const {
@@ -146,7 +143,7 @@ class SignUp extends Component {
       company,
       nameErrorMsg,
       emailErrorMsg,
-      passwordErrorMsg
+      passwordErrorMsg,
     } = this.state;
     this.validateName(name);
     this.validateEmail(email);
@@ -154,7 +151,7 @@ class SignUp extends Component {
     if (emailErrorMsg || passwordErrorMsg || nameErrorMsg) return;
 
     this.setState({
-      isLoading: true
+      isLoading: true,
     });
     // Create user object
     const newUser = {
@@ -162,7 +159,7 @@ class SignUp extends Component {
       email,
       password,
       role: selectedRole,
-      company: company
+      company: company,
     };
 
     // Attempt to register
@@ -177,14 +174,14 @@ class SignUp extends Component {
 
   render() {
     const { classes, error, isLoading } = this.props;
-    const roleSelectedCallback = selectedRole => {
+    const roleSelectedCallback = (selectedRole) => {
       this.setState({
-        selectedRole: selectedRole
+        selectedRole: selectedRole,
       });
     };
     const responsiveDialogCallback = () => {
       this.setState({
-        isLoading: false
+        isLoading: false,
       });
       //clear success msg
       this.props.clearSuccessMsg();
@@ -216,7 +213,7 @@ class SignUp extends Component {
               </Tooltip>
 
               <Typography component="h1" variant="h5">
-                {i18n("registerPage.signup")}
+                {i18n("registerPage.signUp")}
               </Typography>
 
               <form className={classes.form} noValidate>
@@ -288,13 +285,13 @@ class SignUp extends Component {
                             <Checkbox
                               onChange={() => {
                                 this.setState({
-                                  checked: !this.state.checked
+                                  checked: !this.state.checked,
                                 });
                               }}
                               color="primary"
                             />
                           }
-                          label="page views, downloads, login info will be stored in my mongodb database"
+                          label={i18n("registerPage.warning")}
                         />
                       </Grid>
                     </Slide>
@@ -305,7 +302,11 @@ class SignUp extends Component {
                     (this.state.selectedRole === "employer" &&
                       !this.state.checked) ||
                     this.state.isLoading ||
-                    this.state.selectedRole == ""
+                    this.state.selectedRole == "" ||
+                    this.state.email === "" ||
+                    this.state.password === "" ||
+                    this.state.passwordErrorMsg !== null ||
+                    this.state.emailErrorMsg !== null
                   }
                   type="submit"
                   fullWidth
@@ -317,7 +318,7 @@ class SignUp extends Component {
                   {this.state.isLoading ? (
                     <FacebookProgress />
                   ) : (
-                    <Typography>{i18n("registerPage.signup")}</Typography>
+                    <Typography>{i18n("registerPage.signUp")}</Typography>
                   )}
                 </Button>
 
@@ -332,8 +333,6 @@ class SignUp extends Component {
                           localStorage.getItem("theme") === "dark"
                             ? "white"
                             : "black",
-                        position: "relative",
-                        zIndex: 1
                       }}
                     >
                       {i18n("registerPage.goBack")}
@@ -349,10 +348,10 @@ class SignUp extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   error: state.error,
   userLoaded: state.auth.userLoaded,
-  successMsg: state.auth.successMsg
+  successMsg: state.auth.successMsg,
 });
 export default compose(
   withStyles(styles),

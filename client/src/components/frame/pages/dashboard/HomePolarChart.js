@@ -39,10 +39,25 @@ export default class HomePolarChart extends React.Component {
     return groupedCompanies;
   };
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProp) {
     // this.myChart.data.labels = this.props.data.map(d => d.label);
     // this.myChart.data.datasets[0].data = this.props.data.map(d => d.value);
-    this.myChart.update();
+    if (prevProp.data !== this.props.data) {
+      this.setState({
+        companyData: this.groupByCompany()
+      });
+      this.myChart.data.datasets = [
+        {
+          data: Object.entries(this.groupByCompany()).map(
+            companyEntry => companyEntry[1]
+          ),
+          backgroundColor: Object.entries(
+            this.groupByCompany()
+          ).map((company, index) => this.colorChooser(index))
+        }
+      ];
+      this.myChart.update();
+    }
   }
 
   componentDidMount() {

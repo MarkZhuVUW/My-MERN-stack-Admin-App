@@ -1,0 +1,176 @@
+.animated-icons {
+  // -webkit-transition: all 1s ease;
+  // -moz-transition: all 1s ease;
+  // -o-transition: all 1s ease;
+  // transition: all 1s ease;
+}
+
+// react logo
+
+.react-logo {
+  // animation: react-logo-spin infinite 20s linear;
+  height: 50px;
+  width: 50px;
+  pointer-events: none;
+}
+
+@keyframes react-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// redux logo
+
+.redux-logo {
+  // animation: redux-logo-spin infinite 20s linear;
+  height: 50px;
+  width: 50px;
+
+  pointer-events: none;
+}
+
+@keyframes redux-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// nodejs logo
+
+.nodejs-logo {
+  // animation: nodejs-logo-spin infinite 20s linear;
+  height: 50px;
+  width: 50px;
+
+  pointer-events: none;
+}
+
+@keyframes nodejs-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// heroku logo
+
+.heroku-logo {
+  // animation: heroku-logo-spin infinite 20s linear;
+  height: 50px;
+  width: 50px;
+
+  pointer-events: none;
+}
+
+@keyframes heroku-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// sass logo
+
+.sass-logo {
+  // animation: sass-logo-spin infinite 20s linear;
+  height: 50px;
+  width: 50px;
+
+  pointer-events: none;
+}
+
+@keyframes sass-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// expressjs logo
+
+.expressjs-logo {
+  // animation: expressjs-logo-spin infinite 20s linear;
+  height: 50px;
+  width: 50px;
+
+  pointer-events: none;
+}
+
+@keyframes expressjs-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// git logo
+
+.git-logo {
+  // animation: git-logo-spin infinite 20s linear;
+  height: 50px;
+  width: 50px;
+
+  pointer-events: none;
+}
+
+@keyframes git-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// sourcetree logo
+
+.sourcetree-logo {
+  // animation: sourcetree-logo-spin infinite 20s linear;
+  height: 50px;
+  width: 50px;
+
+  pointer-events: none;
+}
+
+@keyframes sourcetree-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// material ui logo
+
+.materialui-logo {
+  // animation: sourcetree-logo-spin infinite 20s linear;
+  height: 50px;
+  width: 50px;
+
+  pointer-events: none;
+}
+
+@keyframes materialui-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

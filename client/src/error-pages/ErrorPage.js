@@ -12,7 +12,6 @@ import { createMuiTheme, withStyles } from "@material-ui/core/styles";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import ReactPlayer from "react-player";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import compose from "recompose/compose";
@@ -22,16 +21,6 @@ const theme = createMuiTheme({
   spacing: 4
 });
 const styles = {
-  paper: {
-    marginTop: "25%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    paddingTop: "5%",
-    paddingBottom: "5%",
-    paddingLeft: "15%",
-    paddingRight: "15%"
-  },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main
@@ -141,11 +130,16 @@ class ErrorPage extends Component {
         <Box style={{ marginTop: "5%" }} />
 
         <Container maxWidth="lg" className={classes.content}>
-          <ReactPlayer
+          {/* <ReactPlayer
             url="https://www.youtube.com/watch?v=6dNho0h_yQQ"
             playing={false}
             width="100%"
-          />
+          /> */}
+          <iframe
+            style={{ width: "100%", height: "60%" }}
+            src="https://www.youtube.com/embed/6dNho0h_yQQ"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          ></iframe>
           {conditionalRendering()}
         </Container>
       </div>

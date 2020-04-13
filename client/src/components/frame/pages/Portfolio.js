@@ -6,12 +6,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import "swagger-ui/dist/swagger-ui.css";
 import Breadcrumb from "view/shared/Breadcrumb";
-import { logDownload } from "../../../../actions/adminActions";
-import { clearErrors } from "../../../../actions/errorActions";
+import { logDownload } from "../../../actions/adminActions";
+import { clearErrors } from "../../../actions/errorActions";
 
 // pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-class CV extends Component {
+class Portfolio extends Component {
   componentDidMount() {}
   componentDidUpdate() {}
   static propTypes = {
@@ -19,7 +19,7 @@ class CV extends Component {
     clearErrors: PropTypes.func.isRequired,
   };
   handleDownload = (href) => {
-    console.log(this.props.user);
+    // console.log(this.props.user);
 
     const { _id, name, email, role, company } = this.props.user;
 
@@ -42,7 +42,7 @@ class CV extends Component {
   };
   render() {
     return (
-      <CVContent
+      <PortfolioContent
         isSmallScreen={this.props.isSmallScreen}
         handleDownload={this.handleDownload}
       />
@@ -57,14 +57,14 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   logDownload,
   clearErrors,
-})(CV);
+})(Portfolio);
 
 /**
  * The support component. Used in the drawer list.
  *
  * @author Mark Zhu <zdy120939259@outlook.com>
  */
-function CVContent(props) {
+function PortfolioContent(props) {
   const useStyles = makeStyles((theme) => ({
     root: {
       backgroundColor: "#E9EAED",
@@ -112,83 +112,13 @@ function CVContent(props) {
 
   const classes = useStyles();
 
-  const [pageNumber, setPageNumber] = React.useState(1);
-  const [numPages, setNumPages] = React.useState(null);
-  const [numPagesArray, setNumPagesArray] = React.useState(null);
-
-  // const { pageNumber, numPages } = this.state;
-  const onDocumentLoadSuccess = ({ numPages }) => {
-    setNumPages(numPages);
-    setNumPagesArray(turnNumPagesToArray(numPages));
-  };
-
-  /**
-   * Converts an integer number into a list of integer numbers.
-   * For example. 3 will be converted to [1, 2, 3]
-   */
-  const turnNumPagesToArray = (numPages) => {
-    var arrayOfNums = [];
-    for (var i = 1; i <= numPages; ++i) {
-      arrayOfNums.push(i);
-    }
-    return arrayOfNums;
-  };
-
-  const setPageNumCallback = (num) => {
-    setPageNumber(num);
-  };
   return (
     <>
       <Breadcrumb
         // style={{ textColor: "black" }}
-        items={[[i18n("frame.menu"), "/"], [i18n("cv.route")]]}
+        items={[[i18n("frame.menu"), "/"], [i18n("portfolio.route")]]}
       />
-      Having a webpack issue with pdf.js. Still working on it.
-      {/* <Paper
-        className={
-          props.isSmallScreen ? classes.smallScreenPaper : classes.paper
-        }
-      >
-        <Document file={pdfCV} onLoadSuccess={onDocumentLoadSuccess}>
-          <Page
-            pageNumber={pageNumber}
-            width={props.isSmallScreen ? null : 1000}
-          />
-        </Document>
-      </Paper>
-      {numPagesArray ? (
-        <Box
-          display="flex"
-          flexDirection="row"
-          alignItems="center"
-          className={classes.box}
-        >
-          <Typography>Page</Typography>
-
-          <PageNumMenu
-            numPagesArray={numPagesArray}
-            setPageNumCallback={setPageNumCallback}
-          />
-
-          <Typography>of {numPages}</Typography>
-
-          <Link
-            href={`${process.env.PUBLIC_URL}/Mark_Zhu_CV.pdf`}
-            target="_blank"
-            download
-            onClick={() => props.handleDownload("Mark_Zhu_CV.pdf")}
-            style={{
-              textDecoration: "none",
-              color:
-                localStorage.getItem("theme") === "dark" ? "white" : "black"
-            }}
-          >
-            <Box m={2}>
-              <Typography>Download CV</Typography>
-            </Box>
-          </Link>
-        </Box>
-      ) : null} */}
+      Not impleted yet.
     </>
   );
 }

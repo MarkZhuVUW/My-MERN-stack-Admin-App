@@ -16,17 +16,18 @@ export default class HomeLineChart extends React.Component {
    * Group page view logs by company.
    * Example value:
    * [
-   * 0 : 40, // represents cv page
+   * 0 : 40, // represents welcome page
    * 1 : 40, // represents portfolio page
-   * 2 : 10, // represents a 403 error page
-   * 3 : 10, // represents a 404 error page
+   * 2 : 40, // represents cv page
+   * 3 : 10, // represents 403 error page
+   * 4 : 10, // represents 404 error page
    * ]
    *
    * @memberof HomeLineChart
    */
   groupPageViewsByCompany = () => {
-    var groupedPages = [0, 0, 0, 0];
-    console.log(this.props.data);
+    var groupedPages = [0, 0, 0, 0, 0];
+    // console.log(this.props.data);
     this.props.data
       .filter(log => log[3] === "employer")
       .filter(log => log[6] === "PAGE VIEW")
@@ -40,19 +41,40 @@ export default class HomeLineChart extends React.Component {
 
   parsePageToIndex = page => {
     switch (page) {
-      case "cv":
+      case "welcomepage":
         return 0;
       case "porfolio":
         return 1;
-
-      case "403":
+      case "cv":
         return 2;
-      case "404":
+      case "403":
         return 3;
+      case "404":
+        return 4;
     }
   };
-  componentDidUpdate() {
-    this.myChart.update();
+  componentDidUpdate(prevProp) {
+    if (prevProp.data !== this.props.data) {
+      this.setState({
+        pageViewData: this.groupPageViewsByCompany()
+      });
+      this.myChart.data.datasets = [
+        {
+          data: Object.entries(this.groupPageViewsByCompany()).map(
+            pageEntry => pageEntry[1]
+          ),
+          backgroundColor: [
+            "#FF6384",
+            "#4BC0C0",
+            "#FFCE56",
+            "#E7E9ED",
+            "#32a842",
+            "#FFCE56"
+          ]
+        }
+      ];
+      this.myChart.update();
+    }
   }
 
   componentDidMount() {
@@ -69,13 +91,14 @@ export default class HomeLineChart extends React.Component {
               "#4BC0C0",
               "#FFCE56",
               "#E7E9ED",
-              "#36A2EB"
+              "#32a842"
             ]
           }
         ],
         labels: [
-          i18n("dashboard.lineChart.cv"),
+          i18n("dashboard.lineChart.welcomePage"),
           i18n("dashboard.lineChart.portfolio"),
+          i18n("dashboard.lineChart.cv"),
           "403",
           "404"
         ]

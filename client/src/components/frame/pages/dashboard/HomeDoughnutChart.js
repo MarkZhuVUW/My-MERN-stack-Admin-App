@@ -13,8 +13,23 @@ export default class HomeDoughnutChart extends React.Component {
     this.chartRef = React.createRef();
   }
 
-  componentDidUpdate() {
-    this.myChart.update();
+  componentDidUpdate(prevProp) {
+    if (prevProp.data !== this.props.data) {
+      this.setState({
+        roleData: this.groupByRole()
+      });
+      this.myChart.data.datasets = [
+        {
+          data: Object.entries(this.groupByRole()).map(
+            roleEntry => roleEntry[1]
+          ),
+          backgroundColor: Object.entries(
+            this.groupByRole()
+          ).map((role, index) => this.colorChooser(index))
+        }
+      ];
+      this.myChart.update();
+    }
   }
 
   /**

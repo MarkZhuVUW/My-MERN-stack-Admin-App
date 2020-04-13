@@ -8,7 +8,7 @@ import Particles from "react-particles-js";
 import { connect } from "react-redux";
 import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
 import { loadUser } from "./actions/authActions";
-import "./App.css";
+import "./App.scss";
 import SignInSide from "./components/auth/SignInSide";
 import SignUp from "./components/auth/SignUp";
 import ErrorPage from "./error-pages/ErrorPage";
@@ -19,15 +19,15 @@ const theme = createMuiTheme(
         localStorage.getItem("theme") === "dark"
           ? { main: "#303f9f" }
           : { main: "#1976d2" },
-      type: localStorage.getItem("theme") === "dark" ? "dark" : "light"
-    }
+      type: localStorage.getItem("theme") === "dark" ? "dark" : "light",
+    },
   },
   localStorage.getItem("language") === "en" ? enUS : zhCN
 );
 
 class App extends Component {
   state = {
-    theme: theme
+    theme: theme,
   };
 
   componentDidMount() {
@@ -35,7 +35,7 @@ class App extends Component {
   }
 
   static propTypes = {
-    authenticated: PropTypes.bool.isRequired
+    authenticated: PropTypes.bool.isRequired,
   };
 
   render() {
@@ -50,15 +50,15 @@ class App extends Component {
                 localStorage.getItem("theme") === "dark"
                   ? { main: "#303f9f" }
                   : { main: "#1976d2" },
-              type: localStorage.getItem("theme") === "dark" ? "dark" : "light"
-            }
+              type: localStorage.getItem("theme") === "dark" ? "dark" : "light",
+            },
           },
           localStorage.getItem("language") == "en" ? enUS : zhCN
-        )
+        ),
       });
     };
     return (
-      <>
+      <div>
         <ThemeProvider theme={theme}>
           <HashRouter basename="/">
             {this.props.authenticated ? (
@@ -90,25 +90,38 @@ class App extends Component {
                     top: 0,
                     left: 0,
                     width: "100%",
-                    height: "100%"
+                    height: "100%",
+                    zIndex: 1,
                   }}
                   params={{
                     particles: {
                       number: {
-                        value: 50
+                        value: 100,
                       },
                       size: {
-                        value: 3
-                      }
+                        value: 3,
+                      },
+                      line_linked: {
+                        opacity: 0.35,
+                        shadow: {
+                          enable: true,
+                          color: "#3CA9D1",
+                          blur: 100,
+                        },
+                      },
+                      move: {
+                        enable: true,
+                        speed: 6,
+                      },
                     },
                     interactivity: {
                       events: {
                         onhover: {
                           enable: true,
-                          mode: "repulse"
-                        }
-                      }
-                    }
+                          mode: "bubble",
+                        },
+                      },
+                    },
                   }}
                 />
 
@@ -133,13 +146,13 @@ class App extends Component {
             )}
           </HashRouter>
         </ThemeProvider>
-      </>
+      </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.auth.user,
-  authenticated: state.auth.authenticated
+  authenticated: state.auth.authenticated,
 });
 export default connect(mapStateToProps, { loadUser })(App);

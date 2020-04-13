@@ -7,8 +7,10 @@ const en = {
   admin: "admin",
   guest: "guest",
   employer: "employer",
+  adminPages: "Admin Pages",
+  employerGuestPages: "Employer&Guest Pages",
   app: {
-    title: "MERN-stack App"
+    title: "MERN-stack App",
   },
   loginPage: {
     welcome: "Welcome!",
@@ -17,23 +19,28 @@ const en = {
 
     forgotPassword: "Forgot Password?",
     registerANewOne: "register a new one :)",
-    signin: "Sign In",
-    noAccount: "Don't have an account? Sign Up"
+    signIn: "Sign In",
+    noAccount: "Don't have an account? Sign Up",
+    mit: "MIT",
+    contactDeveloper: "Contact The Developer",
+    inspiredBy:
+      "Animations are made with GreenSock and CSS. inspired by: https://revolution.themepunch.com/particle-effect-for-wordpress/",
   },
   registerPage: {
     signUp: "Sign Up",
     name: "Name",
     email: "Email Address",
     password: "Password",
-    admin: "admin",
-    guest: "guest",
-    employer: "employer",
+
     company: "company(optional)",
-    goBack: "go back"
+    warning:
+      "page views, downloads, login info will be stored in my mongodb database",
+    goBack: "go back",
   },
   frame: {
     menu: "frame",
-    adminApp: "Admin App"
+    adminApp: "Admin App",
+    welcome: "Welcome!",
   },
   settings: {
     title: "Settings",
@@ -41,8 +48,8 @@ const en = {
     route: "settings",
 
     fields: {
-      theme: "Theme"
-    }
+      theme: "Theme",
+    },
   },
   dashboard: {
     menu: "Home",
@@ -57,25 +64,26 @@ const en = {
       explanation: "explanation",
       type: "type",
       dateLogged: "date logged",
-      company: "company"
+      company: "company",
     },
     doughnutChart: {
       title: "Login Statistics",
       employer: "employer",
       admin: "admin",
-      guest: "guest"
+      guest: "guest",
     },
     lineChart: {
       title: "Page Views and Downloads",
-      dashboard: "dashboard",
-      developer: "developer",
-      useradmin: "useradmin",
-      cv: "cv",
-      portfolio: "portfolio"
+      dashboard: "Dashboard",
+      developer: "Developer",
+      useradmin: "UserAdmin",
+      welcomePage: "Welcome Page",
+      cv: "CV",
+      portfolio: "Portfolio",
     },
     polarChart: {
-      title: "Employer Action Statistics"
-    }
+      title: "Employer Action Statistics",
+    },
   },
   useradmin: {
     menu: "UserAdmin",
@@ -91,35 +99,42 @@ const en = {
     id: "id",
     registerDate: "register Date",
     table: {
-      title: "User List"
-    }
+      title: "User List",
+    },
   },
 
   developer: {
     menu: "Developer",
     route: "developer",
-    message: `This page uses fake data for demonstration purposes only.`
+    message: `This page uses fake data for demonstration purposes only.`,
   },
   cv: {
     menu: "CV",
     route: "cv",
-    message: `This page uses fake data for demonstration purposes only.`
   },
 
+  welcomePage: {
+    menu: "Welcome Page",
+    route: "welcomepage",
+  },
+  portfolio: {
+    menu: "Portfolio",
+    route: "portfolio",
+  },
   errors: {
     401: "Please login first",
     403: "Do not have to access to this page",
     404: "Page Not Found",
     500: "Internal Error",
     forbidden: {
-      message: "Forbidden"
+      message: "Forbidden",
     },
     validation: {
-      message: "An error occurred"
-    }
+      message: "An error occurred",
+    },
   },
   language: {
-    language: "English"
+    language: "English",
   },
   MuiDataTable: {
     next: "next page",
@@ -136,8 +151,8 @@ const en = {
     reset: "reset",
     viewColumnsTitle: "show columns",
     selectedRowsText: "rows(s) selected",
-    delete: "delete"
-  }
+    delete: "delete",
+  },
 };
 
 export default en;

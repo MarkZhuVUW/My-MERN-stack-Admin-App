@@ -18,12 +18,12 @@ import {
   logout,
   skipTFA,
   TFASetup,
-  TFAVerify
+  TFAVerify,
 } from "../actions/authActions";
 import { clearErrors } from "../actions/errorActions";
 
 const theme = createMuiTheme({
-  spacing: 4
+  spacing: 4,
 });
 
 const styles = {
@@ -33,8 +33,8 @@ const styles = {
     alignItems: "center",
     width: "100%",
     height: "80%",
-    margin: "0"
-  }
+    margin: "0",
+  },
 };
 
 class ResponsiveDialog extends Component {
@@ -42,7 +42,7 @@ class ResponsiveDialog extends Component {
     open: true,
     QRCode: "",
     code: "",
-    domainName: ""
+    domainName: "",
   };
 
   static propTypes = {
@@ -55,7 +55,7 @@ class ResponsiveDialog extends Component {
     skipTFA: PropTypes.func.isRequired,
     TFA: PropTypes.object,
     user: PropTypes.object,
-    logout: PropTypes.func.isRequired
+    logout: PropTypes.func.isRequired,
   };
   componentDidMount() {
     const { email, TFA } = this.props;
@@ -63,7 +63,7 @@ class ResponsiveDialog extends Component {
     if (this.props.title === "Google Two-Factor Auth") {
       const obj = {
         email,
-        domainName
+        domainName,
       };
       if (!this.props.TFA) {
         this.props.TFASetup(obj);
@@ -102,7 +102,7 @@ class ResponsiveDialog extends Component {
 
   handleClickOpen = () => {
     this.setState({
-      open: true
+      open: true,
     });
   };
 
@@ -111,10 +111,10 @@ class ResponsiveDialog extends Component {
     this.props.responsiveDialogCallback();
 
     this.setState({
-      open: false
+      open: false,
     });
   };
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault();
 
     const { code } = this.state;
@@ -126,7 +126,7 @@ class ResponsiveDialog extends Component {
     //clear errors
     this.toggle();
   };
-  onChange = e => {
+  onChange = (e) => {
     this.setState({ code: e.target.value });
   };
 
@@ -142,7 +142,7 @@ class ResponsiveDialog extends Component {
     const { open } = this.state;
 
     //stop this from getting lost in lambda expressions.
-    const dialog = isFullScreen => {
+    const dialog = (isFullScreen) => {
       return (
         <Dialog
           open={open}
@@ -166,7 +166,7 @@ class ResponsiveDialog extends Component {
           {title === "Google Two-Factor Auth" ? (
             <div
               style={{
-                width: "100%"
+                width: "100%",
               }}
             >
               {TFA ? (
@@ -241,10 +241,10 @@ class ResponsiveDialog extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   error: state.error,
   TFA: state.auth.TFA,
-  user: state.auth.user
+  user: state.auth.user,
 });
 export default connect(mapStateToProps, {
   TFAVerify,
@@ -252,5 +252,5 @@ export default connect(mapStateToProps, {
   getTFA,
   clearErrors,
   skipTFA,
-  logout
+  logout,
 })(withStyles(styles)(ResponsiveDialog));

@@ -13,68 +13,64 @@ import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import MuiAlert from "@material-ui/lab/Alert";
 import { withStyles } from "@material-ui/styles";
+import AnimatedIcons from "components/AnimatedIcons/AnimatedIcons";
 import FacebookProgress from "components/FacebookProgress";
+import ImageRevealEffect from "components/ImageRevealEffect/ImageRevealEffect";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import MediaQuery from "react-responsive";
 import { NavLink, withRouter } from "react-router-dom";
 import compose from "recompose/compose";
 import { logLoginSuccess } from "../../actions/adminActions";
 import { login } from "../../actions/authActions";
 import { clearErrors } from "../../actions/errorActions";
 import "../../css3/bouncingEffect.css";
+import image from "../../images/404.png";
 import ResponsiveDialog from "../ResponsiveDialog";
 
 const theme = createMuiTheme({
-  spacing: 4
+  spacing: 4,
 });
 
 const styles = {
   root: {
-    backgroundColor:
-      localStorage.getItem("theme") === "dark"
-        ? theme.palette.grey[900]
-        : theme.palette.grey[600],
+    backgroundColor: theme.palette.grey[600],
     flexGrow: 1,
     height: "100vh",
-    overflow: "auto"
+    overflow: "auto",
   },
-  image: {
-    backgroundImage: "url(https://source.unsplash.com/random)",
-    backgroundRepeat: "no-repeat",
-    backgroundColor:
-      localStorage.getItem("theme") === "dark"
-        ? theme.palette.grey[900]
-        : theme.palette.grey[600],
-    backgroundSize: "cover",
-    backgroundPosition: "center"
-  },
+
   paper: {
     padding: theme.spacing(8, 4),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
+    zIndex: 2,
+    position: "relative",
   },
   content: {
     padding: theme.spacing(4, 4),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    zIndex: 1,
-    position: "relative"
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
-  }
+    margin: theme.spacing(3, 0, 2),
+  },
+  animatedIcons: {
+    zIndex: 2,
+    position: "relative",
+  },
 };
 
 class SignInSide extends Component {
@@ -87,7 +83,10 @@ class SignInSide extends Component {
     checked: false,
     isLoading: false,
     emailErrorMsg: null,
-    passwordErrorMsg: null
+    passwordErrorMsg: null,
+    copyRightOpened: false,
+    copyRightText:
+      "This website is MIT licensed. https://opensource.org/licenses/MIT",
   };
 
   static propTypes = {
@@ -103,7 +102,7 @@ class SignInSide extends Component {
     //withRouter
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
   };
 
   componentDidUpdate(prevProps) {
@@ -125,20 +124,19 @@ class SignInSide extends Component {
     this.props.clearErrors();
   };
 
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault();
 
     const { email, password, emailErrorMsg, passwordErrorMsg } = this.state;
     this.validateEmail(email);
     this.validatePassword(password);
-    if (emailErrorMsg || passwordErrorMsg) return;
     this.setState({
-      isLoading: true
+      isLoading: true,
     });
 
     const user = {
       email,
-      password
+      password,
     };
 
     // Attempt to login
@@ -146,10 +144,10 @@ class SignInSide extends Component {
     this.toggle();
   };
 
-  callback = isTFAVerified => {
+  callback = (isTFAVerified) => {
     if (isTFAVerified) {
       this.setState({
-        isLoading: false
+        isLoading: false,
       });
       this.handleLoginSuccess();
       this.props.history.push("/");
@@ -165,27 +163,27 @@ class SignInSide extends Component {
       role: role,
       company: company,
       explanation: "user logged in",
-      type: "LOGIN"
+      type: "LOGIN",
     };
 
     this.props.logLoginSuccess(_id, logLoginSuccess);
 
     this.toggle();
   };
-  validateEmail = email => {
+  validateEmail = (email) => {
     if (email === "")
       this.setState({ emailErrorMsg: "Email cannot be empty." });
     else if (!email.includes("@"))
       this.setState({ emailErrorMsg: "Incorrect format" });
     else this.setState({ emailErrorMsg: null });
   };
-  validatePassword = password => {
+  validatePassword = (password) => {
     if (password === "")
       this.setState({ passwordErrorMsg: "Password cannot be empty." });
     else this.setState({ passwordErrorMsg: null });
   };
 
-  onChange = e => {
+  onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
     if (e.target.name === "email") this.validateEmail(e.target.value);
     else if (e.target.name === "password")
@@ -197,7 +195,8 @@ class SignInSide extends Component {
 
     const responsiveDialogCallback = () => {
       this.setState({
-        isLoading: false
+        isLoading: false,
+        copyRightOpened: false,
       });
     };
 
@@ -207,7 +206,7 @@ class SignInSide extends Component {
       }
 
       this.setState({
-        forgotPasswordClicked: false
+        forgotPasswordClicked: false,
       });
     };
 
@@ -224,7 +223,7 @@ class SignInSide extends Component {
           onClose={handleSnackbarClose}
         >
           <Alert onClose={handleSnackbarClose} severity="success">
-            Resgister a new one :)
+            {i18n("loginPage.registerANewOne")}
           </Alert>
         </Snackbar>
         {userLoaded ? (
@@ -241,25 +240,27 @@ class SignInSide extends Component {
 
         <Grid container className={classes.root}>
           <CssBaseline />
+          <MediaQuery query="(min-device-width: 1224px)">
+            <Grid item lg={7}>
+              <ImageRevealEffect image={image} />
+            </Grid>
+          </MediaQuery>
 
-          <Grid item xs={false} sm={4} md={7} className={classes.image} />
           <Grid
             item
             xs={12}
-            sm={8}
-            md={5}
+            sm={12}
+            md={12}
+            lg={5}
             component={Paper}
             elevation={6}
             square
             style={{
-              backgroundColor:
-                localStorage.getItem("theme") === "dark"
-                  ? theme.palette.grey[900]
-                  : theme.palette.grey[600],
+              backgroundColor: theme.palette.grey[600],
               alignItems: "center",
               justifyContent: "center",
               display: "flex",
-              flexDirection: "column"
+              flexDirection: "column",
             }}
           >
             <Zoom in={true} timeout={500}>
@@ -313,14 +314,20 @@ class SignInSide extends Component {
                       fullWidth
                       variant="contained"
                       color="primary"
-                      disabled={this.state.isLoading}
+                      disabled={
+                        this.state.isLoading ||
+                        this.state.email === "" ||
+                        this.state.password === "" ||
+                        this.state.passwordErrorMsg !== null ||
+                        this.state.emailErrorMsg !== null
+                      }
                       className={classes.submit}
                       onClick={this.onSubmit}
                     >
                       {this.state.isLoading ? (
                         <FacebookProgress />
                       ) : (
-                        <Typography>{i18n("loginPage.signin")}</Typography>
+                        <Typography>{i18n("loginPage.signIn")}</Typography>
                       )}
                     </Button>
 
@@ -330,7 +337,7 @@ class SignInSide extends Component {
                           to="#"
                           onClick={() =>
                             this.setState({
-                              forgotPasswordClicked: true
+                              forgotPasswordClicked: true,
                             })
                           }
                           style={{
@@ -339,8 +346,6 @@ class SignInSide extends Component {
                               localStorage.getItem("theme") === "dark"
                                 ? "white"
                                 : "black",
-                            zIndex: 1,
-                            position: "relative"
                           }}
                         >
                           {i18n("loginPage.forgotPassword")}
@@ -349,25 +354,83 @@ class SignInSide extends Component {
                       <Grid item>
                         <NavLink
                           to="/signup"
-                          variant="body2"
                           style={{
                             textDecoration: "none",
                             color:
                               localStorage.getItem("theme") === "dark"
                                 ? "white"
                                 : "black",
-                            zIndex: 1,
-                            position: "relative"
                           }}
                         >
                           {i18n("loginPage.noAccount")}
                         </NavLink>
                       </Grid>
                     </Grid>
+                    {/* open the copyright dialog if the "MIT" license link is clicked */}
+                    {this.state.copyRightOpened ? (
+                      <ResponsiveDialog
+                        title="MIT License"
+                        alertMsg={this.state.copyRightText}
+                        responsiveDialogCallback={responsiveDialogCallback}
+                      />
+                    ) : null}
+                    <Grid container style={{ marginTop: 15 }}>
+                      <Grid item xs>
+                        <Typography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          onClick={() => {
+                            this.setState({ copyRightOpened: true });
+                          }}
+                          style={{
+                            textDecoration: "none",
+                            color:
+                              localStorage.getItem("theme") === "dark"
+                                ? "white"
+                                : "black",
+                          }}
+                        >
+                          {i18n("loginPage.mit")}
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <Typography
+                          component="a"
+                          href="#"
+                          style={{
+                            textDecoration: "none",
+                            color:
+                              localStorage.getItem("theme") === "dark"
+                                ? "white"
+                                : "black",
+                          }}
+                          onClick={() => {
+                            window.location.href = `mailto:zdy120939259@outlook.com?subject=interview invitation`;
+                          }}
+                        >
+                          {i18n("loginPage.contactDeveloper")}
+                        </Typography>
+                      </Grid>
+                    </Grid>
                   </form>
                 </Paper>
               </Container>
             </Zoom>
+            <Container className={classes.animatedIcons}>
+              <AnimatedIcons className="animated-icons" />
+            </Container>
+            <Typography
+              style={{
+                width: "100%",
+                textAlign: "center",
+                position: "relative",
+                color:
+                  localStorage.getItem("theme") === "dark" ? "white" : "black",
+              }}
+            >
+              {i18n("loginPage.inspiredBy")}
+            </Typography>
           </Grid>
         </Grid>
       </div>
@@ -375,11 +438,11 @@ class SignInSide extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   error: state.error,
   userLoaded: state.auth.userLoaded,
   isTFAing: state.auth.isTFAing,
-  user: state.auth.user
+  user: state.auth.user,
 });
 export default compose(
   withStyles(styles),

@@ -46,12 +46,15 @@
 
 # vscode extensions:
 
-## code --install-extension Arjun.swagger-viewer
+## under root directory there is a bash script: "my_vscode_extensions.sh" which contains all the vs code extensions I am using.
 
-## code --install-extension austin.code-gnu-global
+## On cmd run the bash script:
 
-## code --install-extension christian-kohler.npm-intellisense
+## bash my_vscode_extensions.sh
 
+<<<<<<< HEAD
+## https://gist.github.com/joseluisq/4740e37a9f2358357381e308aa39c52d
+=======
 ## code --install-extension christian-kohler.path-intellisense
 
 ## code --install-extension cmborchert.local-import-intellisense
@@ -98,3 +101,4 @@
 
 ## code --install-extension Zignd.html-css-class-completion
 
+>>>>>>> master

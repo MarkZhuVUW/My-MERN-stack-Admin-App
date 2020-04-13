@@ -1,3 +1,4 @@
+import { ListSubheader } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -5,6 +6,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { makeStyles } from "@material-ui/core/styles";
 import AssessmentIcon from "@material-ui/icons/Assessment";
+import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import DescriptionIcon from "@material-ui/icons/Description";
 import DeveloperBoardIcon from "@material-ui/icons/DeveloperBoard";
@@ -34,6 +36,7 @@ export default function SelectedListItem(props) {
       <List component="nav" aria-label="main mailbox folders">
         {props.role === "admin" ? (
           <>
+            <ListSubheader inset>{i18n("adminPages")}</ListSubheader>
             <Link
               to="/frame/dashboard"
               style={{
@@ -56,7 +59,7 @@ export default function SelectedListItem(props) {
                 <ListItemText primary={i18n("dashboard.menu")} />
               </ListItem>
             </Link>
-            <Divider />
+
             <Link
               to="/frame/developer"
               style={{
@@ -103,8 +106,12 @@ export default function SelectedListItem(props) {
             </Link>
           </>
         ) : null}
+        <Divider />
+
+        <ListSubheader inset>{i18n("employerGuestPages")}</ListSubheader>
+
         <Link
-          to="/frame/cv"
+          to="/frame/welcomepage"
           style={{
             textDecoration: "none",
             color: localStorage.getItem("theme") === "dark" ? "white" : "black"
@@ -116,14 +123,60 @@ export default function SelectedListItem(props) {
             onClick={event => handleListItemClick(event, 3)}
           >
             <ListItemIcon>
-              <DescriptionIcon
+              <DashboardIcon
                 className={selectedIndex === 3 ? "swirl" : null}
                 color={selectedIndex === 3 ? "primary" : "action"}
+              />
+            </ListItemIcon>
+            <ListItemText primary={i18n("welcomePage.menu")} />
+          </ListItem>
+        </Link>
+
+        <Link
+          to="/frame/portfolio"
+          style={{
+            textDecoration: "none",
+            color: localStorage.getItem("theme") === "dark" ? "white" : "black"
+          }}
+        >
+          <ListItem
+            button
+            selected={selectedIndex === 4}
+            onClick={event => handleListItemClick(event, 4)}
+          >
+            <ListItemIcon>
+              <AssignmentIndIcon
+                className={selectedIndex === 4 ? "swirl" : null}
+                color={selectedIndex === 4 ? "primary" : "action"}
+              />
+            </ListItemIcon>
+            <ListItemText primary={i18n("portfolio.menu")} />
+          </ListItem>
+        </Link>
+
+        <Link
+          to="/frame/cv"
+          style={{
+            textDecoration: "none",
+            color: localStorage.getItem("theme") === "dark" ? "white" : "black"
+          }}
+        >
+          <ListItem
+            button
+            selected={selectedIndex === 5}
+            onClick={event => handleListItemClick(event, 5)}
+          >
+            <ListItemIcon>
+              <DescriptionIcon
+                className={selectedIndex === 5 ? "swirl" : null}
+                color={selectedIndex === 5 ? "primary" : "action"}
               />
             </ListItemIcon>
             <ListItemText primary={i18n("cv.menu")} />
           </ListItem>
         </Link>
+
+        <Divider />
       </List>
     </div>
   );
