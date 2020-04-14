@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import Particles from "react-particles-js";
 import { connect } from "react-redux";
+import MediaQuery from "react-responsive";
 import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
 import { loadUser } from "./actions/authActions";
 import "./App.scss";
@@ -57,6 +58,41 @@ class App extends Component {
         ),
       });
     };
+    const particlesBackground = (size, numParticles) => (
+      <Particles
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 1,
+        }}
+        params={{
+          particles: {
+            number: {
+              value: numParticles,
+            },
+            size: {
+              value: size,
+            },
+
+            move: {
+              enable: true,
+              // speed: 6,
+            },
+          },
+          interactivity: {
+            events: {
+              onhover: {
+                enable: true,
+                mode: "bubble",
+              },
+            },
+          },
+        }}
+      />
+    );
     return (
       <div>
         <ThemeProvider theme={theme}>
@@ -84,46 +120,12 @@ class App extends Component {
               </div>
             ) : (
               <>
-                <Particles
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                    zIndex: 1,
-                  }}
-                  params={{
-                    particles: {
-                      number: {
-                        value: 100,
-                      },
-                      size: {
-                        value: 3,
-                      },
-                      line_linked: {
-                        opacity: 0.35,
-                        shadow: {
-                          enable: true,
-                          color: "#3CA9D1",
-                          blur: 100,
-                        },
-                      },
-                      move: {
-                        enable: true,
-                        speed: 6,
-                      },
-                    },
-                    interactivity: {
-                      events: {
-                        onhover: {
-                          enable: true,
-                          mode: "bubble",
-                        },
-                      },
-                    },
-                  }}
-                />
+                <MediaQuery query="(min-width: 1280px)">
+                  {particlesBackground(3, 120)}
+                </MediaQuery>
+                <MediaQuery query="(max-width: 1280px)">
+                  {particlesBackground(3, 50)}
+                </MediaQuery>
 
                 <Switch>
                   <Route exact path="/signin" component={SignInSide} />

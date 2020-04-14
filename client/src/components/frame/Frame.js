@@ -309,7 +309,7 @@ function FrameContent(props) {
   const [selectedIndex, setSelectedIndex] = React.useState(
     translatePageToIndex()
   );
-  const isSmallScreen = useMediaQuery({ query: "(max-device-width: 700px)" });
+  const isSmallScreen = useMediaQuery({ query: "(max-width: 700px)" });
 
   const handleDrawerOpen = () => {
     setOpen(true);

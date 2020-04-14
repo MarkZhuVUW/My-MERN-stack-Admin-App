@@ -229,13 +229,9 @@ class ResponsiveDialog extends Component {
 
     return (
       <div>
-        <MediaQuery query="(max-device-width: 1224px)">
-          {dialog(true)}
-        </MediaQuery>
+        <MediaQuery query="(max-width: 1224px)">{dialog(true)}</MediaQuery>
 
-        <MediaQuery query="(min-device-width: 1224px)">
-          {dialog(false)}
-        </MediaQuery>
+        <MediaQuery query="(min-width: 1224px)">{dialog(false)}</MediaQuery>
       </div>
     );
   }

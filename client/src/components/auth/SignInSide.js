@@ -240,7 +240,7 @@ class SignInSide extends Component {
 
         <Grid container className={classes.root}>
           <CssBaseline />
-          <MediaQuery query="(min-device-width: 1280px)">
+          <MediaQuery query="(min-width: 1280px)">
             <Grid item lg={7}>
               <ImageRevealEffect image={image} />
             </Grid>
