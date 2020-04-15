@@ -59,18 +59,13 @@ let generateProject = project => {
 
 ---
 
-## Installation
-
-- All the `code` required to get started
-- Images of what it should look like
-
 ### Clone
 
 - Clone this repo to your local machine using HTTPS `https://github.com/MarkZhuVUW/My-MERN-stack-Admin-App.git`
 
 ### Setup
 
-- If you want more syntax highlighting, format your code like this:
+
 
 > update and install this package first
 
