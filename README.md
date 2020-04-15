@@ -1,11 +1,7 @@
 <a href="https://mernstackadminapp.herokuapp.com/">Development Server Here</a> <br>
 <a href="http://fvcproductions.com">Production Server will be online soon.</a>
 
-
-
-***INSERT GRAPHIC HERE (include hyperlink in image)***
-
-# Repository Title Goes Here
+# My MERN stack Admin App
 
 > Subtitle or Short Description Goes Here
 
