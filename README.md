@@ -147,7 +147,8 @@ $ bower install
 
 Reach out to me at one of the following places!
 
-- Send me a message on this website <a href="http://fvcproductions.com" target="_blank">`fvcproductions.com`</a>
+- Send me a message on this website either on dev server: <a href="https://mernstackadminapp.herokuapp.com/" target="_blank">`https://mernstackadminapp.herokuapp.com/`</a>
+or on production server: <a href="null" target="_blank">`not implemented yet`</a>
 - Email me <a href="mailto:zdy120939259@outlook.com">`zdy120939259@outlook.com`</a>
 
 
