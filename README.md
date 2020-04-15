@@ -110,7 +110,7 @@ $ bower install
     - 🍴 Fork this repo!
 
 - **Option 2**
-    - 👯 Clone this repo to your local machine using `https://github.com/joanaz/HireDot2.git`
+    - 👯 Clone this repo to your local machine using HTTPS `https://github.com/MarkZhuVUW/My-MERN-stack-Admin-App.git`
 
 ### Step 2
 
@@ -118,7 +118,7 @@ $ bower install
 
 ### Step 3
 
-- 🔃 Create a new pull request using <a href="https://github.com/joanaz/HireDot2/compare/" target="_blank">`https://github.com/joanaz/HireDot2/compare/`</a>.
+- 🔃 Create a new pull request using <a href="https://github.com/MarkZhuVUW/My-MERN-stack-Admin-App/compare/" target="_blank">`https://github.com/MarkZhuVUW/My-MERN-stack-Admin-App/compare/`</a>.
 
 ---
 
@@ -126,14 +126,10 @@ $ bower install
 
 > Or Contributors/People
 
-| <a href="https://github.com/MarkZhuVUW" target="_blank">Mark Zhu</a> | <a href="https://github.com/MarkZhuVUW" target="_blank"></a> |
-| :---: |:---:|
+| <a href="https://github.com/MarkZhuVUW" target="_blank">Mark Zhu</a> | 
+| :---: |
 | ![QQ截图20200416092034](https://user-images.githubusercontent.com/29388401/79390304-9138f200-7fc3-11ea-978a-6490b1fa3001.png)  
 
-- You can just grab their GitHub profile image URL
-- You should probably resize their picture using `?s=200` at the end of the image URL.
-
----
 
 ## FAQ
 
@@ -164,4 +160,4 @@ or on production server: <a href="null" target="_blank">`not implemented yet`</a
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
 - **[MIT license](http://opensource.org/licenses/mit-license.php)**
-- Copyright 2015 © <a href="http://fvcproductions.com" target="_blank">FVCproductions</a>.
+- Copyright 2020 © <a href="https://mernstackadminapp.herokuapp.com/" target="_blank">My MERN Stack App</a>.
