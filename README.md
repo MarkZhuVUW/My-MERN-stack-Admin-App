@@ -66,7 +66,7 @@ let generateProject = project => {
 
 ### Clone
 
-- Clone this repo to your local machine using `https://github.com/fvcproductions/SOMEREPO`
+- Clone this repo to your local machine using HTTPS `https://github.com/MarkZhuVUW/My-MERN-stack-Admin-App.git`
 
 ### Setup
 
@@ -126,10 +126,9 @@ $ bower install
 
 > Or Contributors/People
 
-| <a href="https://github.com/MarkZhuVUW" target="_blank">Mark Zhu</a> | <a href="http://fvcproductions.com" target="_blank">**FVCproductions**</a> | <a href="http://fvcproductions.com" target="_blank">**FVCproductions**</a> |
-| :---: |:---:| :---:|
-| [![FVCproductions](https://avatars1.githubusercontent.com/u/4284691?v=3&s=200)](http://fvcproductions.com)    | [![FVCproductions](https://avatars1.githubusercontent.com/u/4284691?v=3&s=200)](http://fvcproductions.com) | [![FVCproductions](https://avatars1.githubusercontent.com/u/4284691?v=3&s=200)](http://fvcproductions.com)  |
-| <a href="http://github.com/fvcproductions" target="_blank">`github.com/fvcproductions`</a> | <a href="http://github.com/fvcproductions" target="_blank">`github.com/fvcproductions`</a> | <a href="http://github.com/fvcproductions" target="_blank">`github.com/fvcproductions`</a> |
+| <a href="https://github.com/MarkZhuVUW" target="_blank">Mark Zhu</a> | <a href="https://github.com/MarkZhuVUW" target="_blank"></a> |
+| :---: |:---:|
+| ![QQ截图20200416092034](https://user-images.githubusercontent.com/29388401/79390304-9138f200-7fc3-11ea-978a-6490b1fa3001.png)  
 
 - You can just grab their GitHub profile image URL
 - You should probably resize their picture using `?s=200` at the end of the image URL.
