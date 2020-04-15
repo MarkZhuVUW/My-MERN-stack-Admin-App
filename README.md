@@ -138,8 +138,7 @@ $ bower install
 
 ## FAQ
 
-- **How do I do *specifically* so and so?**
-    - No problem! Just do this.
+None Yet
 
 ---
 
