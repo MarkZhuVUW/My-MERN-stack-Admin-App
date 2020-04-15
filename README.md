@@ -153,11 +153,9 @@ Reach out to me at one of the following places!
 
 ---
 
-## Donations (Optional)
-
-- You could include a <a href="https://cdn.rawgit.com/gratipay/gratipay-badge/2.3.0/dist/gratipay.png" target="_blank">Gratipay</a> link as well.
-
-[![Support via Gratipay](https://cdn.rawgit.com/gratipay/gratipay-badge/2.3.0/dist/gratipay.png)](https://gratipay.com/fvcproductions/)
+## Donations
+怎么说
+![QQ图片20200416090331](https://user-images.githubusercontent.com/29388401/79388383-53d36500-7fc1-11ea-8921-9bedc9cde679.jpg)
 
 
 ---
