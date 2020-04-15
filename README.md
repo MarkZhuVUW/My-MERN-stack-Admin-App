@@ -147,9 +147,9 @@ $ bower install
 
 Reach out to me at one of the following places!
 
-- Website at <a href="http://fvcproductions.com" target="_blank">`fvcproductions.com`</a>
-- Twitter at <a href="http://twitter.com/fvcproductions" target="_blank">`@fvcproductions`</a>
-- Insert more social links here.
+- Send me a message on this website <a href="http://fvcproductions.com" target="_blank">`fvcproductions.com`</a>
+- Email me <a href="mailto:zdy120939259@outlook.com">`zdy120939259@outlook.com`</a>
+
 
 ---
 
