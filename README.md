@@ -3,7 +3,7 @@
 
 # My MERN stack Admin App
 
-> features i18n, Role-based Access Control, event logging, redux state management, swagger UI REST api documentation and more.
+> features JWT auth, i18n, Role-based Access Control, event logging, redux state management, swagger UI REST api documentation and more.
 
 > Some of the sign in page animations are made with Greensock and Sass.
 
