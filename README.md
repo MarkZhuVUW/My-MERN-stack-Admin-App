@@ -5,9 +5,8 @@
 
 > features i18n, Role-based Access Control, event logging, redux state management, swagger UI REST api documentation and more.
 
-> some of the sign in page animations are made with Greensock and Sass.
+> Some of the sign in page animations are made with Greensock and Sass.
 
-> include terms/tags that can be searched
 
 **Badges will go here**
 
