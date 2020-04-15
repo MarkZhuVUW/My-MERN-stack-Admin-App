@@ -3,9 +3,9 @@
 
 # My MERN stack Admin App
 
-> Subtitle or Short Description Goes Here
+> features i18n, Role-based Access Control, event logging, redux state management, swagger UI REST api documentation and more.
 
-> ideally one sentence
+> some of the sign in page animations are made with Greensock and Sass.
 
 > include terms/tags that can be searched
 
