@@ -74,11 +74,16 @@ $ brew install fvcproductions
 > now install npm and bower packages
 
 ```shell
+npm install on directory: /My-MERN-stack-Admin-App/
 $ npm install
-$ bower install
+
+npm install on directory: /My-MERN-stack-Admin-App/client/
+$ npm install
+
+npm run dev on directory: /My-MERN-stack-Admin-App/ to run client and server concurrently.
+$ npm run dev
 ```
 
-- For all the possible languages that support syntax highlithing on GitHub (which is basically all of them), refer <a href="https://github.com/github/linguist/blob/master/lib/linguist/languages.yml" target="_blank">here</a>.
 
 ---
 
@@ -107,6 +112,9 @@ $ bower install
 ### Step 2
 
 - **HACK AWAY!** 🔨🔨🔨
+    - npm install on /My-MERN-stack-Admin-App/
+    - npm install on /My-MERN-stack-Admin-App/client/
+    - npm run dev to run client and server concurrently.
 
 ### Step 3
 
