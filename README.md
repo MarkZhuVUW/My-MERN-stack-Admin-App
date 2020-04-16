@@ -124,8 +124,6 @@ $ npm run dev
 
 ## Team
 
-> Or Contributors/People
-
 | <a href="https://github.com/MarkZhuVUW" target="_blank">Mark Zhu</a> | 
 | :---: |
 | ![QQ截图20200416092034](https://user-images.githubusercontent.com/29388401/79390304-9138f200-7fc3-11ea-978a-6490b1fa3001.png)  
