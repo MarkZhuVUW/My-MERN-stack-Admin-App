@@ -100,6 +100,12 @@ class App extends Component {
             {this.props.authenticated ? (
               <div>
                 <Switch>
+                  <Route
+                    path="/github-signin-callback"
+                    render={() => {
+                      return <Redirect to="/frame" />;
+                    }}
+                  ></Route>
                   <Route path="/frame">
                     <Frame themeCallback={themeCallback} />
                   </Route>

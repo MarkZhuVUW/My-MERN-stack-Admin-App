@@ -1,3 +1,7 @@
+/* eslint-disable object-curly-spacing */
+/* eslint-disable indent */
+/* eslint-disable quotes */
+/* eslint-disable linebreak-style */
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
@@ -14,8 +18,8 @@ const User = require("../../models/User");
 router.get("/user", auth, (req, res) => {
   User.findById(req.user.id)
     .select("-password")
-    .then(user => res.json(user))
-    .catch(err => res.json({ msg: "user not found" }));
+    .then((user) => res.json(user))
+    .catch((err) => res.json({ msg: "user not found" }));
 });
 
 // @route   GET api/auth/
@@ -30,22 +34,71 @@ router.post("/", (req, res) => {
   }
 
   // Check for existing user
-  User.findOne({ email }).then(user => {
+  User.findOne({ email }).then((user) => {
     if (!user) return res.status(400).json({ msg: "User Does not exist" });
 
     // Validate password
-    bcrypt.compare(password, user.password).then(isMatch => {
+    bcrypt.compare(password, user.password).then((isMatch) => {
       if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
 
       jwt.sign({ id: user.id }, config.get("jwtSecret"), (err, token) => {
         if (err) throw err;
         res.json({
           token,
-          user
+          user,
         });
       });
     });
   });
+});
+
+// @route   GET api/auth/
+// @desc    login
+// @access  Private
+router.get("/", (req, res) => {
+  const { email, password } = req.body;
+
+  // Simple validation
+  if (!email || !password) {
+    return res.status(400).json({ msg: "Please enter all fields" });
+  }
+
+  // Check for existing user
+  User.findOne({ email }).then((user) => {
+    if (!user) return res.status(400).json({ msg: "User Does not exist" });
+
+    // Validate password
+    bcrypt.compare(password, user.password).then((isMatch) => {
+      if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
+
+      jwt.sign({ id: user.id }, config.get("jwtSecret"), (err, token) => {
+        if (err) throw err;
+        res.json({
+          token,
+          user,
+        });
+      });
+    });
+  });
+});
+
+// Github Oauth
+
+// @route   GET api/auth/github-signin-callback
+// @desc    login
+// @access  Private
+router.get("/github-signin-callback", (req, res) => {
+  const { query } = req;
+  const { code } = req.query;
+
+  if (!code)
+    return res.status(400).json({
+      success: false,
+      msg: "Error no code",
+    });
+
+  console.log("code: " + code);
+  console.log("res: " + res);
 });
 
 module.exports = router;

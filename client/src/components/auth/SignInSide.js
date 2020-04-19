@@ -1,5 +1,4 @@
 import { Zoom } from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -8,9 +7,7 @@ import Paper from "@material-ui/core/Paper";
 import Snackbar from "@material-ui/core/Snackbar";
 import { createMuiTheme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import MuiAlert from "@material-ui/lab/Alert";
 import { withStyles } from "@material-ui/styles";
 import AnimatedIcons from "components/AnimatedIcons/AnimatedIcons";
@@ -24,12 +21,11 @@ import MediaQuery from "react-responsive";
 import { NavLink, withRouter } from "react-router-dom";
 import compose from "recompose/compose";
 import { logLoginSuccess } from "../../actions/adminActions";
-import { login } from "../../actions/authActions";
+import { githubSignIn, login } from "../../actions/authActions";
 import { clearErrors } from "../../actions/errorActions";
 import "../../css3/bouncingEffect.css";
 import image from "../../images/404.png";
 import ResponsiveDialog from "../ResponsiveDialog";
-
 const theme = createMuiTheme({
   spacing: 4,
 });
@@ -56,9 +52,8 @@ const styles = {
     flexDirection: "column",
     alignItems: "center",
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+  githubSignIn: {
+    margin: theme.spacing(2),
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -98,6 +93,7 @@ class SignInSide extends Component {
 
     user: PropTypes.object,
     logLoginSuccess: PropTypes.func,
+    githubSignIn: PropTypes.func,
 
     //withRouter
     match: PropTypes.object.isRequired,
@@ -141,6 +137,13 @@ class SignInSide extends Component {
 
     // Attempt to login
     this.props.login(user);
+    this.toggle();
+  };
+
+  onGithubSignIn = (e) => {
+    e.preventDefault();
+
+    this.props.githubSignIn();
     this.toggle();
   };
 
@@ -266,11 +269,22 @@ class SignInSide extends Component {
             <Zoom in={true} timeout={500}>
               <Container className={classes.content}>
                 <Paper className={classes.paper}>
-                  <Tooltip title={i18n("clickme")}>
-                    <Avatar className={classes.avatar}>
-                      <LockOutlinedIcon className="animation" />
-                    </Avatar>
-                  </Tooltip>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    color="primary"
+                    className={classes.githubSignIn}
+                    onClick={this.onGithubSignIn}
+                    href="https://github.com/login/oauth/authorize?client_id=011f16605e66210d330b"
+                  >
+                    {i18n("loginPage.signInWithGithub")}
+                  </Button>
+                  {/* <Link
+                    href="https://github.com/login/oauth/authorize?client_id=011f16605e66210d330b"
+                    color="inherit"
+                  >
+                    {'color="inherit"'}
+                  </Link> */}
                   <Typography component="h1" variant="h5">
                     {i18n("loginPage.welcome")}
                   </Typography>
@@ -425,6 +439,7 @@ class SignInSide extends Component {
                 width: "100%",
                 textAlign: "center",
                 position: "relative",
+                zIndex: 2,
                 color:
                   localStorage.getItem("theme") === "dark" ? "white" : "black",
               }}
@@ -446,5 +461,10 @@ const mapStateToProps = (state) => ({
 });
 export default compose(
   withStyles(styles),
-  connect(mapStateToProps, { login, clearErrors, logLoginSuccess })
+  connect(mapStateToProps, {
+    login,
+    clearErrors,
+    logLoginSuccess,
+    githubSignIn,
+  })
 )(withRouter(SignInSide));

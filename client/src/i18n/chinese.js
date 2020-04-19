@@ -13,7 +13,7 @@ const chinese = {
     welcome: "欢迎光临",
     email: "邮箱",
     password: "密码",
-
+    signInWithGithub: "Github 登录",
     forgotPassword: "忘记密码?",
     registerANewOne: "注册个新的",
     signIn: "登录",

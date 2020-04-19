@@ -16,7 +16,7 @@ const en = {
     welcome: "Welcome!",
     email: "Email Address",
     password: "Password",
-
+    signInWithGithub: "Sign In With Github",
     forgotPassword: "Forgot Password?",
     registerANewOne: "register a new one :)",
     signIn: "Sign In",
@@ -54,7 +54,7 @@ const en = {
   dashboard: {
     menu: "Home",
     route: "dashboard",
-    message: `The graphs use fake data for demonstration purposes only.`,
+    message: `This page uses data from my mongodb database`,
 
     table: {
       userActivities: "User Activities",

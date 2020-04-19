@@ -3,6 +3,7 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/styles";
+import classNames from "classnames";
 import EditableTable from "components/EditableTable";
 import FacebookProgress from "components/FacebookProgress";
 import { i18n } from "i18n";
@@ -16,10 +17,10 @@ import {
 } from "../../../../actions/adminActions";
 import { loadUser } from "../../../../actions/authActions";
 import { clearErrors } from "../../../../actions/errorActions";
+import "./dashboard.scss";
 import HomeDoughnutChart from "./HomeDoughnutChart";
 import HomeLineChart from "./HomeLineChart";
 import HomePolarChart from "./HomePolarChart";
-
 const styles = {};
 
 class Dashboard extends Component {
@@ -247,10 +248,9 @@ function DashboardContent(props) {
       <Breadcrumb
         items={[[i18n("frame.menu"), "/"], [i18n("dashboard.route")]]}
       />
-
       <Grid container spacing={props.isSmallScreen ? 1 : 3}>
         <Grid item xs={12} md={4} lg={4}>
-          <Paper className={classes.paper}>
+          <Paper className={classNames(classes.paper, "chart-paper")}>
             <Typography component="h2" variant="h6">
               {i18n("dashboard.doughnutChart.title")}
             </Typography>
@@ -259,7 +259,7 @@ function DashboardContent(props) {
         </Grid>
 
         <Grid item xs={12} md={4} lg={4}>
-          <Paper className={classes.paper}>
+          <Paper className={classNames(classes.paper, "chart-paper")}>
             <Typography component="h2" variant="h6">
               {i18n("dashboard.lineChart.title")}
             </Typography>
@@ -268,7 +268,7 @@ function DashboardContent(props) {
           </Paper>
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
-          <Paper className={classes.paper}>
+          <Paper className={classNames(classes.paper, "chart-paper")}>
             <Typography component="h2" variant="h6">
               {i18n("dashboard.polarChart.title")}
             </Typography>
@@ -282,6 +282,7 @@ function DashboardContent(props) {
             options={options}
             data={data}
             columns={columns}
+            className="data-table"
           />
         </Grid>
       </Grid>
