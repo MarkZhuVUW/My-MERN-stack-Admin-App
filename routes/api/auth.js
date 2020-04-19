@@ -88,8 +88,7 @@ router.get("/", (req, res) => {
 // @desc    login
 // @access  Private
 router.get("/github-signin-callback", (req, res) => {
-  const { query } = req;
-  const { code } = req.query;
+  const { code } = req.code;
 
   if (!code)
     return res.status(400).json({
@@ -98,7 +97,6 @@ router.get("/github-signin-callback", (req, res) => {
     });
 
   console.log("code: " + code);
-  console.log("res: " + res);
 });
 
 module.exports = router;
