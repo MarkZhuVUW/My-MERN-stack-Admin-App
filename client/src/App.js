@@ -100,12 +100,6 @@ class App extends Component {
             {this.props.authenticated ? (
               <div>
                 <Switch>
-                  <Route
-                    path="/github-signin-callback"
-                    render={() => {
-                      return <Redirect to="/frame" />;
-                    }}
-                  ></Route>
                   <Route path="/frame">
                     <Frame themeCallback={themeCallback} />
                   </Route>
@@ -136,7 +130,12 @@ class App extends Component {
                 <Switch>
                   <Route exact path="/signin" component={SignInSide} />
                   <Route exact path="/signup" component={SignUp} />
-
+                  <Route
+                    path="/api/auth/github-signin-callback"
+                    render={() => {
+                      return <Redirect to="/frame" />;
+                    }}
+                  ></Route>
                   <Route
                     render={() => {
                       return <ErrorPage code={401} />;

@@ -1,6 +1,28 @@
 import axios from "axios";
 import { returnErrors } from "./errorActions";
-import { ALL_USERS_LOADED, AUTH_ERROR, CLEAR_SUCCESS_MSG, GITHUB_SIGNIN_FAIL, GITHUB_SIGNIN_SUCCESS, LOADING, LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT_SUCCESS, REGISTER_FAIL, REGISTER_SUCCESS, TFA_ING, TFA_LOADED, TFA_LOAD_FAIL, TFA_SETUP_FAIL, TFA_SETUP_SUCCESS, TFA_VERIFED, TFA_VERIFY_FAIL, USER_DELETED, USER_LOADED, USER_LOADING } from "./types";
+import {
+  ALL_USERS_LOADED,
+  AUTH_ERROR,
+  CLEAR_SUCCESS_MSG,
+  GITHUB_SIGNIN_FAIL,
+  GITHUB_SIGNIN_SUCCESS,
+  LOADING,
+  LOGIN_FAIL,
+  LOGIN_SUCCESS,
+  LOGOUT_SUCCESS,
+  REGISTER_FAIL,
+  REGISTER_SUCCESS,
+  TFA_ING,
+  TFA_LOADED,
+  TFA_LOAD_FAIL,
+  TFA_SETUP_FAIL,
+  TFA_SETUP_SUCCESS,
+  TFA_VERIFED,
+  TFA_VERIFY_FAIL,
+  USER_DELETED,
+  USER_LOADED,
+  USER_LOADING,
+} from "./types";
 
 // CLEAR Success message
 export const clearSuccessMsg = () => {
@@ -284,42 +306,23 @@ export const skipTFA = (email, code) => (dispatch) => {
 // --------------------------- Github OAuth ---------------------------------------------//
 // --------------------------- Github OAuth ---------------------------------------------//
 
-export const githubSignIn = () => (dispatch) => {
-  axios
-    .get(
-      "https://github.com/login/oauth/authorize?client_id=011f16605e66210d330b"
+export const getGithubAccessToken = () => (dispatch) => {
+  const githubAuthPromise = axios
+    .get("/api/auth/github-signin-callback")
+    .then((res) =>
+      dispatch({
+        type: GITHUB_SIGNIN_SUCCESS,
+        payload: res.data,
+      })
     )
-    .then((res) => getGithubAuthToken(res.data.code)
     .catch((err) => {
       dispatch(
-        returnErrors(
-          err.response.data,
-          err.response.status,
-          "GITHUB_SIGNIN_FAIL"
-        )
+        returnErrors(err.response.data, err.response.status, "TFA_VERIFY_FAIL")
       );
       dispatch({
         type: GITHUB_SIGNIN_FAIL,
       });
     });
-};
 
-export const getGithubAccessToken = (code) => (dispatch) => {
-  axios
-    .get(
-      `https://github.com/login/oauth/access_token?client_id=011f16605e66210d330b&client_secret=284ccd9e2dc3599747c3d1aee6fbeba710b37fdd&code=${code}`
-    )
-    .then((res) => dispatch({ type: GITHUB_SIGNIN_SUCCESS, payload: res.data.access_token }))
-    .catch((err) => {
-      dispatch(
-        returnErrors(
-          err.response.data,
-          err.response.status,
-          "GITHUB_SIGNIN_FAIL"
-        )
-      );
-      dispatch({
-        type: GITHUB_SIGNIN_FAIL,
-      });
-    });
+  return githubAuthPromise;
 };

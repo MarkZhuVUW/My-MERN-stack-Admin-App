@@ -1,4 +1,6 @@
 {
   "mongoURI": "mongodb+srv://Mark-Zhu:Mark19960630@myportfolio-mjznb.mongodb.net/test?retryWrites=true&w=majority",
-  "jwtSecret": "myJwtSecret"
+  "jwtSecret": "myJwtSecret",
+  "clientId": "011f16605e66210d330b",
+  "clientSecret": "284ccd9e2dc3599747c3d1aee6fbeba710b37fdd"
 }

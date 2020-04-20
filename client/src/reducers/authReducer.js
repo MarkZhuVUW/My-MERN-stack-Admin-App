@@ -161,9 +161,15 @@ export default function (state = initialState, action) {
 
     case GITHUB_SIGNIN_SUCCESS:
       localStorage.setItem("authenticated", true);
+      localStorage.setItem("githubAccessToken", action.payload);
+
+      console.log(action.payload);
       return {
         ...state,
         authenticated: true,
+        userLoaded: true,
+        ...action.payload,
+        isLoading: false,
       };
     default:
       return {

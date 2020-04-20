@@ -8,6 +8,7 @@ const bcrypt = require("bcryptjs");
 const config = require("config");
 const jwt = require("jsonwebtoken");
 const auth = require("../../middleware/auth");
+const axios = require("axios");
 
 // User Model
 const User = require("../../models/User");
@@ -88,15 +89,36 @@ router.get("/", (req, res) => {
 // @desc    login
 // @access  Private
 router.get("/github-signin-callback", (req, res) => {
-  const { code } = req.code;
-
-  if (!code)
-    return res.status(400).json({
-      success: false,
-      msg: "Error no code",
-    });
+  const { query } = req;
+  const { code } = query;
 
   console.log("code: " + code);
+  if (!code) {
+    return res.send({
+      success: false,
+      msg: "error no code",
+    });
+  }
+
+  //get client_id and client_secret from a json file so that it is not exposed.
+  const clientId = config.get("clientId");
+  const clientSecret = config.get("clientSecret");
+
+  axios
+    .post(
+      `https://github.com/login/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&code=${code}`
+    )
+    .then((accessTokenRes) => {
+      console.log(accessTokenRes.data);
+      return res.json(JSON.stringify(accessTokenRes.data));
+    })
+    .catch((err) => {
+      // console.log(err);
+      return res.status(401).json({
+        success: false,
+        msg: err,
+      });
+    });
 });
 
 module.exports = router;

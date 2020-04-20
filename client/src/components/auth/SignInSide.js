@@ -1,4 +1,4 @@
-import { Zoom } from "@material-ui/core";
+import { Link, Zoom } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -21,7 +21,7 @@ import MediaQuery from "react-responsive";
 import { NavLink, withRouter } from "react-router-dom";
 import compose from "recompose/compose";
 import { logLoginSuccess } from "../../actions/adminActions";
-import { githubSignIn, login } from "../../actions/authActions";
+import { getGithubAccessToken, login } from "../../actions/authActions";
 import { clearErrors } from "../../actions/errorActions";
 import "../../css3/bouncingEffect.css";
 import image from "../../images/404.png";
@@ -93,7 +93,7 @@ class SignInSide extends Component {
 
     user: PropTypes.object,
     logLoginSuccess: PropTypes.func,
-    githubSignIn: PropTypes.func,
+    getGithubAccessToken: PropTypes.func,
 
     //withRouter
     match: PropTypes.object.isRequired,
@@ -143,7 +143,7 @@ class SignInSide extends Component {
   onGithubSignIn = (e) => {
     e.preventDefault();
 
-    this.props.githubSignIn();
+    this.props.getGithubAccessToken();
     this.toggle();
   };
 
@@ -275,16 +275,16 @@ class SignInSide extends Component {
                     color="primary"
                     className={classes.githubSignIn}
                     onClick={this.onGithubSignIn}
-                    href="https://github.com/login/oauth/authorize?client_id=011f16605e66210d330b"
+                    // href="https://github.com/login/oauth/authorize?client_id=011f16605e66210d330b&redirect_uri=/"
                   >
                     {i18n("loginPage.signInWithGithub")}
                   </Button>
-                  {/* <Link
+                  <Link
                     href="https://github.com/login/oauth/authorize?client_id=011f16605e66210d330b"
                     color="inherit"
                   >
                     {'color="inherit"'}
-                  </Link> */}
+                  </Link>
                   <Typography component="h1" variant="h5">
                     {i18n("loginPage.welcome")}
                   </Typography>
@@ -465,6 +465,6 @@ export default compose(
     login,
     clearErrors,
     logLoginSuccess,
-    githubSignIn,
+    getGithubAccessToken,
   })
 )(withRouter(SignInSide));
