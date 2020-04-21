@@ -56,8 +56,7 @@
 
 
 
-> install npm and bower packages
-
+> run npm install on both server and client projects.
 ```shell
 npm install on directory: /My-MERN-stack-Admin-App/
 $ npm install
@@ -66,7 +65,7 @@ npm install on directory: /My-MERN-stack-Admin-App/client/
 $ npm install
 
 ```
-> update and install this package first
+> run server and client concurrently.
 
 ```shell
 npm run dev on directory: /My-MERN-stack-Admin-App/ to run client and server concurrently.
