@@ -43,17 +43,6 @@
 
 ## Example (Optional)
 
-```javascript
-// code away!
-
-let generateProject = project => {
-  let code = [];
-  for (let js = 0; js < project.length; js++) {
-    code.push(js);
-  }
-};
-```
-
 ---
 
 ### Clone
@@ -64,14 +53,10 @@ let generateProject = project => {
 
 
 
-> update and install this package first
 
-```shell
-$ brew update
-$ brew install fvcproductions
-```
 
-> now install npm and bower packages
+
+> install npm and bower packages
 
 ```shell
 npm install on directory: /My-MERN-stack-Admin-App/
@@ -80,8 +65,13 @@ $ npm install
 npm install on directory: /My-MERN-stack-Admin-App/client/
 $ npm install
 
+```
+> update and install this package first
+
+```shell
 npm run dev on directory: /My-MERN-stack-Admin-App/ to run client and server concurrently.
 $ npm run dev
+
 ```
 
 
