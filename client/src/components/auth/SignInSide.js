@@ -1,4 +1,4 @@
-import { Link, Zoom } from "@material-ui/core";
+import { Zoom } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -13,13 +13,16 @@ import { withStyles } from "@material-ui/styles";
 import AnimatedIcons from "components/AnimatedIcons/AnimatedIcons";
 import FacebookProgress from "components/FacebookProgress";
 import ImageRevealEffect from "components/ImageRevealEffect/ImageRevealEffect";
+import confidentials from "confidentials/confidentials.json";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
+import GitHubLogin from "react-github-login";
 import { connect } from "react-redux";
 import MediaQuery from "react-responsive";
 import { NavLink, withRouter } from "react-router-dom";
 import compose from "recompose/compose";
+import loginTab from "utilities/LoginTab";
 import { logLoginSuccess } from "../../actions/adminActions";
 import { getGithubAccessToken, login } from "../../actions/authActions";
 import { clearErrors } from "../../actions/errorActions";
@@ -142,8 +145,10 @@ class SignInSide extends Component {
 
   onGithubSignIn = (e) => {
     e.preventDefault();
-
-    this.props.getGithubAccessToken();
+    loginTab(
+      "https://github.com/login/oauth/authorize?client_id=011f16605e66210d330b"
+    );
+    // this.props.getGithubAccessToken();
     this.toggle();
   };
 
@@ -217,6 +222,9 @@ class SignInSide extends Component {
       return <MuiAlert elevation={6} variant="filled" {...props} />;
     }
 
+    const onSuccess = (response) => console.log(response);
+    const onFailure = (response) => console.error(response);
+
     return (
       <div>
         {/* if user credentials are correct. Do a google 2fa before login to dashboard */}
@@ -269,7 +277,7 @@ class SignInSide extends Component {
             <Zoom in={true} timeout={500}>
               <Container className={classes.content}>
                 <Paper className={classes.paper}>
-                  <Button
+                  {/* <Button
                     variant="contained"
                     size="small"
                     color="primary"
@@ -278,13 +286,15 @@ class SignInSide extends Component {
                     // href="https://github.com/login/oauth/authorize?client_id=011f16605e66210d330b&redirect_uri=/"
                   >
                     {i18n("loginPage.signInWithGithub")}
-                  </Button>
-                  <Link
-                    href="https://github.com/login/oauth/authorize?client_id=011f16605e66210d330b"
-                    color="inherit"
-                  >
-                    {'color="inherit"'}
-                  </Link>
+                  </Button> */}
+
+                  <GitHubLogin
+                    buttonText={i18n("loginPage.signInWithGithub")}
+                    clientId={confidentials.client_id}
+                    // redirectUri=""
+                    onSuccess={onSuccess}
+                    onFailure={onFailure}
+                  />
                   <Typography component="h1" variant="h5">
                     {i18n("loginPage.welcome")}
                   </Typography>
