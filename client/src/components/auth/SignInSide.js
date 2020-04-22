@@ -291,7 +291,7 @@ class SignInSide extends Component {
                   <GitHubLogin
                     buttonText={i18n("loginPage.signInWithGithub")}
                     clientId={confidentials.client_id}
-                    // redirectUri=""
+                    redirectUri=""
                     onSuccess={onSuccess}
                     onFailure={onFailure}
                   />
