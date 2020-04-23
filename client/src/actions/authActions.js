@@ -296,7 +296,7 @@ export const TFAVerify = (email, code) => (dispatch) => {
 };
 
 // skip tfa.
-export const skipTFA = () => (dispatch) => {
+export const skipTFA = (email, code) => (dispatch) => {
   // TFAing
   dispatch({ type: TFA_VERIFED });
 };

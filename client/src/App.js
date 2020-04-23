@@ -7,7 +7,7 @@ import React, { Component } from "react";
 import Particles from "react-particles-js";
 import { connect } from "react-redux";
 import MediaQuery from "react-responsive";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
 import { loadUser } from "./actions/authActions";
 import "./App.scss";
 import SignInSide from "./components/auth/SignInSide";
@@ -96,11 +96,11 @@ class App extends Component {
     return (
       <div>
         <ThemeProvider theme={theme}>
-          <BrowserRouter basename="/">
+          <HashRouter basename="/">
             {this.props.authenticated ? (
               <div>
                 <Switch>
-                  <Route exact path="/frame">
+                  <Route path="/frame">
                     <Frame themeCallback={themeCallback} />
                   </Route>
                   <Route
@@ -130,12 +130,7 @@ class App extends Component {
                 <Switch>
                   <Route exact path="/signin" component={SignInSide} />
                   <Route exact path="/signup" component={SignUp} />
-                  {/* <Route
-                    path="/api/auth/github-signin-callback"
-                    render={() => {
-                      return <Redirect to="/frame" />;
-                    }}
-                  ></Route> */}
+
                   <Route
                     path="/frame"
                     render={() => {
@@ -157,7 +152,7 @@ class App extends Component {
                 />
               </>
             )}
-          </BrowserRouter>
+          </HashRouter>
         </ThemeProvider>
       </div>
     );

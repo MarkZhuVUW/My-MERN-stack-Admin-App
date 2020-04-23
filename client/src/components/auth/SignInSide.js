@@ -143,8 +143,7 @@ class SignInSide extends Component {
   };
 
   onGithubSignIn = (code) => {
-    this.props.getGithubUser(code);
-    this.props.history.push("/");
+    this.props.getGithubUser(code).then(() => this.props.history.push("/"));
 
     this.toggle();
   };
