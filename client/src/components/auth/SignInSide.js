@@ -22,9 +22,8 @@ import { connect } from "react-redux";
 import MediaQuery from "react-responsive";
 import { NavLink, withRouter } from "react-router-dom";
 import compose from "recompose/compose";
-import loginTab from "utilities/LoginTab";
 import { logLoginSuccess } from "../../actions/adminActions";
-import { getGithubAccessToken, login } from "../../actions/authActions";
+import { getGithubUser, login } from "../../actions/authActions";
 import { clearErrors } from "../../actions/errorActions";
 import "../../css3/bouncingEffect.css";
 import image from "../../images/404.png";
@@ -96,7 +95,7 @@ class SignInSide extends Component {
 
     user: PropTypes.object,
     logLoginSuccess: PropTypes.func,
-    getGithubAccessToken: PropTypes.func,
+    getGithubUser: PropTypes.func,
 
     //withRouter
     match: PropTypes.object.isRequired,
@@ -143,12 +142,10 @@ class SignInSide extends Component {
     this.toggle();
   };
 
-  onGithubSignIn = (e) => {
-    e.preventDefault();
-    loginTab(
-      "https://github.com/login/oauth/authorize?client_id=011f16605e66210d330b"
-    );
-    // this.props.getGithubAccessToken();
+  onGithubSignIn = (code) => {
+    this.props.getGithubUser(code);
+    this.props.history.push("/");
+
     this.toggle();
   };
 
@@ -222,9 +219,6 @@ class SignInSide extends Component {
       return <MuiAlert elevation={6} variant="filled" {...props} />;
     }
 
-    const onSuccess = (response) => console.log(response);
-    const onFailure = (response) => console.error(response);
-
     return (
       <div>
         {/* if user credentials are correct. Do a google 2fa before login to dashboard */}
@@ -292,8 +286,8 @@ class SignInSide extends Component {
                     buttonText={i18n("loginPage.signInWithGithub")}
                     clientId={confidentials.client_id}
                     redirectUri=""
-                    onSuccess={onSuccess}
-                    onFailure={onFailure}
+                    onSuccess={(res) => this.onGithubSignIn(res.code)}
+                    onFailure={(res) => console.error(res)}
                   />
                   <Typography component="h1" variant="h5">
                     {i18n("loginPage.welcome")}
@@ -475,6 +469,6 @@ export default compose(
     login,
     clearErrors,
     logLoginSuccess,
-    getGithubAccessToken,
+    getGithubUser,
   })
 )(withRouter(SignInSide));

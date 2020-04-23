@@ -85,14 +85,11 @@ router.get("/", (req, res) => {
 
 // Github Oauth
 
-// @route   GET api/auth/github-signin-callback
+// @route   GET api/auth/github-user
 // @desc    login
 // @access  Private
-router.get("/github-signin-callback", (req, res) => {
-  const { query } = req;
-  const { code } = query;
-
-  console.log("code: " + code);
+router.post("/github-user", (req, res) => {
+  const { code } = req.body;
   if (!code) {
     return res.send({
       success: false,
@@ -104,19 +101,28 @@ router.get("/github-signin-callback", (req, res) => {
   const clientId = config.get("clientId");
   const clientSecret = config.get("clientSecret");
 
+  const body = JSON.stringify({
+    client_id: clientId,
+    client_secret: clientSecret,
+    code: code,
+  });
+
+  //get access token.
   axios
-    .post(
-      `https://github.com/login/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&code=${code}`
-    )
+    .post(`https://github.com/login/oauth/access_token`, body, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
     .then((accessTokenRes) => {
-      console.log(accessTokenRes.data);
-      return res.json(JSON.stringify(accessTokenRes.data));
+      return res.json(accessTokenRes.data);
     })
     .catch((err) => {
       // console.log(err);
       return res.status(401).json({
         success: false,
-        msg: err,
+        msg: err.body,
       });
     });
 });

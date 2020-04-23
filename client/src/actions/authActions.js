@@ -296,7 +296,7 @@ export const TFAVerify = (email, code) => (dispatch) => {
 };
 
 // skip tfa.
-export const skipTFA = (email, code) => (dispatch) => {
+export const skipTFA = () => (dispatch) => {
   // TFAing
   dispatch({ type: TFA_VERIFED });
 };
@@ -306,9 +306,16 @@ export const skipTFA = (email, code) => (dispatch) => {
 // --------------------------- Github OAuth ---------------------------------------------//
 // --------------------------- Github OAuth ---------------------------------------------//
 
-export const getGithubAccessToken = () => (dispatch) => {
+export const getGithubUser = (code) => (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const body = JSON.stringify({ code });
   const githubAuthPromise = axios
-    .get("/api/auth/github-signin-callback")
+    .post("/api/auth/github-user", body, config)
     .then((res) =>
       dispatch({
         type: GITHUB_SIGNIN_SUCCESS,
