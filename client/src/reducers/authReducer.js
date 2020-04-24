@@ -4,7 +4,7 @@ import {
   CLEAR_SUCCESS_MSG,
   GITHUB_SIGNIN_FAIL,
   GITHUB_SIGNIN_SUCCESS,
-  LOADING,
+  GITHUB_USER_LOADED,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
@@ -28,7 +28,6 @@ const initialState = {
   user: null,
   TFA: null,
   TFALoaded: false,
-  isTFAing: false,
   successMsg: null,
   allUsers: [],
   authenticated: false,
@@ -41,11 +40,7 @@ export default function (state = initialState, action) {
         ...state,
         successMsg: null,
       };
-    case LOADING:
-      return {
-        ...state,
-        isLoading: true,
-      };
+
     case USER_LOADING:
       return {
         ...state,
@@ -58,6 +53,7 @@ export default function (state = initialState, action) {
         isLoading: false,
       };
     case USER_LOADED:
+    case GITHUB_USER_LOADED:
       return {
         ...state,
         isLoading: false,
@@ -82,9 +78,19 @@ export default function (state = initialState, action) {
         isLoading: false,
         userLoaded: true,
       };
+    case GITHUB_SIGNIN_SUCCESS:
+      localStorage.setItem("githubAccessToken", action.payload.access_token);
+
+      return {
+        ...state,
+        ...action.payload,
+        userLoaded: true,
+        isLoading: false,
+      };
     case LOGOUT_SUCCESS:
       localStorage.removeItem("token");
       localStorage.removeItem("authenticated");
+      localStorage.removeItem("githubAccessToken");
 
       return {
         ...initialState,
@@ -114,18 +120,15 @@ export default function (state = initialState, action) {
     case TFA_SETUP_FAIL:
       return {
         ...state,
-        isTFAing: false,
       };
     //do not change state if verification failed
     case TFA_VERIFY_FAIL:
       return {
         ...state,
-        isTFAing: false,
       };
     case TFA_LOAD_FAIL:
       return {
         ...state,
-        isTFAing: false,
       };
     case TFA_SETUP_SUCCESS:
     case TFA_LOADED:
@@ -133,7 +136,6 @@ export default function (state = initialState, action) {
         ...state,
         TFA: action.payload,
         TFALoaded: true,
-        isTFAing: false,
       };
     case TFA_VERIFED:
       localStorage.setItem("authenticated", true);
@@ -141,7 +143,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         TFA: null,
-        isTFAing: false,
         authenticated: true,
       };
 
@@ -156,20 +157,8 @@ export default function (state = initialState, action) {
         ...state,
         TFA: action.payload,
         TFALoaded: true,
-        isTFAing: false,
       };
 
-    case GITHUB_SIGNIN_SUCCESS:
-      localStorage.setItem("authenticated", true);
-      localStorage.setItem("githubAccessToken", action.payload.access_token);
-
-      return {
-        ...state,
-        authenticated: true,
-        userLoaded: true,
-        ...action.payload,
-        isLoading: false,
-      };
     default:
       return {
         ...state,

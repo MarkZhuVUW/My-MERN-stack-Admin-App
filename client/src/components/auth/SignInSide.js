@@ -10,11 +10,20 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import MuiAlert from "@material-ui/lab/Alert";
 import { withStyles } from "@material-ui/styles";
+import { logLoginSuccess } from "actions/adminActions";
+import {
+  getGithubAccessToken,
+  getGithubUser,
+  login,
+} from "actions/authActions";
+import { clearErrors } from "actions/errorActions";
 import AnimatedIcons from "components/AnimatedIcons/AnimatedIcons";
 import FacebookProgress from "components/FacebookProgress";
 import ImageRevealEffect from "components/ImageRevealEffect/ImageRevealEffect";
 import confidentials from "confidentials/confidentials.json";
+import "css3/bouncingEffect.css";
 import { i18n } from "i18n";
+import image from "images/404.png";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import GitHubLogin from "react-github-login";
@@ -22,11 +31,6 @@ import { connect } from "react-redux";
 import MediaQuery from "react-responsive";
 import { NavLink, withRouter } from "react-router-dom";
 import compose from "recompose/compose";
-import { logLoginSuccess } from "../../actions/adminActions";
-import { getGithubUser, login } from "../../actions/authActions";
-import { clearErrors } from "../../actions/errorActions";
-import "../../css3/bouncingEffect.css";
-import image from "../../images/404.png";
 import ResponsiveDialog from "../ResponsiveDialog";
 const theme = createMuiTheme({
   spacing: 4,
@@ -82,6 +86,7 @@ class SignInSide extends Component {
     emailErrorMsg: null,
     passwordErrorMsg: null,
     copyRightOpened: false,
+    isCreatingLocalUserWithOauthUser: false,
     copyRightText:
       "This website is MIT licensed. https://opensource.org/licenses/MIT",
   };
@@ -94,8 +99,9 @@ class SignInSide extends Component {
     isTFAing: PropTypes.bool,
 
     user: PropTypes.object,
-    logLoginSuccess: PropTypes.func,
-    getGithubUser: PropTypes.func,
+    logLoginSuccess: PropTypes.func.isRequired,
+    getGithubAccessToken: PropTypes.func.isRequired,
+    getGithubUser: PropTypes.func.isRequired,
 
     //withRouter
     match: PropTypes.object.isRequired,
@@ -143,7 +149,12 @@ class SignInSide extends Component {
   };
 
   onGithubSignIn = (code) => {
-    this.props.getGithubUser(code).then(() => this.props.history.push("/"));
+    this.props.getGithubAccessToken(code).then(() => {
+      this.props.getGithubUser();
+    });
+    this.setState({
+      isCreatingLocalUserWithOauthUser: true,
+    });
 
     this.toggle();
   };
@@ -195,7 +206,7 @@ class SignInSide extends Component {
   };
   render() {
     const { classes, userLoaded, error } = this.props;
-    const { email, msg } = this.state;
+    const { email, msg, isCreatingLocalUserWithOauthUser } = this.state;
 
     const responsiveDialogCallback = () => {
       this.setState({
@@ -239,6 +250,7 @@ class SignInSide extends Component {
             selectedRole={this.state.selectedRole}
             responsiveDialogCallback={responsiveDialogCallback}
             loginSuccessCallback={this.callback}
+            isCreatingLocalUserWithOauthUser={isCreatingLocalUserWithOauthUser}
           />
         ) : null}
 
@@ -289,7 +301,7 @@ class SignInSide extends Component {
                     onFailure={(res) => console.error(res)}
                   />
                   <Typography component="h1" variant="h5">
-                    {i18n("loginPage.welcome")}
+                    {i18n("loginPage.loginAsDifferentUser")}
                   </Typography>
                   {this.state.msg ? (
                     <ResponsiveDialog
@@ -468,6 +480,7 @@ export default compose(
     login,
     clearErrors,
     logLoginSuccess,
+    getGithubAccessToken,
     getGithubUser,
   })
 )(withRouter(SignInSide));

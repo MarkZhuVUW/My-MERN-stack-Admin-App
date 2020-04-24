@@ -10,6 +10,7 @@ import { logout } from "../../actions/authActions";
 export class Logout extends Component {
   static propTypes = {
     logout: PropTypes.func.isRequired,
+    authenticated: PropTypes.bool.isRequired,
 
     //withRouter
     match: PropTypes.object.isRequired,
@@ -19,9 +20,10 @@ export class Logout extends Component {
 
   handleOnClick = () => {
     this.props.logout();
-
-    this.props.history.push("/");
-    // window.location.href = "/";
+    // TODO   find a more elegant way of listening to redux states.
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 500);
   };
   render() {
     return (
@@ -32,4 +34,8 @@ export class Logout extends Component {
   }
 }
 
-export default withRouter(connect(null, { logout })(Logout));
+const mapStateToProps = (state) => ({
+  authenticated: state.auth.authenticated,
+});
+
+export default withRouter(connect(mapStateToProps, { logout })(Logout));

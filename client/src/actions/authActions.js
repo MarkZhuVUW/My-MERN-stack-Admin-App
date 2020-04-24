@@ -6,13 +6,12 @@ import {
   CLEAR_SUCCESS_MSG,
   GITHUB_SIGNIN_FAIL,
   GITHUB_SIGNIN_SUCCESS,
-  LOADING,
+  GITHUB_USER_LOADED,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
   REGISTER_FAIL,
   REGISTER_SUCCESS,
-  TFA_ING,
   TFA_LOADED,
   TFA_LOAD_FAIL,
   TFA_SETUP_FAIL,
@@ -81,7 +80,6 @@ export const loadAllUsers = () => (dispatch, getState) => {
 // Register User
 export const register = (user) => (dispatch) => {
   // Headers
-  dispatch({ type: LOADING });
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -115,8 +113,6 @@ export const register = (user) => (dispatch) => {
 // Login User
 
 export const login = ({ email, password }) => (dispatch) => {
-  dispatch({ type: LOADING });
-
   // Headers
   const config = {
     headers: {
@@ -195,8 +191,6 @@ export const deleteUser = (id) => (dispatch, getState) => {
 // --------------------------- google 2fa auth . ---------------------------------------------//
 
 export const getTFA = ({ email, domainName }) => (dispatch) => {
-  // TFAing
-  dispatch({ type: TFA_ING });
   // Headers
   const config = {
     headers: {
@@ -229,8 +223,6 @@ export const getTFA = ({ email, domainName }) => (dispatch) => {
 
 // google 2fa auth setup.
 export const TFASetup = ({ email, domainName }) => (dispatch) => {
-  // TFAing
-  dispatch({ type: TFA_ING });
   // Headers
 
   const config = {
@@ -264,8 +256,6 @@ export const TFASetup = ({ email, domainName }) => (dispatch) => {
 
 // google 2fa auth verify.
 export const TFAVerify = (email, code) => (dispatch) => {
-  // TFAing
-  dispatch({ type: TFA_ING });
   // Headers
   const config = {
     headers: {
@@ -296,7 +286,7 @@ export const TFAVerify = (email, code) => (dispatch) => {
 };
 
 // skip tfa.
-export const skipTFA = (email, code) => (dispatch) => {
+export const skipTFA = () => (dispatch) => {
   // TFAing
   dispatch({ type: TFA_VERIFED });
 };
@@ -306,7 +296,7 @@ export const skipTFA = (email, code) => (dispatch) => {
 // --------------------------- Github OAuth ---------------------------------------------//
 // --------------------------- Github OAuth ---------------------------------------------//
 
-export const getGithubUser = (code) => (dispatch) => {
+export const getGithubAccessToken = (code) => (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -315,7 +305,7 @@ export const getGithubUser = (code) => (dispatch) => {
 
   const body = JSON.stringify({ code });
   const githubAuthPromise = axios
-    .post("/api/auth/github-user", body, config)
+    .post("/api/auth/github-access-token", body, config)
     .then((res) =>
       dispatch({
         type: GITHUB_SIGNIN_SUCCESS,
@@ -328,6 +318,32 @@ export const getGithubUser = (code) => (dispatch) => {
       );
       dispatch({
         type: GITHUB_SIGNIN_FAIL,
+      });
+    });
+
+  return githubAuthPromise;
+};
+
+export const getGithubUser = () => (dispatch) => {
+  // User loading
+  dispatch({ type: USER_LOADING });
+
+  const githubAuthPromise = axios
+    .get("/api/auth/github-user", {
+      headers: {
+        access_token: localStorage.getItem("githubAccessToken"),
+      },
+    })
+    .then((res) =>
+      dispatch({
+        type: GITHUB_USER_LOADED,
+        payload: res.data,
+      })
+    )
+    .catch((err) => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: AUTH_ERROR,
       });
     });
 

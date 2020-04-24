@@ -1,18 +1,18 @@
 // import Particles from "react-particles-js";
 import { enUS, zhCN } from "@material-ui/core/locale";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { getGithubUser, loadUser } from "actions/authActions";
+import SignInSide from "components/auth/SignInSide";
+import SignUp from "components/auth/SignUp";
 import Frame from "components/frame/Frame";
+import ErrorPage from "error-pages/ErrorPage";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import Particles from "react-particles-js";
 import { connect } from "react-redux";
 import MediaQuery from "react-responsive";
 import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
-import { loadUser } from "./actions/authActions";
 import "./App.scss";
-import SignInSide from "./components/auth/SignInSide";
-import SignUp from "./components/auth/SignUp";
-import ErrorPage from "./error-pages/ErrorPage";
 const theme = createMuiTheme(
   {
     palette: {
@@ -32,11 +32,17 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.props.loadUser();
+    if (!!localStorage.getItem("githubAccessToken")) {
+      this.props.getGithubUser();
+    } else if (!!localStorage.getItem("token")) {
+      this.props.loadUser();
+    }
   }
 
   static propTypes = {
     authenticated: PropTypes.bool.isRequired,
+    loadUser: PropTypes.func.isRequired,
+    getGithubUser: PropTypes.func.isRequired,
   };
 
   render() {
@@ -163,4 +169,4 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
   authenticated: state.auth.authenticated,
 });
-export default connect(mapStateToProps, { loadUser })(App);
+export default connect(mapStateToProps, { loadUser, getGithubUser })(App);

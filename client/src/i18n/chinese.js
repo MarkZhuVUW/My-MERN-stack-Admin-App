@@ -11,6 +11,8 @@ const chinese = {
   employerGuestPages: "游客老板页面",
   loginPage: {
     welcome: "欢迎光临",
+    loginAsDifferentUser: "以不同类型用户登录来看到不同内容(IAM).",
+
     email: "邮箱",
     password: "密码",
     signInWithGithub: "Github 登录",

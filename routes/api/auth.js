@@ -85,10 +85,10 @@ router.get("/", (req, res) => {
 
 // Github Oauth
 
-// @route   GET api/auth/github-user
+// @route   GET api/auth/github-access-token
 // @desc    login
 // @access  Private
-router.post("/github-user", (req, res) => {
+router.post("/github-access-token", (req, res) => {
   const { code } = req.body;
   if (!code) {
     return res.send({
@@ -117,6 +117,34 @@ router.post("/github-user", (req, res) => {
     })
     .then((accessTokenRes) => {
       return res.json(accessTokenRes.data);
+    })
+    .catch((err) => {
+      // console.log(err);
+      return res.status(401).json({
+        success: false,
+        msg: err.body,
+      });
+    });
+});
+
+// @route   GET api/auth/github-access-token
+// @desc    login
+// @access  Private
+router.get("/github-user", (req, res) => {
+  // console.log(req.headers.accesstoken);
+  const githubUserConfig = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + req.headers.access_token,
+    },
+  };
+
+  //get github user.
+
+  axios
+    .get(`https://api.github.com/user`, githubUserConfig)
+    .then((githubUserRes) => {
+      return res.json(githubUserRes.data);
     })
     .catch((err) => {
       // console.log(err);

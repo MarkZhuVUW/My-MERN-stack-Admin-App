@@ -1,17 +1,17 @@
 import axios from "axios";
 import { returnErrors } from "./errorActions";
-import { SWAGGER_UI_LOADED, LOAD_SWAGGER_UI_ERROR, LOADING } from "./types";
+import { LOAD_SWAGGER_UI_ERROR, SWAGGER_UI_LOADED } from "./types";
 
 // Setup config/headers and token
-export const tokenConfig = getState => {
+export const tokenConfig = (getState) => {
   // Get token from localstorage
   const token = getState().auth.token;
 
   // Headers
   const config = {
     headers: {
-      "Content-type": "application/json"
-    }
+      "Content-type": "application/json",
+    },
   };
 
   // If token, add to headers
@@ -26,21 +26,18 @@ export const tokenConfig = getState => {
  * load swaggerUI swagger.json file.
  */
 export const loadSwaggerUI = () => (dispatch, getState) => {
-  dispatch({
-    type: LOADING
-  });
   axios
     .get("/api/swagger", tokenConfig(getState))
-    .then(res =>
+    .then((res) =>
       dispatch({
         type: SWAGGER_UI_LOADED,
-        payload: res.data
+        payload: res.data,
       })
     )
-    .catch(err => {
+    .catch((err) => {
       dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
-        type: LOAD_SWAGGER_UI_ERROR
+        type: LOAD_SWAGGER_UI_ERROR,
       });
     });
 };

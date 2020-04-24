@@ -3,6 +3,8 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/styles";
+import { deleteLog, loadAllLogsForSpecificUser } from "actions/adminActions";
+import { clearErrors } from "actions/errorActions";
 import classNames from "classnames";
 import EditableTable from "components/EditableTable";
 import FacebookProgress from "components/FacebookProgress";
@@ -11,12 +13,6 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Breadcrumb from "view/shared/Breadcrumb";
-import {
-  deleteLog,
-  loadAllLogsForSpecificUser,
-} from "../../../../actions/adminActions";
-import { loadUser } from "../../../../actions/authActions";
-import { clearErrors } from "../../../../actions/errorActions";
 import "./dashboard.scss";
 import HomeDoughnutChart from "./HomeDoughnutChart";
 import HomeLineChart from "./HomeLineChart";
@@ -30,7 +26,6 @@ class Dashboard extends Component {
     clearErrors: PropTypes.func.isRequired,
     allLogs: PropTypes.array,
     loadAllLogsForSpecificUser: PropTypes.func.isRequired,
-    loadUser: PropTypes.func.isRequired,
     user: PropTypes.object,
     deleteLog: PropTypes.func.isRequired,
   };
@@ -99,7 +94,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   clearErrors,
   loadAllLogsForSpecificUser,
-  loadUser,
   deleteLog,
 })(withStyles(styles)(Dashboard));
 

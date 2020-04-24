@@ -14,6 +14,8 @@ const en = {
   },
   loginPage: {
     welcome: "Welcome!",
+    loginAsDifferentUser:
+      "Login as different user to see IAM. (guest currently sees the same content as employer)",
     email: "Email Address",
     password: "Password",
     signInWithGithub: "Sign In With Github",

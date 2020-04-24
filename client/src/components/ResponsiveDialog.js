@@ -40,7 +40,6 @@ const styles = {
 class ResponsiveDialog extends Component {
   state = {
     open: true,
-    QRCode: "",
     code: "",
     domainName: "",
   };
@@ -66,8 +65,8 @@ class ResponsiveDialog extends Component {
         domainName,
       };
       if (!this.props.TFA) {
-        this.props.TFASetup(obj);
-        this.props.getTFA(obj);
+        // this.props.TFASetup(obj);
+        // this.props.getTFA(obj);
       }
     }
   }
@@ -136,12 +135,85 @@ class ResponsiveDialog extends Component {
   };
 
   render() {
-    const { classes, title, alertMsg, TFA } = this.props;
+    const {
+      classes,
+      title,
+      alertMsg,
+      TFA,
+      isCreatingLocalUserWithOauthUser,
+    } = this.props;
 
     // get TFA object from props for dispalying qrcode
     const { open } = this.state;
 
-    //stop this from getting lost in lambda expressions.
+    const TFAAuthContent = (
+      <div
+        style={{
+          width: "100%",
+        }}
+      >
+        {TFA ? (
+          <DialogActions>
+            <TextField
+              autoFocus
+              variant="outlined"
+              label="enter code"
+              fullWidth
+              onChange={this.onChange}
+            />
+            <Button
+              onClick={this.onSubmit}
+              type="submit"
+              color={
+                localStorage.getItem("theme") === "dark" ? "default" : "primary"
+              }
+            >
+              submit
+            </Button>
+
+            <Button onClick={this.skipTFA}>skip TFA</Button>
+          </DialogActions>
+        ) : (
+          <>
+            <Typography>
+              Please click on the backdrop to close this dialog or click the
+              logout button
+            </Typography>
+            <Button
+              onClick={() => {
+                this.props.logout();
+              }}
+              color={
+                localStorage.getItem("theme") === "dark" ? "default" : "primary"
+              }
+            >
+              logout
+            </Button>
+          </>
+        )}
+      </div>
+    );
+
+    const TFAOrVerificationErrorContent = (
+      <div>
+        {title === "Google Two-Factor Auth" ? (
+          <div>{TFAAuthContent}</div>
+        ) : (
+          <DialogActions>
+            <Button
+              onClick={this.handleClose}
+              color={
+                localStorage.getItem("theme") === "dark" ? "default" : "primary"
+              }
+              autoFocus
+            >
+              OK
+            </Button>
+          </DialogActions>
+        )}
+      </div>
+    );
+
     const dialog = (isFullScreen) => {
       return (
         <Dialog
@@ -153,75 +225,57 @@ class ResponsiveDialog extends Component {
             this.props.logout();
           }}
         >
-          <DialogTitle id="responsive-dialog-title">{title}</DialogTitle>
+          <DialogTitle id="responsive-dialog-title">
+            {!isCreatingLocalUserWithOauthUser
+              ? title
+              : "Do you want to create an account based on your oauth user? "}
+          </DialogTitle>
           <DialogContent>
-            <DialogContentText>{alertMsg}</DialogContentText>
+            <DialogContentText>
+              {!isCreatingLocalUserWithOauthUser
+                ? alertMsg
+                : "By doing so you are registering a user and it will be stored in my database."}
+            </DialogContentText>
 
-            {TFA ? (
+            {TFA && !isCreatingLocalUserWithOauthUser ? (
               <div className={classes.centerItems}>
                 <img src={TFA.dataURL} />
               </div>
-            ) : null}
+            ) : (
+              <div className={classes.centerItems}>
+                <Typography></Typography>
+                {/* <img src={} /> */}
+              </div>
+            )}
           </DialogContent>
-          {title === "Google Two-Factor Auth" ? (
-            <div
-              style={{
-                width: "100%",
-              }}
-            >
-              {TFA ? (
-                <DialogActions>
-                  <TextField
-                    autoFocus
-                    variant="outlined"
-                    label="enter code"
-                    fullWidth
-                    onChange={this.onChange}
-                  />
-                  <Button
-                    onClick={this.onSubmit}
-                    type="submit"
-                    color={
-                      localStorage.getItem("theme") === "dark"
-                        ? "default"
-                        : "primary"
-                    }
-                  >
-                    submit
-                  </Button>
 
-                  <Button onClick={this.skipTFA}>skip TFA</Button>
-                </DialogActions>
-              ) : (
-                <>
-                  <Typography>
-                    Please click on the backdrop to close this dialog or click
-                    the button
-                  </Typography>
-                  <Button
-                    onClick={() => {
-                      this.props.logout();
-                    }}
-                  >
-                    logout
-                  </Button>
-                </>
-              )}
-            </div>
-          ) : (
-            <DialogActions>
+          {isCreatingLocalUserWithOauthUser ? (
+            <div>
               <Button
-                onClick={this.handleClose}
+                onClick={this.onSubmit}
+                type="submit"
                 color={
                   localStorage.getItem("theme") === "dark"
                     ? "default"
                     : "primary"
                 }
-                autoFocus
               >
-                OK
+                Link github account
               </Button>
-            </DialogActions>
+
+              <Button
+                onClick={this.skipTFA}
+                color={
+                  localStorage.getItem("theme") === "dark"
+                    ? "default"
+                    : "primary"
+                }
+              >
+                login as guest
+              </Button>
+            </div>
+          ) : (
+            <div>{TFAOrVerificationErrorContent}</div>
           )}
         </Dialog>
       );
