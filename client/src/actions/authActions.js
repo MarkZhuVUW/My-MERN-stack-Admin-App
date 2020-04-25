@@ -6,6 +6,7 @@ import {
   CLEAR_SUCCESS_MSG,
   GITHUB_SIGNIN_FAIL,
   GITHUB_SIGNIN_SUCCESS,
+  GITHUB_USER_ADAPTED,
   GITHUB_USER_LOADED,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
@@ -38,12 +39,12 @@ export const loadUser = () => (dispatch, getState) => {
   const loadUserPromise = axios.get("/api/auth/user", tokenConfig(getState));
   axios
     .get("/api/auth/user", tokenConfig(getState))
-    .then((res) => {
-      return dispatch({
+    .then((res) =>
+      dispatch({
         type: USER_LOADED,
         payload: res.data,
-      });
-    })
+      })
+    )
     .catch((err) => {
       dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
@@ -190,7 +191,7 @@ export const deleteUser = (id) => (dispatch, getState) => {
 // --------------------------- google 2fa auth . ---------------------------------------------//
 // --------------------------- google 2fa auth . ---------------------------------------------//
 
-export const getTFA = ({ email, domainName }) => (dispatch) => {
+export const getTFA = ({ email, domainName, isOauth }) => (dispatch) => {
   // Headers
   const config = {
     headers: {
@@ -199,7 +200,7 @@ export const getTFA = ({ email, domainName }) => (dispatch) => {
   };
 
   // Request body
-  const body = JSON.stringify({ email, domainName });
+  const body = JSON.stringify({ email, domainName, isOauth });
   const authPromise = axios
     .post("/api/TFA/", body, config)
     .then((res) => {
@@ -314,7 +315,11 @@ export const getGithubAccessToken = (code) => (dispatch) => {
     )
     .catch((err) => {
       dispatch(
-        returnErrors(err.response.data, err.response.status, "TFA_VERIFY_FAIL")
+        returnErrors(
+          err.response.data,
+          err.response.status,
+          "GITHUB_SIGNIN_FAIL"
+        )
       );
       dispatch({
         type: GITHUB_SIGNIN_FAIL,
@@ -347,5 +352,36 @@ export const getGithubUser = () => (dispatch) => {
       });
     });
 
+  return githubAuthPromise;
+};
+
+/**
+ * make change to the oauth user object returned from oauth api and adapt it to my app.
+ */
+export const createOauthUser = (oauthProvider, userObjToBeAdapted) => (
+  dispatch
+) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const body = JSON.stringify({ userObjToBeAdapted, oauthProvider });
+
+  const githubAuthPromise = axios
+    .post("/api/users/create-oauth-user", body, config)
+    .then((res) =>
+      dispatch({
+        type: GITHUB_USER_ADAPTED,
+        payload: res.data,
+      })
+    )
+    .catch((err) => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: AUTH_ERROR,
+      });
+    });
   return githubAuthPromise;
 };

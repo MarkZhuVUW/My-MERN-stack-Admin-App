@@ -1,4 +1,4 @@
-import { Zoom } from "@material-ui/core";
+import { Tooltip, Zoom } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -29,7 +29,7 @@ import React, { Component } from "react";
 import GitHubLogin from "react-github-login";
 import { connect } from "react-redux";
 import MediaQuery from "react-responsive";
-import { NavLink, withRouter } from "react-router-dom";
+import { Link, NavLink, withRouter } from "react-router-dom";
 import compose from "recompose/compose";
 import ResponsiveDialog from "../ResponsiveDialog";
 const theme = createMuiTheme({
@@ -40,8 +40,10 @@ const styles = {
   root: {
     backgroundColor: theme.palette.grey[600],
     flexGrow: 1,
-    height: "100vh",
+    // height: "100vh",
     overflow: "auto",
+    position: "relative",
+    minHeight: "100vh",
   },
 
   paper: {
@@ -72,6 +74,28 @@ const styles = {
     zIndex: 2,
     position: "relative",
   },
+  footer: {
+    padding: theme.spacing(3, 2),
+    marginTop: "auto",
+    backgroundColor: theme.palette.primary.main,
+    // position: "relative",
+    position: "absolute",
+    width: "100%",
+    bottom: 0,
+    zIndex: 5,
+  },
+
+  header: {
+    padding: theme.spacing(3, 2),
+    marginTop: "auto",
+    backgroundColor: theme.palette.primary.main,
+    // position: "relative",
+    position: "absolute",
+    width: "100%",
+    top: 0,
+
+    zIndex: 5,
+  },
 };
 
 class SignInSide extends Component {
@@ -86,7 +110,7 @@ class SignInSide extends Component {
     emailErrorMsg: null,
     passwordErrorMsg: null,
     copyRightOpened: false,
-    isCreatingLocalUserWithOauthUser: false,
+    isGithubUserLoaded: false,
     copyRightText:
       "This website is MIT licensed. https://opensource.org/licenses/MIT",
   };
@@ -150,10 +174,11 @@ class SignInSide extends Component {
 
   onGithubSignIn = (code) => {
     this.props.getGithubAccessToken(code).then(() => {
-      this.props.getGithubUser();
-    });
-    this.setState({
-      isCreatingLocalUserWithOauthUser: true,
+      this.props.getGithubUser().then(() =>
+        this.setState({
+          isGithubUserLoaded: true,
+        })
+      );
     });
 
     this.toggle();
@@ -206,7 +231,7 @@ class SignInSide extends Component {
   };
   render() {
     const { classes, userLoaded, error } = this.props;
-    const { email, msg, isCreatingLocalUserWithOauthUser } = this.state;
+    const { email, msg, isGithubUserLoaded } = this.state;
 
     const responsiveDialogCallback = () => {
       this.setState({
@@ -229,8 +254,33 @@ class SignInSide extends Component {
       return <MuiAlert elevation={6} variant="filled" {...props} />;
     }
 
+    function Copyright() {
+      return (
+        <Typography variant="body2" color="textSecondary">
+          {"Copyright © "}
+          <Link
+            color="inherit"
+            to="https://github.com/MarkZhuVUW/My-MERN-stack-Admin-App"
+          >
+            {i18n("loginPage.repoLink")}
+          </Link>
+          {new Date().getFullYear()}
+        </Typography>
+      );
+    }
+
     return (
       <div>
+        <MediaQuery query="(max-width: 1280px)">
+          <header className={classes.header}>
+            <Container>
+              <Typography variant="body1">
+                {i18n("loginPage.cookie")}
+              </Typography>
+              <Copyright />
+            </Container>
+          </header>
+        </MediaQuery>
         {/* if user credentials are correct. Do a google 2fa before login to dashboard */}
         <Snackbar
           open={this.state.forgotPasswordClicked}
@@ -241,21 +291,34 @@ class SignInSide extends Component {
             {i18n("loginPage.registerANewOne")}
           </Alert>
         </Snackbar>
-        {userLoaded ? (
+        {userLoaded && !isGithubUserLoaded ? (
           <ResponsiveDialog
-            alertMsg="Download google authenticator app from any app store, scan the QRCode, enter the code shown on the app and submit"
-            title="Google Two-Factor Auth"
+            alertMsg={i18n("loginPage.downloadTFAApp")}
+            title={i18n("loginPage.googleTFA")}
             email={email}
             cb={this.callback}
             selectedRole={this.state.selectedRole}
             responsiveDialogCallback={responsiveDialogCallback}
             loginSuccessCallback={this.callback}
-            isCreatingLocalUserWithOauthUser={isCreatingLocalUserWithOauthUser}
+            isGithubUserLoaded={isGithubUserLoaded}
+          />
+        ) : null}
+        {userLoaded && isGithubUserLoaded ? (
+          <ResponsiveDialog
+            alertMsg={i18n("loginPage.chooseRole")}
+            title={i18n("loginPage.githubOauth")}
+            email={email}
+            cb={this.callback}
+            selectedRole={this.state.selectedRole}
+            responsiveDialogCallback={responsiveDialogCallback}
+            loginSuccessCallback={this.callback}
+            isGithubUserLoaded={isGithubUserLoaded}
           />
         ) : null}
 
         <Grid container className={classes.root}>
           <CssBaseline />
+
           <MediaQuery query="(min-width: 1280px)">
             <Grid item lg={7}>
               <ImageRevealEffect image={image} />
@@ -282,26 +345,23 @@ class SignInSide extends Component {
             <Zoom in={true} timeout={500}>
               <Container className={classes.content}>
                 <Paper className={classes.paper}>
-                  {/* <Button
-                    variant="contained"
-                    size="small"
-                    color="primary"
-                    className={classes.githubSignIn}
-                    onClick={this.onGithubSignIn}
-                    // href="https://github.com/login/oauth/authorize?client_id=011f16605e66210d330b&redirect_uri=/"
+                  <Tooltip
+                    title={i18n("loginPage.loginAsDifferentUser")}
+                    aria-label={i18n("loginPage.loginAsDifferentUser")}
                   >
-                    {i18n("loginPage.signInWithGithub")}
-                  </Button> */}
+                    <span>
+                      <GitHubLogin
+                        buttonText={i18n("loginPage.signInWithGithub")}
+                        clientId={confidentials.client_id}
+                        redirectUri=""
+                        onSuccess={(res) => this.onGithubSignIn(res.code)}
+                        onFailure={(res) => console.error(res)}
+                      />
+                    </span>
+                  </Tooltip>
 
-                  <GitHubLogin
-                    buttonText={i18n("loginPage.signInWithGithub")}
-                    clientId={confidentials.client_id}
-                    redirectUri=""
-                    onSuccess={(res) => this.onGithubSignIn(res.code)}
-                    onFailure={(res) => console.error(res)}
-                  />
                   <Typography component="h1" variant="h5">
-                    {i18n("loginPage.loginAsDifferentUser")}
+                    {i18n("loginPage.welcome")}
                   </Typography>
                   {this.state.msg ? (
                     <ResponsiveDialog
@@ -337,28 +397,34 @@ class SignInSide extends Component {
                       helperText={this.state.passwordErrorMsg}
                       onChange={this.onChange}
                     />
-
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      color="primary"
-                      disabled={
-                        this.state.isLoading ||
-                        this.state.email === "" ||
-                        this.state.password === "" ||
-                        this.state.passwordErrorMsg !== null ||
-                        this.state.emailErrorMsg !== null
-                      }
-                      className={classes.submit}
-                      onClick={this.onSubmit}
+                    <Tooltip
+                      title={i18n("loginPage.loginAsDifferentUser")}
+                      aria-label={i18n("loginPage.loginAsDifferentUser")}
                     >
-                      {this.state.isLoading ? (
-                        <FacebookProgress />
-                      ) : (
-                        <Typography>{i18n("loginPage.signIn")}</Typography>
-                      )}
-                    </Button>
+                      <span>
+                        <Button
+                          type="submit"
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          disabled={
+                            this.state.isLoading ||
+                            this.state.email === "" ||
+                            this.state.password === "" ||
+                            this.state.passwordErrorMsg !== null ||
+                            this.state.emailErrorMsg !== null
+                          }
+                          className={classes.submit}
+                          onClick={this.onSubmit}
+                        >
+                          {this.state.isLoading ? (
+                            <FacebookProgress />
+                          ) : (
+                            <Typography>{i18n("loginPage.signIn")}</Typography>
+                          )}
+                        </Button>
+                      </span>
+                    </Tooltip>
 
                     <Grid container>
                       <Grid item xs>
@@ -462,6 +528,17 @@ class SignInSide extends Component {
               {i18n("loginPage.inspiredBy")}
             </Typography>
           </Grid>
+          <MediaQuery query="(min-width: 1280px)">
+            <footer className={classes.footer}>
+              <Container>
+                <Typography variant="body1">
+                  This website uses cookie, by continuing to browse you agree to
+                  our use of cookies
+                </Typography>
+                <Copyright />
+              </Container>
+            </footer>
+          </MediaQuery>
         </Grid>
       </div>
     );

@@ -12,6 +12,15 @@ const en = {
   app: {
     title: "MERN-stack App",
   },
+  responsiveDialog: {
+    skipTFA: "skip TFA",
+    clickBackdrop: "Please click on the backdrop to close this dialog",
+    submit: "submit",
+    cancel: "cancel",
+    hi: "Hi, ",
+    logout: "logout",
+    loginAsGuest: "Login as guest",
+  },
   loginPage: {
     welcome: "Welcome!",
     loginAsDifferentUser:
@@ -27,6 +36,14 @@ const en = {
     contactDeveloper: "Contact The Developer",
     inspiredBy:
       "Animations are made with GreenSock and CSS. inspired by: https://revolution.themepunch.com/particle-effect-for-wordpress/",
+    downloadTFAApp:
+      "Download google authenticator app from any app store, scan the QRCode, enter the code shown on the app and submit",
+    chooseRole: "Choose a role to enter dashboard",
+    githubOauth: "Github Oauth",
+    googleTFA: "Google Two-Factor Auth",
+    cookie:
+      "This website uses cookie, by continuing to browse you agree to our use of cookies",
+    repoLink: "Github Repo",
   },
   registerPage: {
     signUp: "Sign Up",

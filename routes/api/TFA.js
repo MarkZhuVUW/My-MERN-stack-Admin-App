@@ -25,15 +25,19 @@ router.post("/", (req, res) => {
 // @desc    construct TFA setup and save it to db for the user
 // @access  Private
 router.post("/setup", (req, res) => {
-  const { email, domainName } = req.body;
-  User.findOne({ email })
-    .then((user) => {
-      if (!user) {
-        //return 400 if user does not even exist.
-        return res.status(400).json({ msg: "user does not even exist!" });
-      }
-    })
-    .catch((err) => res.status(400).json({ msg: err }));
+  const { email, domainName, isOauth } = req.body;
+
+  if (!isOauth) {
+    User.findOne({ email })
+      .then((user) => {
+        if (!user) {
+          //return 400 if user does not even exist.
+          return res.status(400).json({ msg: "user does not even exist!" });
+        }
+      })
+      .catch((err) => res.status(400).json({ msg: err }));
+  }
+
   TFA.findOne({ email })
     .then((TFADoc) => {
       if (TFADoc) return res.status(400).json({ msg: "TFA already exists" });
@@ -46,7 +50,7 @@ router.post("/setup", (req, res) => {
       var url = speakeasy.otpauthURL({
         secret: secret.base32,
         label: email,
-        issuer: "domain name",
+        issuer: domainName,
         encoding: "base32",
       });
       QRCode.toDataURL(url, (err, dataURL) => {
@@ -82,7 +86,7 @@ router.delete("/setup", (req, res) => {
 // @desc    verify TFA.
 // @access  Private
 router.post("/verify", (req, res) => {
-  const { email, code } = req.body;
+  const { email, code, TFA } = req.body;
   // var token = speakeasy.totp({
   //   secret: TFA.secret,
   //   encoding: "base32"

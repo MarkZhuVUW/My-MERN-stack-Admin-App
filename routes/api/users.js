@@ -15,7 +15,7 @@ const Log = require("../../models/Log");
 router.get("/", (req, res) => {
   User.find()
     .sort({ register_date: -1 })
-    .then(users => res.json(users));
+    .then((users) => res.json(users));
 });
 
 // @route   POST api/users
@@ -30,7 +30,7 @@ router.post("/", (req, res) => {
   }
 
   // Check for existing user
-  User.findOne({ email }).then(user => {
+  User.findOne({ email }).then((user) => {
     if (user) return res.status(400).json({ msg: "User already exists" });
 
     const newUser = new User({
@@ -38,7 +38,7 @@ router.post("/", (req, res) => {
       email: email,
       password: password,
       role: role,
-      company: company ? company : ""
+      company: company ? company : "",
     });
     // console.log(user);
     // Create salt & hash
@@ -46,12 +46,12 @@ router.post("/", (req, res) => {
       bcrypt.hash(newUser.password, salt, (err, hash) => {
         if (err) throw err;
         newUser.password = hash;
-        newUser.save().then(user => {
+        newUser.save().then((user) => {
           jwt.sign({ id: user.id }, config.get("jwtSecret"), (err, token) => {
             if (err) throw err;
 
             return res.json({
-              msg: "register successfull"
+              msg: "register successfull",
             });
           });
         });
@@ -66,12 +66,12 @@ router.post("/", (req, res) => {
 router.delete("/:id", auth, (req, res) => {
   // Check for existing user
 
-  User.findById(req.params.id).then(user => {
+  User.findById(req.params.id).then((user) => {
     if (!user) return res.status(400).json({ msg: "User does not exist" });
     return user
       .remove()
       .then(() => res.json({ success: true }))
-      .catch(err => res.status(404).json({ success: false }));
+      .catch((err) => res.status(404).json({ success: false }));
   });
 });
 
@@ -86,25 +86,25 @@ router.patch("/:id/logs", auth, (req, res) => {
     name: log.name,
     explanation: log.explanation,
     role: log.role,
-    company: log.company
+    company: log.company,
   })
     .save()
-    .then(savedLog => {
+    .then((savedLog) => {
       // Check for existing user
       User.findByIdAndUpdate(
         { _id: req.params.id },
         {
           $push: {
-            logs: savedLog
-          }
+            logs: savedLog,
+          },
         }
       )
-        .then(user => {
+        .then((user) => {
           if (!user)
             return res.status(400).json({ msg: "User does not exist" });
           res.json(user);
         })
-        .catch(err => res.status(400).json({ success: false }));
+        .catch((err) => res.status(400).json({ success: false }));
     });
 });
 
@@ -117,7 +117,7 @@ router.patch("/:id", auth, (req, res) => {
 
   if (!email || !name || !role)
     return res.status(400).json({
-      msg: "request body should contain the updated user information "
+      msg: "request body should contain the updated user information ",
     });
 
   User.findByIdAndUpdate(
@@ -126,15 +126,15 @@ router.patch("/:id", auth, (req, res) => {
       $set: {
         name: name,
         email: email,
-        role: role
-      }
+        role: role,
+      },
     }
   )
-    .then(user => {
+    .then((user) => {
       if (!user) return res.status(404).json({ msg: "User does not exist" });
       res.json(user);
     })
-    .catch(err => res.status(404).json({ success: false }));
+    .catch((err) => res.status(404).json({ success: false }));
 });
 
 // @route   GET api/users/:id/logs
@@ -143,8 +143,8 @@ router.patch("/:id", auth, (req, res) => {
 router.get("/:id/logs", auth, (req, res) => {
   User.findById(req.params.id)
     .sort({ register_date: -1 })
-    .then(user => res.json(user.logs))
-    .catch(err => res.status(404).json({ msg: "user not found" }));
+    .then((user) => res.json(user.logs))
+    .catch((err) => res.status(404).json({ msg: "user not found" }));
 });
 
 // @route   DELETE api/users/:userid/logs/logid
@@ -158,20 +158,58 @@ router.delete("/:userid/logs/:logid", auth, (req, res) => {
     { _id: req.params.userid },
     {
       $pull: {
-        logs: { _id: req.params.logid }
-      }
+        logs: { _id: req.params.logid },
+      },
     }
   )
     .then(() => {
       Log.findById(req.params.logid)
-        .then(log => {
+        .then((log) => {
           return log
             .remove()
             .then(() => res.json({ success: true }))
-            .catch(err => res.status(400).json({ success: false }));
+            .catch((err) => res.status(400).json({ success: false }));
         })
-        .catch(err => res.status(400).json({ msg: "log not found" }));
+        .catch((err) => res.status(400).json({ msg: "log not found" }));
     })
-    .catch(err => res.status(400).json({ msg: "user not found" }));
+    .catch((err) => res.status(400).json({ msg: "user not found" }));
 });
 module.exports = router;
+
+// @route   POST api/users/create-oauth-user
+// @desc    Registers a new oauth user which only keeps the unique id of the oauth user
+//          and adds a few fields to adapt it to my app.
+// @access  Public
+router.post("/create-oauth-user", (req, res) => {
+  const { oauthUser, oauthProvider } = req.body;
+
+  let name = "";
+  let uniqueId = "";
+  if (oauthProvider === "github") {
+    name = oauthUser.login;
+    uniqueId = oauthUser.id;
+  }
+
+  // Check for existing user
+  User.findOne({ uniqueId }).then((user) => {
+    // if user is already in my database it means that it has been adapted before, simply pass it through.
+    if (user) return res.status(400).json(user);
+  });
+
+  const newUser = new User({
+    name: name,
+    role: oauthUser.role,
+    company: oauthUser.company ? oauthUser.company : "",
+    uniqueId: uniqueId,
+  });
+  newUser
+    .save()
+    .then((user) =>
+      res.json({
+        msg: user,
+      })
+    )
+    .catch((err) =>
+      res.status(400).json({ msg: "oauth user registration failed" })
+    );
+});

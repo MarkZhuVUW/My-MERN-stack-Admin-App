@@ -8,12 +8,14 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { createMuiTheme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/styles";
+import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import MediaQuery from "react-responsive";
 //redux
 import {
+  createOauthUser,
   getTFA,
   logout,
   skipTFA,
@@ -21,27 +23,45 @@ import {
   TFAVerify,
 } from "../actions/authActions";
 import { clearErrors } from "../actions/errorActions";
+import RoleCheckboxes from "./auth/RoleCheckboxes";
 
 const theme = createMuiTheme({
   spacing: 4,
 });
 
 const styles = {
-  centerItems: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+  centerItemsContainer: {
     width: "100%",
     height: "80%",
     margin: "0",
   },
+  centerItems: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    width: "100%",
+    height: "80%",
+    margin: "0",
+  },
+
+  buttons: {
+    display: "flex",
+    justifyContent: "space-between",
+    padding: theme.spacing(2),
+  },
 };
 
+/**
+ * The ResponsiveDialog Component can be used in three ways;
+ * 1. show verirication errors.
+ * 2. do google two-factor authentication
+ * 3. do github oauth authencation.
+ */
 class ResponsiveDialog extends Component {
   state = {
     open: true,
     code: "",
-    domainName: "",
   };
 
   static propTypes = {
@@ -53,29 +73,29 @@ class ResponsiveDialog extends Component {
     getTFA: PropTypes.func.isRequired,
     skipTFA: PropTypes.func.isRequired,
     TFA: PropTypes.object,
-    user: PropTypes.object,
+    user: PropTypes.object.isRequired,
     logout: PropTypes.func.isRequired,
+    isGithubUserLoaded: PropTypes.bool,
   };
   componentDidMount() {
-    const { email, TFA } = this.props;
-    const { domainName } = this.state;
+    const { email, TFA, isGithubUserLoaded } = this.props;
     if (this.props.title === "Google Two-Factor Auth") {
       const obj = {
         email,
-        domainName,
+        domainName: window.location.hostname,
+        isOauth: false,
       };
-      if (!this.props.TFA) {
-        // this.props.TFASetup(obj);
-        // this.props.getTFA(obj);
+      if (!TFA && !isGithubUserLoaded) {
+        this.props.TFASetup(obj);
+        this.props.getTFA(obj);
       }
     }
   }
 
   componentDidUpdate(prevProps) {
     const { error, type } = this.props;
-    const { domainName } = this.state;
     const isAuthenticated =
-      localStorage.getItem("authenticated") == "true" ? true : false;
+      localStorage.getItem("authenticated") === "true" ? true : false;
 
     if (isAuthenticated && type !== "User Admin Error Handling") {
       this.props.cb(true);
@@ -85,7 +105,7 @@ class ResponsiveDialog extends Component {
       if (error.id === "TFA_VERIFY_FAIL") {
         // re-enable login button and hide the loading spinner
 
-        // this.props.ResponsiveDialogCallback();
+        // this.props.responsiveDialogCallback();
 
         this.setState({ msg: error.msg.msg });
       } else {
@@ -134,83 +154,73 @@ class ResponsiveDialog extends Component {
     this.props.loginSuccessCallback(true);
   };
 
+  handleGithubTFA = () => {
+    const { email, TFA } = this.props;
+
+    const obj = {
+      email,
+      domainName: window.location.hostname,
+      isOauth: true,
+    };
+    this.props.createOauthUser().then(() => {
+      if (!TFA) {
+        console.log(123123);
+        this.props.TFASetup(obj);
+        this.props.getTFA(obj);
+      }
+    });
+  };
+
+  roleSelectedCallback = (role) => {
+    const { user } = this.props;
+
+    const userObjToBeAdapted = {
+      ...user,
+      role: role,
+    };
+    this.handleGithubTFA();
+  };
+
   render() {
     const {
       classes,
       title,
       alertMsg,
       TFA,
-      isCreatingLocalUserWithOauthUser,
+      isGithubUserLoaded,
+      user,
     } = this.props;
 
     // get TFA object from props for dispalying qrcode
     const { open } = this.state;
 
-    const TFAAuthContent = (
+    const TFAOrVerificationErrorContent = (
       <div
         style={{
           width: "100%",
         }}
       >
-        {TFA ? (
-          <DialogActions>
-            <TextField
-              autoFocus
-              variant="outlined"
-              label="enter code"
-              fullWidth
-              onChange={this.onChange}
-            />
-            <Button
-              onClick={this.onSubmit}
-              type="submit"
-              color={
-                localStorage.getItem("theme") === "dark" ? "default" : "primary"
-              }
-            >
-              submit
-            </Button>
+        <DialogActions>
+          <TextField
+            autoFocus
+            variant="outlined"
+            label="enter code"
+            fullWidth
+            onChange={this.onChange}
+          />
+          <Button
+            onClick={this.onSubmit}
+            type="submit"
+            variant="contained"
+            color="primary"
+          >
+            {i18n("responsiveDialog.submit")}
+          </Button>
 
-            <Button onClick={this.skipTFA}>skip TFA</Button>
-          </DialogActions>
-        ) : (
-          <>
-            <Typography>
-              Please click on the backdrop to close this dialog or click the
-              logout button
-            </Typography>
-            <Button
-              onClick={() => {
-                this.props.logout();
-              }}
-              color={
-                localStorage.getItem("theme") === "dark" ? "default" : "primary"
-              }
-            >
-              logout
-            </Button>
-          </>
-        )}
-      </div>
-    );
-
-    const TFAOrVerificationErrorContent = (
-      <div>
-        {title === "Google Two-Factor Auth" ? (
-          <div>{TFAAuthContent}</div>
-        ) : (
-          <DialogActions>
-            <Button
-              onClick={this.handleClose}
-              color={
-                localStorage.getItem("theme") === "dark" ? "default" : "primary"
-              }
-              autoFocus
-            >
-              OK
-            </Button>
-          </DialogActions>
-        )}
+          <Button variant="contained" color="secondary" onClick={this.skipTFA}>
+            {i18n("responsiveDialog.skipTFA")}
+          </Button>
+        </DialogActions>
       </div>
     );
 
@@ -223,59 +233,63 @@ class ResponsiveDialog extends Component {
           aria-labelledby="responsive-dialog-title"
           onBackdropClick={() => {
             this.props.logout();
+            this.props.responsiveDialogCallback();
           }}
         >
-          <DialogTitle id="responsive-dialog-title">
-            {!isCreatingLocalUserWithOauthUser
-              ? title
-              : "Do you want to create an account based on your oauth user? "}
-          </DialogTitle>
+          <DialogTitle id="responsive-dialog-title">{title}</DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              {!isCreatingLocalUserWithOauthUser
-                ? alertMsg
-                : "By doing so you are registering a user and it will be stored in my database."}
-            </DialogContentText>
+            <DialogContentText>{alertMsg}</DialogContentText>
 
-            {TFA && !isCreatingLocalUserWithOauthUser ? (
+            {TFA ? (
               <div className={classes.centerItems}>
+                <Typography>
+                  {i18n("responsiveDialog.hi") + user.email}
+                </Typography>
                 <img src={TFA.dataURL} />
               </div>
             ) : (
-              <div className={classes.centerItems}>
-                <Typography></Typography>
-                {/* <img src={} /> */}
+              <div className={classes.centerItemsContainer}>
+                {isGithubUserLoaded ? (
+                  <div className={classes.centerItems}>
+                    <Typography>
+                      {i18n("responsiveDialog.hi") + user.email}
+                    </Typography>
+                    <img
+                      src={user.avatar_url}
+                      style={{
+                        padding: theme.spacing(2),
+                      }}
+                    />
+                  </div>
+                ) : null}
               </div>
             )}
           </DialogContent>
-
-          {isCreatingLocalUserWithOauthUser ? (
+          {TFA ? (
             <div>
-              <Button
-                onClick={this.onSubmit}
-                type="submit"
-                color={
-                  localStorage.getItem("theme") === "dark"
-                    ? "default"
-                    : "primary"
-                }
-              >
-                Link github account
-              </Button>
-
-              <Button
-                onClick={this.skipTFA}
-                color={
-                  localStorage.getItem("theme") === "dark"
-                    ? "default"
-                    : "primary"
-                }
-              >
-                login as guest
-              </Button>
+              <div>{TFAOrVerificationErrorContent}</div>
             </div>
           ) : (
-            <div>{TFAOrVerificationErrorContent}</div>
+            <div>
+              {isGithubUserLoaded ? (
+                <div className={classes.buttons}>
+                  <RoleCheckboxes
+                    roleSelectedCallback={this.roleSelectedCallback}
+                  />
+                </div>
+              ) : (
+                <DialogActions>
+                  <Button
+                    onClick={this.handleClose}
+                    variant="contained"
+                    color="secondary"
+                    autoFocus
+                  >
+                    {i18n("responsiveDialog.cancel")}
+                  </Button>
+                </DialogActions>
+              )}
+            </div>
           )}
         </Dialog>
       );
@@ -303,4 +317,5 @@ export default connect(mapStateToProps, {
   clearErrors,
   skipTFA,
   logout,
+  createOauthUser,
 })(withStyles(styles)(ResponsiveDialog));

@@ -131,7 +131,6 @@ router.post("/github-access-token", (req, res) => {
 // @desc    login
 // @access  Private
 router.get("/github-user", (req, res) => {
-  // console.log(req.headers.accesstoken);
   const githubUserConfig = {
     headers: {
       "Content-Type": "application/json",

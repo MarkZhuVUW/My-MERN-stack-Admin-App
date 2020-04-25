@@ -4,6 +4,7 @@ import {
   CLEAR_SUCCESS_MSG,
   GITHUB_SIGNIN_FAIL,
   GITHUB_SIGNIN_SUCCESS,
+  GITHUB_USER_ADAPTED,
   GITHUB_USER_LOADED,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
@@ -54,12 +55,14 @@ export default function (state = initialState, action) {
       };
     case USER_LOADED:
     case GITHUB_USER_LOADED:
+    case GITHUB_USER_ADAPTED:
       return {
         ...state,
         isLoading: false,
         userLoaded: true,
         user: action.payload,
       };
+
     case USER_DELETED:
       return {
         ...state,
@@ -84,7 +87,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         ...action.payload,
-        userLoaded: true,
         isLoading: false,
       };
     case LOGOUT_SUCCESS:
@@ -103,6 +105,7 @@ export default function (state = initialState, action) {
     case GITHUB_SIGNIN_FAIL:
       localStorage.removeItem("token");
       localStorage.removeItem("authenticated");
+      localStorage.removeItem("githubAccessToken");
       return {
         ...state,
         // token: null,
