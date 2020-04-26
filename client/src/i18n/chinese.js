@@ -9,6 +9,16 @@ const chinese = {
   employer: "老板",
   adminPages: "管理员页面",
   employerGuestPages: "游客老板页面",
+  responsiveDialog: {
+    skipTFA: "跳过双重认证",
+    clickBackdrop: "点击背景关闭对话框",
+    submit: "提交",
+    cancel: "取消",
+    hi: "你好, ",
+    logout: "登出",
+    loginAsGuest: "以游客登录",
+    enterCode: "输入6位数字代码",
+  },
   loginPage: {
     welcome: "欢迎光临",
     loginAsDifferentUser: "以不同类型用户登录来看到不同内容(IAM).",
@@ -24,6 +34,14 @@ const chinese = {
     contactDeveloper: "联系我",
     inspiredBy:
       "动画用GreenSock和CSS制作. 灵感来自:  https://revolution.themepunch.com/particle-effect-for-wordpress/ ",
+    downloadTFAApp:
+      "从应用商店下载Google Authenticator应用. 扫描二维码并输入获得的6位数字",
+    chooseRole: "选择以什么身份进入报表页",
+    githubOauth: "Github Oauth",
+    googleTFA: "Google 双重认证",
+    cookie:
+      "如您使用本网站并同意本政策，则您同意我们按照本政策条款使用cookies。",
+    repoLink: "本项目Github链接",
   },
   registerPage: {
     signUp: "注册",

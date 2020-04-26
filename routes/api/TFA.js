@@ -4,7 +4,7 @@ const router = express.Router();
 const speakeasy = require("speakeasy");
 const QRCode = require("qrcode");
 const TFA = require("../../models/TFA");
-
+const userModels = require("../../models/User");
 const auth = require("../../middleware/auth");
 
 // @route   POST api/TFA/setup
@@ -28,7 +28,7 @@ router.post("/setup", (req, res) => {
   const { email, domainName, isOauth, uniqueId } = req.body;
 
   let lookup = isOauth ? uniqueId : email;
-  User.findOne({ lookup })
+  userModels.User.findOne({ lookup })
     .then((user) => {
       if (!user) {
         //return 400 if user does not even exist.

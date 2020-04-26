@@ -20,6 +20,7 @@ const en = {
     hi: "Hi, ",
     logout: "logout",
     loginAsGuest: "Login as guest",
+    enterCode: "enter code",
   },
   loginPage: {
     welcome: "Welcome!",

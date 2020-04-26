@@ -79,7 +79,7 @@ class ResponsiveDialog extends Component {
   };
   componentDidMount() {
     const { TFA, isGithubUserLoaded, user } = this.props;
-    if (this.props.title === "Google Two-Factor Auth") {
+    if (this.props.title === i18n("loginPage.googleTFA")) {
       const obj = {
         email: user.email,
         domainName: window.location.hostname,
@@ -130,7 +130,7 @@ class ResponsiveDialog extends Component {
   handleClose = () => {
     //re-enable login button and hide the loading spinner
     this.props.responsiveDialogCallback();
-    // this.props.logout();
+    this.props.logout();
     this.setState({
       open: false,
     });
@@ -211,7 +211,7 @@ class ResponsiveDialog extends Component {
           <TextField
             autoFocus
             variant="outlined"
-            label="enter code"
+            label={i18n("responsiveDialog.enterCode")}
             fullWidth
             onChange={this.onChange}
           />
@@ -239,7 +239,6 @@ class ResponsiveDialog extends Component {
           onClose={this.handleClose}
           aria-labelledby="responsive-dialog-title"
           onBackdropClick={() => {
-            this.props.logout();
             this.props.responsiveDialogCallback();
           }}
         >

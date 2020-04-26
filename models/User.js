@@ -33,7 +33,6 @@ const UserSchema = new Schema({
   },
   logs: [Log.schema],
 });
-module.exports = User = mongoose.model("user", UserSchema);
 
 const OauthUserSchema = new Schema(
   {
@@ -63,4 +62,8 @@ const OauthUserSchema = new Schema(
   },
   { strict: false }
 );
-module.exports = OauthUser = mongoose.model("oauthUser", OauthUserSchema);
+
+module.exports = {
+  User: mongoose.model("user", UserSchema),
+  OauthUser: mongoose.model("oauthUser", OauthUserSchema),
+};

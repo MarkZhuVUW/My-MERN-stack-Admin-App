@@ -7,13 +7,13 @@ const auth = require("../../middleware/auth");
 const axios = require("axios");
 
 // User Model
-const User = require("../../models/User");
+const userModels = require("../../models/User");
 
 // @route   GET api/auth/user
 // @desc    Get user data
 // @access  Private
 router.get("/user", auth, (req, res) => {
-  User.findById(req.user.id)
+  userModels.User.findById(req.user.id)
     .select("-password")
     .then((user) => res.json(user))
     .catch((err) => res.json({ msg: "user not found" }));
@@ -25,29 +25,31 @@ router.get("/user", auth, (req, res) => {
 router.post("/", (req, res) => {
   const { email, password } = req.body;
 
-  console.log(email + 123);
   // Simple validation
   if (!email || !password) {
     return res.status(400).json({ msg: "Please enter all fields" });
   }
 
   // Check for existing user
-  User.findOne({ email }).then((user) => {
-    if (!user) return res.status(400).json({ msg: "User Does not exist" });
+  userModels.User.findOne({ email })
+    .then((user) => {
+      if (!user) return res.status(400).json({ msg: "User Does not exist" });
 
-    // Validate password
-    bcrypt.compare(password, user.password).then((isMatch) => {
-      if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
+      // Validate password
+      bcrypt.compare(password, user.password).then((isMatch) => {
+        if (!isMatch)
+          return res.status(400).json({ msg: "Invalid credentials" });
 
-      jwt.sign({ id: user.id }, config.get("jwtSecret"), (err, token) => {
-        if (err) throw err;
-        res.json({
-          token,
-          user,
+        jwt.sign({ id: user.id }, config.get("jwtSecret"), (err, token) => {
+          // if (err) throw err;
+          res.json({
+            token,
+            user,
+          });
         });
       });
-    });
-  });
+    })
+    .catch((err) => res.status(400).json(err));
 });
 
 // @route   GET api/auth/
@@ -62,7 +64,7 @@ router.get("/", (req, res) => {
   }
 
   // Check for existing user
-  User.findOne({ email }).then((user) => {
+  userModels.User.findOne({ email }).then((user) => {
     if (!user) return res.status(400).json({ msg: "User Does not exist" });
 
     // Validate password
@@ -140,7 +142,12 @@ router.get("/github-user", (req, res) => {
   axios
     .get(`https://api.github.com/user`, githubUserConfig)
     .then((githubUserRes) => {
-      return res.json(githubUserRes.data);
+      // check if the github user already exists in my mongodb database.
+      let uniqueId = githubUserRes.data.id;
+      userModels.OauthUser.findOne({ uniqueId }).then((githubUser) => {
+        if (githubUser) return res.json(githubUser);
+        return res.json(githubUserRes.data);
+      });
     })
     .catch((err) => {
       // console.log(err);

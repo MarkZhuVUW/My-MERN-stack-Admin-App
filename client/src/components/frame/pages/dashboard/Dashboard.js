@@ -3,7 +3,7 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/styles";
-import { deleteLog, loadAllLogsForSpecificUser } from "actions/adminActions";
+import { deleteLog, loadAllLogs } from "actions/adminActions";
 import { clearErrors } from "actions/errorActions";
 import classNames from "classnames";
 import EditableTable from "components/EditableTable";
@@ -25,13 +25,13 @@ class Dashboard extends Component {
   static propTypes = {
     clearErrors: PropTypes.func.isRequired,
     allLogs: PropTypes.array,
-    loadAllLogsForSpecificUser: PropTypes.func.isRequired,
+    loadAllLogs: PropTypes.func.isRequired,
     user: PropTypes.object,
     deleteLog: PropTypes.func.isRequired,
   };
   componentDidMount() {
     setTimeout(() => {
-      this.props.loadAllLogsForSpecificUser(this.props.user._id);
+      this.props.loadAllLogs();
     }, 1000);
     // if (this.props.user)
     //   this.props.loadAllLogsForSpecificUser(this.props.user._id);
@@ -93,7 +93,7 @@ const mapStateToProps = (state) => ({
 });
 export default connect(mapStateToProps, {
   clearErrors,
-  loadAllLogsForSpecificUser,
+  loadAllLogs,
   deleteLog,
 })(withStyles(styles)(Dashboard));
 

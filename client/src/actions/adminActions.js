@@ -7,7 +7,7 @@ import {
   LOAD_LOGS_ERROR,
   LOGIN_LOGGED,
   LOG_DELETED,
-  PAGE_VIEW_LOGGED
+  PAGE_VIEW_LOGGED,
 } from "./types";
 
 export const logPageView = (id, pageViewLog) => (dispatch, getState) => {
@@ -16,12 +16,12 @@ export const logPageView = (id, pageViewLog) => (dispatch, getState) => {
 
   axios
     .patch(`/api/users/${id}/logs`, body, tokenConfig(getState))
-    .then(res =>
+    .then((res) =>
       dispatch({
-        type: PAGE_VIEW_LOGGED
+        type: PAGE_VIEW_LOGGED,
       })
     )
-    .catch(err => {
+    .catch((err) => {
       dispatch(returnErrors(err.response.data, err.response.status));
     });
 };
@@ -32,12 +32,12 @@ export const logLoginSuccess = (id, loginLog) => (dispatch, getState) => {
 
   axios
     .patch(`/api/users/${id}/logs`, body, tokenConfig(getState))
-    .then(res =>
+    .then((res) =>
       dispatch({
-        type: LOGIN_LOGGED
+        type: LOGIN_LOGGED,
       })
     )
-    .catch(err => {
+    .catch((err) => {
       dispatch(returnErrors(err.response.data, err.response.status));
     });
 };
@@ -47,31 +47,31 @@ export const logDownload = (id, downloadLog) => (dispatch, getState) => {
   const body = JSON.stringify({ log: downloadLog });
   axios
     .patch(`/api/users/${id}/logs`, body, tokenConfig(getState))
-    .then(res =>
+    .then((res) =>
       dispatch({
-        type: DOWNLOAD_LOGGED
+        type: DOWNLOAD_LOGGED,
       })
     )
-    .catch(err => {
+    .catch((err) => {
       dispatch(returnErrors(err.response.data, err.response.status));
     });
 };
 
 // get all registered users
-export const loadAllLogsForSpecificUser = () => (dispatch, getState) => {
+export const loadAllLogs = () => (dispatch, getState) => {
   // User loading
   axios
     .get(`/api/admin/logs`, tokenConfig(getState))
-    .then(res =>
+    .then((res) =>
       dispatch({
         type: ALL_LOGS_LOADED,
-        payload: res.data
+        payload: res.data,
       })
     )
-    .catch(err => {
+    .catch((err) => {
       dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
-        type: LOAD_LOGS_ERROR
+        type: LOAD_LOGS_ERROR,
       });
     });
 };
@@ -80,13 +80,13 @@ export const loadAllLogsForSpecificUser = () => (dispatch, getState) => {
 export const deleteLog = (userid, logid) => (dispatch, getState) => {
   axios
     .delete(`/api/users/${userid}/logs/${logid}`, tokenConfig(getState))
-    .then(res =>
+    .then((res) =>
       dispatch({
         type: LOG_DELETED,
-        payload: logid
+        payload: logid,
       })
     )
-    .catch(err =>
+    .catch((err) =>
       dispatch(returnErrors(err.response.data, err.response.status))
     );
 };

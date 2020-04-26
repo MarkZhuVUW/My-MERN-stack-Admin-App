@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const auth = require("../../middleware/auth");
 
 // User Models
-const User = require("../../models/User");
+const userModels = require("../../models/User");
 const OauthUser = require("../../models/User");
 
 const Log = require("../../models/Log");
@@ -15,7 +15,7 @@ const Log = require("../../models/Log");
 // @desc    Get All Registered Users
 // @access  Public
 router.get("/", (req, res) => {
-  User.find()
+  userModels.User.find()
     .sort({ register_date: -1 })
     .then((users) => res.json(users));
 });
@@ -32,10 +32,10 @@ router.post("/", (req, res) => {
   }
 
   // Check for existing user
-  User.findOne({ email }).then((user) => {
+  userModels.User.findOne({ email }).then((user) => {
     if (user) return res.status(400).json({ msg: "User already exists" });
 
-    const newUser = new User({
+    const newUser = new userModels.User({
       name: name,
       email: email,
       password: password,
@@ -67,7 +67,7 @@ router.post("/", (req, res) => {
 router.delete("/:id", auth, (req, res) => {
   // Check for existing user
 
-  User.findById(req.params.id).then((user) => {
+  userModels.User.findById(req.params.id).then((user) => {
     if (!user) return res.status(400).json({ msg: "User does not exist" });
     return user
       .remove()
@@ -92,7 +92,7 @@ router.patch("/:id/logs", auth, (req, res) => {
     .save()
     .then((savedLog) => {
       // Check for existing user
-      User.findByIdAndUpdate(
+      userModels.User.findByIdAndUpdate(
         { _id: req.params.id },
         {
           $push: {
@@ -121,7 +121,7 @@ router.patch("/:id", auth, (req, res) => {
       msg: "request body should contain the updated user information ",
     });
 
-  User.findByIdAndUpdate(
+  userModels.User.findByIdAndUpdate(
     { _id: req.params.id },
     {
       $set: {
@@ -139,10 +139,10 @@ router.patch("/:id", auth, (req, res) => {
 });
 
 // @route   GET api/users/:id/logs
-// @desc    Get All Registered Users
+// @desc    Get All logs for a user specified by the id.
 // @access  Public
 router.get("/:id/logs", auth, (req, res) => {
-  User.findById(req.params.id)
+  userModels.User.findById(req.params.id)
     .sort({ register_date: -1 })
     .then((user) => res.json(user.logs))
     .catch((err) => res.status(404).json({ msg: "user not found" }));
@@ -155,7 +155,7 @@ router.delete("/:userid/logs/:logid", auth, (req, res) => {
   // Check for existing user
 
   // console.log(req.params.userid);
-  User.findByIdAndUpdate(
+  userModels.User.findByIdAndUpdate(
     { _id: req.params.userid },
     {
       $pull: {
@@ -187,15 +187,11 @@ router.post("/create-oauth-user", (req, res) => {
   let uniqueId = oauthUser.id;
   // console.log(oauthUser);
   // Check for existing user
-  OauthUser.findOne({ uniqueId }).then((user) => {
+  userModels.OauthUser.findOne({ uniqueId }).then((user) => {
     // if user is already in my database it means that it has been adapted before, simply pass it through.
     if (user) return res.json(user);
 
-    console.log({
-      uniqueId: uniqueId,
-      ...oauthUser,
-    });
-    const newOauthUser = new OauthUser({
+    const newOauthUser = new userModels.OauthUser({
       uniqueId: uniqueId,
       ...oauthUser,
     });
