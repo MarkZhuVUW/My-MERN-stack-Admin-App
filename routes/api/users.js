@@ -5,8 +5,10 @@ const config = require("config");
 const jwt = require("jsonwebtoken");
 const auth = require("../../middleware/auth");
 
-// User Model
+// User Models
 const User = require("../../models/User");
+const OauthUser = require("../../models/User");
+
 const Log = require("../../models/Log");
 
 // @route   GET api/users
@@ -40,7 +42,6 @@ router.post("/", (req, res) => {
       role: role,
       company: company ? company : "",
     });
-    // console.log(user);
     // Create salt & hash
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -183,33 +184,28 @@ module.exports = router;
 router.post("/create-oauth-user", (req, res) => {
   const { oauthUser, oauthProvider } = req.body;
 
-  let name = "";
-  let uniqueId = "";
-  if (oauthProvider === "github") {
-    name = oauthUser.login;
-    uniqueId = oauthUser.id;
-  }
-
+  let uniqueId = oauthUser.id;
+  // console.log(oauthUser);
   // Check for existing user
-  User.findOne({ uniqueId }).then((user) => {
+  OauthUser.findOne({ uniqueId }).then((user) => {
     // if user is already in my database it means that it has been adapted before, simply pass it through.
-    if (user) return res.status(400).json(user);
-  });
+    if (user) return res.json(user);
 
-  const newUser = new User({
-    name: name,
-    role: oauthUser.role,
-    company: oauthUser.company ? oauthUser.company : "",
-    uniqueId: uniqueId,
+    console.log({
+      uniqueId: uniqueId,
+      ...oauthUser,
+    });
+    const newOauthUser = new OauthUser({
+      uniqueId: uniqueId,
+      ...oauthUser,
+    });
+
+    newOauthUser
+      .save()
+      .then((oauthUser) => res.json(oauthUser))
+      .catch((err) =>
+        // res.status(400).json({ msg: "oauth user registration failed" })
+        res.status(400).json(err)
+      );
   });
-  newUser
-    .save()
-    .then((user) =>
-      res.json({
-        msg: user,
-      })
-    )
-    .catch((err) =>
-      res.status(400).json({ msg: "oauth user registration failed" })
-    );
 });

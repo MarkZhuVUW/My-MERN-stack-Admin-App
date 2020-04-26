@@ -29,7 +29,7 @@ import React, { Component } from "react";
 import GitHubLogin from "react-github-login";
 import { connect } from "react-redux";
 import MediaQuery from "react-responsive";
-import { Link, NavLink, withRouter } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 import compose from "recompose/compose";
 import ResponsiveDialog from "../ResponsiveDialog";
 const theme = createMuiTheme({
@@ -110,7 +110,6 @@ class SignInSide extends Component {
     emailErrorMsg: null,
     passwordErrorMsg: null,
     copyRightOpened: false,
-    isGithubUserLoaded: false,
     copyRightText:
       "This website is MIT licensed. https://opensource.org/licenses/MIT",
   };
@@ -155,7 +154,7 @@ class SignInSide extends Component {
   onSubmit = (e) => {
     e.preventDefault();
 
-    const { email, password, emailErrorMsg, passwordErrorMsg } = this.state;
+    const { email, password } = this.state;
     this.validateEmail(email);
     this.validatePassword(password);
     this.setState({
@@ -166,6 +165,7 @@ class SignInSide extends Component {
       email,
       password,
     };
+    console.log(user);
 
     // Attempt to login
     this.props.login(user);
@@ -174,11 +174,7 @@ class SignInSide extends Component {
 
   onGithubSignIn = (code) => {
     this.props.getGithubAccessToken(code).then(() => {
-      this.props.getGithubUser().then(() =>
-        this.setState({
-          isGithubUserLoaded: true,
-        })
-      );
+      this.props.getGithubUser();
     });
 
     this.toggle();
@@ -230,8 +226,8 @@ class SignInSide extends Component {
       this.validatePassword(e.target.value);
   };
   render() {
-    const { classes, userLoaded, error } = this.props;
-    const { email, msg, isGithubUserLoaded } = this.state;
+    const { classes, userLoaded, error, user } = this.props;
+    const { email, msg } = this.state;
 
     const responsiveDialogCallback = () => {
       this.setState({
@@ -254,30 +250,14 @@ class SignInSide extends Component {
       return <MuiAlert elevation={6} variant="filled" {...props} />;
     }
 
-    function Copyright() {
-      return (
-        <Typography variant="body2" color="textSecondary">
-          {"Copyright © "}
-          <Link
-            color="inherit"
-            to="https://github.com/MarkZhuVUW/My-MERN-stack-Admin-App"
-          >
-            {i18n("loginPage.repoLink")}
-          </Link>
-          {new Date().getFullYear()}
-        </Typography>
-      );
-    }
-
     return (
       <div>
         <MediaQuery query="(max-width: 1280px)">
           <header className={classes.header}>
             <Container>
-              <Typography variant="body1">
+              <Typography variant="body1" style={{ color: "white" }}>
                 {i18n("loginPage.cookie")}
               </Typography>
-              <Copyright />
             </Container>
           </header>
         </MediaQuery>
@@ -291,28 +271,26 @@ class SignInSide extends Component {
             {i18n("loginPage.registerANewOne")}
           </Alert>
         </Snackbar>
-        {userLoaded && !isGithubUserLoaded ? (
+        {userLoaded && !user.id ? (
           <ResponsiveDialog
             alertMsg={i18n("loginPage.downloadTFAApp")}
             title={i18n("loginPage.googleTFA")}
-            email={email}
             cb={this.callback}
             selectedRole={this.state.selectedRole}
             responsiveDialogCallback={responsiveDialogCallback}
             loginSuccessCallback={this.callback}
-            isGithubUserLoaded={isGithubUserLoaded}
+            isGithubUserLoaded={false}
           />
         ) : null}
-        {userLoaded && isGithubUserLoaded ? (
+        {userLoaded && user.id ? (
           <ResponsiveDialog
             alertMsg={i18n("loginPage.chooseRole")}
             title={i18n("loginPage.githubOauth")}
-            email={email}
             cb={this.callback}
             selectedRole={this.state.selectedRole}
             responsiveDialogCallback={responsiveDialogCallback}
             loginSuccessCallback={this.callback}
-            isGithubUserLoaded={isGithubUserLoaded}
+            isGithubUserLoaded={true}
           />
         ) : null}
 
@@ -531,11 +509,9 @@ class SignInSide extends Component {
           <MediaQuery query="(min-width: 1280px)">
             <footer className={classes.footer}>
               <Container>
-                <Typography variant="body1">
-                  This website uses cookie, by continuing to browse you agree to
-                  our use of cookies
+                <Typography variant="body1" style={{ color: "white" }}>
+                  {i18n("loginPage.cookie")}
                 </Typography>
-                <Copyright />
               </Container>
             </footer>
           </MediaQuery>

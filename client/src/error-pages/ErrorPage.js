@@ -6,7 +6,7 @@ import {
   CssBaseline,
   Slide,
   Toolbar,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import { createMuiTheme, withStyles } from "@material-ui/core/styles";
 import { i18n } from "i18n";
@@ -18,29 +18,29 @@ import compose from "recompose/compose";
 
 // import { logLoginSuccess } from "../../actions/adminActions";
 const theme = createMuiTheme({
-  spacing: 4
+  spacing: 4,
 });
 const styles = {
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.,
     marginTop: theme.spacing(1),
-    flexDirection: "column"
+    flexDirection: "column",
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
+    margin: theme.spacing(3, 0, 2),
   },
   content: {
     flexGrow: 1,
     height: "100vh",
-    overflow: "auto"
+    overflow: "auto",
   },
   topBar: {
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 };
 
 /**
@@ -53,19 +53,19 @@ class ErrorPage extends Component {
     //withRouter
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
   };
 
-  onGoToLogin = e => {
+  onGoToLogin = (e) => {
     this.props.history.push("/");
   };
-  onGoBack = e => {
+  onGoBack = (e) => {
     this.props.history.goBack();
   };
 
   handleCloseSnackbar = () => {
     this.setState({
-      msg: null
+      msg: null,
     });
   };
 
@@ -109,7 +109,7 @@ class ErrorPage extends Component {
       <div
         style={{
           zIndex: 1,
-          position: "relative"
+          position: "relative",
         }}
       >
         <CssBaseline />
@@ -138,7 +138,7 @@ class ErrorPage extends Component {
           <iframe
             style={{ width: "100%", height: "60%" }}
             src="https://www.youtube.com/embed/6dNho0h_yQQ"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture "
           ></iframe>
           {conditionalRendering()}
         </Container>
@@ -147,7 +147,7 @@ class ErrorPage extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 export default compose(
   withStyles(styles),
   connect(mapStateToProps, {})

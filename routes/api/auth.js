@@ -1,7 +1,3 @@
-/* eslint-disable object-curly-spacing */
-/* eslint-disable indent */
-/* eslint-disable quotes */
-/* eslint-disable linebreak-style */
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
@@ -29,6 +25,7 @@ router.get("/user", auth, (req, res) => {
 router.post("/", (req, res) => {
   const { email, password } = req.body;
 
+  console.log(email + 123);
   // Simple validation
   if (!email || !password) {
     return res.status(400).json({ msg: "Please enter all fields" });

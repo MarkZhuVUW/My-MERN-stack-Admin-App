@@ -17,7 +17,7 @@ export default function ImageRevealEffect(props) {
         width: "0%",
         // height: "0%",
         ease: Power2.easeIn,
-        scale: 0.01,
+        scale: 1,
       })
       .to(image, 1.4, {
         scale: 1,

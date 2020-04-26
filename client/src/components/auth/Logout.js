@@ -21,9 +21,10 @@ export class Logout extends Component {
   handleOnClick = () => {
     this.props.logout();
     // TODO   find a more elegant way of listening to redux states.
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 500);
+    // setTimeout(() => {
+    //   window.location.href = "/";
+    // }, 500);
+    this.props.history.push("/");
   };
   render() {
     return (

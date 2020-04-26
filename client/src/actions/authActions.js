@@ -191,7 +191,7 @@ export const deleteUser = (id) => (dispatch, getState) => {
 // --------------------------- google 2fa auth . ---------------------------------------------//
 // --------------------------- google 2fa auth . ---------------------------------------------//
 
-export const getTFA = ({ email, domainName, isOauth }) => (dispatch) => {
+export const getTFA = ({ email, domainName, uniqueId }) => (dispatch) => {
   // Headers
   const config = {
     headers: {
@@ -200,7 +200,7 @@ export const getTFA = ({ email, domainName, isOauth }) => (dispatch) => {
   };
 
   // Request body
-  const body = JSON.stringify({ email, domainName, isOauth });
+  const body = JSON.stringify({ email, domainName, uniqueId });
   const authPromise = axios
     .post("/api/TFA/", body, config)
     .then((res) => {
@@ -223,7 +223,7 @@ export const getTFA = ({ email, domainName, isOauth }) => (dispatch) => {
 };
 
 // google 2fa auth setup.
-export const TFASetup = ({ email, domainName }) => (dispatch) => {
+export const TFASetup = ({ email, domainName, uniqueId }) => (dispatch) => {
   // Headers
 
   const config = {
@@ -233,7 +233,7 @@ export const TFASetup = ({ email, domainName }) => (dispatch) => {
   };
 
   // Request body
-  const body = JSON.stringify({ email, domainName });
+  const body = JSON.stringify({ email, domainName, uniqueId });
   const authPromise = axios
     .post("/api/TFA/setup", body, config)
     .then((res) => {
@@ -358,16 +358,14 @@ export const getGithubUser = () => (dispatch) => {
 /**
  * make change to the oauth user object returned from oauth api and adapt it to my app.
  */
-export const createOauthUser = (oauthProvider, userObjToBeAdapted) => (
-  dispatch
-) => {
+export const createOauthUser = (oauthUser, oauthProvider) => (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
   };
 
-  const body = JSON.stringify({ userObjToBeAdapted, oauthProvider });
+  const body = JSON.stringify({ oauthUser, oauthProvider });
 
   const githubAuthPromise = axios
     .post("/api/users/create-oauth-user", body, config)

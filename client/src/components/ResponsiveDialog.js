@@ -73,18 +73,20 @@ class ResponsiveDialog extends Component {
     getTFA: PropTypes.func.isRequired,
     skipTFA: PropTypes.func.isRequired,
     TFA: PropTypes.object,
-    user: PropTypes.object.isRequired,
+    user: PropTypes.object,
     logout: PropTypes.func.isRequired,
     isGithubUserLoaded: PropTypes.bool,
   };
   componentDidMount() {
-    const { email, TFA, isGithubUserLoaded } = this.props;
+    const { TFA, isGithubUserLoaded, user } = this.props;
     if (this.props.title === "Google Two-Factor Auth") {
       const obj = {
-        email,
+        email: user.email,
         domainName: window.location.hostname,
         isOauth: false,
       };
+
+      console.log(user.email);
       if (!TFA && !isGithubUserLoaded) {
         this.props.TFASetup(obj);
         this.props.getTFA(obj);
@@ -128,7 +130,7 @@ class ResponsiveDialog extends Component {
   handleClose = () => {
     //re-enable login button and hide the loading spinner
     this.props.responsiveDialogCallback();
-
+    // this.props.logout();
     this.setState({
       open: false,
     });
@@ -154,31 +156,36 @@ class ResponsiveDialog extends Component {
     this.props.loginSuccessCallback(true);
   };
 
-  handleGithubTFA = () => {
-    const { email, TFA } = this.props;
+  handleGithubTFA = (role) => {
+    // e.preventDefault();
+    const { TFA, user } = this.props;
 
-    const obj = {
-      email,
+    // console.log(user);
+    const oauthUser = {
+      ...user,
+      role: role,
+
       domainName: window.location.hostname,
-      isOauth: true,
+      isOauth: false,
     };
-    this.props.createOauthUser().then(() => {
+
+    const TFAObj = {
+      email: user.email,
+      domainName: window.location.hostname,
+      isOauth: false,
+      uniqueId: user.uniqueId,
+    };
+
+    this.props.createOauthUser(oauthUser, "github").then(() => {
       if (!TFA) {
-        console.log(123123);
-        this.props.TFASetup(obj);
-        this.props.getTFA(obj);
+        this.props.TFASetup(TFAObj);
+        this.props.getTFA(TFAObj);
       }
     });
   };
 
   roleSelectedCallback = (role) => {
-    const { user } = this.props;
-
-    const userObjToBeAdapted = {
-      ...user,
-      role: role,
-    };
-    this.handleGithubTFA();
+    this.handleGithubTFA(role);
   };
 
   render() {

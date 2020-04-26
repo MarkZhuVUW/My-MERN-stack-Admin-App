@@ -13,38 +13,38 @@ const GreenCheckbox = withStyles({
   root: {
     color: green[400],
     "&$checked": {
-      color: green[600]
-    }
+      color: green[600],
+    },
   },
-  checked: {}
-})(props => <Checkbox color="default" {...props} />);
+  checked: {},
+})((props) => <Checkbox color="default" {...props} />);
 
 const BlueCheckbox = withStyles({
   root: {
     color: blue[400],
     "&$checked": {
-      color: blue[600]
-    }
+      color: blue[600],
+    },
   },
-  checked: {}
-})(props => <Checkbox color="default" {...props} />);
+  checked: {},
+})((props) => <Checkbox color="default" {...props} />);
 
 const RedCheckbox = withStyles({
   root: {
     color: red[400],
     "&$checked": {
-      color: red[600]
-    }
+      color: red[600],
+    },
   },
-  checked: {}
-})(props => <Checkbox color="default" {...props} />);
+  checked: {},
+})((props) => <Checkbox color="default" {...props} />);
 
 export default function RoleCheckboxes(props) {
   const [admin, setAdmin] = React.useState(false);
   const [employer, setEmployer] = React.useState(false);
   const [guest, setGuest] = React.useState(false);
 
-  const handleChange = name => {
+  const handleChange = (name) => {
     setAdmin(false);
     setEmployer(false);
     setGuest(false);

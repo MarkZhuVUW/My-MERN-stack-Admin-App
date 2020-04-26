@@ -11,7 +11,7 @@ const auth = require("../../middleware/auth");
 // @desc    Get setup TFA for the user
 // @access  Private
 router.post("/", (req, res) => {
-  const { email, domainName } = req.body;
+  const { email } = req.body;
   TFA.findOne({ email })
     .then((TFA) => {
       if (!TFA)
@@ -25,18 +25,17 @@ router.post("/", (req, res) => {
 // @desc    construct TFA setup and save it to db for the user
 // @access  Private
 router.post("/setup", (req, res) => {
-  const { email, domainName, isOauth } = req.body;
+  const { email, domainName, isOauth, uniqueId } = req.body;
 
-  if (!isOauth) {
-    User.findOne({ email })
-      .then((user) => {
-        if (!user) {
-          //return 400 if user does not even exist.
-          return res.status(400).json({ msg: "user does not even exist!" });
-        }
-      })
-      .catch((err) => res.status(400).json({ msg: err }));
-  }
+  let lookup = isOauth ? uniqueId : email;
+  User.findOne({ lookup })
+    .then((user) => {
+      if (!user) {
+        //return 400 if user does not even exist.
+        return res.status(400).json({ msg: "user does not even exist!" });
+      }
+    })
+    .catch((err) => res.status(400).json({ msg: err }));
 
   TFA.findOne({ email })
     .then((TFADoc) => {
