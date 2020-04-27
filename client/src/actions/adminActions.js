@@ -10,9 +10,12 @@ import {
   PAGE_VIEW_LOGGED,
 } from "./types";
 
-export const logPageView = (id, pageViewLog) => (dispatch, getState) => {
+export const logPageView = (id, pageViewLog, isOauth) => (
+  dispatch,
+  getState
+) => {
   // Request body
-  const body = JSON.stringify({ log: pageViewLog });
+  const body = JSON.stringify({ log: pageViewLog, isOauth });
 
   axios
     .patch(`/api/users/${id}/logs`, body, tokenConfig(getState))
@@ -26,9 +29,12 @@ export const logPageView = (id, pageViewLog) => (dispatch, getState) => {
     });
 };
 
-export const logLoginSuccess = (id, loginLog) => (dispatch, getState) => {
+export const logLoginSuccess = (id, loginLog, isOauth) => (
+  dispatch,
+  getState
+) => {
   // Request body
-  const body = JSON.stringify({ log: loginLog });
+  const body = JSON.stringify({ log: loginLog, isOauth });
 
   axios
     .patch(`/api/users/${id}/logs`, body, tokenConfig(getState))
@@ -42,9 +48,12 @@ export const logLoginSuccess = (id, loginLog) => (dispatch, getState) => {
     });
 };
 
-export const logDownload = (id, downloadLog) => (dispatch, getState) => {
+export const logDownload = (id, downloadLog, isOauth) => (
+  dispatch,
+  getState
+) => {
   // Request body
-  const body = JSON.stringify({ log: downloadLog });
+  const body = JSON.stringify({ log: downloadLog, isOauth });
   axios
     .patch(`/api/users/${id}/logs`, body, tokenConfig(getState))
     .then((res) =>

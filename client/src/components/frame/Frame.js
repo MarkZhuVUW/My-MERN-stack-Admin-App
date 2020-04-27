@@ -30,7 +30,7 @@ import SelectedListItem from "./listItems";
 import CV from "./pages/CV/CV";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Developer from "./pages/Developer";
-import Portfolio from "./pages/Portfolio";
+import Portfolio from "./pages/Portfolio/Portfolio";
 import UserAdmin from "./pages/UserAdmin";
 import WelcomePage from "./pages/WelcomePage";
 

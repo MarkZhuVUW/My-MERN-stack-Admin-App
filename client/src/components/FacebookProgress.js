@@ -1,3 +1,4 @@
+import { Typography } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
@@ -5,17 +6,19 @@ import React from "react";
 // Inspired by the Facebook spinners.
 const useStylesFacebook = makeStyles({
   root: {
-    position: "relative"
+    position: "relative",
+    display: "flex",
+    flexDirection: "row",
   },
   top: {
-    color: "#eef3fd"
+    color: "#eef3fd",
   },
   bottom: {
     color: "#6798e5",
     animationDuration: "550ms",
     position: "absolute",
-    left: 0
-  }
+    left: 0,
+  },
 });
 
 export default function FacebookProgress(props) {
@@ -23,22 +26,25 @@ export default function FacebookProgress(props) {
 
   return (
     <div className={classes.root}>
-      <CircularProgress
-        variant="determinate"
-        value={100}
-        className={classes.top}
-        size={24}
-        thickness={4}
-        {...props}
-      />
-      <CircularProgress
-        variant="indeterminate"
-        disableShrink
-        className={classes.bottom}
-        size={24}
-        thickness={4}
-        {...props}
-      />
+      <div>
+        <CircularProgress
+          variant="determinate"
+          value={100}
+          className={classes.top}
+          size={24}
+          thickness={4}
+          {...props}
+        />
+        <CircularProgress
+          variant="indeterminate"
+          disableShrink
+          className={classes.bottom}
+          size={24}
+          thickness={4}
+          {...props}
+        />
+      </div>
+      <Typography>{props.msg}</Typography>
     </div>
   );
 }

@@ -80,7 +80,7 @@ router.delete("/:id", auth, (req, res) => {
 // @desc    update logs for a specific user
 // @access  Public
 router.patch("/:id/logs", auth, (req, res) => {
-  const { log } = req.body;
+  const { log, isOauth } = req.body;
   newLog = new Log({
     type: log.type,
     email: log.email,
@@ -92,20 +92,31 @@ router.patch("/:id/logs", auth, (req, res) => {
     .save()
     .then((savedLog) => {
       // Check for existing user
-      userModels.User.findByIdAndUpdate(
+      let userPromise = userModels.User.findByIdAndUpdate(
         { _id: req.params.id },
         {
           $push: {
             logs: savedLog,
           },
         }
-      )
-        .then((user) => {
-          if (!user)
-            return res.status(400).json({ msg: "User does not exist" });
-          res.json(user);
-        })
-        .catch((err) => res.status(400).json({ success: false }));
+      );
+      if (isOauth)
+        userPromise = userModels.OauthUser.findAndUpdate(
+          { uniqueId: req.params.id },
+          {
+            $push: {
+              logs: savedLog,
+            },
+          }
+        );
+      else
+        userPromise
+          .then((user) => {
+            if (!user)
+              return res.status(400).json({ msg: "User does not exist" });
+            res.json(user);
+          })
+          .catch((err) => res.status(400).json({ success: false }));
     });
 });
 

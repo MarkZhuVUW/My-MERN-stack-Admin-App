@@ -154,8 +154,10 @@ export const logout = () => {
 
 // Setup config/headers and token
 export const tokenConfig = (getState) => {
-  // Get token from localstorage
-  const token = getState().auth.token;
+  // Get token from redux
+  let token = getState().auth.token;
+  // get githubAcessToken from localStorage
+  let githubAccessToken = localStorage.getItem("githubAccessToken");
 
   // Headers
   const config = {
@@ -165,9 +167,10 @@ export const tokenConfig = (getState) => {
   };
 
   // If token, add to headers
-  if (token) {
-    config.headers["x-auth-token"] = token;
-  }
+  if (token) config.headers["x-auth-token"] = token;
+
+  if (githubAccessToken)
+    config.headers["github-access-token"] = githubAccessToken;
 
   return config;
 };

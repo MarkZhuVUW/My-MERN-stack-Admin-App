@@ -140,7 +140,14 @@ const en = {
   portfolio: {
     menu: "Portfolio",
     route: "portfolio",
+    numOfPublicRepos: "Number of Public repos",
+    githubUsername: "Github Username",
+    hireable: "Hireable",
+    followers: "Followers",
+    star: "Star",
+    unstar: "Unstar",
   },
+
   errors: {
     401: "Please login first",
     403: "Do not have to access to this page",
