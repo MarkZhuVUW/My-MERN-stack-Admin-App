@@ -5,8 +5,12 @@
   transition: all 0.5s;
   .card {
     transition: all 0.2s ease-in-out;
+    z-index: 5;
+    position: relative;
   }
   .card:hover {
     transform: scale(1.1);
+    z-index: 5;
+    position: relative;
   }
 }
