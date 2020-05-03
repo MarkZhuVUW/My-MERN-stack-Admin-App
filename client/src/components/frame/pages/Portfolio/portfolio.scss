@@ -1,16 +1,100 @@
 .grid {
-  -o-transition: all 0.5s;
-  -moz-transition: all 0.5s;
-  -webkit-transition: all 0.5s;
-  transition: all 0.5s;
+  z-index: 5;
+  position: relative;
+  @for $i from 1 through 4 {
+    .card-#{$i} {
+      animation-delay: 1s * #{$i};
+      transition: all 0.2 - 0.2s * #{$i} * 0.1 ease-in-out;
+    }
+  }
+
   .card {
     transition: all 0.2s ease-in-out;
-    z-index: 5;
-    position: relative;
   }
   .card:hover {
     transform: scale(1.1);
-    z-index: 5;
-    position: relative;
+  }
+}
+
+// ---------------------- IE 10 Supported ---------------------//
+/* entire container, keeps perspective */
+.business-card {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+/*  UPDATED! flip the pane when hovered */
+.business-card:hover .back {
+  transform: rotateY(0deg);
+}
+.business-card:hover .front {
+  transform: rotateY(180deg);
+}
+
+.business-card,
+.front,
+.back {
+  width: 100%;
+  height: 480px;
+}
+
+/* flip speed goes here */
+.flipper {
+  transition: 0.6s;
+  transform-style: preserve-3d;
+
+  position: relative;
+}
+
+/* hide back of pane during swap */
+.front,
+.back {
+  backface-visibility: hidden;
+  transition: 0.6s;
+  transform-style: preserve-3d;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/*  UPDATED! front pane, placed above back */
+.front {
+  z-index: 2;
+  transform: rotateY(0deg);
+}
+
+/* back, initially hidden pane */
+.back {
+  transform: rotateY(-180deg);
+}
+
+/* 
+	Some vertical flip updates 
+*/
+.vertical.business-card {
+  position: relative;
+}
+
+.vertical .back {
+  transform: rotateX(180deg);
+}
+
+.vertical.business-card:hover .back {
+  transform: rotateX(0deg);
+}
+
+.vertical.business-card:hover .front {
+  transform: rotateX(180deg);
+}
+
+// fade in animation
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -20%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }

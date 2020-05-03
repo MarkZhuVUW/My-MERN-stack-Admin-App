@@ -14,12 +14,12 @@ import { i18n } from "i18n";
 import React from "react";
 import { Link } from "react-router-dom";
 import "../../css3/bouncingEffect.css";
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     maxWidth: 360,
-    backgroundColor: theme.palette.background.paper
-  }
+    // backgroundColor: theme.palette.background.paper,
+  },
 }));
 
 export default function SelectedListItem(props) {
@@ -42,13 +42,13 @@ export default function SelectedListItem(props) {
               style={{
                 textDecoration: "none",
                 color:
-                  localStorage.getItem("theme") === "dark" ? "white" : "black"
+                  localStorage.getItem("theme") === "dark" ? "white" : "black",
               }}
             >
               <ListItem
                 button
                 selected={selectedIndex === 0}
-                onClick={event => handleListItemClick(event, 0)}
+                onClick={(event) => handleListItemClick(event, 0)}
               >
                 <ListItemIcon>
                   <DashboardIcon
@@ -65,13 +65,13 @@ export default function SelectedListItem(props) {
               style={{
                 textDecoration: "none",
                 color:
-                  localStorage.getItem("theme") === "dark" ? "white" : "black"
+                  localStorage.getItem("theme") === "dark" ? "white" : "black",
               }}
             >
               <ListItem
                 button
                 selected={selectedIndex === 1}
-                onClick={event => handleListItemClick(event, 1)}
+                onClick={(event) => handleListItemClick(event, 1)}
               >
                 <ListItemIcon>
                   <DeveloperBoardIcon
@@ -87,13 +87,13 @@ export default function SelectedListItem(props) {
               style={{
                 textDecoration: "none",
                 color:
-                  localStorage.getItem("theme") === "dark" ? "white" : "black"
+                  localStorage.getItem("theme") === "dark" ? "white" : "black",
               }}
             >
               <ListItem
                 button
                 selected={selectedIndex === 2}
-                onClick={event => handleListItemClick(event, 2)}
+                onClick={(event) => handleListItemClick(event, 2)}
               >
                 <ListItemIcon>
                   <AssessmentIcon
@@ -114,13 +114,13 @@ export default function SelectedListItem(props) {
           to="/frame/welcomepage"
           style={{
             textDecoration: "none",
-            color: localStorage.getItem("theme") === "dark" ? "white" : "black"
+            color: localStorage.getItem("theme") === "dark" ? "white" : "black",
           }}
         >
           <ListItem
             button
             selected={selectedIndex === 3}
-            onClick={event => handleListItemClick(event, 3)}
+            onClick={(event) => handleListItemClick(event, 3)}
           >
             <ListItemIcon>
               <DashboardIcon
@@ -136,13 +136,13 @@ export default function SelectedListItem(props) {
           to="/frame/portfolio"
           style={{
             textDecoration: "none",
-            color: localStorage.getItem("theme") === "dark" ? "white" : "black"
+            color: localStorage.getItem("theme") === "dark" ? "white" : "black",
           }}
         >
           <ListItem
             button
             selected={selectedIndex === 4}
-            onClick={event => handleListItemClick(event, 4)}
+            onClick={(event) => handleListItemClick(event, 4)}
           >
             <ListItemIcon>
               <AssignmentIndIcon
@@ -158,13 +158,13 @@ export default function SelectedListItem(props) {
           to="/frame/cv"
           style={{
             textDecoration: "none",
-            color: localStorage.getItem("theme") === "dark" ? "white" : "black"
+            color: localStorage.getItem("theme") === "dark" ? "white" : "black",
           }}
         >
           <ListItem
             button
             selected={selectedIndex === 5}
-            onClick={event => handleListItemClick(event, 5)}
+            onClick={(event) => handleListItemClick(event, 5)}
           >
             <ListItemIcon>
               <DescriptionIcon

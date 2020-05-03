@@ -1,9 +1,11 @@
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid, makeStyles, Paper, Typography } from "@material-ui/core";
+import classNames from "classnames";
 import FacebookProgress from "components/FacebookProgress";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import ReactTypingEffect from "react-typing-effect";
 import "swagger-ui/dist/swagger-ui.css";
 import Breadcrumb from "view/shared/Breadcrumb";
 import { logDownload } from "../../../../actions/adminActions";
@@ -81,29 +83,17 @@ export default connect(mapStateToProps, {
 function PortfolioContent(props) {
   const useStyles = makeStyles((theme) => ({
     root: {
-      padding: theme.spacing(4),
-    },
-    container: {
-      paddingTop: theme.spacing(1),
-      paddingBottom: theme.spacing(1),
-    },
-    smallScreenPaper: {
       padding: theme.spacing(props.isSmallScreen ? 1 : 4),
-      display: "flex",
-      overflow: "auto",
-      flexDirection: "row",
-      backgroundColor: "white",
-      zIndex: 1,
-      position: "relative",
     },
+
     paper: {
       justifyContent: "center",
-      alignItems: "center",
       padding: theme.spacing(props.isSmallScreen ? 1 : 4),
+      marginTop: theme.spacing(props.isSmallScreen ? 2 : 4),
+      marginBottom: theme.spacing(props.isSmallScreen ? 2 : 4),
       display: "flex",
       overflow: "auto",
       flexDirection: "row",
-      backgroundColor: "white",
       zIndex: 1,
       position: "relative",
     },
@@ -132,12 +122,31 @@ function PortfolioContent(props) {
       />
 
       <div className={classes.root}>
-        <Grid container spacing={4} className="grid">
+        <Grid container>
+          <Paper className={classNames(classes.paper, "business-card")}>
+            <Typography variant="h3">
+              Hi, I am
+              <ReactTypingEffect
+                speed={25}
+                eraseDelay={1200}
+                typingDelay={200}
+                text={[
+                  " a web developer",
+                  " a material design lover",
+                  " a react/vue developer",
+                  " a nodejs developer",
+                  " a .net developer",
+                ]}
+              />
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid container spacing={props.isSmallScreen ? 0 : 4} className="grid">
           <Grid item lg={3} sm={6} xl={3} xs={12}>
             <PortfolioCard
               title={i18n("portfolio.hireable")}
               cardBackgroundColor="secondary"
-              className="card"
+              className="card-scale"
               content={props.githubUser.hireable ? "true" : "false"}
             />
           </Grid>
@@ -145,7 +154,7 @@ function PortfolioContent(props) {
             <PortfolioCard
               title={i18n("portfolio.githubUsername")}
               content={props.githubUser.login}
-              className="card"
+              className="card-curl"
             />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>

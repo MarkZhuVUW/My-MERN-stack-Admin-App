@@ -110,8 +110,7 @@ class SignInSide extends Component {
     emailErrorMsg: null,
     passwordErrorMsg: null,
     copyRightOpened: false,
-    copyRightText:
-      "This website is MIT licensed. https://opensource.org/licenses/MIT",
+    copyRightText: i18n("loginPage.licenseText"),
   };
 
   static propTypes = {

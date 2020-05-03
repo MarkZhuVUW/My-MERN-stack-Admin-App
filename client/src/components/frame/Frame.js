@@ -175,6 +175,10 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
+    backgroundColor:
+      localStorage.getItem("theme") === "dark"
+        ? theme.palette.background.paper
+        : "#F2F2F2",
   },
   toolbar: {
     // paddingRight: 24 // keep right padding when drawer closed
@@ -218,6 +222,10 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    backgroundColor:
+      localStorage.getItem("theme") === "dark"
+        ? theme.palette.background.paper
+        : "#F2F2F2",
   },
   drawerPaperClose: {
     overflowX: "hidden",
@@ -386,7 +394,10 @@ function FrameContent(props) {
             in={(isSmallScreen && !open) || !isSmallScreen}
           >
             <div>
-              <HeaderMenu themeCallback={themeCallback} />
+              <HeaderMenu
+                themeCallback={themeCallback}
+                oauthUser={props.user.uniqueId ? props.user : null}
+              />
             </div>
           </Slide>
         ) : null}

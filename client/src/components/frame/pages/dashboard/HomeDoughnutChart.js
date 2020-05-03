@@ -7,26 +7,25 @@ export default class HomeDoughnutChart extends React.Component {
     super(props);
     this.state = {
       //group by role of user.
-
-      roleData: this.groupByRole()
+      roleData: this.groupByRole(),
     };
     this.chartRef = React.createRef();
   }
 
   componentDidUpdate(prevProp) {
+    let roleData = this.groupByRole();
+
     if (prevProp.data !== this.props.data) {
       this.setState({
-        roleData: this.groupByRole()
+        roleData: roleData,
       });
       this.myChart.data.datasets = [
         {
-          data: Object.entries(this.groupByRole()).map(
-            roleEntry => roleEntry[1]
+          data: Object.entries(roleData).map((roleEntry) => roleEntry[1]),
+          backgroundColor: Object.entries(roleData).map((role, index) =>
+            this.colorChooser(index)
           ),
-          backgroundColor: Object.entries(
-            this.groupByRole()
-          ).map((role, index) => this.colorChooser(index))
-        }
+        },
       ];
       this.myChart.update();
     }
@@ -46,8 +45,8 @@ export default class HomeDoughnutChart extends React.Component {
   groupByRole = () => {
     var groupedRoles = [];
     this.props.data
-      .map(log => log[3])
-      .forEach(element => {
+      .map((log) => log[3])
+      .forEach((element) => {
         if (groupedRoles[element]) ++groupedRoles[element];
         else groupedRoles[element] = 1;
       });
@@ -60,23 +59,23 @@ export default class HomeDoughnutChart extends React.Component {
     this.myChart = new Chart(this.chartRef.current, {
       type: "doughnut",
       data: {
-        labels: Object.keys(roleData).map(role =>
+        labels: Object.keys(roleData).map((role) =>
           i18n(`dashboard.doughnutChart.${role}`)
         ),
         datasets: [
           {
-            data: Object.entries(roleData).map(roleEntry => roleEntry[1]),
+            data: Object.entries(roleData).map((roleEntry) => roleEntry[1]),
             backgroundColor: Object.entries(roleData).map((role, index) =>
               this.colorChooser(index)
-            )
-          }
-        ]
+            ),
+          },
+        ],
       },
       options: {
         legend: {
-          display: false
-        }
-      }
+          display: false,
+        },
+      },
     });
   }
 
@@ -84,7 +83,7 @@ export default class HomeDoughnutChart extends React.Component {
    * Choose color based on input index.
    * @param {*} index
    */
-  colorChooser = index => {
+  colorChooser = (index) => {
     // console.log(index);
     switch (index) {
       case 0:

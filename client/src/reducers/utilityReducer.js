@@ -10,7 +10,6 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case MY_GITHUB_USER_LOADED:
-      console.log(action.payload);
       return {
         ...state,
         githubUser: action.payload,

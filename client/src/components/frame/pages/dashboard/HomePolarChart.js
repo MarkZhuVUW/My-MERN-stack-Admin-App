@@ -6,8 +6,7 @@ export default class HomePolarChart extends React.Component {
     super(props);
     this.state = {
       //group by role of user.
-
-      companyData: this.groupByCompany()
+      companyData: this.groupByCompany(),
     };
     this.chartRef = React.createRef();
   }
@@ -29,9 +28,10 @@ export default class HomePolarChart extends React.Component {
     var groupedCompanies = {};
 
     this.props.data
-      .map(log => log[4])
-      .filter(company => company !== "")
-      .forEach(element => {
+      .filter((user) => user[3] === "employer")
+      .map((log) => log[4])
+      .filter((company) => company !== "")
+      .forEach((element) => {
         if (groupedCompanies[element]) ++groupedCompanies[element];
         else groupedCompanies[element] = 1;
       });
@@ -44,17 +44,17 @@ export default class HomePolarChart extends React.Component {
     // this.myChart.data.datasets[0].data = this.props.data.map(d => d.value);
     if (prevProp.data !== this.props.data) {
       this.setState({
-        companyData: this.groupByCompany()
+        companyData: this.groupByCompany(),
       });
       this.myChart.data.datasets = [
         {
           data: Object.entries(this.groupByCompany()).map(
-            companyEntry => companyEntry[1]
+            (companyEntry) => companyEntry[1]
           ),
           backgroundColor: Object.entries(
             this.groupByCompany()
-          ).map((company, index) => this.colorChooser(index))
-        }
+          ).map((company, index) => this.colorChooser(index)),
+        },
       ];
       this.myChart.update();
     }
@@ -68,20 +68,20 @@ export default class HomePolarChart extends React.Component {
         datasets: [
           {
             data: Object.entries(companyData).map(
-              companyEntry => companyEntry[1]
+              (companyEntry) => companyEntry[1]
             ),
             backgroundColor: Object.entries(companyData).map((company, index) =>
               this.colorChooser(index)
-            )
-          }
+            ),
+          },
         ],
-        labels: Object.keys(companyData)
+        labels: Object.keys(companyData),
       },
       options: {
         legend: {
-          display: false
-        }
-      }
+          display: false,
+        },
+      },
     });
   }
 
@@ -89,7 +89,7 @@ export default class HomePolarChart extends React.Component {
    * Choose color based on input index.
    * @param {*} index
    */
-  colorChooser = index => {
+  colorChooser = (index) => {
     // console.log(index);
     switch (index) {
       case 0:

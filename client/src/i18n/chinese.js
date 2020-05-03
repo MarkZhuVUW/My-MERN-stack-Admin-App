@@ -42,6 +42,7 @@ const chinese = {
     cookie:
       "如您使用本网站并同意本政策，则您同意我们按照本政策条款使用cookies。",
     repoLink: "本项目Github链接",
+    licenseText: "本网站使用MIT协议: https://opensource.org/licenses/MIT",
   },
   registerPage: {
     signUp: "注册",

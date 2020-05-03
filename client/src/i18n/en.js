@@ -45,6 +45,8 @@ const en = {
     cookie:
       "This website uses cookie, by continuing to browse you agree to our use of cookies",
     repoLink: "Github Repo",
+    licenseText:
+      "This website is MIT licensed. https://opensource.org/licenses/MIT",
   },
   registerPage: {
     signUp: "Sign Up",

@@ -143,7 +143,7 @@ function CVContent(props) {
         // style={{ textColor: "black" }}
         items={[[i18n("frame.menu"), "/"], [i18n("cv.route")]]}
       />
-      Having a webpack issue with pdf.js. Still working on it.
+      Will implement a pdf preview but for now there is only CV download.
       {/* <Paper
         className={
           props.isSmallScreen ? classes.smallScreenPaper : classes.paper

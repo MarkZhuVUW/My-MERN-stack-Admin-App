@@ -7,7 +7,7 @@ export default class HomeLineChart extends React.Component {
     super(props);
     this.state = {
       //group by role of user.
-      pageViewData: this.groupPageViewsByCompany()
+      pageViewData: this.groupPageViewsByCompany(),
     };
     this.chartRef = React.createRef();
   }
@@ -29,17 +29,17 @@ export default class HomeLineChart extends React.Component {
     var groupedPages = [0, 0, 0, 0, 0];
     // console.log(this.props.data);
     this.props.data
-      .filter(log => log[3] === "employer")
-      .filter(log => log[6] === "PAGE VIEW")
-      .map(log => log[5])
-      .forEach(page => {
+      .filter((log) => log[3] === "employer")
+      .filter((log) => log[6] === "PAGE VIEW")
+      .map((log) => log[5])
+      .forEach((page) => {
         ++groupedPages[this.parsePageToIndex(page)];
       });
 
     return groupedPages;
   };
 
-  parsePageToIndex = page => {
+  parsePageToIndex = (page) => {
     switch (page) {
       case "welcomepage":
         return 0;
@@ -54,24 +54,23 @@ export default class HomeLineChart extends React.Component {
     }
   };
   componentDidUpdate(prevProp) {
+    let pageViewData = this.groupPageViewsByCompany();
     if (prevProp.data !== this.props.data) {
       this.setState({
-        pageViewData: this.groupPageViewsByCompany()
+        pageViewData: pageViewData,
       });
       this.myChart.data.datasets = [
         {
-          data: Object.entries(this.groupPageViewsByCompany()).map(
-            pageEntry => pageEntry[1]
-          ),
+          data: Object.entries(pageViewData).map((pageEntry) => pageEntry[1]),
           backgroundColor: [
             "#FF6384",
             "#4BC0C0",
             "#FFCE56",
             "#E7E9ED",
             "#32a842",
-            "#FFCE56"
-          ]
-        }
+            "#FFCE56",
+          ],
+        },
       ];
       this.myChart.update();
     }
@@ -85,38 +84,38 @@ export default class HomeLineChart extends React.Component {
       data: {
         datasets: [
           {
-            data: Object.entries(pageViewData).map(pageEntry => pageEntry[1]),
+            data: Object.entries(pageViewData).map((pageEntry) => pageEntry[1]),
             backgroundColor: [
               "#FF6384",
               "#4BC0C0",
               "#FFCE56",
               "#E7E9ED",
-              "#32a842"
-            ]
-          }
+              "#32a842",
+            ],
+          },
         ],
         labels: [
           i18n("dashboard.lineChart.welcomePage"),
           i18n("dashboard.lineChart.portfolio"),
           i18n("dashboard.lineChart.cv"),
           "403",
-          "404"
-        ]
+          "404",
+        ],
       },
       options: {
         legend: {
-          display: false
+          display: false,
         },
         scales: {
           yAxes: [
             {
               ticks: {
-                beginAtZero: true
-              }
-            }
-          ]
-        }
-      }
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
     });
   }
 
@@ -124,7 +123,7 @@ export default class HomeLineChart extends React.Component {
    * Choose color based on input index.
    * @param {*} index
    */
-  colorChooser = index => {
+  colorChooser = (index) => {
     // console.log(index);
     switch (index) {
       case 0:
