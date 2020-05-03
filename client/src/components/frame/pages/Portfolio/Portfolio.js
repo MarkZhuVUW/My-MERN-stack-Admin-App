@@ -1,4 +1,4 @@
-import { Grid, makeStyles, Paper, Typography } from "@material-ui/core";
+import { Box, Grid, makeStyles, Paper, Typography } from "@material-ui/core";
 import classNames from "classnames";
 import FacebookProgress from "components/FacebookProgress";
 import { i18n } from "i18n";
@@ -124,52 +124,74 @@ function PortfolioContent(props) {
       <div className={classes.root}>
         <Grid container>
           <Paper className={classNames(classes.paper, "business-card")}>
-            <Typography variant="h3">
-              Hi, I am
-              <ReactTypingEffect
-                speed={25}
-                eraseDelay={1200}
-                typingDelay={200}
-                text={[
-                  " a web developer",
-                  " a material design lover",
-                  " a react/vue developer",
-                  " a nodejs developer",
-                  " a .net developer",
-                ]}
-              />
-            </Typography>
+            {props.isSmallScreen ? (
+              <Typography variant="body2" gutterBottom>
+                <Box fontWeight="fontWeightBold">
+                  Hi, I am
+                  <ReactTypingEffect
+                    speed={25}
+                    eraseDelay={1200}
+                    typingDelay={200}
+                    text={[
+                      " a web developer",
+                      " a material design lover",
+                      " a react/vue developer",
+                      " a nodejs developer",
+                      " a .net developer",
+                    ]}
+                  />
+                </Box>
+              </Typography>
+            ) : (
+              <Typography variant="h3" gutterBottom>
+                <Box fontWeight="fontWeightBold">
+                  Hi, I am
+                  <ReactTypingEffect
+                    speed={25}
+                    eraseDelay={1200}
+                    typingDelay={200}
+                    text={[
+                      " a web developer",
+                      " a material design lover",
+                      " a react/vue developer",
+                      " a nodejs developer",
+                      " a .net developer",
+                    ]}
+                  />
+                </Box>
+              </Typography>
+            )}
           </Paper>
         </Grid>
-        <Grid container spacing={props.isSmallScreen ? 0 : 4} className="grid">
-          <Grid item lg={3} sm={6} xl={3} xs={12}>
+        <Grid container spacing={props.isSmallScreen ? 1 : 4}>
+          <Grid item lg={3} sm={6} xl={3} xs={12} className="grid">
             <PortfolioCard
               title={i18n("portfolio.hireable")}
               cardBackgroundColor="secondary"
-              className="card-scale"
+              className={classNames("card-scale")}
               content={props.githubUser.hireable ? "true" : "false"}
             />
           </Grid>
-          <Grid item lg={3} sm={6} xl={3} xs={12}>
+          <Grid item lg={3} sm={6} xl={3} xs={12} className="grid">
             <PortfolioCard
               title={i18n("portfolio.githubUsername")}
               content={props.githubUser.login}
-              className="card-curl"
+              className={classNames("card-scale")}
             />
           </Grid>
-          <Grid item lg={3} sm={6} xl={3} xs={12}>
+          <Grid item lg={3} sm={6} xl={3} xs={12} className="grid">
             <PortfolioCard
               title={i18n("portfolio.followers")}
               content={props.githubUser.followers}
-              className="card"
+              className={classNames("card-scale")}
             />
           </Grid>
-          <Grid item lg={3} sm={6} xl={3} xs={12}>
+          <Grid item lg={3} sm={6} xl={3} xs={12} className="grid">
             <PortfolioCard
               cardBackgroundColor="primary"
               title={i18n("portfolio.numOfPublicRepos")}
               content={props.githubUser.public_repos}
-              className="card"
+              className={classNames("card-scale")}
             />
           </Grid>
         </Grid>

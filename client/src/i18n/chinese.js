@@ -141,6 +141,12 @@ const chinese = {
   portfolio: {
     menu: "档案",
     route: "档案",
+    numOfPublicRepos: "开源Github Repo数",
+    githubUsername: "Github 用户名",
+    hireable: "可雇佣",
+    followers: "跟随者",
+    star: "点赞",
+    unstar: "取消点赞",
   },
   errors: {
     401: "请先登录",

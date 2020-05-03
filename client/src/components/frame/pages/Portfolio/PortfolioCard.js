@@ -1,8 +1,8 @@
 import { Card, CardContent, Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import "App.scss";
 import clsx from "clsx";
 import React from "react";
-
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
@@ -65,7 +65,7 @@ export default function PortfolioCard(props) {
   };
   return (
     <Card className={clsx(backgroundColorChooser(), className)}>
-      <CardContent>
+      <CardContent className="paper">
         <Grid container justify="space-between">
           <Grid item>
             <Typography

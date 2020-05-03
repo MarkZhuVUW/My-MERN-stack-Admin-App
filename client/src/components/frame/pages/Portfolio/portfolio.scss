@@ -1,19 +1,24 @@
 .grid {
   z-index: 5;
   position: relative;
+
   @for $i from 1 through 4 {
-    .card-#{$i} {
-      animation-delay: 1s * #{$i};
-      transition: all 0.2 - 0.2s * #{$i} * 0.1 ease-in-out;
+    &:nth-child(#{$i}) {
+      opacity: 0;
+      animation: fadeIn 0.5s ease-in both;
+      animation-delay: $i * 0.5s;
     }
   }
-
-  .card {
+  .card-scale {
     transition: all 0.2s ease-in-out;
+    box-shadow: 8px 4px 8px 8px rgba(0, 0, 0, 0.2);
   }
-  .card:hover {
+  .card-scale:hover {
     transform: scale(1.1);
+    box-shadow: 0 0 0 0;
   }
+
+  // delayed fade in animation with sass for loop.
 }
 
 // ---------------------- IE 10 Supported ---------------------//
@@ -21,6 +26,7 @@
 .business-card {
   perspective: 1000px;
   transform-style: preserve-3d;
+  box-shadow: 8px 4px 8px 8px rgba(0, 0, 0, 0.2);
 }
 /*  UPDATED! flip the pane when hovered */
 .business-card:hover .back {
@@ -35,6 +41,7 @@
 .back {
   width: 100%;
   height: 480px;
+  box-shadow: 8px 4px 8px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* flip speed goes here */
@@ -91,7 +98,7 @@
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translate3d(0, -20%, 0);
+    transform: translate3d(0, -50%, 0);
   }
   to {
     opacity: 1;
