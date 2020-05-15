@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/styles";
 import "App.scss";
 import clsx from "clsx";
 import React from "react";
+import CountUp from "react-countup";
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
@@ -76,7 +77,15 @@ export default function PortfolioCard(props) {
             >
               {props.title}
             </Typography>
-            <Typography variant="body1">{props.content}</Typography>
+
+            <Typography variant="body1">
+              {/* check if content is digit. If it is, show count up animation. */}
+              {!isNaN(props.content) ? (
+                <CountUp start={0} end={props.content} />
+              ) : (
+                props.content
+              )}
+            </Typography>
           </Grid>
         </Grid>
       </CardContent>

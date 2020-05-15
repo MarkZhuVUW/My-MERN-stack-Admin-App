@@ -164,7 +164,6 @@ class SignInSide extends Component {
       email,
       password,
     };
-    console.log(user);
 
     // Attempt to login
     this.props.login(user);

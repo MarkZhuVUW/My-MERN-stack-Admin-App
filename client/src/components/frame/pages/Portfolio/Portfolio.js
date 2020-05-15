@@ -94,8 +94,6 @@ function PortfolioContent(props) {
       display: "flex",
       overflow: "auto",
       flexDirection: "row",
-      zIndex: 1,
-      position: "relative",
     },
 
     heading: {
@@ -122,11 +120,11 @@ function PortfolioContent(props) {
       />
 
       <div className={classes.root}>
-        <Grid container>
+        <Grid container className="grid">
           <Paper className={classNames(classes.paper, "business-card")}>
             {props.isSmallScreen ? (
-              <Typography variant="body2" gutterBottom>
-                <Box fontWeight="fontWeightBold">
+              <Box fontWeight="fontWeightBold">
+                <Typography variant="body2" gutterBottom>
                   Hi, I am
                   <ReactTypingEffect
                     speed={25}
@@ -138,10 +136,11 @@ function PortfolioContent(props) {
                       " a react/vue developer",
                       " a nodejs developer",
                       " a .net developer",
+                      " a DevOps learner",
                     ]}
                   />
-                </Box>
-              </Typography>
+                </Typography>
+              </Box>
             ) : (
               <Typography variant="h3" gutterBottom>
                 <Box fontWeight="fontWeightBold">
