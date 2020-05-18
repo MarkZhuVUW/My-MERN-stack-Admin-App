@@ -1,32 +1,76 @@
-const globule = require('globule');
-const { readdirSync } = require('fs')
-const path = require( 'path' );
+﻿const globule = require('globule');
+const { readdirSync } = require('fs');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
-const filePaths = recursiveFileSearch(,globule.find("./wwwroot/js/" + ".js"));
-const jsFilePaths = globule.find("./wwwroot/js/" + "*.js")
-    .filter(filePath => filePath.indexOf("es5.js") === -1 && filePath.indexOf("min.js") === -1) ; // filter out compiled files.
+const path = require('path');
+const env = process.env.NODE_ENV;
+//variables
+const ROOT_DIRECTORY = "./wwwroot/js/";
+const ALL_FILE_PATHS = recursiveFileSearch(ROOT_DIRECTORY, globule.find(ROOT_DIRECTORY + "*.js"));
+
+
+const { plugins, outputFile, mode, outputFolder } = env === 'build'
+    ? {
+        plugins: [
+            new UglifyJSPlugin(),
+        ],
+        outputfile: "bundle-minified.js",
+        outputFolder: "./wwwroot/dist",
+        mode: 'production'
+    }
+    : {
+
+        outputFile: "bundle.js",
+        outputFolder: "./wwwroot/build",
+        mode: 'development',
+
+    }
 module.exports = {
-    entry: jsFilePaths,
+    entry: ALL_FILE_PATHS,
     output: {
-        filename: process.env.NODE_ENV === 'production' ? 'bundle-minified.js' : 'bundle.js',
-        path: path.resolve(__dirname, process.env.NODE_ENV === 'production' ? './wwwroot/dist' : './wwwroot/build')
+        filename: outputFile,
+        path: path.resolve(__dirname, outputFolder)
     },
-    mode: 'none'
+    mode: mode,
+    module: {
+        rules: [{
+            // Only run ".js" files through Babel
+            test: /\.m?js$/,
+            exclude: /(node_modules)/,
+            use: {
+                loader: 'babel-loader',
+                options: {
+                    presets: ['@babel/preset-env']
+                }
+            }
+        }]
+    },
+    devtool: 'source-map',
+    plugins: plugins
 };
 
 
 /**
- * recursively search all subfolders in a given directory for a specified type of file 
- * and return the found filePaths as an array.
- * 
+ * recursively search all subfolders in a given directory for a specified type of file.
+ * and update the filePath with the full list of filePaths in the rootDirectory EXCLUDING web compiler compiled files:
+ * *.es5.js & * .es5.min.js
+ *
  * rootDirectory: The root directory to start searching in.
+ * filePaths: an array of filePaths in the current folder and all parent folders.
+ * fileSuffix: suffix of the file. Could be .js, .css etc.
  */
-async function recursiveFileSearch(rootDirectory, filePaths, fileSuffix) {
-    
-
-    readdirSync(source, { withFileTypes: true })
+function recursiveFileSearch(rootDirectory, filePaths, fileSuffix) {
+    readdirSync(rootDirectory, { withFileTypes: true })
         .filter(dirent => dirent.isDirectory()).forEach(directory => {
-            
-    })
+
+        globule.find(rootDirectory + directory.name + "/" + "*.js").forEach(filePath => {
+            filePaths.push(filePath);
+        });
+        recursiveFileSearch(rootDirectory + directory.name + "/", filePaths, fileSuffix);
+    });
+    return filePaths.filter(filePath => filePath.indexOf("es5.js") === -1 && filePath.indexOf("es5.min.js") === -1); // filter out compiled files.
 }
-//https://stackoverflow.com/questions/18112204/get-all-directories-within-directory-nodejs/24594123
+
+function contains(string, subString) {
+    return string.indexOf(subString) !== -1;
+}
