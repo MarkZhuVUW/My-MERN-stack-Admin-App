@@ -1,15 +1,31 @@
 ﻿const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const webpack = require("webpack");
+
+const TerserPlugin = require('terser-webpack-plugin');
+const utils = require('./webpackUtilities');
+const globule = require('globule');
+const path = require('path');
 
 //variables
 const ROOT_DIRECTORY = "./wwwroot/js/";
-const OUTPUT_FOLDER = "./wwwroot/build";
+const OUTPUT_FOLDER = "./wwwroot/dist/";
 const OUTPUT_FILE = "bundle.js";
-const ALL_FILE_PATHS = recursiveFileSearch(ROOT_DIRECTORY, globule.find(ROOT_DIRECTORY + "*.js"));
+const ALL_FILE_PATHS = utils.recursiveFileSearch(ROOT_DIRECTORY, globule.find(ROOT_DIRECTORY + "*.js"));
+
 module.exports = merge(common, {
+    entry: ALL_FILE_PATHS,
+    output: {
+        filename: OUTPUT_FILE,
+        path: path.resolve(__dirname, OUTPUT_FOLDER)
+    },
     plugins: [
-        new UglifyJSPlugin(),
+        new TerserPlugin(),
+        new webpack.DefinePlugin({
+            "process.env": {
+                "NODE_ENV": JSON.stringify("production")
+            }
+        }),
     ],
 
     mode: 'production'

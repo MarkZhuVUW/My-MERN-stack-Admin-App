@@ -1,12 +1,15 @@
 ﻿const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 const webpack = require("webpack");
+const utils = require('./webpackUtilities');
+const globule = require('globule');
+const path = require('path');
 
 //variables
 const ROOT_DIRECTORY = "./wwwroot/js/";
 const OUTPUT_FOLDER = "./wwwroot/build";
 const OUTPUT_FILE = "bundle-dev.js";
-const ALL_FILE_PATHS = recursiveFileSearch(ROOT_DIRECTORY, globule.find(ROOT_DIRECTORY + "*.js"));
+const ALL_FILE_PATHS = utils.recursiveFileSearch(ROOT_DIRECTORY, globule.find(ROOT_DIRECTORY + "*.js"));
 
 module.exports = merge(common, {
     entry: ALL_FILE_PATHS,
@@ -14,7 +17,7 @@ module.exports = merge(common, {
         filename: OUTPUT_FILE,
         path: path.resolve(__dirname, OUTPUT_FOLDER)
     },
-    mode: mode,
+    mode: "development",
     module: {
         rules: [{
             // Only run ".js" files through Babel
@@ -29,6 +32,9 @@ module.exports = merge(common, {
         }]
     },
     devtool: 'source-map',
+    devServer: {
+
+    },
 
     plugins: ([
         new webpack.DefinePlugin({

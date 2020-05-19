@@ -1,17 +1,9 @@
-﻿const path = require('path');
-const env = process.env.NODE_ENV;
+﻿const env = process.env.NODE_ENV;
 const webpack = require("webpack");
 
-//variables
-const ROOT_DIRECTORY = "./wwwroot/js/";
-const globule = require('globule');
-const { readdirSync } = require('fs');
-const ALL_FILE_PATHS = recursiveFileSearch(ROOT_DIRECTORY, globule.find(ROOT_DIRECTORY + "*.js"));
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 module.exports = {
     target: "web",
 
@@ -20,14 +12,7 @@ module.exports = {
         extensions: [".js"],
     },
 
-    plugins: ([
 
-        new HtmlWebpackPlugin({
-            inject: "body",
-            filename: "../Views/Shared/_Layout.cshtml",
-            template: "./Views/Shared/_Layout_Template.cshtml"
-        })
-    ]),
 
     // pretty terminal output
     stats: { colors: true }
