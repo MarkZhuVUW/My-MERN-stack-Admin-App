@@ -49,7 +49,7 @@ export default connect(mapStateToProps, { loadSwaggerUI })(Developer);
  *
  * @author Mark Zhu <zdy120939259@outlook.com>
  */
-function DeveloperContent(props) {
+function DeveloperContent() {
   const useStyles = makeStyles((theme) => ({
     root: {
       backgroundColor: "#E9EAED",
@@ -82,7 +82,6 @@ function DeveloperContent(props) {
   return (
     <>
       <Breadcrumb
-        // style={{ textColor: "black" }}
         items={[[i18n("frame.menu"), "/"], [i18n("developer.route")]]}
       />
       <Paper className={classes.paper}>

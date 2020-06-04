@@ -97,12 +97,12 @@ router.post("/github-access-token", (req, res) => {
   }
 
   //get client_id and client_secret from a json file so that it is not exposed.
-  const clientId = config.get("clientId");
-  const clientSecret = config.get("clientSecret");
+  const githubClientId = config.get("githubClientId");
+  const githubClientSecret = config.get("github_client_secret");
 
   const body = JSON.stringify({
-    client_id: clientId,
-    client_secret: clientSecret,
+    client_id: githubClientId,
+    client_secret: githubClientSecret,
     code: code,
   });
 

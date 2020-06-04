@@ -2,7 +2,6 @@ import Link from "@material-ui/core/Link";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-// import { NavLink } from 'reactstrap';
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { logout } from "../../actions/authActions";
@@ -20,10 +19,6 @@ export class Logout extends Component {
 
   handleOnClick = () => {
     this.props.logout();
-    // TODO   find a more elegant way of listening to redux states.
-    // setTimeout(() => {
-    //   window.location.href = "/";
-    // }, 500);
     this.props.history.push("/");
   };
   render() {

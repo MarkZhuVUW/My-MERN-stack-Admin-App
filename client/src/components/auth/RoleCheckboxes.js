@@ -1,18 +1,18 @@
-import Checkbox from "@material-ui/core/Checkbox";
-import { blue, green, red } from "@material-ui/core/colors";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormGroup from "@material-ui/core/FormGroup";
-import { withStyles } from "@material-ui/core/styles";
-import AccessibilityNewIcon from "@material-ui/icons/AccessibilityNew";
-import BeachAccessIcon from "@material-ui/icons/BeachAccess";
-import BusinessCenterIcon from "@material-ui/icons/BusinessCenter";
-import DirectionsWalkIcon from "@material-ui/icons/DirectionsWalk";
-import { i18n } from "i18n";
-import React from "react";
+import Checkbox from '@material-ui/core/Checkbox';
+import {blue, green, red} from '@material-ui/core/colors';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import {withStyles} from '@material-ui/core/styles';
+import AccessibilityNewIcon from '@material-ui/icons/AccessibilityNew';
+import BeachAccessIcon from '@material-ui/icons/BeachAccess';
+import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
+import DirectionsWalkIcon from '@material-ui/icons/DirectionsWalk';
+import {i18n} from 'i18n';
+import React from 'react';
 const GreenCheckbox = withStyles({
   root: {
-    color: green[400],
-    "&$checked": {
+    'color': green[400],
+    '&$checked': {
       color: green[600],
     },
   },
@@ -21,8 +21,8 @@ const GreenCheckbox = withStyles({
 
 const BlueCheckbox = withStyles({
   root: {
-    color: blue[400],
-    "&$checked": {
+    'color': blue[400],
+    '&$checked': {
       color: blue[600],
     },
   },
@@ -31,14 +31,21 @@ const BlueCheckbox = withStyles({
 
 const RedCheckbox = withStyles({
   root: {
-    color: red[400],
-    "&$checked": {
+    'color': red[400],
+    '&$checked': {
       color: red[600],
     },
   },
   checked: {},
 })((props) => <Checkbox color="default" {...props} />);
 
+/**
+ * displays three role checkboxes: employer, admin and passes selected role
+ * to parent through callback functions.
+ * @param props
+ * @return {*}
+ * @constructor
+ */
 export default function RoleCheckboxes(props) {
   const [admin, setAdmin] = React.useState(false);
   const [employer, setEmployer] = React.useState(false);
@@ -49,9 +56,9 @@ export default function RoleCheckboxes(props) {
     setEmployer(false);
     setGuest(false);
     props.roleSelectedCallback(name);
-    if (name === "admin") setAdmin(true);
-    if (name === "employer") setEmployer(true);
-    if (name === "guest") setGuest(true);
+    if (name === 'admin') setAdmin(true);
+    if (name === 'employer') setEmployer(true);
+    if (name === 'guest') setGuest(true);
 
     // ({ [name]: event.target.checked });
   };
@@ -64,11 +71,11 @@ export default function RoleCheckboxes(props) {
             checked={admin}
             icon={<DirectionsWalkIcon color="disabled" />}
             checkedIcon={<AccessibilityNewIcon />}
-            onChange={() => handleChange("admin")}
+            onChange={() => handleChange('admin')}
             value="admin"
           />
         }
-        label={i18n("admin")}
+        label={i18n('admin')}
       />
 
       <FormControlLabel
@@ -77,11 +84,11 @@ export default function RoleCheckboxes(props) {
             checked={employer}
             icon={<DirectionsWalkIcon color="disabled" />}
             checkedIcon={<BusinessCenterIcon />}
-            onChange={() => handleChange("employer")}
+            onChange={() => handleChange('employer')}
             value="employer"
           />
         }
-        label={i18n("employer")}
+        label={i18n('employer')}
       />
 
       <FormControlLabel
@@ -90,11 +97,11 @@ export default function RoleCheckboxes(props) {
             checked={guest}
             icon={<DirectionsWalkIcon color="disabled" />}
             checkedIcon={<BeachAccessIcon />}
-            onChange={() => handleChange("guest")}
+            onChange={() => handleChange('guest')}
             value="guest"
           />
         }
-        label={i18n("guest")}
+        label={i18n('guest')}
       />
     </FormGroup>
   );

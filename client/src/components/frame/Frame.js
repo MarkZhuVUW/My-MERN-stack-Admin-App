@@ -41,6 +41,7 @@ const styles = {
 };
 
 class Frame extends Component {
+
   state = {
     // keeps track of whether the page is logged.
     pageLogged: false,
@@ -61,7 +62,7 @@ class Frame extends Component {
   componentDidMount() {
     // if (this.props.user) this.handlePageView();
   }
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.user !== this.props.user) this.handlePageView();
     if (
       prevProps.location.pathname !== this.props.location.pathname &&
@@ -106,18 +107,17 @@ class Frame extends Component {
     if (this.props.user.role !== "employer") return;
     const { pathname } = this.props.location;
 
-    //do not log frame page.
-    if (pathname === "frame") return;
+
     this.setState({ pageLogged: true });
 
-    var splittedPathname = pathname.split("/");
+    let splitPathname = pathname.split("/");
 
-    while (splittedPathname[splittedPathname.length - 1] === "") {
-      if (splittedPathname.length - 1 === 0) break;
-      splittedPathname.splice(splittedPathname.length - 1, 1);
+    while (splitPathname[splitPathname.length - 1] === "") {
+      if (splitPathname.length - 1 === 0) break;
+      splitPathname.splice(splitPathname.length - 1, 1);
     }
 
-    const path = splittedPathname[splittedPathname.length - 1];
+    const path = splitPathname[splitPathname.length - 1];
     if (path === "cv" || path === "portfolio" || path === "welcomepage")
       this.logPageView(path);
     else if (
@@ -135,7 +135,6 @@ class Frame extends Component {
   };
 
   render() {
-    const { classes } = this.props;
     if (!this.props.user)
       return (
         <div
@@ -262,10 +261,18 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(1),
     paddingRight: theme.spacing(1),
     paddingLeft: theme.spacing(1),
+
   },
   developer: {
     backgroundColor: "white",
   },
+  particles: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+  }
 }));
 
 function FrameContent(props) {
@@ -286,14 +293,14 @@ function FrameContent(props) {
   const translatePageToIndex = () => {
     const { pathname } = props.location;
     //trim out the "" in the last index of the array
-    var splittedPathname = pathname.split("/");
+    let splitPathname = pathname.split('/');
 
-    while (splittedPathname[splittedPathname.length - 1] === "") {
-      if (splittedPathname.length - 1 === 0) break;
-      splittedPathname.splice(splittedPathname.length - 1, 1);
+    while (splitPathname[splitPathname.length - 1] === "") {
+      if (splitPathname.length - 1 === 0) break;
+      splitPathname.splice(splitPathname.length - 1, 1);
     }
 
-    switch (splittedPathname[splittedPathname.length - 1]) {
+    switch (splitPathname[splitPathname.length - 1]) {
       case "dashboard":
         return props.user.role === "admin" ? 0 : 403;
       case "developer":
@@ -314,7 +321,7 @@ function FrameContent(props) {
     }
   };
 
-  const [selectedIndex, setSelectedIndex] = React.useState(
+  const [setSelectedIndex] = React.useState(
     translatePageToIndex()
   );
   const isSmallScreen = useMediaQuery({ query: "(max-width: 700px)" });
@@ -433,22 +440,16 @@ function FrameContent(props) {
   const isIndexInvalid = index === 403 || index === 404;
   return (
     <>
-      {localStorage.getItem("theme") == "dark" ? (
+      {localStorage.getItem("theme") === "dark" ? (
         <Particles
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-          }}
+          style={classes.particles}
           params={{
             particles: {
               number: {
-                value: 50,
+                value: 25,
               },
               size: {
-                value: 3,
+                value: 2,
               },
             },
             interactivity: {

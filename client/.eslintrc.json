@@ -2,24 +2,28 @@
    "env": {
      "browser": true,
      "es6": true
-//     "node": true
    },
-   "extends": ["plugin:react/recommended", "google"],
+
+  "extends": ["plugin:react/recommended", "google"],
    "globals": {
      "Atomics": "readonly",
      "SharedArrayBuffer": "readonly"
    },
    "parserOptions": {
+     "ecmaVersion": 6,
      "ecmaFeatures": {
        "jsx": true
      },
-     "ecmaVersion": 2018,
+
      "sourceType": "module"
    },
    "plugins": ["react", "unused-imports"],
+
    "rules": {
+     "semi": "error",
      "no-unused-vars": "off",
      "unused-imports/no-unused-imports": 2,
      "unused-imports/no-unused-vars": 1
+
    }
 }

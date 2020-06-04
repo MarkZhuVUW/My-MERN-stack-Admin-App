@@ -1,33 +1,37 @@
-import Roles from "RBAC/roles";
+import Roles from 'RBAC/roles';
 const roles = Roles.values;
 
+/**
+ * permissions
+ */
 class Permissions {
+  // eslint-disable-next-line require-jsdoc
   static get values() {
     return {
       iamEdit: {
-        id: "iamEdit",
+        id: 'iamEdit',
         allowedRoles: [roles.owner, roles.iamSecurityReviewer, roles.editor],
-        allowedStorageFolders: ["user"]
+        allowedStorageFolders: ['user'],
       },
       iamCreate: {
-        id: "iamCreate",
-        allowedRoles: [roles.owner, roles.iamSecurityReviewer, roles.editor]
+        id: 'iamCreate',
+        allowedRoles: [roles.owner, roles.iamSecurityReviewer, roles.editor],
       },
       iamImport: {
-        id: "iamImport",
-        allowedRoles: [roles.owner, roles.iamSecurityReviewer, roles.editor]
+        id: 'iamImport',
+        allowedRoles: [roles.owner, roles.iamSecurityReviewer, roles.editor],
       },
       iamRead: {
-        id: "iamRead",
+        id: 'iamRead',
         allowedRoles: [
           roles.owner,
           roles.iamSecurityReviewer,
           roles.editor,
-          roles.viewer
-        ]
+          roles.viewer,
+        ],
       },
       iamUserAutocomplete: {
-        id: "iamUserAutocomplete",
+        id: 'iamUserAutocomplete',
         allowedRoles: [
           roles.owner,
           roles.editor,
@@ -36,69 +40,69 @@ class Permissions {
           roles.petEditor,
           roles.petViewer,
           roles.bookingEditor,
-          roles.bookingViewer
-        ]
+          roles.bookingViewer,
+        ],
       },
       auditLogRead: {
-        id: "auditLogRead",
-        allowedRoles: [roles.owner, roles.auditLogViewer, roles.viewer]
+        id: 'auditLogRead',
+        allowedRoles: [roles.owner, roles.auditLogViewer, roles.viewer],
       },
       settingsEdit: {
-        id: "settingsEdit",
-        allowedRoles: [roles.owner]
+        id: 'settingsEdit',
+        allowedRoles: [roles.owner],
       },
       petImport: {
-        id: "petImport",
+        id: 'petImport',
         allowedRoles: [
           roles.owner,
           roles.editor,
           roles.entityEditor,
-          roles.petEditor
-        ]
+          roles.petEditor,
+        ],
       },
       petCreate: {
-        id: "petCreate",
+        id: 'petCreate',
         allowedRoles: [
           roles.owner,
           roles.editor,
           roles.entityEditor,
-          roles.petEditor
+          roles.petEditor,
         ],
-        allowedStorageFolders: ["pet"]
+        allowedStorageFolders: ['pet'],
       },
       petEdit: {
-        id: "petEdit",
+        id: 'petEdit',
         allowedRoles: [
           roles.owner,
           roles.editor,
           roles.entityEditor,
-          roles.petEditor
+          roles.petEditor,
         ],
-        allowedStorageFolders: ["pet"]
+        allowedStorageFolders: ['pet'],
       },
       petDestroy: {
-        id: "petDestroy",
+        id: 'petDestroy',
         allowedRoles: [
           roles.owner,
           roles.editor,
           roles.entityEditor,
-          roles.petEditor
+          roles.petEditor,
         ],
-        allowedStorageFolders: ["pet"]
+        allowedStorageFolders: ['pet'],
       },
       petRead: {
-        id: "petRead",
+        id: 'petRead',
         allowedRoles: [
           roles.owner,
           roles.editor,
           roles.viewer,
           roles.entityEditor,
           roles.petEditor,
-          roles.petViewer
-        ]
+          roles.petViewer,
+        ],
       },
       petAutocomplete: {
-        id: "petAutocomplete",
+        id: 'petAutocomplete',
         allowedRoles: [
           roles.owner,
           roles.editor,
@@ -107,62 +111,62 @@ class Permissions {
           roles.petEditor,
           roles.petViewer,
           roles.bookingEditor,
-          roles.bookingViewer
-        ]
+          roles.bookingViewer,
+        ],
       },
 
       bookingImport: {
-        id: "bookingImport",
+        id: 'bookingImport',
         allowedRoles: [
           roles.owner,
           roles.editor,
           roles.entityEditor,
-          roles.bookingEditor
-        ]
+          roles.bookingEditor,
+        ],
       },
       bookingCreate: {
-        id: "bookingCreate",
+        id: 'bookingCreate',
         allowedRoles: [
           roles.owner,
           roles.editor,
           roles.entityEditor,
-          roles.bookingEditor
+          roles.bookingEditor,
         ],
-        allowedStorageFolders: ["booking"]
+        allowedStorageFolders: ['booking'],
       },
       bookingEdit: {
-        id: "bookingEdit",
+        id: 'bookingEdit',
         allowedRoles: [
           roles.owner,
           roles.editor,
           roles.entityEditor,
-          roles.bookingEditor
+          roles.bookingEditor,
         ],
-        allowedStorageFolders: ["booking"]
+        allowedStorageFolders: ['booking'],
       },
       bookingDestroy: {
-        id: "bookingDestroy",
+        id: 'bookingDestroy',
         allowedRoles: [
           roles.owner,
           roles.editor,
           roles.entityEditor,
-          roles.bookingEditor
+          roles.bookingEditor,
         ],
-        allowedStorageFolders: ["booking"]
+        allowedStorageFolders: ['booking'],
       },
       bookingRead: {
-        id: "bookingRead",
+        id: 'bookingRead',
         allowedRoles: [
           roles.owner,
           roles.editor,
           roles.viewer,
           roles.entityEditor,
           roles.bookingEditor,
-          roles.bookingViewer
-        ]
+          roles.bookingViewer,
+        ],
       },
       bookingAutocomplete: {
-        id: "bookingAutocomplete",
+        id: 'bookingAutocomplete',
         allowedRoles: [
           roles.owner,
           roles.editor,
@@ -171,14 +175,18 @@ class Permissions {
           roles.bookingEditor,
           roles.bookingViewer,
           roles.petEditor,
-          roles.petViewer
-        ]
-      }
+          roles.petViewer,
+        ],
+      },
     };
   }
 
+  /**
+   * return
+   * @return {*[]}
+   */
   static get asArray() {
-    return Object.keys(this.values).map(value => {
+    return Object.keys(this.values).map((value) => {
       return this.values[value];
     });
   }

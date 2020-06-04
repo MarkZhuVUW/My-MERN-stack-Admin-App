@@ -131,7 +131,7 @@ class SignInSide extends Component {
     history: PropTypes.object.isRequired,
   };
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
     const { error } = this.props;
 
     if (error !== prevProps.error) {
@@ -228,7 +228,7 @@ class SignInSide extends Component {
   };
   render() {
     const { classes, userLoaded, error, user } = this.props;
-    const { email, msg } = this.state;
+    const {msg} = this.state;
 
     const responsiveDialogCallback = () => {
       this.setState({
@@ -331,7 +331,7 @@ class SignInSide extends Component {
                     <span>
                       <GitHubLogin
                         buttonText={i18n("loginPage.signInWithGithub")}
-                        clientId={confidentials.client_id}
+                        clientId={confidentials.github_client_id}
                         redirectUri=""
                         onSuccess={(res) => this.onGithubSignIn(res.code)}
                         onFailure={(res) => console.error(res)}
@@ -359,7 +359,7 @@ class SignInSide extends Component {
                       id="email"
                       label={i18n("loginPage.email")}
                       name="email"
-                      error={this.state.emailErrorMsg ? true : false}
+                      error={!!this.state.emailErrorMsg}
                       helperText={this.state.emailErrorMsg}
                       onChange={this.onChange}
                     />
@@ -372,7 +372,7 @@ class SignInSide extends Component {
                       label={i18n("loginPage.password")}
                       type="password"
                       id="password"
-                      error={this.state.passwordErrorMsg ? true : false}
+                      error={!!this.state.passwordErrorMsg}
                       helperText={this.state.passwordErrorMsg}
                       onChange={this.onChange}
                     />

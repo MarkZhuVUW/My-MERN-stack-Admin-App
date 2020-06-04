@@ -97,7 +97,7 @@ class ResponsiveDialog extends Component {
   componentDidUpdate(prevProps) {
     const { error, type } = this.props;
     const isAuthenticated =
-      localStorage.getItem("authenticated") === "true" ? true : false;
+      localStorage.getItem("authenticated") === "true";
 
     if (isAuthenticated && type !== "User Admin Error Handling") {
       this.props.cb(true);
@@ -139,9 +139,7 @@ class ResponsiveDialog extends Component {
     e.preventDefault();
 
     const { code } = this.state;
-    const { alertMsg } = this.props;
-
-    // Attempt to login
+// Attempt to login
     this.props.TFAVerify(this.props.email, code);
 
     //clear errors
@@ -251,7 +249,7 @@ class ResponsiveDialog extends Component {
                 <Typography>
                   {i18n("responsiveDialog.hi") + user.email}
                 </Typography>
-                <img src={TFA.dataURL} />
+                <img src={TFA.dataURL}  alt={"tfa qrcode"}/>
               </div>
             ) : (
               <div className={classes.centerItemsContainer}>
@@ -265,7 +263,7 @@ class ResponsiveDialog extends Component {
                       style={{
                         padding: theme.spacing(2),
                       }}
-                    />
+                     alt={"user avatar"}/>
                   </div>
                 ) : null}
               </div>

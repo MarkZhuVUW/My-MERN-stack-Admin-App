@@ -37,7 +37,7 @@ class Dashboard extends Component {
     //   this.props.loadAllLogsForSpecificUser(this.props.user._id);
   }
 
-  componentDidUpdate(prevProps) {}
+  componentDidUpdate(prevProps, prevState, snapshot) {}
 
   toggle = () => {
     // Clear errors
@@ -60,7 +60,7 @@ class Dashboard extends Component {
   };
 
   render() {
-    const { classes, allLogs, user } = this.props;
+    const {allLogs, user } = this.props;
     if (!user || !allLogs)
       return (
         <div

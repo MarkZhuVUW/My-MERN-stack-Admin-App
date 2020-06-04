@@ -27,7 +27,7 @@ class Portfolio extends Component {
       this.props.getGithubUser("MarkZhuVUW");
     }, 1000);
   }
-  componentDidUpdate() {}
+  componentDidUpdate(prevProp, prevState, snapshot) {}
 
   // handleDownload = (href) => {
   //   // console.log(this.props.user);

@@ -25,7 +25,7 @@ export default class HomePolarChart extends React.Component {
    * @memberof HomePolarChart
    */
   groupByCompany = () => {
-    var groupedCompanies = {};
+    let groupedCompanies = {};
 
     this.props.data
       .filter((user) => user[3] === "employer")
@@ -39,7 +39,7 @@ export default class HomePolarChart extends React.Component {
     return groupedCompanies;
   };
 
-  componentDidUpdate(prevProp) {
+  componentDidUpdate(prevProp, prevState, snapshot) {
     // this.myChart.data.labels = this.props.data.map(d => d.label);
     // this.myChart.data.datasets[0].data = this.props.data.map(d => d.value);
     if (prevProp.data !== this.props.data) {

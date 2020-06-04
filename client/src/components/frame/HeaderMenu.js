@@ -6,37 +6,37 @@ import {
   Menu,
   MenuItem,
   Typography,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { Person as AccountIcon, Send as SendIcon } from "@material-ui/icons";
-import Brightness4Icon from "@material-ui/icons/Brightness4";
-import Brightness5Icon from "@material-ui/icons/Brightness5";
-import DraftsIcon from "@material-ui/icons/Drafts";
-import MailIcon from "@material-ui/icons/Mail";
-import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
-import TranslateIcon from "@material-ui/icons/Translate";
-import classNames from "classnames";
-import { i18n, setLanguageCode } from "i18n";
-import React, { useState } from "react";
-import "../../css3/bouncingEffect.css";
-import Logout from "../auth/Logout";
-import UserAvatar from "../UserAvatar";
+} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
+import {Person as AccountIcon, Send as SendIcon} from '@material-ui/icons';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
+import Brightness5Icon from '@material-ui/icons/Brightness5';
+import DraftsIcon from '@material-ui/icons/Drafts';
+import MailIcon from '@material-ui/icons/Mail';
+import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
+import TranslateIcon from '@material-ui/icons/Translate';
+import classNames from 'classnames';
+import {i18n, setLanguageCode} from 'i18n';
+import React, {useState} from 'react';
+import '../../css3/bouncingEffect.css';
+import Logout from '../auth/Logout';
+import UserAvatar from '../UserAvatar';
 const useStyles = makeStyles((theme) => ({
   logotype: {
-    color: "white",
+    color: 'white',
     marginLeft: theme.spacing(2.5),
     marginRight: theme.spacing(2.5),
     fontWeight: 500,
     fontSize: 18,
-    whiteSpace: "nowrap",
-    [theme.breakpoints.down("xs")]: {
-      display: "none",
+    whiteSpace: 'nowrap',
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
     },
   },
   appBar: {
-    width: "100vw",
+    width: '100vw',
     zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["margin"], {
+    transition: theme.transitions.create(['margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: theme.spacing(2),
   },
   hide: {
-    display: "none",
+    display: 'none',
   },
   grow: {
     flexGrow: 1,
@@ -56,8 +56,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(7),
   },
   headerMenuList: {
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
   },
 
   headerMenuButton: {
@@ -71,61 +71,59 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 28,
   },
   headerIconCollapse: {
-    color: "white",
+    color: 'white',
   },
   menu: {
     minWidth: 265,
   },
   menuUser: {
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
     padding: theme.spacing(2),
   },
 
   menuLink: {
     fontSize: 16,
-    textDecoration: "none",
+    textDecoration: 'none',
   },
   messageNotification: {
-    height: "auto",
-    display: "flex",
-    alignItems: "center",
-    "&:hover, &:focus": {
+    'height': 'auto',
+    'display': 'flex',
+    'alignItems': 'center',
+    '&:hover, &:focus': {
       backgroundColor: theme.palette.background.light,
     },
   },
   messageNotificationSide: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     marginRight: theme.spacing(2),
   },
   messageNotificationBodySide: {
-    alignItems: "flex-start",
+    alignItems: 'flex-start',
     marginRight: 0,
   },
   sendMessageButton: {
     margin: theme.spacing(4),
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
-    textTransform: "none",
+    textTransform: 'none',
   },
   sendButtonIcon: {
     marginLeft: theme.spacing(2),
   },
 }));
 
+/**
+ *
+ * @param props
+ * @return {*}
+ * @constructor
+ */
 export default function HeaderMenu(props) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const classes = useStyles();
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   // local
   const [mailMenu, setMailMenu] = useState(null);
@@ -136,31 +134,31 @@ export default function HeaderMenu(props) {
   const messages = [
     {
       id: 0,
-      variant: "warning",
-      name: "Jane Hew",
-      message: "Hey! How is it going?",
-      time: "9:32",
+      variant: 'warning',
+      name: 'Jane Hew',
+      message: 'Hey! How is it going?',
+      time: '9:32',
     },
     {
       id: 1,
-      variant: "success",
-      name: "Lloyd Brown",
-      message: "Check out my new Dashboard",
-      time: "9:18",
+      variant: 'success',
+      name: 'Lloyd Brown',
+      message: 'Check out my new Dashboard',
+      time: '9:18',
     },
     {
       id: 2,
-      variant: "primary",
-      name: "Mark Winstein",
-      message: "I want rearrange the appointment",
-      time: "9:15",
+      variant: 'primary',
+      name: 'Mark Winstein',
+      message: 'I want rearrange the appointment',
+      time: '9:15',
     },
     {
       id: 3,
-      variant: "secondary",
-      name: "Liana Dutti",
-      message: "Good news from sale department",
-      time: "9:09",
+      variant: 'secondary',
+      name: 'Liana Dutti',
+      message: 'Good news from sale department',
+      time: '9:09',
     },
   ];
 
@@ -181,8 +179,8 @@ export default function HeaderMenu(props) {
         className={classes.headerMenuButton}
       >
         <Badge color="secondary">
-          <TranslateIcon classes={{ root: classes.headerIcon }} />
-          <Typography>{i18n("language.language")}</Typography>
+          <TranslateIcon classes={{root: classes.headerIcon}} />
+          <Typography>{i18n('language.language')}</Typography>
         </Badge>
       </IconButton>
       <Menu
@@ -191,17 +189,17 @@ export default function HeaderMenu(props) {
         anchorEl={languageMenu}
         onClose={() => setLanguageMenu(null)}
         className={classes.headerMenu}
-        classes={{ paper: classes.menu }}
+        classes={{paper: classes.menu}}
         disableAutoFocusItem
       >
         <MenuItem
           onClick={() => {
-            setLanguage("chinese");
+            setLanguage('chinese');
           }}
         >
           中文
         </MenuItem>
-        <MenuItem onClick={() => setLanguage("en")}>english</MenuItem>
+        <MenuItem onClick={() => setLanguage('en')}>english</MenuItem>
       </Menu>
       {/* language menu */}
 
@@ -211,25 +209,25 @@ export default function HeaderMenu(props) {
         aria-haspopup="true"
         aria-controls="theme-menu"
         onClick={(e) => {
-          if (localStorage.getItem("theme") !== "dark") {
-            localStorage.setItem("theme", "dark");
+          if (localStorage.getItem('theme') !== 'dark') {
+            localStorage.setItem('theme', 'dark');
             props.themeCallback();
           } else {
-            localStorage.setItem("theme", "default");
+            localStorage.setItem('theme', 'default');
           }
           props.themeCallback();
         }}
         className={classes.headerMenuButton}
       >
         <Badge color="secondary">
-          {localStorage.getItem("theme") == "dark" ? (
+          {localStorage.getItem('theme') == 'dark' ? (
             <Brightness4Icon
-              classes={{ root: classes.headerIcon }}
+              classes={{root: classes.headerIcon}}
               className="swayTranslate"
             />
           ) : (
             <Brightness5Icon
-              classes={{ root: classes.headerIcon }}
+              classes={{root: classes.headerIcon}}
               className="swayTranslate"
             />
           )}
@@ -254,12 +252,12 @@ export default function HeaderMenu(props) {
         >
           {mailMenu ? (
             <DraftsIcon
-              classes={{ root: classes.headerIcon }}
+              classes={{root: classes.headerIcon}}
               className="bounce"
             />
           ) : (
             <MailIcon
-              classes={{ root: classes.headerIcon }}
+              classes={{root: classes.headerIcon}}
               className="bounce"
             />
           )}
@@ -270,9 +268,9 @@ export default function HeaderMenu(props) {
         open={Boolean(mailMenu)}
         anchorEl={mailMenu}
         onClose={() => setMailMenu(null)}
-        MenuListProps={{ className: classes.headerMenuList }}
+        MenuListProps={{className: classes.headerMenuList}}
         className={classes.headerMenu}
-        classes={{ paper: classes.menu }}
+        classes={{paper: classes.menu}}
         disableAutoFocusItem
       >
         <div className={classes.menuUser}>
@@ -293,8 +291,8 @@ export default function HeaderMenu(props) {
             </div>
             <div
               className={classNames(
-                classes.messageNotificationSide,
-                classes.messageNotificationBodySide
+                  classes.messageNotificationSide,
+                  classes.messageNotificationBodySide
               )}
             >
               <Typography gutterBottom>{message.name}</Typography>
@@ -340,12 +338,12 @@ export default function HeaderMenu(props) {
           <>
             {profileMenu ? (
               <AccountIcon
-                classes={{ root: classes.headerIcon }}
+                classes={{root: classes.headerIcon}}
                 className="swirl"
               />
             ) : (
               <PersonOutlineIcon
-                classes={{ root: classes.headerIcon }}
+                classes={{root: classes.headerIcon}}
                 className="swirl"
               />
             )}
@@ -358,11 +356,11 @@ export default function HeaderMenu(props) {
         anchorEl={profileMenu}
         onClose={() => setProfileMenu(null)}
         className={classes.headerMenu}
-        classes={{ paper: classes.menu }}
+        classes={{paper: classes.menu}}
         disableAutoFocusItem
       >
         <div className={classes.menuUser}>
-          <Typography variant="h4">{i18n("developerName")}</Typography>
+          <Typography variant="h4">{i18n('developerName')}</Typography>
           <Typography
             // className={classes.menuLink}
             component="a"
@@ -381,11 +379,11 @@ export default function HeaderMenu(props) {
           </Typography>
         </div>
         <MenuItem>
-          <AccountIcon /> {i18n("profile")}
+          <AccountIcon /> {i18n('profile')}
         </MenuItem>
 
         <MenuItem>
-          <AccountIcon /> {i18n("messages")}
+          <AccountIcon /> {i18n('messages')}
         </MenuItem>
         <div className={classes.menuUser}>
           <Logout />
