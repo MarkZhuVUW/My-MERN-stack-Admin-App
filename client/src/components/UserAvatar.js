@@ -17,10 +17,10 @@ const useStyles = makeStyles(() => ({
   }
 }));
 export default function UserAvatar({ color = "primary", ...props }) {
-  var classes = useStyles();
-  var theme = useTheme();
+  const classes = useStyles();
+  const theme = useTheme();
 
-  var letters = props.name
+  let letters = props.name
     .split(" ")
     .map(word => word[0])
     .join("");

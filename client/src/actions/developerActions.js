@@ -1,6 +1,6 @@
-import axios from "axios";
-import { returnErrors } from "./errorActions";
-import { LOAD_SWAGGER_UI_ERROR, SWAGGER_UI_LOADED } from "./types";
+import axios from 'axios';
+import {returnErrors} from './errorActions';
+import {LOAD_SWAGGER_UI_ERROR, SWAGGER_UI_LOADED} from './types';
 
 // Setup config/headers and token
 export const tokenConfig = (getState) => {
@@ -10,34 +10,36 @@ export const tokenConfig = (getState) => {
   // Headers
   const config = {
     headers: {
-      "Content-type": "application/json",
+      'Content-type': 'application/json',
     },
   };
 
   // If token, add to headers
   if (token) {
-    config.headers["x-auth-token"] = token;
+    config.headers['x-auth-token'] = token;
   }
 
   return config;
 };
 
+
 /**
  * load swaggerUI swagger.json file.
+ * @return {function(...[*]=)}
  */
 export const loadSwaggerUI = () => (dispatch, getState) => {
   axios
-    .get("/api/swagger", tokenConfig(getState))
-    .then((res) =>
-      dispatch({
-        type: SWAGGER_UI_LOADED,
-        payload: res.data,
-      })
-    )
-    .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
-      dispatch({
-        type: LOAD_SWAGGER_UI_ERROR,
+      .get('/api/swagger', tokenConfig(getState))
+      .then((res) =>
+        dispatch({
+          type: SWAGGER_UI_LOADED,
+          payload: res.data,
+        })
+      )
+      .catch((err) => {
+        dispatch(returnErrors(err.response.data, err.response.status));
+        dispatch({
+          type: LOAD_SWAGGER_UI_ERROR,
+        });
       });
-    });
 };

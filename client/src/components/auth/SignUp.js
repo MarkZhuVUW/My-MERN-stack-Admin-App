@@ -91,7 +91,7 @@ class SignUp extends Component {
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
   };
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
     const { error } = this.props;
     if (error !== prevProps.error) {
       // Check for register error
@@ -173,7 +173,7 @@ class SignUp extends Component {
   };
 
   render() {
-    const { classes, error, isLoading } = this.props;
+    const { classes, error} = this.props;
     const roleSelectedCallback = (selectedRole) => {
       this.setState({
         selectedRole: selectedRole,
@@ -226,7 +226,7 @@ class SignUp extends Component {
                       fullWidth
                       id="name"
                       label={i18n("registerPage.name")}
-                      error={this.state.nameErrorMsg ? true : false}
+                      error={!!this.state.nameErrorMsg}
                       helperText={this.state.nameErrorMsg}
                       onChange={this.onChange}
                     />
@@ -240,7 +240,7 @@ class SignUp extends Component {
                       id="email"
                       label={i18n("registerPage.email")}
                       name="email"
-                      error={this.state.emailErrorMsg ? true : false}
+                      error={!!this.state.emailErrorMsg}
                       helperText={this.state.emailErrorMsg}
                       onChange={this.onChange}
                     />
@@ -254,7 +254,7 @@ class SignUp extends Component {
                       label={i18n("registerPage.password")}
                       type="password"
                       id="password"
-                      error={this.state.passwordErrorMsg ? true : false}
+                      error={!!this.state.passwordErrorMsg}
                       helperText={this.state.passwordErrorMsg}
                       onChange={this.onChange}
                     />
@@ -302,7 +302,7 @@ class SignUp extends Component {
                     (this.state.selectedRole === "employer" &&
                       !this.state.checked) ||
                     this.state.isLoading ||
-                    this.state.selectedRole == "" ||
+                    this.state.selectedRole === "" ||
                     this.state.email === "" ||
                     this.state.password === "" ||
                     this.state.passwordErrorMsg !== null ||

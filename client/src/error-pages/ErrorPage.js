@@ -15,6 +15,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import compose from "recompose/compose";
+import ReactPlayer from 'react-player';
 
 // import { logLoginSuccess } from "../../actions/adminActions";
 const theme = createMuiTheme({
@@ -130,16 +131,12 @@ class ErrorPage extends Component {
         <Box style={{ marginTop: "5%" }} />
 
         <Container maxWidth="lg" className={classes.content}>
-          {/* <ReactPlayer
+          <ReactPlayer
             url="https://www.youtube.com/watch?v=6dNho0h_yQQ"
             playing={false}
             width="100%"
-          /> */}
-          <iframe
-            style={{ width: "100%", height: "60%" }}
-            src="https://www.youtube.com/embed/6dNho0h_yQQ"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture "
-          ></iframe>
+          />
+
           {conditionalRendering()}
         </Container>
       </div>

@@ -43,10 +43,10 @@ class UserAdmin extends Component {
     this.props.loadAllUsers();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProp, prevState, snapshot) {
     const { error } = this.props;
 
-    if (error !== prevProps.error) {
+    if (error !== prevProp.error) {
       // Check for register error
 
       if (error.id === "REGISTER_FAIL") {
@@ -85,7 +85,7 @@ class UserAdmin extends Component {
     this.toggle();
   };
   render() {
-    const { classes, allUsers, user, error } = this.props;
+    const {allUsers, user, error } = this.props;
 
     return (
       <SettingsContent
@@ -149,7 +149,7 @@ function SettingsContent(props) {
   const classes = useStyles();
 
   const [isCreatingUser, setIsCreatingUser] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [setIsLoading] = useState(false);
 
   const [showUserCreationProgress, setShowUserCreationProgress] = useState(
     false
@@ -167,7 +167,7 @@ function SettingsContent(props) {
     password: "",
     role: "",
   });
-  const handlecreateUser = (event) => {
+  const handleCreateUser = (event) => {
     setIsCreatingUser(true);
     setShowUserCreationProgress(true);
   };
@@ -266,7 +266,7 @@ function SettingsContent(props) {
 
             <Grid item xs={12}>
               {showUserCreationProgress ? (
-                <AnimatedProgress callback={cb}></AnimatedProgress>
+                <AnimatedProgress callback={cb}/>
               ) : null}
             </Grid>
           </Grid>
@@ -352,7 +352,7 @@ function SettingsContent(props) {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={handlecreateUser}
+                  onClick={handleCreateUser}
                 >
                   <Typography variant="body1" style={{ color: "white" }}>
                     {i18n("useradmin.createUser")}

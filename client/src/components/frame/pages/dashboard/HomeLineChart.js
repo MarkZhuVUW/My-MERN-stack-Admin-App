@@ -13,7 +13,7 @@ export default class HomeLineChart extends React.Component {
   }
 
   /**
-   * Group page view logs by company.
+   * * Group page view logs by company.
    * Example value:
    * [
    * 0 : 40, // represents welcome page
@@ -22,11 +22,10 @@ export default class HomeLineChart extends React.Component {
    * 3 : 10, // represents 403 error page
    * 4 : 10, // represents 404 error page
    * ]
-   *
-   * @memberof HomeLineChart
+   * @returns number[]
    */
   groupPageViewsByCompany = () => {
-    var groupedPages = [0, 0, 0, 0, 0];
+    let groupedPages = [0, 0, 0, 0, 0];
     // console.log(this.props.data);
     this.props.data
       .filter((log) => log[3] === "employer")
@@ -39,11 +38,16 @@ export default class HomeLineChart extends React.Component {
     return groupedPages;
   };
 
+  /**
+   *
+   * @param page
+   * @returns {number}
+   */
   parsePageToIndex = (page) => {
     switch (page) {
       case "welcomepage":
         return 0;
-      case "porfolio":
+      case "portfolio":
         return 1;
       case "cv":
         return 2;
@@ -53,7 +57,7 @@ export default class HomeLineChart extends React.Component {
         return 4;
     }
   };
-  componentDidUpdate(prevProp) {
+  componentDidUpdate(prevProp, prevState, snapshot) {
     let pageViewData = this.groupPageViewsByCompany();
     if (prevProp.data !== this.props.data) {
       this.setState({

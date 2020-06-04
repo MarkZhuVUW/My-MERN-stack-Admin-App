@@ -60,7 +60,7 @@ class App extends Component {
               type: localStorage.getItem("theme") === "dark" ? "dark" : "light",
             },
           },
-          localStorage.getItem("language") == "en" ? enUS : zhCN
+          localStorage.getItem("language") === "en" ? enUS : zhCN
         ),
       });
     };

@@ -71,7 +71,7 @@ export default function (state = initialState, action) {
         }),
       };
     case REGISTER_SUCCESS:
-      return { ...state, successMsg: "registration successfull" };
+      return { ...state, successMsg: "registration successful" };
     case LOGIN_SUCCESS:
       // console.log(action.payload.token);
       localStorage.setItem("token", action.payload.token);
@@ -155,18 +155,11 @@ export default function (state = initialState, action) {
     //     isTFAing: true
     //   };
 
-    case TFA_SETUP_SUCCESS:
-      return {
-        ...state,
-        TFA: action.payload,
-        TFALoaded: true,
-      };
-
     default:
       return {
         ...state,
         authenticated:
-          localStorage.getItem("authenticated") === "true" ? true : false,
+          localStorage.getItem("authenticated") === "true",
       };
   }
 }

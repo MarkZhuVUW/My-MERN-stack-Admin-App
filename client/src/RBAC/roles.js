@@ -1,4 +1,4 @@
-import { i18n } from 'i18n';
+import {i18n} from 'i18n';
 import _values from 'lodash/values';
 
 class Roles {
@@ -18,6 +18,11 @@ class Roles {
     };
   }
 
+  /**
+   *
+   * @param roleId
+   * @return {null|undefined|*}
+   */
   static labelOf(roleId) {
     if (!this.values[roleId]) {
       return roleId;
@@ -25,6 +30,7 @@ class Roles {
 
     return i18n(`roles.${roleId}.label`);
   }
+
 
   static descriptionOf(roleId) {
     if (!this.values[roleId]) {

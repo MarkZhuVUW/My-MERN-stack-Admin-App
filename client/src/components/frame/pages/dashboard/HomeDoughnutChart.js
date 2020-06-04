@@ -12,7 +12,7 @@ export default class HomeDoughnutChart extends React.Component {
     this.chartRef = React.createRef();
   }
 
-  componentDidUpdate(prevProp) {
+  componentDidUpdate(prevProp, prevState, snapshot) {
     let roleData = this.groupByRole();
 
     if (prevProp.data !== this.props.data) {
@@ -32,18 +32,17 @@ export default class HomeDoughnutChart extends React.Component {
   }
 
   /**
-   * Group logs by role.
+   * * Group logs by role.
    * Example value:
    * {
    *  admin: 10,
    *  employer: 25,
    *  guest: 5
    * }
-   *
-   * @memberof HomeDoughnutChart
+   * @returns number[]
    */
   groupByRole = () => {
-    var groupedRoles = [];
+    let groupedRoles = [];
     this.props.data
       .map((log) => log[3])
       .forEach((element) => {
@@ -53,6 +52,7 @@ export default class HomeDoughnutChart extends React.Component {
 
     return groupedRoles;
   };
+
 
   componentDidMount() {
     const { roleData } = this.state;
@@ -84,7 +84,6 @@ export default class HomeDoughnutChart extends React.Component {
    * @param {*} index
    */
   colorChooser = (index) => {
-    // console.log(index);
     switch (index) {
       case 0:
         return "#FF6384";

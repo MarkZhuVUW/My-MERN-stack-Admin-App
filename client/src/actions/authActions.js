@@ -1,5 +1,5 @@
-import axios from "axios";
-import { returnErrors } from "./errorActions";
+import axios from 'axios';
+import {returnErrors} from './errorActions';
 import {
   ALL_USERS_LOADED,
   AUTH_ERROR,
@@ -22,7 +22,7 @@ import {
   USER_DELETED,
   USER_LOADED,
   USER_LOADING,
-} from "./types";
+} from './types';
 
 // CLEAR Success message
 export const clearSuccessMsg = () => {
@@ -34,46 +34,46 @@ export const clearSuccessMsg = () => {
 // Check token & load user
 export const loadUser = () => (dispatch, getState) => {
   // User loading
-  dispatch({ type: USER_LOADING });
+  dispatch({type: USER_LOADING});
 
-  const loadUserPromise = axios.get("/api/auth/user", tokenConfig(getState));
+  const loadUserPromise = axios.get('/api/auth/user', tokenConfig(getState));
   axios
-    .get("/api/auth/user", tokenConfig(getState))
-    .then((res) =>
-      dispatch({
-        type: USER_LOADED,
-        payload: res.data,
-      })
-    )
-    .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
-      dispatch({
-        type: AUTH_ERROR,
+      .get('/api/auth/user', tokenConfig(getState))
+      .then((res) =>
+        dispatch({
+          type: USER_LOADED,
+          payload: res.data,
+        }),
+      )
+      .catch((err) => {
+        dispatch(returnErrors(err.response.data, err.response.status));
+        dispatch({
+          type: AUTH_ERROR,
+        });
       });
-    });
   return loadUserPromise;
 };
 
 // get all registered users
 export const loadAllUsers = () => (dispatch, getState) => {
   // User loading
-  dispatch({ type: USER_LOADING });
+  dispatch({type: USER_LOADING});
 
-  var authPromise = axios.get("/api/users", tokenConfig(getState));
+  const authPromise = axios.get('/api/users', tokenConfig(getState));
 
   authPromise
-    .then((res) =>
-      dispatch({
-        type: ALL_USERS_LOADED,
-        payload: res.data,
-      })
-    )
-    .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
-      dispatch({
-        type: AUTH_ERROR,
+      .then((res) =>
+        dispatch({
+          type: ALL_USERS_LOADED,
+          payload: res.data,
+        }),
+      )
+      .catch((err) => {
+        dispatch(returnErrors(err.response.data, err.response.status));
+        dispatch({
+          type: AUTH_ERROR,
+        });
       });
-    });
 
   return authPromise;
 };
@@ -83,65 +83,65 @@ export const register = (user) => (dispatch) => {
   // Headers
   const config = {
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   };
-  const { name, email, password, role, company } = user;
+  const {name, email, password, role, company} = user;
   // Request body
-  const body = JSON.stringify({ name, email, password, role, company });
+  const body = JSON.stringify({name, email, password, role, company});
 
   const authPromise = axios
-    .post("/api/users", body, config)
-    .then((res) =>
-      dispatch({
-        type: REGISTER_SUCCESS,
-        payload: res.data,
-      })
-    )
-    .catch((err) => {
-      dispatch(
-        returnErrors(err.response.data, err.response.status, "REGISTER_FAIL")
-      );
-      dispatch({
-        type: REGISTER_FAIL,
+      .post('/api/users', body, config)
+      .then((res) =>
+        dispatch({
+          type: REGISTER_SUCCESS,
+          payload: res.data,
+        }),
+      )
+      .catch((err) => {
+        dispatch(
+            returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL'),
+        );
+        dispatch({
+          type: REGISTER_FAIL,
+        });
       });
-    });
 
-  //not sure if it is the right way to do redux.
+  // not sure if it is the right way to do redux.
   return authPromise;
 };
 
 // Login User
 
-export const login = ({ email, password }) => (dispatch) => {
+export const login = ({email, password}) => (dispatch) => {
   // Headers
   const config = {
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   };
 
   // Request body
-  const body = JSON.stringify({ email, password });
+  const body = JSON.stringify({email, password});
 
   const authPromise = axios
-    .post("/api/auth", body, config)
-    .then((res) =>
-      dispatch({
-        type: LOGIN_SUCCESS,
-        payload: res.data,
-      })
-    )
-    .catch((err) => {
-      dispatch(
-        returnErrors(err.response.data, err.response.status, "LOGIN_FAIL")
-      );
-      dispatch({
-        type: LOGIN_FAIL,
+      .post('/api/auth', body, config)
+      .then((res) =>
+        dispatch({
+          type: LOGIN_SUCCESS,
+          payload: res.data,
+        }),
+      )
+      .catch((err) => {
+        dispatch(
+            returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL'),
+        );
+        dispatch({
+          type: LOGIN_FAIL,
+        });
       });
-    });
 
-  //not sure if it is the right way to do redux.
+  // not sure if it is the right way to do redux.
   return authPromise;
 };
 
@@ -155,38 +155,39 @@ export const logout = () => {
 // Setup config/headers and token
 export const tokenConfig = (getState) => {
   // Get token from redux
-  let token = getState().auth.token;
+  const token = getState().auth.token;
   // get githubAcessToken from localStorage
-  let githubAccessToken = localStorage.getItem("githubAccessToken");
+  const githubAccessToken = localStorage.getItem('githubAccessToken');
 
   // Headers
   const config = {
     headers: {
-      "Content-type": "application/json",
+      'Content-type': 'application/json',
     },
   };
 
   // If token, add to headers
-  if (token) config.headers["x-auth-token"] = token;
+  if (token) config.headers['x-auth-token'] = token;
 
-  if (githubAccessToken)
-    config.headers["github-access-token"] = githubAccessToken;
+  if (githubAccessToken) {
+    config.headers['github-access-token'] = githubAccessToken;
+  }
 
   return config;
 };
 
 export const deleteUser = (id) => (dispatch, getState) => {
   axios
-    .delete(`/api/users/${id}`, tokenConfig(getState))
-    .then((res) =>
-      dispatch({
-        type: USER_DELETED,
-        payload: id,
-      })
-    )
-    .catch((err) =>
-      dispatch(returnErrors(err.response.data, err.response.status))
-    );
+      .delete(`/api/users/${id}`, tokenConfig(getState))
+      .then((res) =>
+        dispatch({
+          type: USER_DELETED,
+          payload: id,
+        }),
+      )
+      .catch((err) =>
+        dispatch(returnErrors(err.response.data, err.response.status)),
+      );
 };
 
 // --------------------------- google 2fa auth . ---------------------------------------------//
@@ -194,67 +195,67 @@ export const deleteUser = (id) => (dispatch, getState) => {
 // --------------------------- google 2fa auth . ---------------------------------------------//
 // --------------------------- google 2fa auth . ---------------------------------------------//
 
-export const getTFA = ({ email, domainName, uniqueId }) => (dispatch) => {
+export const getTFA = ({email, domainName, uniqueId}) => (dispatch) => {
   // Headers
   const config = {
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   };
 
   // Request body
-  const body = JSON.stringify({ email, domainName, uniqueId });
+  const body = JSON.stringify({email, domainName, uniqueId});
   const authPromise = axios
-    .post("/api/TFA/", body, config)
-    .then((res) => {
-      dispatch({
-        type: TFA_LOADED,
-        payload: res.data,
+      .post('/api/TFA/', body, config)
+      .then((res) => {
+        dispatch({
+          type: TFA_LOADED,
+          payload: res.data,
+        });
+      })
+      .catch((err) => {
+        dispatch(
+            returnErrors(err.response.data, err.response.status, 'TFA_LOAD_FAIL'),
+        );
+        dispatch({
+          type: TFA_LOAD_FAIL,
+        });
       });
-    })
-    .catch((err) => {
-      dispatch(
-        returnErrors(err.response.data, err.response.status, "TFA_LOAD_FAIL")
-      );
-      dispatch({
-        type: TFA_LOAD_FAIL,
-      });
-    });
 
-  //not sure if it is the right way to do redux.
+  // not sure if it is the right way to do redux.
   return authPromise;
 };
 
 // google 2fa auth setup.
-export const TFASetup = ({ email, domainName, uniqueId }) => (dispatch) => {
+export const TFASetup = ({email, domainName, uniqueId}) => (dispatch) => {
   // Headers
 
   const config = {
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   };
 
   // Request body
-  const body = JSON.stringify({ email, domainName, uniqueId });
+  const body = JSON.stringify({email, domainName, uniqueId});
   const authPromise = axios
-    .post("/api/TFA/setup", body, config)
-    .then((res) => {
-      dispatch({
-        type: TFA_SETUP_SUCCESS,
-        payload: res.data,
+      .post('/api/TFA/setup', body, config)
+      .then((res) => {
+        dispatch({
+          type: TFA_SETUP_SUCCESS,
+          payload: res.data,
+        });
+      })
+      .catch((err) => {
+        dispatch(
+            returnErrors(err.response.data, err.response.status, 'TFA_SETUP_FAIL'),
+        );
+        dispatch({
+          type: TFA_SETUP_FAIL,
+        });
       });
-    })
-    .catch((err) => {
-      dispatch(
-        returnErrors(err.response.data, err.response.status, "TFA_SETUP_FAIL")
-      );
-      dispatch({
-        type: TFA_SETUP_FAIL,
-      });
-    });
 
-  //not sure if it is the right way to do redux.
+  // not sure if it is the right way to do redux.
   return authPromise;
 };
 
@@ -263,36 +264,36 @@ export const TFAVerify = (email, code) => (dispatch) => {
   // Headers
   const config = {
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   };
 
   // Request body
-  const body = JSON.stringify({ email, code });
+  const body = JSON.stringify({email, code});
   const authPromise = axios
-    .post("/api/TFA/verify", body, config)
-    .then((res) =>
-      dispatch({
-        type: TFA_VERIFED,
-      })
-    )
-    .catch((err) => {
-      dispatch(
-        returnErrors(err.response.data, err.response.status, "TFA_VERIFY_FAIL")
-      );
-      dispatch({
-        type: TFA_VERIFY_FAIL,
+      .post('/api/TFA/verify', body, config)
+      .then((res) =>
+        dispatch({
+          type: TFA_VERIFED,
+        }),
+      )
+      .catch((err) => {
+        dispatch(
+            returnErrors(err.response.data, err.response.status, 'TFA_VERIFY_FAIL'),
+        );
+        dispatch({
+          type: TFA_VERIFY_FAIL,
+        });
       });
-    });
 
-  //not sure if it is the right way to do redux.
+  // not sure if it is the right way to do redux.
   return authPromise;
 };
 
 // skip tfa.
 export const skipTFA = () => (dispatch) => {
   // TFAing
-  dispatch({ type: TFA_VERIFED });
+  dispatch({type: TFA_VERIFED});
 };
 
 // --------------------------- Github OAuth ---------------------------------------------//
@@ -303,57 +304,57 @@ export const skipTFA = () => (dispatch) => {
 export const getGithubAccessToken = (code) => (dispatch) => {
   const config = {
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   };
 
-  const body = JSON.stringify({ code });
+  const body = JSON.stringify({code});
   const githubAuthPromise = axios
-    .post("/api/auth/github-access-token", body, config)
-    .then((res) =>
-      dispatch({
-        type: GITHUB_SIGNIN_SUCCESS,
-        payload: res.data,
-      })
-    )
-    .catch((err) => {
-      dispatch(
-        returnErrors(
-          err.response.data,
-          err.response.status,
-          "GITHUB_SIGNIN_FAIL"
-        )
-      );
-      dispatch({
-        type: GITHUB_SIGNIN_FAIL,
+      .post('/api/auth/github-access-token', body, config)
+      .then((res) =>
+        dispatch({
+          type: GITHUB_SIGNIN_SUCCESS,
+          payload: res.data,
+        }),
+      )
+      .catch((err) => {
+        dispatch(
+            returnErrors(
+                err.response.data,
+                err.response.status,
+                'GITHUB_SIGNIN_FAIL',
+            ),
+        );
+        dispatch({
+          type: GITHUB_SIGNIN_FAIL,
+        });
       });
-    });
 
   return githubAuthPromise;
 };
 
 export const getGithubUser = () => (dispatch) => {
   // User loading
-  dispatch({ type: USER_LOADING });
+  dispatch({type: USER_LOADING});
 
   const githubAuthPromise = axios
-    .get("/api/auth/github-user", {
-      headers: {
-        access_token: localStorage.getItem("githubAccessToken"),
-      },
-    })
-    .then((res) =>
-      dispatch({
-        type: GITHUB_USER_LOADED,
-        payload: res.data,
+      .get('/api/auth/github-user', {
+        headers: {
+          access_token: localStorage.getItem('githubAccessToken'),
+        },
       })
-    )
-    .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
-      dispatch({
-        type: AUTH_ERROR,
+      .then((res) =>
+        dispatch({
+          type: GITHUB_USER_LOADED,
+          payload: res.data,
+        }),
+      )
+      .catch((err) => {
+        dispatch(returnErrors(err.response.data, err.response.status));
+        dispatch({
+          type: AUTH_ERROR,
+        });
       });
-    });
 
   return githubAuthPromise;
 };
@@ -364,25 +365,25 @@ export const getGithubUser = () => (dispatch) => {
 export const createOauthUser = (oauthUser, oauthProvider) => (dispatch) => {
   const config = {
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   };
 
-  const body = JSON.stringify({ oauthUser, oauthProvider });
+  const body = JSON.stringify({oauthUser, oauthProvider});
 
   const githubAuthPromise = axios
-    .post("/api/users/create-oauth-user", body, config)
-    .then((res) =>
-      dispatch({
-        type: GITHUB_USER_ADAPTED,
-        payload: res.data,
-      })
-    )
-    .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
-      dispatch({
-        type: AUTH_ERROR,
+      .post('/api/users/create-oauth-user', body, config)
+      .then((res) =>
+        dispatch({
+          type: GITHUB_USER_ADAPTED,
+          payload: res.data,
+        }),
+      )
+      .catch((err) => {
+        dispatch(returnErrors(err.response.data, err.response.status));
+        dispatch({
+          type: AUTH_ERROR,
+        });
       });
-    });
   return githubAuthPromise;
 };
