@@ -5,7 +5,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import SwaggerUI, { presets } from "swagger-ui";
 import "swagger-ui/dist/swagger-ui.css";
-import Breadcrumb from "view/shared/Breadcrumb";
+import Breadcrumb from "components/shared/Breadcrumb";
 import { loadSwaggerUI } from "../../../actions/developerActions";
 
 class Developer extends Component {
@@ -20,7 +20,7 @@ class Developer extends Component {
       });
     }
   }
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prepStates, snapshot) {
     if (this.props.swaggerUIDocs) {
       SwaggerUI({
         dom_id: "#swaggerContainer",

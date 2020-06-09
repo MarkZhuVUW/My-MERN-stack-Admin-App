@@ -1,3 +1,4 @@
+import isEqual from 'lodash/isEqual';
 import { Grid } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
@@ -6,21 +7,22 @@ import { withStyles } from "@material-ui/styles";
 import { deleteLog, loadAllLogs } from "actions/adminActions";
 import { clearErrors } from "actions/errorActions";
 import classNames from "classnames";
-import EditableTable from "components/EditableTable";
-import FacebookProgress from "components/FacebookProgress";
+import EditableTable from "components/shared/EditableTable";
+import FacebookProgress from "components/shared/FacebookProgress";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Breadcrumb from "view/shared/Breadcrumb";
+import Breadcrumb from "components/shared/Breadcrumb";
 import "./dashboard.scss";
 import HomeDoughnutChart from "./HomeDoughnutChart";
 import HomeLineChart from "./HomeLineChart";
 import HomePolarChart from "./HomePolarChart";
 const styles = {};
 
+
 class Dashboard extends Component {
-  state = {};
+
 
   static propTypes = {
     clearErrors: PropTypes.func.isRequired,
@@ -30,14 +32,16 @@ class Dashboard extends Component {
     deleteLog: PropTypes.func.isRequired,
   };
   componentDidMount() {
-    setTimeout(() => {
-      this.props.loadAllLogs();
-    }, 1000);
     // if (this.props.user)
     //   this.props.loadAllLogsForSpecificUser(this.props.user._id);
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {}
+  componentDidUpdate(prevProps, prevStates, snapshot) {
+    console.log(11);
+    if (!isEqual(prevProps.user, this.props.user)) {
+      this.props.loadAllLogs();
+    }
+  }
 
   toggle = () => {
     // Clear errors
@@ -48,8 +52,8 @@ class Dashboard extends Component {
    * This callback function sends back the email of the user to be deleted
    * after the delete button is clicked on the mui datatable.
    */
-  deleteLogCallback = (logid) => {
-    this.props.deleteLog(this.props.user._id, logid);
+  deleteLogCallback = (logId) => {
+    this.props.deleteLog(this.props.user._id, logId);
   };
 
   onSubmit = (e) => {

@@ -8,16 +8,17 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    'width': '100%',
-    '& > * + *': {
-      marginTop: theme.spacing(2),
-    },
-  },
-}));
 
 export default function MySnackbar() {
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      'width': '100%',
+      '& > * + *': {
+        marginTop: theme.spacing(2),
+      },
+    },
+  }));
+
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 

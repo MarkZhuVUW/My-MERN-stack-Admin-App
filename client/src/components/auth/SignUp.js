@@ -13,7 +13,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { withStyles } from "@material-ui/styles";
-import FacebookProgress from "components/FacebookProgress";
+import FacebookProgress from "components/shared/FacebookProgress";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
@@ -23,7 +23,7 @@ import compose from "recompose/compose";
 import { clearSuccessMsg, register } from "../../actions/authActions";
 import { clearErrors } from "../../actions/errorActions";
 import "../../css3/bouncingEffect.css";
-import ResponsiveDialog from "../ResponsiveDialog";
+import ResponsiveDialog from "../shared/ResponsiveDialog";
 import RoleCheckboxes from "./RoleCheckboxes";
 
 const theme = createMuiTheme({

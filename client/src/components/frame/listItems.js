@@ -14,15 +14,22 @@ import {i18n} from 'i18n';
 import React from 'react';
 import {Link} from 'react-router-dom';
 import '../../css3/bouncingEffect.css';
-const useStyles = makeStyles(() => ({
-  root: {
-    width: '100%',
-    maxWidth: 360,
-    // backgroundColor: theme.palette.background.paper,
-  },
-}));
 
+
+/**
+ *
+ * @return {*}
+ * @constructor
+ */
 export default function SelectedListItem(props) {
+  const useStyles = makeStyles(() => ({
+    root: {
+      width: '100%',
+      maxWidth: 360,
+      // backgroundColor: theme.palette.background.paper,
+    },
+  }));
+
   const classes = useStyles();
   const [selectedIndex, setSelectedIndex] = React.useState(props.currentIndex);
 

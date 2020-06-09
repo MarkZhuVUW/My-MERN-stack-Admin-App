@@ -21,9 +21,9 @@ import {
   skipTFA,
   TFASetup,
   TFAVerify,
-} from "../actions/authActions";
-import { clearErrors } from "../actions/errorActions";
-import RoleCheckboxes from "./auth/RoleCheckboxes";
+} from "../../actions/authActions";
+import { clearErrors } from "../../actions/errorActions";
+import RoleCheckboxes from "../auth/RoleCheckboxes";
 
 const theme = createMuiTheme({
   spacing: 4,
@@ -86,7 +86,6 @@ class ResponsiveDialog extends Component {
         isOauth: false,
       };
 
-      console.log(user.email);
       if (!TFA && !isGithubUserLoaded) {
         this.props.TFASetup(obj);
         this.props.getTFA(obj);
@@ -94,7 +93,7 @@ class ResponsiveDialog extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevStates, snapshot) {
     const { error, type } = this.props;
     const isAuthenticated =
       localStorage.getItem("authenticated") === "true";
@@ -158,7 +157,6 @@ class ResponsiveDialog extends Component {
     // e.preventDefault();
     const { TFA, user } = this.props;
 
-    // console.log(user);
     const oauthUser = {
       ...user,
       role: role,

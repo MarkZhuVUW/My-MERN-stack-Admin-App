@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import "swagger-ui/dist/swagger-ui.css";
-import Breadcrumb from "view/shared/Breadcrumb";
+import Breadcrumb from "components/shared/Breadcrumb";
 import { logDownload } from "../../../../actions/adminActions";
 import { clearErrors } from "../../../../actions/errorActions";
 import {Document, Page} from 'react-pdf';
@@ -17,7 +17,12 @@ import Link from '@material-ui/core/Link';
 import { pdfCV } from "./Mark_Zhu_CV.pdf";
 // pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
+
+
+
 class CV extends Component {
+
+
   componentDidMount() {}
   componentDidUpdate(prevProps, prevState, snapshot) {}
   static propTypes = {
@@ -71,6 +76,7 @@ export default connect(mapStateToProps, {
  * @author Mark Zhu <zdy120939259@outlook.com>
  */
 function CVContent(props) {
+
   const useStyles = makeStyles((theme) => ({
     root: {
       backgroundColor: "#E9EAED",

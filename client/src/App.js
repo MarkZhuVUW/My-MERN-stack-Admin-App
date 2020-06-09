@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 import MediaQuery from "react-responsive";
 import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
 import "./App.scss";
+import ParticlesCustomized from './components/shared/ParticlesCustomized';
 const theme = createMuiTheme(
   {
     palette: {
@@ -64,41 +65,8 @@ class App extends Component {
         ),
       });
     };
-    const particlesBackground = (size, numParticles) => (
-      <Particles
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          zIndex: 1,
-        }}
-        params={{
-          particles: {
-            number: {
-              value: numParticles,
-            },
-            size: {
-              value: size,
-            },
 
-            move: {
-              enable: true,
-              // speed: 6,
-            },
-          },
-          interactivity: {
-            events: {
-              onhover: {
-                enable: true,
-                mode: "bubble",
-              },
-            },
-          },
-        }}
-      />
-    );
+
     return (
       <div>
         <ThemeProvider theme={theme}>
@@ -127,16 +95,15 @@ class App extends Component {
             ) : (
               <>
                 <MediaQuery query="(min-width: 1280px)">
-                  {particlesBackground(3, 120)}
+                  <ParticlesCustomized numParticles={50} size={3} hoverMode={'bubble'} />
                 </MediaQuery>
                 <MediaQuery query="(max-width: 1280px)">
-                  {particlesBackground(3, 50)}
+                  <ParticlesCustomized numParticles={15} size={1} hoverMode={'bubble'}/>
                 </MediaQuery>
 
                 <Switch>
                   <Route exact path="/signin" component={SignInSide} />
                   <Route exact path="/signup" component={SignUp} />
-
                   <Route
                     path="/frame"
                     render={() => {

@@ -1,4 +1,4 @@
-import rules from '../../RBAC/rbac-rules';
+import rules from './rbac-rules';
 
 const check = (rules, role, action, data) => {
   const permissions = rules[role];

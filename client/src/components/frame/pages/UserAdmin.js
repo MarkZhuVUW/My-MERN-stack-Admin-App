@@ -13,17 +13,17 @@ import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component, useState } from "react";
 import { connect } from "react-redux";
-import Breadcrumb from "view/shared/Breadcrumb";
+import Breadcrumb from "components/shared/Breadcrumb";
 import {
   deleteUser,
   loadAllUsers,
   register,
 } from "../../../actions/authActions";
 import { clearErrors } from "../../../actions/errorActions";
-import AnimatedProgress from "../../../components/animatedProgress";
-import DropdownSelection from "../../../components/dropdownSelect";
-import EditableTable from "../../../components/EditableTable";
-import ResponsiveDialog from "../../../components/ResponsiveDialog";
+import AnimatedProgress from "../../shared/animatedProgress";
+import DropdownSelection from "../../shared/dropdownSelect";
+import EditableTable from "../../shared/EditableTable";
+import ResponsiveDialog from "../../shared/ResponsiveDialog";
 const styles = {};
 
 class UserAdmin extends Component {
@@ -149,7 +149,7 @@ function SettingsContent(props) {
   const classes = useStyles();
 
   const [isCreatingUser, setIsCreatingUser] = useState(false);
-  const [setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [showUserCreationProgress, setShowUserCreationProgress] = useState(
     false
@@ -170,7 +170,12 @@ function SettingsContent(props) {
   const handleCreateUser = (event) => {
     setIsCreatingUser(true);
     setShowUserCreationProgress(true);
+
   };
+
+  const handleAnimatedProgressOnClick = () => {
+    setIsLoading(true);
+  }
 
   const onChange = (e) => {
     setUserToBeRegistered({
@@ -180,9 +185,11 @@ function SettingsContent(props) {
   };
 
   const cb = (bool) => {
+
     setShowUserCreationProgress(bool);
     setIsCreatingUser(false);
     props.registerCallback(userToBeRegistered);
+    setIsLoading(false);
   };
 
   const dropdownSelectedCallback = (role) => {
@@ -212,9 +219,9 @@ function SettingsContent(props) {
                 label={i18n("useradmin.email")}
                 fullWidth
                 onChange={onChange}
+                disabled={isLoading}
               />
             </Grid>
-
             <Grid item xs={12}>
               <TextField
                 required
@@ -223,6 +230,7 @@ function SettingsContent(props) {
                 label={i18n("useradmin.name")}
                 fullWidth
                 onChange={onChange}
+                disabled={isLoading}
               />
             </Grid>
             <Grid item xs={12}>
@@ -233,6 +241,7 @@ function SettingsContent(props) {
                 label={i18n("useradmin.password")}
                 fullWidth
                 onChange={onChange}
+                disabled={isLoading}
               />
             </Grid>
             <Grid item xs={12}>
@@ -243,6 +252,7 @@ function SettingsContent(props) {
                 label={i18n("useradmin.company")}
                 fullWidth
                 onChange={onChange}
+                disabled={isLoading}
               />
             </Grid>
 
@@ -255,18 +265,18 @@ function SettingsContent(props) {
             </Typography>
             <FormControl margin="normal" fullWidth>
               <DropdownSelection
-                disabled={false}
                 label="role"
                 typesOfUser={typesOfUser}
                 dropdownSelectedCallback={dropdownSelectedCallback}
                 onChange={onChange}
+                disabled={isLoading}
               />
             </FormControl>
             {/* --------------------------------------role-based dropdown menu--------------------------------------  */}
 
             <Grid item xs={12}>
               {showUserCreationProgress ? (
-                <AnimatedProgress callback={cb}/>
+                <AnimatedProgress callback={cb} onClick={handleAnimatedProgressOnClick}/>
               ) : null}
             </Grid>
           </Grid>
@@ -298,6 +308,7 @@ function SettingsContent(props) {
                     : i18n("useradmin.email")
                 }
                 name="email"
+
               />
             </Grid>
             <Grid item xs={12}>

@@ -1,13 +1,13 @@
 import { Box, Grid, makeStyles, Paper, Typography } from "@material-ui/core";
 import classNames from "classnames";
-import FacebookProgress from "components/FacebookProgress";
+import FacebookProgress from "components/shared/FacebookProgress";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import ReactTypingEffect from "react-typing-effect";
 import "swagger-ui/dist/swagger-ui.css";
-import Breadcrumb from "view/shared/Breadcrumb";
+import Breadcrumb from "components/shared/Breadcrumb";
 import { logDownload } from "../../../../actions/adminActions";
 import { clearErrors } from "../../../../actions/errorActions";
 import { getGithubUser } from "../../../../actions/utilityActions";

@@ -11,18 +11,18 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const useStyles = makeStyles((theme) => ({
-  card: {
-    maxWidth: 345,
-    margin: theme.spacing(2),
-  },
-  media: {
-    height: 190,
-  },
-}));
-
 
 const Media = (props) => {
+  const useStyles = makeStyles((theme) => ({
+    card: {
+      maxWidth: 345,
+      margin: theme.spacing(2),
+    },
+    media: {
+      height: 190,
+    },
+  }));
+
   const {loading = false} = props;
   const classes = useStyles();
 

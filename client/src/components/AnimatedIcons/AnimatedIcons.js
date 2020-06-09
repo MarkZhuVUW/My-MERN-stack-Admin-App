@@ -52,7 +52,7 @@ export default function AnimatedIcons() {
   let sourcetreeLogoItem = useRef(null);
   let materialuiLogoItem = useRef(null);
 
-  const [setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   useEffect(() => {
     TweenMax.to(animatedIcons, 0, {css: {visibility: 'visible'}});
 
@@ -70,7 +70,7 @@ export default function AnimatedIcons() {
         ],
         0.8,
         {opacity: 0, y: 100, ease: Power3.easeOut},
-        0.3,
+        0.3
     );
   }, []);
 

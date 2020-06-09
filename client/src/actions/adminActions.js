@@ -17,7 +17,7 @@ export const logPageView = (id, pageViewLog, isOauth) => (
   // Request body
   const body = JSON.stringify({log: pageViewLog, isOauth});
 
-  axios
+  return axios
       .patch(`/api/users/${id}/logs`, body, tokenConfig(getState))
       .then(() =>
         dispatch({
@@ -36,7 +36,7 @@ export const logLoginSuccess = (id, loginLog, isOauth) => (
   // Request body
   const body = JSON.stringify({log: loginLog, isOauth});
 
-  axios
+  return axios
       .patch(`/api/users/${id}/logs`, body, tokenConfig(getState))
       .then(() =>
         dispatch({
@@ -54,7 +54,7 @@ export const logDownload = (id, downloadLog, isOauth) => (
 ) => {
   // Request body
   const body = JSON.stringify({log: downloadLog, isOauth});
-  axios
+  return axios
       .patch(`/api/users/${id}/logs`, body, tokenConfig(getState))
       .then(() =>
         dispatch({
@@ -69,7 +69,7 @@ export const logDownload = (id, downloadLog, isOauth) => (
 // get all registered users
 export const loadAllLogs = () => (dispatch, getState) => {
   // User loading
-  axios
+  return axios
       .get(`/api/admin/logs`, tokenConfig(getState))
       .then((res) =>
         dispatch({
@@ -87,7 +87,7 @@ export const loadAllLogs = () => (dispatch, getState) => {
 
 // as an admin I should be able to delete logs I guess?
 export const deleteLog = (userid, logid) => (dispatch, getState) => {
-  axios
+  return axios
       .delete(`/api/users/${userid}/logs/${logid}`, tokenConfig(getState))
       .then(() =>
         dispatch({

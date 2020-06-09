@@ -18,7 +18,7 @@ import {
 } from "actions/authActions";
 import { clearErrors } from "actions/errorActions";
 import AnimatedIcons from "components/AnimatedIcons/AnimatedIcons";
-import FacebookProgress from "components/FacebookProgress";
+import FacebookProgress from "components/shared/FacebookProgress";
 import ImageRevealEffect from "components/ImageRevealEffect/ImageRevealEffect";
 import confidentials from "confidentials/confidentials.json";
 import "css3/bouncingEffect.css";
@@ -31,10 +31,12 @@ import { connect } from "react-redux";
 import MediaQuery from "react-responsive";
 import { NavLink, withRouter } from "react-router-dom";
 import compose from "recompose/compose";
-import ResponsiveDialog from "../ResponsiveDialog";
+import ResponsiveDialog from "../shared/ResponsiveDialog";
 const theme = createMuiTheme({
   spacing: 4,
 });
+
+
 
 const styles = {
   root: {

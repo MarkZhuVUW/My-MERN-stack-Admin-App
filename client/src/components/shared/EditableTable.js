@@ -1,6 +1,10 @@
 import MUIDataTable from 'mui-datatables';
 import React from 'react';
 
+
+// const options = {
+//
+// }
 export default function EditableTable(props) {
   return (
     <div style={{position: 'relative'}}>

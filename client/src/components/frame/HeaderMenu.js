@@ -20,100 +20,7 @@ import {i18n, setLanguageCode} from 'i18n';
 import React, {useState} from 'react';
 import '../../css3/bouncingEffect.css';
 import Logout from '../auth/Logout';
-import UserAvatar from '../UserAvatar';
-const useStyles = makeStyles((theme) => ({
-  logotype: {
-    color: 'white',
-    marginLeft: theme.spacing(2.5),
-    marginRight: theme.spacing(2.5),
-    fontWeight: 500,
-    fontSize: 18,
-    whiteSpace: 'nowrap',
-    [theme.breakpoints.down('xs')]: {
-      display: 'none',
-    },
-  },
-  appBar: {
-    width: '100vw',
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  toolbar: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-  },
-  hide: {
-    display: 'none',
-  },
-  grow: {
-    flexGrow: 1,
-  },
-
-  headerMenu: {
-    marginTop: theme.spacing(7),
-  },
-  headerMenuList: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-
-  headerMenuButton: {
-    marginLeft: theme.spacing(2),
-    padding: theme.spacing(0.5),
-  },
-  headerMenuButtonCollapse: {
-    marginRight: theme.spacing(2),
-  },
-  headerIcon: {
-    fontSize: 28,
-  },
-  headerIconCollapse: {
-    color: 'white',
-  },
-  menu: {
-    minWidth: 265,
-  },
-  menuUser: {
-    display: 'flex',
-    flexDirection: 'column',
-    padding: theme.spacing(2),
-  },
-
-  menuLink: {
-    fontSize: 16,
-    textDecoration: 'none',
-  },
-  messageNotification: {
-    'height': 'auto',
-    'display': 'flex',
-    'alignItems': 'center',
-    '&:hover, &:focus': {
-      backgroundColor: theme.palette.background.light,
-    },
-  },
-  messageNotificationSide: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginRight: theme.spacing(2),
-  },
-  messageNotificationBodySide: {
-    alignItems: 'flex-start',
-    marginRight: 0,
-  },
-  sendMessageButton: {
-    margin: theme.spacing(4),
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    textTransform: 'none',
-  },
-  sendButtonIcon: {
-    marginLeft: theme.spacing(2),
-  },
-}));
+import UserAvatar from '../shared/UserAvatar';
 
 /**
  *
@@ -122,6 +29,101 @@ const useStyles = makeStyles((theme) => ({
  * @constructor
  */
 export default function HeaderMenu(props) {
+  const useStyles = makeStyles((theme) => ({
+    logotype: {
+      color: 'white',
+      marginLeft: theme.spacing(2.5),
+      marginRight: theme.spacing(2.5),
+      fontWeight: 500,
+      fontSize: 18,
+      whiteSpace: 'nowrap',
+      [theme.breakpoints.down('xs')]: {
+        display: 'none',
+      },
+    },
+    appBar: {
+      width: '100vw',
+      zIndex: theme.zIndex.drawer + 1,
+      transition: theme.transitions.create(['margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+    },
+    toolbar: {
+      paddingLeft: theme.spacing(2),
+      paddingRight: theme.spacing(2),
+    },
+    hide: {
+      display: 'none',
+    },
+    grow: {
+      flexGrow: 1,
+    },
+
+    headerMenu: {
+      marginTop: theme.spacing(7),
+    },
+    headerMenuList: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
+
+    headerMenuButton: {
+      marginLeft: theme.spacing(2),
+      padding: theme.spacing(0.5),
+    },
+    headerMenuButtonCollapse: {
+      marginRight: theme.spacing(2),
+    },
+    headerIcon: {
+      fontSize: 28,
+    },
+    headerIconCollapse: {
+      color: 'white',
+    },
+    menu: {
+      minWidth: 265,
+    },
+    menuUser: {
+      display: 'flex',
+      flexDirection: 'column',
+      padding: theme.spacing(2),
+    },
+
+    menuLink: {
+      fontSize: 16,
+      textDecoration: 'none',
+    },
+    messageNotification: {
+      'height': 'auto',
+      'display': 'flex',
+      'alignItems': 'center',
+      '&:hover, &:focus': {
+        backgroundColor: theme.palette.background.light,
+      },
+    },
+    messageNotificationSide: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      marginRight: theme.spacing(2),
+    },
+    messageNotificationBodySide: {
+      alignItems: 'flex-start',
+      marginRight: 0,
+    },
+    sendMessageButton: {
+      margin: theme.spacing(4),
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(2),
+      textTransform: 'none',
+    },
+    sendButtonIcon: {
+      marginLeft: theme.spacing(2),
+    },
+  }));
+
+
   const classes = useStyles();
 
 
