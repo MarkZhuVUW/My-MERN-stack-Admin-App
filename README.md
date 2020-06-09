@@ -22,11 +22,9 @@
 
 **Recordit**
 
-![Recordit GIF](http://g.recordit.co/iLN6A0vSD8.gif)
+![Recordit GIF](http://g.recordit.co/MOx8Fvuyrj.gif)
 
-**ttystudio**
 
-![ttystudio GIF](https://raw.githubusercontent.com/chjj/ttystudio/master/img/example.gif)
 
 ---
 
