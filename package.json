@@ -9,8 +9,8 @@
     "server": "nodemon server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "client": "npm start --prefix client",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
-    "azure": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client && npm run start"
+    "heroku-postbuild": "npm install --prefix client && npm run build --prefix client",
+    "build": "npm install --prefix client && npm run build --prefix client && npm run start"
   },
   "author": "Mark Zhu",
   "license": "MIT",
