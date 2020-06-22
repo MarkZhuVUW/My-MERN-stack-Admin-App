@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 import adminReducer from './adminReducer';
 import authReducer from './authReducer';
 import developerReducer from './developerReducer';

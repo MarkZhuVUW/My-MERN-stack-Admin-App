@@ -6,7 +6,7 @@
     "jest": true
   },
 
-  "extends": ["plugin:react/recommended", "google"],
+  "extends": ["plugin:react/recommended", "prettier", "airbnb"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
@@ -20,8 +20,7 @@
 
     "sourceType": "module"
   },
-  "plugins": ["react", "unused-imports", "airbnb", "prettier"],
-
+  "plugins": ["unused-imports"],
   "rules": {
     "semi": "error",
     "no-unused-vars": "off",
