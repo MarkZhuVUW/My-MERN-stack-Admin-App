@@ -1,4 +1,5 @@
 const express = require("express");
+
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const config = require("config");
@@ -36,11 +37,11 @@ router.post("/", (req, res) => {
     if (user) return res.status(400).json({ msg: "User already exists" });
 
     const newUser = new userModels.User({
-      name: name,
-      email: email,
-      password: password,
-      role: role,
-      company: company ? company : "",
+      name,
+      email,
+      password,
+      role,
+      company: company || "",
     });
     // Create salt & hash
     bcrypt.genSalt(10, (err, salt) => {
@@ -136,9 +137,9 @@ router.patch("/:id", auth, (req, res) => {
     { _id: req.params.id },
     {
       $set: {
-        name: name,
-        email: email,
-        role: role,
+        name,
+        email,
+        role,
       },
     }
   )
@@ -195,7 +196,7 @@ module.exports = router;
 router.post("/create-oauth-user", (req, res) => {
   const { oauthUser, oauthProvider } = req.body;
 
-  let uniqueId = oauthUser.id;
+  const uniqueId = oauthUser.id;
   // console.log(oauthUser);
   // Check for existing user
   userModels.OauthUser.findOne({ uniqueId }).then((user) => {
@@ -203,7 +204,7 @@ router.post("/create-oauth-user", (req, res) => {
     if (user) return res.json(user);
 
     const newOauthUser = new userModels.OauthUser({
-      uniqueId: uniqueId,
+      uniqueId,
       ...oauthUser,
     });
 

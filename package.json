@@ -58,5 +58,10 @@
       "pretty-quick --staged",
       "git add"
     ]
+  },
+  "importSort": {
+    ".js, .jsx, .ts, .tsx": {
+      "style": "module"
+    }
   }
 }
