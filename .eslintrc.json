@@ -6,7 +6,7 @@
     "jest": true
   },
 
-  "extends": ["plugin:react/recommended", "google"],
+  "extends": ["plugin:react/recommended", "airbnb", "prettier"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
@@ -20,7 +20,8 @@
 
     "sourceType": "module"
   },
-  "plugins": ["react", "unused-imports", "airbnb", "prettier"],
+  "plugins": ["react", "unused-imports"],
+
 
   "rules": {
     "semi": "error",
@@ -31,6 +32,8 @@
     "prefer-promise-reject-errors": ["off"],
     "react/jsx-filename-extension": ["off"],
     "react/prop-types": ["warn"],
-    "no-return-assign": ["off"]
+    "no-return-assign": ["off"],
+    "prettier/prettier": ["error"]
   }
+
 }

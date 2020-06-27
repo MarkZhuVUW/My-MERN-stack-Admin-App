@@ -38,6 +38,7 @@
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-unused-imports": "^0.1.2",
     "husky": "^4.2.5",
@@ -52,9 +53,15 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{js, jsx, tsx, json, scss}": [
+    "./src/*.{js,jsx,ts,tsx}": [
       "eslint",
+      "npx prettier --write",
       "pretty-quick --staged",
+      "eslint src/*.js --fix-dry-run",
+      "git add"
+    ],
+    "*.+(json|css|md|scss)": [
+      "prettier --write",
       "git add"
     ]
   }
