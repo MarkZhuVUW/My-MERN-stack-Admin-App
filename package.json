@@ -53,15 +53,9 @@
     }
   },
   "lint-staged": {
-    "./src/*.{js,jsx,ts,tsx}": [
+    "src/**/*.{js, jsx, tsx, json, scss}": [
       "eslint",
-      "npx prettier --write",
       "pretty-quick --staged",
-      "eslint src/*.js --fix-dry-run",
-      "git add"
-    ],
-    "*.+(json|css|md|scss)": [
-      "prettier --write",
       "git add"
     ]
   }
