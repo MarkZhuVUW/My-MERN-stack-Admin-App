@@ -82,7 +82,7 @@ router.delete("/:id", auth, (req, res) => {
 // @access  Public
 router.patch("/:id/logs", auth, (req, res) => {
   const { log, isOauth } = req.body;
-  newLog = new Log({
+  new Log({
     type: log.type,
     email: log.email,
     name: log.name,

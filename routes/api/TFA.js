@@ -102,12 +102,12 @@ router.post('/verify', (req, res) => {
 
         if (isVerified) {
           return res.status(200).json({
-            msg: 'verification successfull',
+            msg: 'verification successful',
           });
         }
           return res.status(400).json({
             msg:
-            'verification unsuccessfull. Probably because wrong code is provided',
+            'verification unsuccessful. Probably because wrong code is provided',
           });
 
       })
