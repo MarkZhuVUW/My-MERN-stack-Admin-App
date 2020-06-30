@@ -1,5 +1,6 @@
 // google two-factor authenticator.
 const express = require('express');
+
 const router = express.Router();
 const speakeasy = require('speakeasy');
 const QRCode = require('qrcode');
@@ -55,9 +56,9 @@ router.post('/setup', (req, res) => {
         QRCode.toDataURL(url, (err, dataURL) => {
           const newTFA = new TFA({
             secret: secret.base32,
-            dataURL: dataURL,
+            dataURL,
             TFAURL: url,
-            email: email,
+            email,
           });
           newTFA
               .save()
@@ -101,14 +102,14 @@ router.post('/verify', (req, res) => {
 
         if (isVerified) {
           return res.status(200).json({
-            msg: 'verification successfull',
-          });
-        } else {
-          return res.status(400).json({
-            msg:
-            'verification unsuccessfull. Probably because wrong code is provided',
+            msg: 'verification successful',
           });
         }
+          return res.status(400).json({
+            msg:
+            'verification unsuccessful. Probably because wrong code is provided',
+          });
+
       })
       .catch((err) => {
         res.status(403).json({

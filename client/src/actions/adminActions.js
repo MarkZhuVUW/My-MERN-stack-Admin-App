@@ -86,13 +86,13 @@ export const loadAllLogs = () => (dispatch, getState) => {
 };
 
 // as an admin I should be able to delete logs I guess?
-export const deleteLog = (userid, logid) => (dispatch, getState) => {
+export const deleteLog = (userId, logId) => (dispatch, getState) => {
   return axios
-      .delete(`/api/users/${userid}/logs/${logid}`, tokenConfig(getState))
+      .delete(`/api/users/${userId}/logs/${logId}`, tokenConfig(getState))
       .then(() =>
         dispatch({
           type: LOG_DELETED,
-          payload: logid,
+          payload: logId,
         })
       )
       .catch((err) =>

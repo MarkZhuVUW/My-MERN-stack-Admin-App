@@ -9,6 +9,7 @@ import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import DirectionsWalkIcon from '@material-ui/icons/DirectionsWalk';
 import {i18n} from 'i18n';
 import React from 'react';
+
 const GreenCheckbox = withStyles({
   root: {
     'color': green[400],
@@ -66,7 +67,7 @@ export default function RoleCheckboxes(props) {
   return (
     <FormGroup row>
       <FormControlLabel
-        control={
+        control={(
           <GreenCheckbox
             checked={admin}
             icon={<DirectionsWalkIcon color="disabled" />}
@@ -74,12 +75,12 @@ export default function RoleCheckboxes(props) {
             onChange={() => handleChange('admin')}
             value="admin"
           />
-        }
+        )}
         label={i18n('admin')}
       />
 
       <FormControlLabel
-        control={
+        control={(
           <BlueCheckbox
             checked={employer}
             icon={<DirectionsWalkIcon color="disabled" />}
@@ -87,12 +88,12 @@ export default function RoleCheckboxes(props) {
             onChange={() => handleChange('employer')}
             value="employer"
           />
-        }
+        )}
         label={i18n('employer')}
       />
 
       <FormControlLabel
-        control={
+        control={(
           <RedCheckbox
             checked={guest}
             icon={<DirectionsWalkIcon color="disabled" />}
@@ -100,7 +101,7 @@ export default function RoleCheckboxes(props) {
             onChange={() => handleChange('guest')}
             value="guest"
           />
-        }
+        )}
         label={i18n('guest')}
       />
     </FormGroup>

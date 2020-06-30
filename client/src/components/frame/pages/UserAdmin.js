@@ -24,9 +24,11 @@ import AnimatedProgress from "../../shared/animatedProgress";
 import DropdownSelection from "../../shared/dropdownSelect";
 import EditableTable from "../../shared/EditableTable";
 import ResponsiveDialog from "../../shared/ResponsiveDialog";
+
 const styles = {};
 
 class UserAdmin extends Component {
+
   state = { msg: null };
 
   static propTypes = {
@@ -56,6 +58,7 @@ class UserAdmin extends Component {
       }
     }
   }
+
   toggle = () => {
     // Clear errors
     this.props.clearErrors();
@@ -84,6 +87,7 @@ class UserAdmin extends Component {
 
     this.toggle();
   };
+
   render() {
     const {allUsers, user, error } = this.props;
 
@@ -175,7 +179,7 @@ function SettingsContent(props) {
 
   const handleAnimatedProgressOnClick = () => {
     setIsLoading(true);
-  }
+  };
 
   const onChange = (e) => {
     setUserToBeRegistered({
@@ -195,7 +199,7 @@ function SettingsContent(props) {
   const dropdownSelectedCallback = (role) => {
     setUserToBeRegistered({
       ...userToBeRegistered,
-      role: role,
+      role,
     });
   };
   function createUserView() {
@@ -276,7 +280,7 @@ function SettingsContent(props) {
 
             <Grid item xs={12}>
               {showUserCreationProgress ? (
-                <AnimatedProgress callback={cb} onClick={handleAnimatedProgressOnClick}/>
+                <AnimatedProgress callback={cb} onClick={handleAnimatedProgressOnClick} />
               ) : null}
             </Grid>
           </Grid>
@@ -359,7 +363,7 @@ function SettingsContent(props) {
               />
             </Grid>
             <Grid item xs={12}>
-              <Zoom in={true}>
+              <Zoom in>
                 <Button
                   variant="contained"
                   color="primary"
@@ -479,8 +483,8 @@ function SettingsContent(props) {
         // console.log(props.user.role + " is not allowed to delete users");
         return;
       }
-      //rowdDeleted.lookup gets the actual indexes that are deleted in the users data.
-      //loop through each index and delete them one by one.
+      // rowdDeleted.lookup gets the actual indexes that are deleted in the users data.
+      // loop through each index and delete them one by one.
       Object.keys(rowsDeleted.lookup).forEach((index) => {
         // console.log(data[index][0]);
         props.cb(data[index][0]);
@@ -488,7 +492,7 @@ function SettingsContent(props) {
     },
 
     onRowClick: (rowClicked) => {
-      //send back to UserAdmin component the email of the user to be deleted.
+      // send back to UserAdmin component the email of the user to be deleted.
       setCurrentUser({
         name: rowClicked[1],
         email: rowClicked[2],
