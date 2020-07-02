@@ -1,12 +1,7 @@
 // import Particles from "react-particles-js";
 
-import "./App.scss";
-
 import { enUS, zhCN } from "@material-ui/core/locale";
-import {
-  ThemeProvider,
-  createMuiTheme,
-} from "@material-ui/core/styles";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { getGithubUser, loadUser } from "actions/authActions";
 import SignInSide from "components/auth/SignInSide";
 import SignUp from "components/auth/SignUp";
@@ -16,13 +11,8 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import MediaQuery from "react-responsive";
-import {
-  HashRouter,
-  Redirect,
-  Route,
-  Switch,
-} from "react-router-dom";
-
+import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
+import "./App.scss";
 import ParticlesCustomized from "./components/shared/ParticlesCustomized";
 
 const theme = createMuiTheme(
@@ -32,8 +22,7 @@ const theme = createMuiTheme(
         localStorage.getItem("theme") === "dark"
           ? { main: "#303f9f" }
           : { main: "#1976d2" },
-      type:
-        localStorage.getItem("theme") === "dark" ? "dark" : "light",
+      type: localStorage.getItem("theme") === "dark" ? "dark" : "light",
     },
   },
   localStorage.getItem("language") === "en" ? enUS : zhCN,
@@ -70,10 +59,7 @@ class App extends Component {
                 localStorage.getItem("theme") === "dark"
                   ? { main: "#303f9f" }
                   : { main: "#1976d2" },
-              type:
-                localStorage.getItem("theme") === "dark"
-                  ? "dark"
-                  : "light",
+              type: localStorage.getItem("theme") === "dark" ? "dark" : "light",
             },
           },
           localStorage.getItem("language") === "en" ? enUS : zhCN,
@@ -124,11 +110,7 @@ class App extends Component {
                 </MediaQuery>
 
                 <Switch>
-                  <Route
-                    exact
-                    path="/signin"
-                    component={SignInSide}
-                  />
+                  <Route exact path="/signin" component={SignInSide} />
                   <Route exact path="/signup" component={SignUp} />
                   <Route
                     path="/frame"
@@ -162,6 +144,4 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
   authenticated: state.auth.authenticated,
 });
-export default connect(mapStateToProps, { loadUser, getGithubUser })(
-  App,
-);
+export default connect(mapStateToProps, { loadUser, getGithubUser })(App);

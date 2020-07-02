@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 const Log = require("./Log");
 // Create Schema
 
@@ -60,7 +61,7 @@ const OauthUserSchema = new Schema(
     },
     logs: [Log.schema],
   },
-  { strict: false }
+  { strict: false },
 );
 
 module.exports = {
