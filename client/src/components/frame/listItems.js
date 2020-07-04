@@ -1,32 +1,26 @@
-import {ListSubheader} from '@material-ui/core';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import {makeStyles} from '@material-ui/core/styles';
-import AssessmentIcon from '@material-ui/icons/Assessment';
-import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import DescriptionIcon from '@material-ui/icons/Description';
-import DeveloperBoardIcon from '@material-ui/icons/DeveloperBoard';
-import {i18n} from 'i18n';
-import React from 'react';
-import {Link} from 'react-router-dom';
-import '../../css3/bouncingEffect.css';
+import { ListSubheader } from "@material-ui/core";
+import Divider from "@material-ui/core/Divider";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import { makeStyles } from "@material-ui/core/styles";
+import AssessmentIcon from "@material-ui/icons/Assessment";
+import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import DescriptionIcon from "@material-ui/icons/Description";
+import DeveloperBoardIcon from "@material-ui/icons/DeveloperBoard";
+import { i18n } from "i18n";
+import PropTypes from "prop-types";
+import React from "react";
+import { Link } from "react-router-dom";
+import "../../css3/bouncingEffect.css";
 
-
-/**
- *
- * @return {*}
- * @constructor
- */
 export default function SelectedListItem(props) {
   const useStyles = makeStyles(() => ({
     root: {
-      width: '100%',
+      width: "100%",
       maxWidth: 360,
-      // backgroundColor: theme.palette.background.paper,
     },
   }));
 
@@ -41,15 +35,15 @@ export default function SelectedListItem(props) {
   return (
     <div className={classes.root}>
       <List component="nav" aria-label="main mailbox folders">
-        {props.role === 'admin' ? (
+        {props.role === "admin" ? (
           <>
-            <ListSubheader inset>{i18n('adminPages')}</ListSubheader>
+            <ListSubheader inset>{i18n("adminPages")}</ListSubheader>
             <Link
               to="/frame/dashboard"
               style={{
-                textDecoration: 'none',
+                textDecoration: "none",
                 color:
-                  localStorage.getItem('theme') === 'dark' ? 'white' : 'black',
+                  localStorage.getItem("theme") === "dark" ? "white" : "black",
               }}
             >
               <ListItem
@@ -59,20 +53,20 @@ export default function SelectedListItem(props) {
               >
                 <ListItemIcon>
                   <DashboardIcon
-                    className={selectedIndex === 0 ? 'swirl' : null}
-                    color={selectedIndex === 0 ? 'primary' : 'action'}
+                    className={selectedIndex === 0 ? "swirl" : null}
+                    color={selectedIndex === 0 ? "primary" : "action"}
                   />
                 </ListItemIcon>
-                <ListItemText primary={i18n('dashboard.menu')} />
+                <ListItemText primary={i18n("dashboard.menu")} />
               </ListItem>
             </Link>
 
             <Link
               to="/frame/developer"
               style={{
-                textDecoration: 'none',
+                textDecoration: "none",
                 color:
-                  localStorage.getItem('theme') === 'dark' ? 'white' : 'black',
+                  localStorage.getItem("theme") === "dark" ? "white" : "black",
               }}
             >
               <ListItem
@@ -82,19 +76,19 @@ export default function SelectedListItem(props) {
               >
                 <ListItemIcon>
                   <DeveloperBoardIcon
-                    className={selectedIndex === 1 ? 'swirl' : null}
-                    color={selectedIndex === 1 ? 'primary' : 'action'}
+                    className={selectedIndex === 1 ? "swirl" : null}
+                    color={selectedIndex === 1 ? "primary" : "action"}
                   />
                 </ListItemIcon>
-                <ListItemText>{i18n('developer.menu')}</ListItemText>
+                <ListItemText>{i18n("developer.menu")}</ListItemText>
               </ListItem>
             </Link>
             <Link
               to="/frame/useradmin"
               style={{
-                textDecoration: 'none',
+                textDecoration: "none",
                 color:
-                  localStorage.getItem('theme') === 'dark' ? 'white' : 'black',
+                  localStorage.getItem("theme") === "dark" ? "white" : "black",
               }}
             >
               <ListItem
@@ -104,24 +98,24 @@ export default function SelectedListItem(props) {
               >
                 <ListItemIcon>
                   <AssessmentIcon
-                    className={selectedIndex === 2 ? 'swirl' : null}
-                    color={selectedIndex === 2 ? 'primary' : 'action'}
+                    className={selectedIndex === 2 ? "swirl" : null}
+                    color={selectedIndex === 2 ? "primary" : "action"}
                   />
                 </ListItemIcon>
-                <ListItemText primary={i18n('useradmin.menu')} />
+                <ListItemText primary={i18n("useradmin.menu")} />
               </ListItem>
             </Link>
           </>
         ) : null}
         <Divider />
 
-        <ListSubheader inset>{i18n('employerGuestPages')}</ListSubheader>
+        <ListSubheader inset>{i18n("employerGuestPages")}</ListSubheader>
 
         <Link
           to="/frame/welcomepage"
           style={{
-            textDecoration: 'none',
-            color: localStorage.getItem('theme') === 'dark' ? 'white' : 'black',
+            textDecoration: "none",
+            color: localStorage.getItem("theme") === "dark" ? "white" : "black",
           }}
         >
           <ListItem
@@ -131,19 +125,19 @@ export default function SelectedListItem(props) {
           >
             <ListItemIcon>
               <DashboardIcon
-                className={selectedIndex === 3 ? 'swirl' : null}
-                color={selectedIndex === 3 ? 'primary' : 'action'}
+                className={selectedIndex === 3 ? "swirl" : null}
+                color={selectedIndex === 3 ? "primary" : "action"}
               />
             </ListItemIcon>
-            <ListItemText primary={i18n('welcomePage.menu')} />
+            <ListItemText primary={i18n("welcomePage.menu")} />
           </ListItem>
         </Link>
 
         <Link
           to="/frame/portfolio"
           style={{
-            textDecoration: 'none',
-            color: localStorage.getItem('theme') === 'dark' ? 'white' : 'black',
+            textDecoration: "none",
+            color: localStorage.getItem("theme") === "dark" ? "white" : "black",
           }}
         >
           <ListItem
@@ -153,19 +147,19 @@ export default function SelectedListItem(props) {
           >
             <ListItemIcon>
               <AssignmentIndIcon
-                className={selectedIndex === 4 ? 'swirl' : null}
-                color={selectedIndex === 4 ? 'primary' : 'action'}
+                className={selectedIndex === 4 ? "swirl" : null}
+                color={selectedIndex === 4 ? "primary" : "action"}
               />
             </ListItemIcon>
-            <ListItemText primary={i18n('portfolio.menu')} />
+            <ListItemText primary={i18n("portfolio.menu")} />
           </ListItem>
         </Link>
 
         <Link
           to="/frame/cv"
           style={{
-            textDecoration: 'none',
-            color: localStorage.getItem('theme') === 'dark' ? 'white' : 'black',
+            textDecoration: "none",
+            color: localStorage.getItem("theme") === "dark" ? "white" : "black",
           }}
         >
           <ListItem
@@ -175,11 +169,11 @@ export default function SelectedListItem(props) {
           >
             <ListItemIcon>
               <DescriptionIcon
-                className={selectedIndex === 5 ? 'swirl' : null}
-                color={selectedIndex === 5 ? 'primary' : 'action'}
+                className={selectedIndex === 5 ? "swirl" : null}
+                color={selectedIndex === 5 ? "primary" : "action"}
               />
             </ListItemIcon>
-            <ListItemText primary={i18n('cv.menu')} />
+            <ListItemText primary={i18n("cv.menu")} />
           </ListItem>
         </Link>
 
@@ -188,3 +182,9 @@ export default function SelectedListItem(props) {
     </div>
   );
 }
+
+SelectedListItem.propTypes = {
+  currentIndex: PropTypes.number.isRequired,
+  callback: PropTypes.func.isRequired,
+  role: PropTypes.string.isRequired,
+};

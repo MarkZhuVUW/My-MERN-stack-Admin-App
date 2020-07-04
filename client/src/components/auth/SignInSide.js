@@ -102,25 +102,28 @@ const styles = {
   },
 };
 
+const propTypes = {
+  error: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  login: PropTypes.func.isRequired,
+  userLoaded: PropTypes.bool,
+  clearErrors: PropTypes.func.isRequired,
+  isTFAing: PropTypes.bool,
+
+  user: PropTypes.oneOfType([PropTypes.object]),
+  logLoginSuccess: PropTypes.func.isRequired,
+  getGithubAccessToken: PropTypes.func.isRequired,
+  getGithubUser: PropTypes.func.isRequired,
+
+  // withRouter
+  location: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  history: PropTypes.oneOfType([PropTypes.object]).isRequired,
+};
+const defaultProps = {
+  userLoaded: false,
+  isTFAing: false,
+  user: undefined,
+};
 class SignInSide extends Component {
-  static propTypes = {
-    error: PropTypes.object.isRequired,
-    login: PropTypes.func.isRequired,
-    userLoaded: PropTypes.bool,
-    clearErrors: PropTypes.func.isRequired,
-    isTFAing: PropTypes.bool,
-
-    user: PropTypes.object,
-    logLoginSuccess: PropTypes.func.isRequired,
-    getGithubAccessToken: PropTypes.func.isRequired,
-    getGithubUser: PropTypes.func.isRequired,
-
-    // withRouter
-    match: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
-  };
-
   constructor(props) {
     super(props);
 
@@ -451,11 +454,11 @@ class SignInSide extends Component {
                       <Grid item xs>
                         <NavLink
                           to="#"
-                          onClick={() =>
+                          onClick={() => {
                             this.setState({
                               forgotPasswordClicked: true,
-                            })
-                          }
+                            });
+                          }}
                           style={{
                             textDecoration: "none",
                             color:
@@ -582,6 +585,8 @@ const mapStateToProps = (state) => ({
   isTFAing: state.auth.isTFAing,
   user: state.auth.user,
 });
+SignInSide.propTypes = propTypes;
+SignInSide.defaultProps = defaultProps;
 export default compose(
   withStyles(styles),
   connect(mapStateToProps, {

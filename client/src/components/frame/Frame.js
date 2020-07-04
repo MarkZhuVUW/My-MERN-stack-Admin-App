@@ -10,21 +10,20 @@ import Typography from "@material-ui/core/Typography";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import MenuIcon from "@material-ui/icons/Menu";
-import { withStyles } from "@material-ui/styles";
 import clsx from "clsx";
 import FacebookProgress from "components/shared/FacebookProgress";
 import ErrorPage from "error-pages/ErrorPage";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import Particles from "react-particles-js";
-//redux
+// redux
 import { connect } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { Redirect, Route, Switch, withRouter } from "react-router-dom";
 import compose from "recompose/compose";
 import { logPageView } from "../../actions/adminActions";
 import { clearErrors } from "../../actions/errorActions";
+import ParticlesCustomized from "../shared/ParticlesCustomized";
 import HeaderMenu from "./HeaderMenu";
 import SelectedListItem from "./listItems";
 import CV from "./pages/CV/CV";
@@ -33,16 +32,13 @@ import Developer from "./pages/Developer";
 import Portfolio from "./pages/Portfolio/Portfolio";
 import UserAdmin from "./pages/UserAdmin";
 import WelcomePage from "./pages/WelcomePage";
-import ParticlesCustomized from '../shared/ParticlesCustomized';
-
-
 
 class Frame extends Component {
-
   state = {
     // keeps track of whether the page is logged.
     pageLogged: false,
   };
+
   static propTypes = {
     auth: PropTypes.object.isRequired,
     clearErrors: PropTypes.func.isRequired,
@@ -50,7 +46,7 @@ class Frame extends Component {
     user: PropTypes.object,
     logPageView: PropTypes.func,
 
-    //withRouter
+    // withRouter
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
@@ -59,6 +55,7 @@ class Frame extends Component {
   componentDidMount() {
     // if (this.props.user) this.handlePageView();
   }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.user !== this.props.user) this.handlePageView();
     if (
@@ -67,6 +64,7 @@ class Frame extends Component {
     )
       this.handlePageView();
   }
+
   /**
    * Log employer page view and make api call to update corresponding documents in my mongodb database
    */
@@ -78,10 +76,10 @@ class Frame extends Component {
     const { _id, name, email, role, company } = this.props.user;
 
     const logPageView = {
-      name: name,
-      email: email,
-      role: role,
-      company: company,
+      name,
+      email,
+      role,
+      company,
       explanation: page,
       type: "PAGE VIEW",
     };
@@ -104,10 +102,9 @@ class Frame extends Component {
     if (this.props.user.role !== "employer") return;
     const { pathname } = this.props.location;
 
-
     this.setState({ pageLogged: true });
 
-    let splitPathname = pathname.split("/");
+    const splitPathname = pathname.split("/");
 
     while (splitPathname[splitPathname.length - 1] === "") {
       if (splitPathname.length - 1 === 0) break;
@@ -161,16 +158,13 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default compose(
-  connect(mapStateToProps, { clearErrors, logPageView })
-)(withRouter(Frame));
+export default compose(connect(mapStateToProps, { clearErrors, logPageView }))(
+  withRouter(Frame),
+);
 
 const drawerWidth = 240;
 
-
-
 function FrameContent(props) {
-
   const useStyles = makeStyles((theme) => ({
     root: {
       display: "flex",
@@ -261,12 +255,10 @@ function FrameContent(props) {
       paddingBottom: theme.spacing(1),
       paddingRight: theme.spacing(1),
       paddingLeft: theme.spacing(1),
-
     },
     developer: {
       backgroundColor: "white",
     },
-
   }));
 
   const classes = useStyles();
@@ -285,8 +277,8 @@ function FrameContent(props) {
    */
   const translatePageToIndex = () => {
     const { pathname } = props.location;
-    //trim out the "" in the last index of the array
-    let splitPathname = pathname.split('/');
+    // trim out the "" in the last index of the array
+    const splitPathname = pathname.split("/");
 
     while (splitPathname[splitPathname.length - 1] === "") {
       if (splitPathname.length - 1 === 0) break;
@@ -315,7 +307,7 @@ function FrameContent(props) {
   };
 
   const [selectedIndex, setSelectedIndex] = React.useState(
-    translatePageToIndex()
+    translatePageToIndex(),
   );
   const isSmallScreen = useMediaQuery({ query: "(max-width: 700px)" });
 
@@ -424,7 +416,7 @@ function FrameContent(props) {
       </div>
       <SelectedListItem
         callback={cb}
-        currentIndex={translatePageToIndex}
+        currentIndex={translatePageToIndex()}
         role={props.user.role}
       />
     </Drawer>
@@ -434,7 +426,7 @@ function FrameContent(props) {
   return (
     <>
       {localStorage.getItem("theme") === "dark" ? (
-        <ParticlesCustomized numParticles={30} size={2} hoverMode={'grab'}/>
+        <ParticlesCustomized numParticles={30} size={2} hoverMode="grab" />
       ) : null}
       <div>
         {isIndexInvalid ? (

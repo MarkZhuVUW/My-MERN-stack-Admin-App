@@ -15,7 +15,7 @@ import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
 import "./App.scss";
 import ParticlesCustomized from "./components/shared/ParticlesCustomized";
 
-const theme = createMuiTheme(
+const darkOrLightTheme = createMuiTheme(
   {
     palette: {
       primary:
@@ -25,27 +25,31 @@ const theme = createMuiTheme(
       type: localStorage.getItem("theme") === "dark" ? "dark" : "light",
     },
   },
-  localStorage.getItem("language") === "en" ? enUS : zhCN,
+   localStorage.getItem("language") === "en" ? enUS : zhCN,
 );
 
+const propTypes = {
+  authenticated: PropTypes.bool.isRequired,
+  loadUser: PropTypes.func.isRequired,
+  getGithubUser: PropTypes.func.isRequired,
+  
+  
+};
 class App extends Component {
-  state = {
-    theme: theme,
-  };
+          constructor(props) {
+    super(props);
+    this.state = {
+      theme: darkOrLightTheme,
+    };
+  }
 
   componentDidMount() {
-    if (!!localStorage.getItem("githubAccessToken")) {
+    if (localStorage.getItem("githubAccessToken")) {
       this.props.getGithubUser();
-    } else if (!!localStorage.getItem("token")) {
+    } else if (localStorage.getItem("token")) {
       this.props.loadUser();
     }
   }
-
-  static propTypes = {
-    authenticated: PropTypes.bool.isRequired,
-    loadUser: PropTypes.func.isRequired,
-    getGithubUser: PropTypes.func.isRequired,
-  };
 
   render() {
     const { theme } = this.state;
@@ -98,14 +102,14 @@ class App extends Component {
                   <ParticlesCustomized
                     numParticles={50}
                     size={3}
-                    hoverMode={"bubble"}
+                    hoverMode="bubble"
                   />
                 </MediaQuery>
                 <MediaQuery query="(max-width: 1280px)">
                   <ParticlesCustomized
                     numParticles={15}
                     size={1}
-                    hoverMode={"bubble"}
+                    hoverMode="bubble"
                   />
                 </MediaQuery>
 
@@ -140,6 +144,7 @@ class App extends Component {
   }
 }
 
+App.propTypes = propTypes;
 const mapStateToProps = (state) => ({
   user: state.auth.user,
   authenticated: state.auth.authenticated,

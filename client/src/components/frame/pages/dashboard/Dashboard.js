@@ -1,4 +1,3 @@
-import isEqual from 'lodash/isEqual';
 import { Grid } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
@@ -7,40 +6,36 @@ import { withStyles } from "@material-ui/styles";
 import { deleteLog, loadAllLogs } from "actions/adminActions";
 import { clearErrors } from "actions/errorActions";
 import classNames from "classnames";
+import Breadcrumb from "components/shared/Breadcrumb";
 import EditableTable from "components/shared/EditableTable";
 import FacebookProgress from "components/shared/FacebookProgress";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Breadcrumb from "components/shared/Breadcrumb";
 import "./dashboard.scss";
 import HomeDoughnutChart from "./HomeDoughnutChart";
 import HomeLineChart from "./HomeLineChart";
 import HomePolarChart from "./HomePolarChart";
+
 const styles = {};
 
-
+const propTypes = {
+  clearErrors: PropTypes.func.isRequired,
+  loadAllLogs: PropTypes.func.isRequired,
+  allLogs: PropTypes.oneOfType([PropTypes.object]),
+  user: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  deleteLog: PropTypes.func.isRequired,
+  isSmallScreen: PropTypes.bool.isRequired,
+};
+const defaultProps = {
+  allLogs: undefined,
+};
 class Dashboard extends Component {
-
-
-  static propTypes = {
-    clearErrors: PropTypes.func.isRequired,
-    allLogs: PropTypes.array,
-    loadAllLogs: PropTypes.func.isRequired,
-    user: PropTypes.object,
-    deleteLog: PropTypes.func.isRequired,
-  };
   componentDidMount() {
     // if (this.props.user)
     //   this.props.loadAllLogsForSpecificUser(this.props.user._id);
-  }
-
-  componentDidUpdate(prevProps, prevStates, snapshot) {
-    console.log(11);
-    if (!isEqual(prevProps.user, this.props.user)) {
-      this.props.loadAllLogs();
-    }
+    this.props.loadAllLogs();
   }
 
   toggle = () => {
@@ -53,18 +48,19 @@ class Dashboard extends Component {
    * after the delete button is clicked on the mui datatable.
    */
   deleteLogCallback = (logId) => {
+    // eslint-disable-next-line no-underscore-dangle
     this.props.deleteLog(this.props.user._id, logId);
   };
 
   onSubmit = (e) => {
     e.preventDefault();
 
-    //clear errors
+    // clear errors
     this.toggle();
   };
 
   render() {
-    const {allLogs, user } = this.props;
+    const { allLogs, user, isSmallScreen } = this.props;
     if (!user || !allLogs)
       return (
         <div
@@ -84,12 +80,15 @@ class Dashboard extends Component {
           allLogs={allLogs}
           deleteLogCallback={this.deleteLogCallback}
           user={user}
+          isSmallScreen={isSmallScreen}
         />
       </div>
     );
   }
 }
 
+Dashboard.propTypes = propTypes;
+Dashboard.defaultProps = defaultProps;
 const mapStateToProps = (state) => ({
   error: state.error,
   allLogs: state.admin.allLogs,
@@ -102,7 +101,7 @@ export default connect(mapStateToProps, {
 })(withStyles(styles)(Dashboard));
 
 function DashboardContent(props) {
-  const useStyles = makeStyles((theme) => ({
+  const classes = makeStyles((theme) => ({
     paper: {
       padding: theme.spacing(2),
       display: "flex",
@@ -113,8 +112,6 @@ function DashboardContent(props) {
       height: "100%",
     },
   }));
-
-  const classes = useStyles();
 
   const columns = [
     {
@@ -185,6 +182,7 @@ function DashboardContent(props) {
   const data = props.allLogs
     ? props.allLogs.map((log) => {
         return [
+          // eslint-disable-next-line no-underscore-dangle
           log._id,
           log.name,
           log.email,
@@ -226,13 +224,12 @@ function DashboardContent(props) {
       },
     },
     onRowsDelete: (rowsDeleted) => {
-      // console.log(data);
       if (props.user.role !== "admin") {
         // console.log(props.user.role + " is not allowed to delete logs");
         return;
       }
-      //rowdDeleted.lookup gets the actual indexes that are deleted in the log data.
-      //loop through each index and delete them one by one.
+      // rowdDeleted.lookup gets the actual indexes that are deleted in the log data.
+      // loop through each index and delete them one by one.
       Object.keys(rowsDeleted.lookup).forEach((index) => {
         // console.log(data[index][0]);
 
@@ -296,3 +293,10 @@ function DashboardContent(props) {
     </div>
   );
 }
+
+DashboardContent.propTypes = {
+  allLogs: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  deleteLogCallback: PropTypes.func.isRequired,
+  user: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  isSmallScreen: PropTypes.bool.isRequired,
+};
