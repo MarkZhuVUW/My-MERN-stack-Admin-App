@@ -2,7 +2,6 @@ import { Grid } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { withStyles } from "@material-ui/styles";
 import { deleteLog, loadAllLogs } from "actions/adminActions";
 import { clearErrors } from "actions/errorActions";
 import classNames from "classnames";
@@ -18,18 +17,16 @@ import HomeDoughnutChart from "./HomeDoughnutChart";
 import HomeLineChart from "./HomeLineChart";
 import HomePolarChart from "./HomePolarChart";
 
-const styles = {};
-
 const propTypes = {
   clearErrors: PropTypes.func.isRequired,
   loadAllLogs: PropTypes.func.isRequired,
-  allLogs: PropTypes.oneOfType([PropTypes.object]),
+  allLogs: PropTypes.oneOfType([PropTypes.array]),
   user: PropTypes.oneOfType([PropTypes.object]).isRequired,
   deleteLog: PropTypes.func.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
 };
 const defaultProps = {
-  allLogs: undefined,
+  allLogs: null,
 };
 class Dashboard extends Component {
   componentDidMount() {
@@ -98,10 +95,10 @@ export default connect(mapStateToProps, {
   clearErrors,
   loadAllLogs,
   deleteLog,
-})(withStyles(styles)(Dashboard));
+})(Dashboard);
 
 function DashboardContent(props) {
-  const classes = makeStyles((theme) => ({
+  const useStyle = makeStyles((theme) => ({
     paper: {
       padding: theme.spacing(2),
       display: "flex",
@@ -112,6 +109,7 @@ function DashboardContent(props) {
       height: "100%",
     },
   }));
+  const classes = useStyle();
 
   const columns = [
     {
@@ -295,7 +293,7 @@ function DashboardContent(props) {
 }
 
 DashboardContent.propTypes = {
-  allLogs: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  allLogs: PropTypes.oneOfType([PropTypes.array]).isRequired,
   deleteLogCallback: PropTypes.func.isRequired,
   user: PropTypes.oneOfType([PropTypes.object]).isRequired,
   isSmallScreen: PropTypes.bool.isRequired,

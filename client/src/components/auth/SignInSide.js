@@ -205,7 +205,7 @@ class SignInSide extends Component {
   handleLoginSuccess = () => {
     const { _id, name, email, role, company, uniqueId } = this.props.user;
 
-    const logLoginSuccess = {
+    const logLoginSuccessObj = {
       name,
       email,
       role,
@@ -215,9 +215,10 @@ class SignInSide extends Component {
     };
 
     // uniqueId is used to distinguish each oauth user. It exists when it is an oauth user object.
-    if (uniqueId) this.props.logLoginSuccess(uniqueId, logLoginSuccess, true);
+    if (uniqueId)
+      this.props.logLoginSuccess(uniqueId, logLoginSuccessObj, true);
     // if user is not oauth user, we can use _id to distinguish users.
-    else this.props.logLoginSuccess(_id, logLoginSuccess, false);
+    else this.props.logLoginSuccess(_id, logLoginSuccessObj, false);
 
     this.toggle();
   };
