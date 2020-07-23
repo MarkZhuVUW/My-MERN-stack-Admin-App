@@ -10,41 +10,35 @@ import Typography from "@material-ui/core/Typography";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import MenuIcon from "@material-ui/icons/Menu";
-import { withStyles } from "@material-ui/styles";
 import clsx from "clsx";
-import FacebookProgress from "components/FacebookProgress";
+import FacebookProgress from "components/shared/FacebookProgress";
 import ErrorPage from "error-pages/ErrorPage";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import Particles from "react-particles-js";
-//redux
+// redux
 import { connect } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { Redirect, Route, Switch, withRouter } from "react-router-dom";
 import compose from "recompose/compose";
 import { logPageView } from "../../actions/adminActions";
 import { clearErrors } from "../../actions/errorActions";
+import ParticlesCustomized from "../shared/ParticlesCustomized";
 import HeaderMenu from "./HeaderMenu";
 import SelectedListItem from "./listItems";
 import CV from "./pages/CV/CV";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Developer from "./pages/Developer";
-import Portfolio from "./pages/Portfolio";
+import Portfolio from "./pages/Portfolio/Portfolio";
 import UserAdmin from "./pages/UserAdmin";
 import WelcomePage from "./pages/WelcomePage";
-
-const styles = {
-  root: {
-    display: "flex",
-  },
-};
 
 class Frame extends Component {
   state = {
     // keeps track of whether the page is logged.
     pageLogged: false,
   };
+
   static propTypes = {
     auth: PropTypes.object.isRequired,
     clearErrors: PropTypes.func.isRequired,
@@ -52,7 +46,7 @@ class Frame extends Component {
     user: PropTypes.object,
     logPageView: PropTypes.func,
 
-    //withRouter
+    // withRouter
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
@@ -61,7 +55,8 @@ class Frame extends Component {
   componentDidMount() {
     // if (this.props.user) this.handlePageView();
   }
-  componentDidUpdate(prevProps) {
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.user !== this.props.user) this.handlePageView();
     if (
       prevProps.location.pathname !== this.props.location.pathname &&
@@ -69,6 +64,7 @@ class Frame extends Component {
     )
       this.handlePageView();
   }
+
   /**
    * Log employer page view and make api call to update corresponding documents in my mongodb database
    */
@@ -80,10 +76,10 @@ class Frame extends Component {
     const { _id, name, email, role, company } = this.props.user;
 
     const logPageView = {
-      name: name,
-      email: email,
-      role: role,
-      company: company,
+      name,
+      email,
+      role,
+      company,
       explanation: page,
       type: "PAGE VIEW",
     };
@@ -106,18 +102,16 @@ class Frame extends Component {
     if (this.props.user.role !== "employer") return;
     const { pathname } = this.props.location;
 
-    //do not log frame page.
-    if (pathname === "frame") return;
     this.setState({ pageLogged: true });
 
-    var splittedPathname = pathname.split("/");
+    const splitPathname = pathname.split("/");
 
-    while (splittedPathname[splittedPathname.length - 1] === "") {
-      if (splittedPathname.length - 1 === 0) break;
-      splittedPathname.splice(splittedPathname.length - 1, 1);
+    while (splitPathname[splitPathname.length - 1] === "") {
+      if (splitPathname.length - 1 === 0) break;
+      splitPathname.splice(splitPathname.length - 1, 1);
     }
 
-    const path = splittedPathname[splittedPathname.length - 1];
+    const path = splitPathname[splitPathname.length - 1];
     if (path === "cv" || path === "portfolio" || path === "welcomepage")
       this.logPageView(path);
     else if (
@@ -135,7 +129,6 @@ class Frame extends Component {
   };
 
   render() {
-    const { classes } = this.props;
     if (!this.props.user)
       return (
         <div
@@ -165,102 +158,109 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default compose(
-  withStyles(styles),
-  connect(mapStateToProps, { clearErrors, logPageView })
-)(withRouter(Frame));
+export default compose(connect(mapStateToProps, { clearErrors, logPageView }))(
+  withRouter(Frame),
+);
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-  },
-  toolbar: {
-    // paddingRight: 24 // keep right padding when drawer closed
-  },
-  toolbarIcon: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: "0 8px",
-    ...theme.mixins.toolbar,
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    // marginRight: 36
-  },
-  menuButtonHidden: {
-    display: "none",
-  },
-  title: {
-    flexGrow: 1,
-  },
-  drawerPaper: {
-    position: "relative",
-    whiteSpace: "nowrap",
-    width: drawerWidth,
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerPaperClose: {
-    overflowX: "hidden",
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    width: theme.spacing(7),
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9),
-    },
-  },
-  appBarSpacer: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    height: "100vh",
-    overflow: "auto",
-  },
-  container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-  },
-  paper: {
-    padding: theme.spacing(2),
-    display: "flex",
-    overflow: "auto",
-    flexDirection: "column",
-  },
-  fixedHeight: {
-    height: 240,
-  },
-  mobileContainer: {
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
-  },
-  developer: {
-    backgroundColor: "white",
-  },
-}));
-
 function FrameContent(props) {
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      display: "flex",
+      backgroundColor:
+        localStorage.getItem("theme") === "dark"
+          ? theme.palette.background.paper
+          : "#F2F2F2",
+    },
+    toolbar: {
+      // paddingRight: 24 // keep right padding when drawer closed
+    },
+    toolbarIcon: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      padding: "0 8px",
+      ...theme.mixins.toolbar,
+    },
+    appBar: {
+      zIndex: theme.zIndex.drawer + 1,
+      transition: theme.transitions.create(["width", "margin"], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+    },
+    appBarShift: {
+      marginLeft: drawerWidth,
+      width: `calc(100% - ${drawerWidth}px)`,
+      transition: theme.transitions.create(["width", "margin"], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    },
+    menuButton: {
+      // marginRight: 36
+    },
+    menuButtonHidden: {
+      display: "none",
+    },
+    title: {
+      flexGrow: 1,
+    },
+    drawerPaper: {
+      position: "relative",
+      whiteSpace: "nowrap",
+      width: drawerWidth,
+      transition: theme.transitions.create("width", {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      backgroundColor:
+        localStorage.getItem("theme") === "dark"
+          ? theme.palette.background.paper
+          : "#F2F2F2",
+    },
+    drawerPaperClose: {
+      overflowX: "hidden",
+      transition: theme.transitions.create("width", {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      width: theme.spacing(7),
+      [theme.breakpoints.up("sm")]: {
+        width: theme.spacing(9),
+      },
+    },
+    appBarSpacer: theme.mixins.toolbar,
+    content: {
+      flexGrow: 1,
+      height: "100vh",
+      overflow: "auto",
+    },
+    container: {
+      paddingTop: theme.spacing(4),
+      paddingBottom: theme.spacing(4),
+    },
+    paper: {
+      padding: theme.spacing(2),
+      display: "flex",
+      overflow: "auto",
+      flexDirection: "column",
+    },
+    fixedHeight: {
+      height: 240,
+    },
+    mobileContainer: {
+      paddingTop: theme.spacing(1),
+      paddingBottom: theme.spacing(1),
+      paddingRight: theme.spacing(1),
+      paddingLeft: theme.spacing(1),
+    },
+    developer: {
+      backgroundColor: "white",
+    },
+  }));
+
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
 
@@ -277,15 +277,15 @@ function FrameContent(props) {
    */
   const translatePageToIndex = () => {
     const { pathname } = props.location;
-    //trim out the "" in the last index of the array
-    var splittedPathname = pathname.split("/");
+    // trim out the "" in the last index of the array
+    const splitPathname = pathname.split("/");
 
-    while (splittedPathname[splittedPathname.length - 1] === "") {
-      if (splittedPathname.length - 1 === 0) break;
-      splittedPathname.splice(splittedPathname.length - 1, 1);
+    while (splitPathname[splitPathname.length - 1] === "") {
+      if (splitPathname.length - 1 === 0) break;
+      splitPathname.splice(splitPathname.length - 1, 1);
     }
 
-    switch (splittedPathname[splittedPathname.length - 1]) {
+    switch (splitPathname[splitPathname.length - 1]) {
       case "dashboard":
         return props.user.role === "admin" ? 0 : 403;
       case "developer":
@@ -307,9 +307,9 @@ function FrameContent(props) {
   };
 
   const [selectedIndex, setSelectedIndex] = React.useState(
-    translatePageToIndex()
+    translatePageToIndex(),
   );
-  const isSmallScreen = useMediaQuery({ query: "(max-device-width: 700px)" });
+  const isSmallScreen = useMediaQuery({ query: "(max-width: 700px)" });
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -386,7 +386,10 @@ function FrameContent(props) {
             in={(isSmallScreen && !open) || !isSmallScreen}
           >
             <div>
-              <HeaderMenu themeCallback={themeCallback} />
+              <HeaderMenu
+                themeCallback={themeCallback}
+                oauthUser={props.user.uniqueId ? props.user : null}
+              />
             </div>
           </Slide>
         ) : null}
@@ -413,7 +416,7 @@ function FrameContent(props) {
       </div>
       <SelectedListItem
         callback={cb}
-        currentIndex={translatePageToIndex}
+        currentIndex={translatePageToIndex()}
         role={props.user.role}
       />
     </Drawer>
@@ -422,34 +425,8 @@ function FrameContent(props) {
   const isIndexInvalid = index === 403 || index === 404;
   return (
     <>
-      {localStorage.getItem("theme") == "dark" ? (
-        <Particles
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-          }}
-          params={{
-            particles: {
-              number: {
-                value: 50,
-              },
-              size: {
-                value: 3,
-              },
-            },
-            interactivity: {
-              events: {
-                onhover: {
-                  enable: true,
-                  mode: "grab",
-                },
-              },
-            },
-          }}
-        />
+      {localStorage.getItem("theme") === "dark" ? (
+        <ParticlesCustomized numParticles={30} size={2} hoverMode="grab" />
       ) : null}
       <div>
         {isIndexInvalid ? (

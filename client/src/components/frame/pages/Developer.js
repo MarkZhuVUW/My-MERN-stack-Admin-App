@@ -5,7 +5,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import SwaggerUI, { presets } from "swagger-ui";
 import "swagger-ui/dist/swagger-ui.css";
-import Breadcrumb from "view/shared/Breadcrumb";
+import Breadcrumb from "components/shared/Breadcrumb";
 import { loadSwaggerUI } from "../../../actions/developerActions";
 
 class Developer extends Component {
@@ -20,7 +20,7 @@ class Developer extends Component {
       });
     }
   }
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prepStates, snapshot) {
     if (this.props.swaggerUIDocs) {
       SwaggerUI({
         dom_id: "#swaggerContainer",
@@ -49,7 +49,7 @@ export default connect(mapStateToProps, { loadSwaggerUI })(Developer);
  *
  * @author Mark Zhu <zdy120939259@outlook.com>
  */
-function DeveloperContent(props) {
+function DeveloperContent() {
   const useStyles = makeStyles((theme) => ({
     root: {
       backgroundColor: "#E9EAED",
@@ -82,7 +82,6 @@ function DeveloperContent(props) {
   return (
     <>
       <Breadcrumb
-        // style={{ textColor: "black" }}
         items={[[i18n("frame.menu"), "/"], [i18n("developer.route")]]}
       />
       <Paper className={classes.paper}>

@@ -2,24 +2,51 @@
   "env": {
     "browser": true,
     "es6": true,
-    "node": true
+    "node": true,
+    "jest": true
   },
-  "extends": ["plugin:react/recommended", "google"],
+
+  "extends": ["plugin:react/recommended", "airbnb", "prettier"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
   },
+  "parser": "babel-eslint",
   "parserOptions": {
+    "ecmaVersion": 2018,
     "ecmaFeatures": {
       "jsx": true
     },
-    "ecmaVersion": 2018,
+
     "sourceType": "module"
   },
   "plugins": ["react", "unused-imports"],
+
   "rules": {
+    "semi": "error",
     "no-unused-vars": "off",
-    "unused-imports/no-unused-imports": 2,
-    "unused-imports/no-unused-vars": 1
+    "unused-imports/no-unused-imports": 1,
+    "linebreak-style": ["error", "windows"],
+    "prefer-promise-reject-errors": ["off"],
+    "react/jsx-filename-extension": ["off"],
+    "react/prop-types": ["warn"],
+    "no-return-assign": ["off"],
+    "react/destructuring-assignment": ["off"],
+    "no-multiple-empty-lines": ["error", { "max": 2 }],
+    "no-console": ["off"]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": ["node_modules", "src/"]
+      }
+    },
+    "react": {
+      "pragma": "React", // Pragma to use, default to "React"
+      "version": "16.12" // React version. "detect" automatically picks the version you have installed.
+      // You can also use `16.0`, `16.3`, etc, if you want to override the detected value.
+      // default to latest and warns if missing
+      // It will default to "detect" in the future
+    }
   }
 }

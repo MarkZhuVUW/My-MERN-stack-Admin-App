@@ -1,34 +1,40 @@
-import { Zoom } from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import {
+  Button,
+  Container,
+  CssBaseline,
+  Tooltip,
+  Zoom,
+} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Snackbar from "@material-ui/core/Snackbar";
 import { createMuiTheme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import MuiAlert from "@material-ui/lab/Alert";
 import { withStyles } from "@material-ui/styles";
+import { logLoginSuccess } from "actions/adminActions";
+import {
+  getGithubAccessToken,
+  getGithubUser,
+  login,
+} from "actions/authActions";
+import { clearErrors } from "actions/errorActions";
 import AnimatedIcons from "components/AnimatedIcons/AnimatedIcons";
-import FacebookProgress from "components/FacebookProgress";
 import ImageRevealEffect from "components/ImageRevealEffect/ImageRevealEffect";
+import FacebookProgress from "components/shared/FacebookProgress";
+import confidentials from "confidentials/confidentials";
+import "css3/bouncingEffect.css";
 import { i18n } from "i18n";
+import image from "images/404.png";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
+import GitHubLogin from "react-github-login";
 import { connect } from "react-redux";
 import MediaQuery from "react-responsive";
 import { NavLink, withRouter } from "react-router-dom";
 import compose from "recompose/compose";
-import { logLoginSuccess } from "../../actions/adminActions";
-import { login } from "../../actions/authActions";
-import { clearErrors } from "../../actions/errorActions";
-import "../../css3/bouncingEffect.css";
-import image from "../../images/404.png";
-import ResponsiveDialog from "../ResponsiveDialog";
+import ResponsiveDialog from "../shared/ResponsiveDialog";
 
 const theme = createMuiTheme({
   spacing: 4,
@@ -38,8 +44,10 @@ const styles = {
   root: {
     backgroundColor: theme.palette.grey[600],
     flexGrow: 1,
-    height: "100vh",
+    // height: "100vh",
     overflow: "auto",
+    position: "relative",
+    minHeight: "100vh",
   },
 
   paper: {
@@ -56,9 +64,8 @@ const styles = {
     flexDirection: "column",
     alignItems: "center",
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+  githubSignIn: {
+    margin: theme.spacing(2),
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -71,50 +78,83 @@ const styles = {
     zIndex: 2,
     position: "relative",
   },
+  footer: {
+    padding: theme.spacing(3, 2),
+    marginTop: "auto",
+    backgroundColor: theme.palette.primary.main,
+    // position: "relative",
+    position: "absolute",
+    width: "100%",
+    bottom: 0,
+    zIndex: 5,
+  },
+
+  header: {
+    padding: theme.spacing(3, 2),
+    marginTop: "auto",
+    backgroundColor: theme.palette.primary.main,
+    // position: "relative",
+    position: "absolute",
+    width: "100%",
+    top: 0,
+
+    zIndex: 5,
+  },
 };
 
+const propTypes = {
+  error: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  login: PropTypes.func.isRequired,
+  userLoaded: PropTypes.bool,
+  clearErrors: PropTypes.func.isRequired,
+  isTFAing: PropTypes.bool,
+
+  user: PropTypes.oneOfType([PropTypes.object]),
+  logLoginSuccess: PropTypes.func.isRequired,
+  getGithubAccessToken: PropTypes.func.isRequired,
+  getGithubUser: PropTypes.func.isRequired,
+
+  // withRouter
+  location: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  history: PropTypes.oneOfType([PropTypes.object]).isRequired,
+};
+const defaultProps = {
+  userLoaded: false,
+  isTFAing: false,
+  user: undefined,
+};
 class SignInSide extends Component {
-  state = {
-    email: "",
-    password: "",
-    msg: null,
-    selectedRole: "",
-    forgotPasswordClicked: false,
-    checked: false,
-    isLoading: false,
-    emailErrorMsg: null,
-    passwordErrorMsg: null,
-    copyRightOpened: false,
-    copyRightText:
-      "This website is MIT licensed. https://opensource.org/licenses/MIT",
-  };
+  constructor(props) {
+    super(props);
 
-  static propTypes = {
-    error: PropTypes.object.isRequired,
-    login: PropTypes.func.isRequired,
-    userLoaded: PropTypes.bool,
-    clearErrors: PropTypes.func.isRequired,
-    isTFAing: PropTypes.bool,
+    this.state = {
+      email: "",
+      password: "",
+      msg: null,
+      selectedRole: "",
+      forgotPasswordClicked: false,
+      isLoading: false,
+      emailErrorMsg: null,
+      passwordErrorMsg: null,
+      copyRightOpened: false,
+      copyRightText: i18n("loginPage.licenseText"),
+    };
+  }
 
-    user: PropTypes.object,
-    logLoginSuccess: PropTypes.func,
-
-    //withRouter
-    match: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
-  };
-
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
     const { error } = this.props;
 
     if (error !== prevProps.error) {
       // Check for register error
 
       if (error.id === "LOGIN_FAIL") {
-        this.setState({ msg: error.msg.msg });
+        this.setState({
+          msg: error.msg.msg,
+        });
       } else {
-        this.setState({ msg: null });
+        this.setState({
+          msg: null,
+        });
       }
     }
   }
@@ -127,7 +167,7 @@ class SignInSide extends Component {
   onSubmit = (e) => {
     e.preventDefault();
 
-    const { email, password, emailErrorMsg, passwordErrorMsg } = this.state;
+    const { email, password } = this.state;
     this.validateEmail(email);
     this.validatePassword(password);
     this.setState({
@@ -144,6 +184,14 @@ class SignInSide extends Component {
     this.toggle();
   };
 
+  onGithubSignIn = (code) => {
+    this.props.getGithubAccessToken(code).then(() => {
+      this.props.getGithubUser();
+    });
+
+    this.toggle();
+  };
+
   callback = (isTFAVerified) => {
     if (isTFAVerified) {
       this.setState({
@@ -155,43 +203,64 @@ class SignInSide extends Component {
   };
 
   handleLoginSuccess = () => {
-    const { _id, name, email, role, company } = this.props.user;
+    const { _id, name, email, role, company, uniqueId } = this.props.user;
 
-    const logLoginSuccess = {
-      name: name,
-      email: email,
-      role: role,
-      company: company,
+    const logLoginSuccessObj = {
+      name,
+      email,
+      role,
+      company,
       explanation: "user logged in",
       type: "LOGIN",
     };
 
-    this.props.logLoginSuccess(_id, logLoginSuccess);
+    // uniqueId is used to distinguish each oauth user. It exists when it is an oauth user object.
+    if (uniqueId)
+      this.props.logLoginSuccess(uniqueId, logLoginSuccessObj, true);
+    // if user is not oauth user, we can use _id to distinguish users.
+    else this.props.logLoginSuccess(_id, logLoginSuccessObj, false);
 
     this.toggle();
   };
+
   validateEmail = (email) => {
     if (email === "")
-      this.setState({ emailErrorMsg: "Email cannot be empty." });
+      this.setState({
+        emailErrorMsg: "Email cannot be empty.",
+      });
     else if (!email.includes("@"))
-      this.setState({ emailErrorMsg: "Incorrect format" });
-    else this.setState({ emailErrorMsg: null });
+      this.setState({
+        emailErrorMsg: "Incorrect format",
+      });
+    else
+      this.setState({
+        emailErrorMsg: null,
+      });
   };
+
   validatePassword = (password) => {
     if (password === "")
-      this.setState({ passwordErrorMsg: "Password cannot be empty." });
-    else this.setState({ passwordErrorMsg: null });
+      this.setState({
+        passwordErrorMsg: "Password cannot be empty.",
+      });
+    else
+      this.setState({
+        passwordErrorMsg: null,
+      });
   };
 
   onChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
     if (e.target.name === "email") this.validateEmail(e.target.value);
     else if (e.target.name === "password")
       this.validatePassword(e.target.value);
   };
+
   render() {
-    const { classes, userLoaded, error } = this.props;
-    const { email, msg } = this.state;
+    const { classes, userLoaded, error, user } = this.props;
+    const { msg } = this.state;
 
     const responsiveDialogCallback = () => {
       this.setState({
@@ -216,6 +285,20 @@ class SignInSide extends Component {
 
     return (
       <div>
+        <MediaQuery query="(max-width: 1280px)">
+          <header className={classes.header}>
+            <Container>
+              <Typography
+                variant="body1"
+                style={{
+                  color: "white",
+                }}
+              >
+                {i18n("loginPage.cookie")}
+              </Typography>
+            </Container>
+          </header>
+        </MediaQuery>
         {/* if user credentials are correct. Do a google 2fa before login to dashboard */}
         <Snackbar
           open={this.state.forgotPasswordClicked}
@@ -226,21 +309,33 @@ class SignInSide extends Component {
             {i18n("loginPage.registerANewOne")}
           </Alert>
         </Snackbar>
-        {userLoaded ? (
+        {userLoaded && !user.id ? (
           <ResponsiveDialog
-            alertMsg="Download google authenticator app from any app store, scan the QRCode, enter the code shown on the app and submit"
-            title="Google Two-Factor Auth"
-            email={email}
+            alertMsg={i18n("loginPage.downloadTFAApp")}
+            title={i18n("loginPage.googleTFA")}
             cb={this.callback}
             selectedRole={this.state.selectedRole}
             responsiveDialogCallback={responsiveDialogCallback}
             loginSuccessCallback={this.callback}
+            isGithubUserLoaded={false}
+          />
+        ) : null}
+        {userLoaded && user.id ? (
+          <ResponsiveDialog
+            alertMsg={i18n("loginPage.chooseRole")}
+            title={i18n("loginPage.githubOauth")}
+            cb={this.callback}
+            selectedRole={this.state.selectedRole}
+            responsiveDialogCallback={responsiveDialogCallback}
+            loginSuccessCallback={this.callback}
+            isGithubUserLoaded
           />
         ) : null}
 
         <Grid container className={classes.root}>
           <CssBaseline />
-          <MediaQuery query="(min-device-width: 1280px)">
+
+          <MediaQuery query="(min-width: 1280px)">
             <Grid item lg={7}>
               <ImageRevealEffect image={image} />
             </Grid>
@@ -263,14 +358,33 @@ class SignInSide extends Component {
               flexDirection: "column",
             }}
           >
-            <Zoom in={true} timeout={500}>
+            <Zoom in timeout={500}>
               <Container className={classes.content}>
                 <Paper className={classes.paper}>
-                  <Tooltip title={i18n("clickme")}>
-                    <Avatar className={classes.avatar}>
-                      <LockOutlinedIcon className="animation" />
-                    </Avatar>
+                  <Tooltip
+                    title={i18n("loginPage.loginAsDifferentUser")}
+                    aria-label={i18n("loginPage.loginAsDifferentUser")}
+                  >
+                    <span
+                      onKeyDown={() => {}}
+                      onClick={() => {
+                        this.setState({
+                          isLoading: true,
+                        });
+                      }}
+                      role="button"
+                      tabIndex={0}
+                    >
+                      <GitHubLogin
+                        buttonText={i18n("loginPage.signInWithGithub")}
+                        clientId={confidentials.github_client_id}
+                        redirectUri=""
+                        onSuccess={(res) => this.onGithubSignIn(res.code)}
+                        onFailure={(res) => console.error(res)}
+                      />
+                    </span>
                   </Tooltip>
+
                   <Typography component="h1" variant="h5">
                     {i18n("loginPage.welcome")}
                   </Typography>
@@ -291,7 +405,7 @@ class SignInSide extends Component {
                       id="email"
                       label={i18n("loginPage.email")}
                       name="email"
-                      error={this.state.emailErrorMsg ? true : false}
+                      error={!!this.state.emailErrorMsg}
                       helperText={this.state.emailErrorMsg}
                       onChange={this.onChange}
                     />
@@ -304,42 +418,48 @@ class SignInSide extends Component {
                       label={i18n("loginPage.password")}
                       type="password"
                       id="password"
-                      error={this.state.passwordErrorMsg ? true : false}
+                      error={!!this.state.passwordErrorMsg}
                       helperText={this.state.passwordErrorMsg}
                       onChange={this.onChange}
                     />
-
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      color="primary"
-                      disabled={
-                        this.state.isLoading ||
-                        this.state.email === "" ||
-                        this.state.password === "" ||
-                        this.state.passwordErrorMsg !== null ||
-                        this.state.emailErrorMsg !== null
-                      }
-                      className={classes.submit}
-                      onClick={this.onSubmit}
+                    <Tooltip
+                      title={i18n("loginPage.loginAsDifferentUser")}
+                      aria-label={i18n("loginPage.loginAsDifferentUser")}
                     >
-                      {this.state.isLoading ? (
-                        <FacebookProgress />
-                      ) : (
-                        <Typography>{i18n("loginPage.signIn")}</Typography>
-                      )}
-                    </Button>
+                      <span>
+                        <Button
+                          type="submit"
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          disabled={
+                            this.state.isLoading ||
+                            this.state.email === "" ||
+                            this.state.password === "" ||
+                            this.state.passwordErrorMsg !== null ||
+                            this.state.emailErrorMsg !== null
+                          }
+                          className={classes.submit}
+                          onClick={this.onSubmit}
+                        >
+                          {this.state.isLoading ? (
+                            <FacebookProgress />
+                          ) : (
+                            <Typography>{i18n("loginPage.signIn")}</Typography>
+                          )}
+                        </Button>
+                      </span>
+                    </Tooltip>
 
                     <Grid container>
                       <Grid item xs>
                         <NavLink
                           to="#"
-                          onClick={() =>
+                          onClick={() => {
                             this.setState({
                               forgotPasswordClicked: true,
-                            })
-                          }
+                            });
+                          }}
                           style={{
                             textDecoration: "none",
                             color:
@@ -374,14 +494,21 @@ class SignInSide extends Component {
                         responsiveDialogCallback={responsiveDialogCallback}
                       />
                     ) : null}
-                    <Grid container style={{ marginTop: 15 }}>
+                    <Grid
+                      container
+                      style={{
+                        marginTop: 15,
+                      }}
+                    >
                       <Grid item xs>
                         <Typography
                           component="a"
                           href="#"
                           variant="caption"
                           onClick={() => {
-                            this.setState({ copyRightOpened: true });
+                            this.setState({
+                              copyRightOpened: true,
+                            });
                           }}
                           style={{
                             textDecoration: "none",
@@ -425,6 +552,7 @@ class SignInSide extends Component {
                 width: "100%",
                 textAlign: "center",
                 position: "relative",
+                zIndex: 2,
                 color:
                   localStorage.getItem("theme") === "dark" ? "white" : "black",
               }}
@@ -432,6 +560,20 @@ class SignInSide extends Component {
               {i18n("loginPage.inspiredBy")}
             </Typography>
           </Grid>
+          <MediaQuery query="(min-width: 1280px)">
+            <footer className={classes.footer}>
+              <Container>
+                <Typography
+                  variant="body1"
+                  style={{
+                    color: "white",
+                  }}
+                >
+                  {i18n("loginPage.cookie")}
+                </Typography>
+              </Container>
+            </footer>
+          </MediaQuery>
         </Grid>
       </div>
     );
@@ -444,7 +586,15 @@ const mapStateToProps = (state) => ({
   isTFAing: state.auth.isTFAing,
   user: state.auth.user,
 });
+SignInSide.propTypes = propTypes;
+SignInSide.defaultProps = defaultProps;
 export default compose(
   withStyles(styles),
-  connect(mapStateToProps, { login, clearErrors, logLoginSuccess })
+  connect(mapStateToProps, {
+    login,
+    clearErrors,
+    logLoginSuccess,
+    getGithubAccessToken,
+    getGithubUser,
+  }),
 )(withRouter(SignInSide));

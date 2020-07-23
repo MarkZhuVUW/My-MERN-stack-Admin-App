@@ -5,15 +5,26 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import "swagger-ui/dist/swagger-ui.css";
-import Breadcrumb from "view/shared/Breadcrumb";
+import Breadcrumb from "components/shared/Breadcrumb";
 import { logDownload } from "../../../../actions/adminActions";
 import { clearErrors } from "../../../../actions/errorActions";
-
+import {Document, Page} from 'react-pdf';
+import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import PageNumMenu from './PageNumMenu';
+import Link from '@material-ui/core/Link';
+import { pdfCV } from "./Mark_Zhu_CV.pdf";
 // pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
+
+
+
 class CV extends Component {
+
+
   componentDidMount() {}
-  componentDidUpdate() {}
+  componentDidUpdate(prevProps, prevState, snapshot) {}
   static propTypes = {
     user: PropTypes.object.isRequired,
     clearErrors: PropTypes.func.isRequired,
@@ -65,6 +76,7 @@ export default connect(mapStateToProps, {
  * @author Mark Zhu <zdy120939259@outlook.com>
  */
 function CVContent(props) {
+
   const useStyles = makeStyles((theme) => ({
     root: {
       backgroundColor: "#E9EAED",
@@ -127,8 +139,8 @@ function CVContent(props) {
    * For example. 3 will be converted to [1, 2, 3]
    */
   const turnNumPagesToArray = (numPages) => {
-    var arrayOfNums = [];
-    for (var i = 1; i <= numPages; ++i) {
+    let arrayOfNums = [];
+    for (let i = 1; i <= numPages; ++i) {
       arrayOfNums.push(i);
     }
     return arrayOfNums;
@@ -143,8 +155,8 @@ function CVContent(props) {
         // style={{ textColor: "black" }}
         items={[[i18n("frame.menu"), "/"], [i18n("cv.route")]]}
       />
-      Having a webpack issue with pdf.js. Still working on it.
-      {/* <Paper
+      Will implement a pdf preview but for now there is only CV download.
+       <Paper
         className={
           props.isSmallScreen ? classes.smallScreenPaper : classes.paper
         }
@@ -188,7 +200,7 @@ function CVContent(props) {
             </Box>
           </Link>
         </Box>
-      ) : null} */}
+      ) : null}
     </>
   );
 }

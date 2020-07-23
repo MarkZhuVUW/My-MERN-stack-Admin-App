@@ -1,10 +1,11 @@
 import {
+  Avatar,
   Badge,
   Fab,
   IconButton,
   Menu,
   MenuItem,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Person as AccountIcon, Send as SendIcon } from "@material-ui/icons";
@@ -19,112 +20,103 @@ import { i18n, setLanguageCode } from "i18n";
 import React, { useState } from "react";
 import "../../css3/bouncingEffect.css";
 import Logout from "../auth/Logout";
-import UserAvatar from "../UserAvatar";
-const useStyles = makeStyles(theme => ({
-  logotype: {
-    color: "white",
-    marginLeft: theme.spacing(2.5),
-    marginRight: theme.spacing(2.5),
-    fontWeight: 500,
-    fontSize: 18,
-    whiteSpace: "nowrap",
-    [theme.breakpoints.down("xs")]: {
-      display: "none"
-    }
-  },
-  appBar: {
-    width: "100vw",
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
-  },
-  toolbar: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2)
-  },
-  hide: {
-    display: "none"
-  },
-  grow: {
-    flexGrow: 1
-  },
+import UserAvatar from "../shared/UserAvatar";
 
-  headerMenu: {
-    marginTop: theme.spacing(7)
-  },
-  headerMenuList: {
-    display: "flex",
-    flexDirection: "column"
-  },
-
-  headerMenuButton: {
-    marginLeft: theme.spacing(2),
-    padding: theme.spacing(0.5)
-  },
-  headerMenuButtonCollapse: {
-    marginRight: theme.spacing(2)
-  },
-  headerIcon: {
-    fontSize: 28
-  },
-  headerIconCollapse: {
-    color: "white"
-  },
-  menu: {
-    minWidth: 265
-  },
-  menuUser: {
-    display: "flex",
-    flexDirection: "column",
-    padding: theme.spacing(2)
-  },
-
-  menuLink: {
-    fontSize: 16,
-    textDecoration: "none"
-  },
-  messageNotification: {
-    height: "auto",
-    display: "flex",
-    alignItems: "center",
-    "&:hover, &:focus": {
-      backgroundColor: theme.palette.background.light
-    }
-  },
-  messageNotificationSide: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    marginRight: theme.spacing(2)
-  },
-  messageNotificationBodySide: {
-    alignItems: "flex-start",
-    marginRight: 0
-  },
-  sendMessageButton: {
-    margin: theme.spacing(4),
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    textTransform: "none"
-  },
-  sendButtonIcon: {
-    marginLeft: theme.spacing(2)
-  }
-}));
-
+/**
+ *
+ * @param props
+ * @return {*}
+ * @constructor
+ */
 export default function HeaderMenu(props) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const useStyles = makeStyles((theme) => ({
+    logotype: {
+      color: "white",
+      marginLeft: theme.spacing(2.5),
+      marginRight: theme.spacing(2.5),
+      fontWeight: 500,
+      fontSize: 18,
+      whiteSpace: "nowrap",
+      [theme.breakpoints.down("xs")]: {
+        display: "none",
+      },
+    },
+    appBar: {
+      width: "100vw",
+      zIndex: theme.zIndex.drawer + 1,
+      transition: theme.transitions.create(["margin"], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+    },
+    toolbar: {
+      paddingLeft: theme.spacing(2),
+      paddingRight: theme.spacing(2),
+    },
+    hide: {
+      display: "none",
+    },
+    grow: {
+      flexGrow: 1,
+    },
+
+    headerMenu: {
+      marginTop: theme.spacing(7),
+    },
+    headerMenuList: {
+      display: "flex",
+      flexDirection: "column",
+    },
+
+    headerMenuButton: {
+      marginLeft: theme.spacing(2),
+      padding: theme.spacing(0.5),
+    },
+    headerMenuButtonCollapse: {
+      marginRight: theme.spacing(2),
+    },
+    headerIcon: {
+      fontSize: 28,
+    },
+    headerIconCollapse: {
+      color: "white",
+    },
+    menu: {
+      minWidth: 265,
+    },
+    menuUser: {
+      display: "flex",
+      flexDirection: "column",
+      padding: theme.spacing(2),
+    },
+
+    menuLink: {
+      fontSize: 16,
+      textDecoration: "none",
+    },
+
+    messageNotificationSide: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      marginRight: theme.spacing(2),
+    },
+    messageNotificationBodySide: {
+      alignItems: "flex-start",
+      marginRight: 0,
+    },
+    sendMessageButton: {
+      margin: theme.spacing(4),
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(2),
+      textTransform: "none",
+    },
+    sendButtonIcon: {
+      marginLeft: theme.spacing(2),
+    },
+  }));
+
   const classes = useStyles();
-
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   // local
   const [mailMenu, setMailMenu] = useState(null);
@@ -138,32 +130,32 @@ export default function HeaderMenu(props) {
       variant: "warning",
       name: "Jane Hew",
       message: "Hey! How is it going?",
-      time: "9:32"
+      time: "9:32",
     },
     {
       id: 1,
       variant: "success",
       name: "Lloyd Brown",
       message: "Check out my new Dashboard",
-      time: "9:18"
+      time: "9:18",
     },
     {
       id: 2,
       variant: "primary",
       name: "Mark Winstein",
       message: "I want rearrange the appointment",
-      time: "9:15"
+      time: "9:15",
     },
     {
       id: 3,
       variant: "secondary",
       name: "Liana Dutti",
       message: "Good news from sale department",
-      time: "9:09"
-    }
+      time: "9:09",
+    },
   ];
 
-  const setLanguage = code => {
+  const setLanguage = (code) => {
     setLanguageCode(code);
     window.location.reload();
   };
@@ -174,7 +166,7 @@ export default function HeaderMenu(props) {
         color="inherit"
         aria-haspopup="true"
         aria-controls="language-menu"
-        onClick={e => {
+        onClick={(e) => {
           setLanguageMenu(e.currentTarget);
         }}
         className={classes.headerMenuButton}
@@ -209,7 +201,7 @@ export default function HeaderMenu(props) {
         color="inherit"
         aria-haspopup="true"
         aria-controls="theme-menu"
-        onClick={e => {
+        onClick={(e) => {
           if (localStorage.getItem("theme") !== "dark") {
             localStorage.setItem("theme", "dark");
             props.themeCallback();
@@ -221,7 +213,7 @@ export default function HeaderMenu(props) {
         className={classes.headerMenuButton}
       >
         <Badge color="secondary">
-          {localStorage.getItem("theme") == "dark" ? (
+          {localStorage.getItem("theme") === "dark" ? (
             <Brightness4Icon
               classes={{ root: classes.headerIcon }}
               className="swayTranslate"
@@ -241,7 +233,7 @@ export default function HeaderMenu(props) {
         color="inherit"
         aria-haspopup="true"
         aria-controls="mail-menu"
-        onClick={e => {
+        onClick={(e) => {
           setMailMenu(e.currentTarget);
           setIsMailsUnread(false);
         }}
@@ -281,11 +273,12 @@ export default function HeaderMenu(props) {
             component="a"
             color="secondary"
           >
-            {messages.length} New Messages
+            {messages.length}
+            New Messages
           </Typography>
         </div>
-        {messages.map(message => (
-          <MenuItem key={message.id} className={classes.messageNotification}>
+        {messages.map((message) => (
+          <MenuItem key={message.id}>
             <div className={classes.messageNotificationSide}>
               <UserAvatar color={message.variant} name={message.name} />
               <Typography>{message.time}</Typography>
@@ -293,7 +286,7 @@ export default function HeaderMenu(props) {
             <div
               className={classNames(
                 classes.messageNotificationSide,
-                classes.messageNotificationBodySide
+                classes.messageNotificationBodySide,
               )}
             >
               <Typography gutterBottom>{message.name}</Typography>
@@ -320,18 +313,35 @@ export default function HeaderMenu(props) {
         color="inherit"
         className={classes.headerMenuButton}
         aria-controls="profile-menu"
-        onClick={e => setProfileMenu(e.currentTarget)}
+        onClick={(e) => setProfileMenu(e.currentTarget)}
       >
-        {profileMenu ? (
-          <AccountIcon
-            classes={{ root: classes.headerIcon }}
-            className="swirl"
-          />
+        {props.oauthUser ? (
+          <>
+            {profileMenu ? (
+              // TODO wrapping avatar in a div somehow triggers re-render.
+              // This is a hacky way of triggering the swirl animation
+              // will find a better way when I have better understanding of react.
+              <div>
+                <Avatar src={props.oauthUser.avatar_url} className="swirl" />
+              </div>
+            ) : (
+              <Avatar src={props.oauthUser.avatar_url} className="swirl" />
+            )}
+          </>
         ) : (
-          <PersonOutlineIcon
-            classes={{ root: classes.headerIcon }}
-            className="swirl"
-          />
+          <>
+            {profileMenu ? (
+              <AccountIcon
+                classes={{ root: classes.headerIcon }}
+                className="swirl"
+              />
+            ) : (
+              <PersonOutlineIcon
+                classes={{ root: classes.headerIcon }}
+                className="swirl"
+              />
+            )}
+          </>
         )}
       </IconButton>
       <Menu
@@ -363,11 +373,13 @@ export default function HeaderMenu(props) {
           </Typography>
         </div>
         <MenuItem>
-          <AccountIcon /> {i18n("profile")}
+          <AccountIcon />
+          {i18n("profile")}
         </MenuItem>
 
         <MenuItem>
-          <AccountIcon /> {i18n("messages")}
+          <AccountIcon />
+          {i18n("messages")}
         </MenuItem>
         <div className={classes.menuUser}>
           <Logout />

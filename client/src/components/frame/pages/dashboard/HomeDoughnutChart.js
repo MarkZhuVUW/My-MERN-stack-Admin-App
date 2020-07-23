@@ -7,47 +7,45 @@ export default class HomeDoughnutChart extends React.Component {
     super(props);
     this.state = {
       //group by role of user.
-
-      roleData: this.groupByRole()
+      roleData: this.groupByRole(),
     };
     this.chartRef = React.createRef();
   }
 
-  componentDidUpdate(prevProp) {
+  componentDidUpdate(prevProp, prevState, snapshot) {
+    let roleData = this.groupByRole();
+
     if (prevProp.data !== this.props.data) {
       this.setState({
-        roleData: this.groupByRole()
+        roleData: roleData,
       });
       this.myChart.data.datasets = [
         {
-          data: Object.entries(this.groupByRole()).map(
-            roleEntry => roleEntry[1]
+          data: Object.entries(roleData).map((roleEntry) => roleEntry[1]),
+          backgroundColor: Object.entries(roleData).map((role, index) =>
+            this.colorChooser(index)
           ),
-          backgroundColor: Object.entries(
-            this.groupByRole()
-          ).map((role, index) => this.colorChooser(index))
-        }
+        },
       ];
       this.myChart.update();
     }
   }
 
   /**
-   * Group logs by role.
+   * * Group logs by role.
    * Example value:
    * {
    *  admin: 10,
    *  employer: 25,
    *  guest: 5
    * }
-   *
-   * @memberof HomeDoughnutChart
+   * @returns number[]
    */
   groupByRole = () => {
-    var groupedRoles = [];
+    let groupedRoles = [];
     this.props.data
-      .map(log => log[3])
-      .forEach(element => {
+      .map((log) => log[3])
+      .forEach((element) => {
         if (groupedRoles[element]) ++groupedRoles[element];
         else groupedRoles[element] = 1;
       });
@@ -55,28 +53,29 @@ export default class HomeDoughnutChart extends React.Component {
     return groupedRoles;
   };
 
+
   componentDidMount() {
     const { roleData } = this.state;
     this.myChart = new Chart(this.chartRef.current, {
       type: "doughnut",
       data: {
-        labels: Object.keys(roleData).map(role =>
+        labels: Object.keys(roleData).map((role) =>
           i18n(`dashboard.doughnutChart.${role}`)
         ),
         datasets: [
           {
-            data: Object.entries(roleData).map(roleEntry => roleEntry[1]),
+            data: Object.entries(roleData).map((roleEntry) => roleEntry[1]),
             backgroundColor: Object.entries(roleData).map((role, index) =>
               this.colorChooser(index)
-            )
-          }
-        ]
+            ),
+          },
+        ],
       },
       options: {
         legend: {
-          display: false
-        }
-      }
+          display: false,
+        },
+      },
     });
   }
 
@@ -84,8 +83,7 @@ export default class HomeDoughnutChart extends React.Component {
    * Choose color based on input index.
    * @param {*} index
    */
-  colorChooser = index => {
-    // console.log(index);
+  colorChooser = (index) => {
     switch (index) {
       case 0:
         return "#FF6384";

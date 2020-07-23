@@ -2,7 +2,10 @@ import {
   ALL_USERS_LOADED,
   AUTH_ERROR,
   CLEAR_SUCCESS_MSG,
-  LOADING,
+  GITHUB_SIGNIN_FAIL,
+  GITHUB_SIGNIN_SUCCESS,
+  GITHUB_USER_ADAPTED,
+  GITHUB_USER_LOADED,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
@@ -16,7 +19,7 @@ import {
   TFA_VERIFY_FAIL,
   USER_DELETED,
   USER_LOADED,
-  USER_LOADING
+  USER_LOADING,
 } from "../actions/types";
 
 const initialState = {
@@ -26,52 +29,49 @@ const initialState = {
   user: null,
   TFA: null,
   TFALoaded: false,
-  isTFAing: false,
   successMsg: null,
   allUsers: [],
-  authenticated: false
+  authenticated: false,
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   switch (action.type) {
     case CLEAR_SUCCESS_MSG:
       return {
         ...state,
-        successMsg: null
+        successMsg: null,
       };
 
-    case LOADING:
-      return {
-        ...state,
-        isLoading: true
-      };
     case USER_LOADING:
       return {
         ...state,
-        isLoading: true
+        isLoading: true,
       };
     case ALL_USERS_LOADED:
       return {
         ...state,
         allUsers: action.payload,
-        isLoading: false
+        isLoading: false,
       };
     case USER_LOADED:
+    case GITHUB_USER_LOADED:
+    case GITHUB_USER_ADAPTED:
       return {
         ...state,
         isLoading: false,
         userLoaded: true,
-        user: action.payload
+        user: action.payload,
       };
+
     case USER_DELETED:
       return {
         ...state,
-        allUsers: state.allUsers.filter(user => {
+        allUsers: state.allUsers.filter((user) => {
           return user._id !== action.payload;
-        })
+        }),
       };
     case REGISTER_SUCCESS:
-      return { ...state, successMsg: "registration successfull" };
+      return { ...state, successMsg: "registration successful" };
     case LOGIN_SUCCESS:
       // console.log(action.payload.token);
       localStorage.setItem("token", action.payload.token);
@@ -79,22 +79,33 @@ export default function(state = initialState, action) {
         ...state,
         ...action.payload,
         isLoading: false,
-        userLoaded: true
+        userLoaded: true,
+      };
+    case GITHUB_SIGNIN_SUCCESS:
+      localStorage.setItem("githubAccessToken", action.payload.access_token);
+
+      return {
+        ...state,
+        ...action.payload,
+        isLoading: false,
       };
     case LOGOUT_SUCCESS:
       localStorage.removeItem("token");
       localStorage.removeItem("authenticated");
+      localStorage.removeItem("githubAccessToken");
 
       return {
         ...initialState,
         token: localStorage.getItem("token"),
-        authenticated: false
+        authenticated: false,
       };
 
     case AUTH_ERROR:
     case LOGIN_FAIL:
+    case GITHUB_SIGNIN_FAIL:
       localStorage.removeItem("token");
       localStorage.removeItem("authenticated");
+      localStorage.removeItem("githubAccessToken");
       return {
         ...state,
         // token: null,
@@ -102,28 +113,25 @@ export default function(state = initialState, action) {
         isLoading: false,
         userLoaded: false,
         token: localStorage.getItem("token"),
-        authenticated: false
+        authenticated: false,
       };
     case REGISTER_FAIL:
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
       };
     case TFA_SETUP_FAIL:
       return {
         ...state,
-        isTFAing: false
       };
     //do not change state if verification failed
     case TFA_VERIFY_FAIL:
       return {
         ...state,
-        isTFAing: false
       };
     case TFA_LOAD_FAIL:
       return {
         ...state,
-        isTFAing: false
       };
     case TFA_SETUP_SUCCESS:
     case TFA_LOADED:
@@ -131,7 +139,6 @@ export default function(state = initialState, action) {
         ...state,
         TFA: action.payload,
         TFALoaded: true,
-        isTFAing: false
       };
     case TFA_VERIFED:
       localStorage.setItem("authenticated", true);
@@ -139,8 +146,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         TFA: null,
-        isTFAing: false,
-        authenticated: true
+        authenticated: true,
       };
 
     // case TFA_ING:
@@ -149,18 +155,11 @@ export default function(state = initialState, action) {
     //     isTFAing: true
     //   };
 
-    case TFA_SETUP_SUCCESS:
-      return {
-        ...state,
-        TFA: action.payload,
-        TFALoaded: true,
-        isTFAing: false
-      };
     default:
       return {
         ...state,
         authenticated:
-          localStorage.getItem("authenticated") === "true" ? true : false
+          localStorage.getItem("authenticated") === "true",
       };
   }
 }

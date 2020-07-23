@@ -1,19 +1,18 @@
 import {
   ALL_LOGS_LOADED,
   DOWNLOAD_LOGGED,
-  LOADING,
   LOGIN_LOGGED,
   LOG_DELETED,
-  PAGE_VIEW_LOGGED
+  PAGE_VIEW_LOGGED,
 } from "../actions/types";
 
 const initialState = {
   swaggerUIDocs: null,
   isLoading: false,
-  allLogs: null
+  allLogs: null,
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   switch (action.type) {
     case LOGIN_LOGGED:
     case DOWNLOAD_LOGGED:
@@ -21,18 +20,13 @@ export default function(state = initialState, action) {
     case LOG_DELETED:
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
       };
     case ALL_LOGS_LOADED:
       return {
         ...state,
         allLogs: action.payload,
-        isLoading: false
-      };
-    case LOADING:
-      return {
-        ...state,
-        isLoading: true
+        isLoading: false,
       };
 
     default:

@@ -13,20 +13,22 @@ import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component, useState } from "react";
 import { connect } from "react-redux";
-import Breadcrumb from "view/shared/Breadcrumb";
+import Breadcrumb from "components/shared/Breadcrumb";
 import {
   deleteUser,
   loadAllUsers,
   register,
 } from "../../../actions/authActions";
 import { clearErrors } from "../../../actions/errorActions";
-import AnimatedProgress from "../../../components/animatedProgress";
-import DropdownSelection from "../../../components/dropdownSelect";
-import EditableTable from "../../../components/EditableTable";
-import ResponsiveDialog from "../../../components/ResponsiveDialog";
+import AnimatedProgress from "../../shared/animatedProgress";
+import DropdownSelection from "../../shared/dropdownSelect";
+import EditableTable from "../../shared/EditableTable";
+import ResponsiveDialog from "../../shared/ResponsiveDialog";
+
 const styles = {};
 
 class UserAdmin extends Component {
+
   state = { msg: null };
 
   static propTypes = {
@@ -43,10 +45,10 @@ class UserAdmin extends Component {
     this.props.loadAllUsers();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProp, prevState, snapshot) {
     const { error } = this.props;
 
-    if (error !== prevProps.error) {
+    if (error !== prevProp.error) {
       // Check for register error
 
       if (error.id === "REGISTER_FAIL") {
@@ -56,6 +58,7 @@ class UserAdmin extends Component {
       }
     }
   }
+
   toggle = () => {
     // Clear errors
     this.props.clearErrors();
@@ -84,8 +87,9 @@ class UserAdmin extends Component {
 
     this.toggle();
   };
+
   render() {
-    const { classes, allUsers, user, error } = this.props;
+    const {allUsers, user, error } = this.props;
 
     return (
       <SettingsContent
@@ -167,9 +171,14 @@ function SettingsContent(props) {
     password: "",
     role: "",
   });
-  const handlecreateUser = (event) => {
+  const handleCreateUser = (event) => {
     setIsCreatingUser(true);
     setShowUserCreationProgress(true);
+
+  };
+
+  const handleAnimatedProgressOnClick = () => {
+    setIsLoading(true);
   };
 
   const onChange = (e) => {
@@ -180,15 +189,17 @@ function SettingsContent(props) {
   };
 
   const cb = (bool) => {
+
     setShowUserCreationProgress(bool);
     setIsCreatingUser(false);
     props.registerCallback(userToBeRegistered);
+    setIsLoading(false);
   };
 
   const dropdownSelectedCallback = (role) => {
     setUserToBeRegistered({
       ...userToBeRegistered,
-      role: role,
+      role,
     });
   };
   function createUserView() {
@@ -212,9 +223,9 @@ function SettingsContent(props) {
                 label={i18n("useradmin.email")}
                 fullWidth
                 onChange={onChange}
+                disabled={isLoading}
               />
             </Grid>
-
             <Grid item xs={12}>
               <TextField
                 required
@@ -223,6 +234,7 @@ function SettingsContent(props) {
                 label={i18n("useradmin.name")}
                 fullWidth
                 onChange={onChange}
+                disabled={isLoading}
               />
             </Grid>
             <Grid item xs={12}>
@@ -233,6 +245,7 @@ function SettingsContent(props) {
                 label={i18n("useradmin.password")}
                 fullWidth
                 onChange={onChange}
+                disabled={isLoading}
               />
             </Grid>
             <Grid item xs={12}>
@@ -243,6 +256,7 @@ function SettingsContent(props) {
                 label={i18n("useradmin.company")}
                 fullWidth
                 onChange={onChange}
+                disabled={isLoading}
               />
             </Grid>
 
@@ -255,18 +269,18 @@ function SettingsContent(props) {
             </Typography>
             <FormControl margin="normal" fullWidth>
               <DropdownSelection
-                disabled={false}
                 label="role"
                 typesOfUser={typesOfUser}
                 dropdownSelectedCallback={dropdownSelectedCallback}
                 onChange={onChange}
+                disabled={isLoading}
               />
             </FormControl>
             {/* --------------------------------------role-based dropdown menu--------------------------------------  */}
 
             <Grid item xs={12}>
               {showUserCreationProgress ? (
-                <AnimatedProgress callback={cb}></AnimatedProgress>
+                <AnimatedProgress callback={cb} onClick={handleAnimatedProgressOnClick} />
               ) : null}
             </Grid>
           </Grid>
@@ -298,6 +312,7 @@ function SettingsContent(props) {
                     : i18n("useradmin.email")
                 }
                 name="email"
+
               />
             </Grid>
             <Grid item xs={12}>
@@ -348,11 +363,11 @@ function SettingsContent(props) {
               />
             </Grid>
             <Grid item xs={12}>
-              <Zoom in={true}>
+              <Zoom in>
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={handlecreateUser}
+                  onClick={handleCreateUser}
                 >
                   <Typography variant="body1" style={{ color: "white" }}>
                     {i18n("useradmin.createUser")}
@@ -468,8 +483,8 @@ function SettingsContent(props) {
         // console.log(props.user.role + " is not allowed to delete users");
         return;
       }
-      //rowdDeleted.lookup gets the actual indexes that are deleted in the users data.
-      //loop through each index and delete them one by one.
+      // rowdDeleted.lookup gets the actual indexes that are deleted in the users data.
+      // loop through each index and delete them one by one.
       Object.keys(rowsDeleted.lookup).forEach((index) => {
         // console.log(data[index][0]);
         props.cb(data[index][0]);
@@ -477,7 +492,7 @@ function SettingsContent(props) {
     },
 
     onRowClick: (rowClicked) => {
-      //send back to UserAdmin component the email of the user to be deleted.
+      // send back to UserAdmin component the email of the user to be deleted.
       setCurrentUser({
         name: rowClicked[1],
         email: rowClicked[2],
