@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import "swagger-ui/dist/swagger-ui.css";
-import Breadcrumb from "view/shared/Breadcrumb";
+import Breadcrumb from "components/shared/Breadcrumb";
 import { logDownload } from "../../../actions/adminActions";
 import { clearErrors } from "../../../actions/errorActions";
 
@@ -13,7 +13,7 @@ import { clearErrors } from "../../../actions/errorActions";
 
 class WelcomePage extends Component {
   componentDidMount() {}
-  componentDidUpdate() {}
+  componentDidUpdate(prevProp, prevState, snapshot) {}
   static propTypes = {
     user: PropTypes.object.isRequired,
     clearErrors: PropTypes.func.isRequired

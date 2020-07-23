@@ -1,11 +1,6 @@
-import React from "react";
-import _get from "lodash/get";
-import moment from "moment";
-import "moment/locale/pt-br";
-import antd_pt_BR from "antd/lib/locale-provider/pt_BR";
-import { setLocale as setYupLocale } from "yup";
 import chinese from "i18n/chinese";
 import en from "i18n/en";
+import _get from "lodash/get";
 
 let currentLanguageCode = null;
 
@@ -15,78 +10,53 @@ const languages = {
     label: "en",
     flag: "/images/flags/24/United-States.png",
     dictionary: en,
-    antd: undefined
   },
   chinese: {
     id: "chinese",
     label: "chinese",
     flag: "/images/flags/24/Brazil.png",
     dictionary: chinese,
-    antd: antd_pt_BR
-  }
+  },
 };
 
-function init() {
+export const setLanguageCode = (arg) => {
+  if (!languages[arg]) {
+    throw new Error(`Invalid language ${arg}.`);
+  }
+
+  localStorage.setItem("language", arg);
+};
+
+const init = () => {
   currentLanguageCode = localStorage.getItem("language") || "en";
   setLanguageCode(currentLanguageCode);
-}
+};
 
-function getLanguage() {
-  return languages[getLanguageCode()];
-}
-
-function format(message, args) {
-  if (!message) {
-    return null;
-  }
-
-  try {
-    return message.replace(/{(\d+)}/g, function(match, number) {
-      return typeof args[number] != "undefined" ? args[number] : match;
-    });
-  } catch (error) {
-    console.error(message, error);
-    throw error;
-  }
-}
-
-export function getLanguages() {
-  return Object.keys(languages).map(language => {
-    return languages[language];
-  });
-}
-
-export function getAntdLanguage() {
-  return getLanguage().antd;
-}
-
-export function getLanguageCode() {
+export const getLanguageCode = () => {
   if (!currentLanguageCode) {
     init();
   }
 
   return currentLanguageCode;
-}
+};
+const getLanguage = () => languages[getLanguageCode()];
 
-export function setLanguageCode(arg) {
-  if (!languages[arg]) {
-    throw new Error(`Invalid language ${arg}.`);
+const format = (message, args) => {
+  if (!message) {
+    return null;
   }
 
-  moment.locale(arg);
-  localStorage.setItem("language", arg);
-
-  if (getLanguage().dictionary.validation) {
-    setYupLocale(getLanguage().dictionary.validation);
+  try {
+    return message.replace(/{(\d+)}/g, (match, number) =>
+      typeof args[number] !== "undefined" ? args[number] : match,
+    );
+  } catch (error) {
+    console.error(message, error);
+    throw error;
   }
-}
+};
 
-export function i18nExists(key) {
-  const message = _get(getLanguage().dictionary, key);
-  return !!message;
-}
-
-export function i18n(key, ...args) {
+export const i18n = (key, ...args) => {
   const message = _get(getLanguage().dictionary, key);
 
   if (!message) {
@@ -94,14 +64,4 @@ export function i18n(key, ...args) {
   }
 
   return format(message, args);
-}
-
-export function i18nHtml(key, ...args) {
-  return (
-    <span
-      dangerouslySetInnerHTML={{
-        __html: i18n(key, ...args)
-      }}
-    />
-  );
-}
+};

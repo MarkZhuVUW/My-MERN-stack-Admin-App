@@ -1,35 +1,39 @@
-import Link from "@material-ui/core/Link";
+import { Button } from "@material-ui/core";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-// import { NavLink } from 'reactstrap';
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { logout } from "../../actions/authActions";
 
 export class Logout extends Component {
-  static propTypes = {
-    logout: PropTypes.func.isRequired,
-
-    //withRouter
-    match: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
-  };
-
   handleOnClick = () => {
     this.props.logout();
-
     this.props.history.push("/");
-    // window.location.href = "/";
   };
+
   render() {
     return (
-      <Link onClick={this.handleOnClick} color="inherit">
+      <Button
+        onClick={this.handleOnClick}
+        color="secondary"
+        variant="contained"
+      >
         {i18n("logout")}
-      </Link>
+      </Button>
     );
   }
 }
+Logout.propTypes = {
+  logout: PropTypes.func.isRequired,
 
-export default withRouter(connect(null, { logout })(Logout));
+  // withRouter
+
+  history: PropTypes.oneOfType([PropTypes.object]).isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  authenticated: state.auth.authenticated,
+});
+
+export default withRouter(connect(mapStateToProps, { logout })(Logout));
