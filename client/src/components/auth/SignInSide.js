@@ -107,20 +107,17 @@ const propTypes = {
   login: PropTypes.func.isRequired,
   userLoaded: PropTypes.bool,
   clearErrors: PropTypes.func.isRequired,
-  isTFAing: PropTypes.bool,
-
+  classes: PropTypes.oneOfType([PropTypes.object]).isRequired,
   user: PropTypes.oneOfType([PropTypes.object]),
   logLoginSuccess: PropTypes.func.isRequired,
   getGithubAccessToken: PropTypes.func.isRequired,
   getGithubUser: PropTypes.func.isRequired,
 
   // withRouter
-  location: PropTypes.oneOfType([PropTypes.object]).isRequired,
   history: PropTypes.oneOfType([PropTypes.object]).isRequired,
 };
 const defaultProps = {
   userLoaded: false,
-  isTFAing: false,
   user: undefined,
 };
 class SignInSide extends Component {
@@ -280,7 +277,7 @@ class SignInSide extends Component {
     };
 
     function Alert(props) {
-      return <MuiAlert elevation={6} variant="filled" {...props} />;
+      return <MuiAlert elevation={6} variant="filled" />;
     }
 
     return (
@@ -583,7 +580,6 @@ class SignInSide extends Component {
 const mapStateToProps = (state) => ({
   error: state.error,
   userLoaded: state.auth.userLoaded,
-  isTFAing: state.auth.isTFAing,
   user: state.auth.user,
 });
 SignInSide.propTypes = propTypes;

@@ -33,7 +33,8 @@
     "no-return-assign": ["off"],
     "react/destructuring-assignment": ["off"],
     "no-multiple-empty-lines": ["error", { "max": 2 }],
-    "no-console": ["off"]
+    "no-console": ["off"],
+    "import/no-named-as-default": 0
   },
   "settings": {
     "import/resolver": {
