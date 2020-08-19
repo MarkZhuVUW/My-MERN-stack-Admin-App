@@ -108,6 +108,10 @@ function DashboardContent(props) {
       position: "relative",
       height: "100%",
     },
+    aboveParticles: {
+      zIndex: 1,
+      position: "relative",
+    },
   }));
   const classes = useStyle();
 
@@ -269,7 +273,7 @@ function DashboardContent(props) {
           </Paper>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} className={classes.aboveParticles}>
           <EditableTable
             title={i18n("dashboard.table.userActivities")}
             options={options}

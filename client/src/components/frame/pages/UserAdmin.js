@@ -9,11 +9,12 @@ import {
   Zoom,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
+import classNames from "classnames";
+import Breadcrumb from "components/shared/Breadcrumb";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component, useState } from "react";
 import { connect } from "react-redux";
-import Breadcrumb from "components/shared/Breadcrumb";
 import {
   deleteUser,
   loadAllUsers,
@@ -28,7 +29,6 @@ import ResponsiveDialog from "../../shared/ResponsiveDialog";
 const styles = {};
 
 class UserAdmin extends Component {
-
   state = { msg: null };
 
   static propTypes = {
@@ -89,7 +89,7 @@ class UserAdmin extends Component {
   };
 
   render() {
-    const {allUsers, user, error } = this.props;
+    const { allUsers, user, error } = this.props;
 
     return (
       <SettingsContent
@@ -149,6 +149,10 @@ function SettingsContent(props) {
       backgroundColor: "#3F51B5",
       color: "white",
     },
+    aboveParticles: {
+      zIndex: 1,
+      position: "relative",
+    },
   }));
   const classes = useStyles();
 
@@ -156,7 +160,7 @@ function SettingsContent(props) {
   const [isLoading, setIsLoading] = useState(false);
 
   const [showUserCreationProgress, setShowUserCreationProgress] = useState(
-    false
+    false,
   );
   const [currentUser, setCurrentUser] = useState({
     name: "",
@@ -174,7 +178,6 @@ function SettingsContent(props) {
   const handleCreateUser = (event) => {
     setIsCreatingUser(true);
     setShowUserCreationProgress(true);
-
   };
 
   const handleAnimatedProgressOnClick = () => {
@@ -189,7 +192,6 @@ function SettingsContent(props) {
   };
 
   const cb = (bool) => {
-
     setShowUserCreationProgress(bool);
     setIsCreatingUser(false);
     props.registerCallback(userToBeRegistered);
@@ -280,7 +282,10 @@ function SettingsContent(props) {
 
             <Grid item xs={12}>
               {showUserCreationProgress ? (
-                <AnimatedProgress callback={cb} onClick={handleAnimatedProgressOnClick} />
+                <AnimatedProgress
+                  callback={cb}
+                  onClick={handleAnimatedProgressOnClick}
+                />
               ) : null}
             </Grid>
           </Grid>
@@ -312,7 +317,6 @@ function SettingsContent(props) {
                     : i18n("useradmin.email")
                 }
                 name="email"
-
               />
             </Grid>
             <Grid item xs={12}>
@@ -525,7 +529,7 @@ function SettingsContent(props) {
       <div className={classes.container}>
         {isCreatingUser ? createUserView() : userDetailView()}
       </div>
-      <div className={classes.container}>
+      <div className={classNames(classes.aboveParticles, "chart-paper")}>
         <EditableTable
           title={i18n("useradmin.table.title")}
           data={data}
