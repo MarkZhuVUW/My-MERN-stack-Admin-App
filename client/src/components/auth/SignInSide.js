@@ -29,11 +29,11 @@ import { i18n } from "i18n";
 import image from "images/404.png";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import GitHubLogin from "react-github-login";
 import { connect } from "react-redux";
 import MediaQuery from "react-responsive";
 import { NavLink, withRouter } from "react-router-dom";
 import compose from "recompose/compose";
+import GitHubLogin from "../oauth/GitHubLogin";
 import ResponsiveDialog from "../shared/ResponsiveDialog";
 
 const theme = createMuiTheme({
@@ -49,7 +49,6 @@ const styles = {
     position: "relative",
     minHeight: "100vh",
   },
-
   paper: {
     padding: theme.spacing(8, 4),
     display: "flex",
