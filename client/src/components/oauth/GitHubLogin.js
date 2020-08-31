@@ -6,7 +6,6 @@ import { toQuery } from "./utils";
 class GitHubLogin extends Component {
   static propTypes = {
     buttonText: PropTypes.string,
-
     children: PropTypes.node,
 
     className: PropTypes.string,

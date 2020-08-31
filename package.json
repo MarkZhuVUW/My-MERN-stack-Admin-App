@@ -10,7 +10,8 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "client": "npm start --prefix client",
     "heroku-postbuild": "npm install --prefix client && npm run build --prefix client",
-    "build": "npm install --prefix client && npm run build --prefix client && npm run start"
+    "build": "npm install --prefix client && npm run build --prefix client && npm run start",
+    "lint": "eslint --fix --ext .js,.jsx ."
   },
   "author": "Mark Zhu",
   "license": "MIT",
