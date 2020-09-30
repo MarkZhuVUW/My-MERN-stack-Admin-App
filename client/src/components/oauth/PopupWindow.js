@@ -1,4 +1,4 @@
-import { toParams, toQuery } from "./utils";
+import { toParams, toQuery } from "../shared/utils";
 
 class PopupWindow {
   constructor(id, url, options = {}) {
@@ -9,7 +9,6 @@ class PopupWindow {
 
   open() {
     const { url, id, options } = this;
-
     this.window = window.open(url, id, toQuery(options, ","));
   }
 
@@ -24,10 +23,10 @@ class PopupWindow {
         try {
           const popup = this.window;
 
+          
           if (!popup || popup.closed !== false) {
             this.close();
             reject(new Error("The popup was closed"));
-
             return;
           }
 
@@ -39,15 +38,14 @@ class PopupWindow {
           }
 
           const params = toParams(popup.location.search.replace(/^\?/, ""));
-
           resolve(params);
-
           this.close();
         } catch (error) {
           /*
            * Ignore DOMException: Blocked a frame with origin from accessing a
            * cross-origin frame.
            */
+          console.error(error.stack);
         }
       }, 500);
     });

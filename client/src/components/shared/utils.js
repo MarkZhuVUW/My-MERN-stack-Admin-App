@@ -1,15 +1,23 @@
+
+/**
+ * handwritten url parameter parser.
+ */
 export function toParams(query) {
   const q = query.replace(/^\??\//, "");
 
   return q.split("&").reduce((values, param) => {
     const [key, value] = param.split("=");
 
-    values[key] = value;
-
-    return values;
+    const newValues = [...values];
+    newValues.key = value;
+    
+    return newValues;
   }, {});
 }
 
+/**
+ * handwritten
+ */
 export function toQuery(params, delimiter = "&") {
   const keys = Object.keys(params);
 
@@ -21,4 +29,5 @@ export function toQuery(params, delimiter = "&") {
     }
     return query;
   }, "");
+  
 }

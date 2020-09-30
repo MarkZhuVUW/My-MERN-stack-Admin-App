@@ -3,7 +3,7 @@ import {
   Container,
   CssBaseline,
   Tooltip,
-  Zoom,
+  Zoom
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
@@ -17,7 +17,7 @@ import { logLoginSuccess } from "actions/adminActions";
 import {
   getGithubAccessToken,
   getGithubUser,
-  login,
+  login
 } from "actions/authActions";
 import { clearErrors } from "actions/errorActions";
 import AnimatedIcons from "components/AnimatedIcons/AnimatedIcons";
@@ -376,7 +376,7 @@ class SignInSide extends Component {
                         clientId={confidentials.github_client_id}
                         redirectUri=""
                         onSuccess={(res) => this.onGithubSignIn(res.code)}
-                        onFailure={(res) => console.error(res)}
+                        onFailure={(res) => {console.error(res); this.setState({isLoading: false})}}
                       />
                     </span>
                   </Tooltip>

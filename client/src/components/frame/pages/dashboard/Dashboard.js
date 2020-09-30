@@ -18,6 +18,7 @@ import HomeLineChart from "./HomeLineChart";
 import HomePolarChart from "./HomePolarChart";
 
 const propTypes = {
+  
   clearErrors: PropTypes.func.isRequired,
   loadAllLogs: PropTypes.func.isRequired,
   allLogs: PropTypes.oneOfType([PropTypes.array]),
