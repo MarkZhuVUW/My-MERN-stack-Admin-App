@@ -37,7 +37,7 @@ import GitHubLogin from "../oauth/GitHubLogin";
 import ResponsiveDialog from "../shared/ResponsiveDialog";
 
 const theme = createMuiTheme({
-  spacing: 4,
+  spacing: 4
 });
 
 const styles = {
@@ -47,7 +47,7 @@ const styles = {
     // height: "100vh",
     overflow: "auto",
     position: "relative",
-    minHeight: "100vh",
+    minHeight: "100vh"
   },
   paper: {
     padding: theme.spacing(8, 4),
@@ -55,27 +55,27 @@ const styles = {
     flexDirection: "column",
     alignItems: "center",
     zIndex: 2,
-    position: "relative",
+    position: "relative"
   },
   content: {
     padding: theme.spacing(4, 4),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "center"
   },
   githubSignIn: {
-    margin: theme.spacing(2),
+    margin: theme.spacing(2)
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(1)
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(3, 0, 2)
   },
   animatedIcons: {
     zIndex: 2,
-    position: "relative",
+    position: "relative"
   },
   footer: {
     padding: theme.spacing(3, 2),
@@ -85,7 +85,7 @@ const styles = {
     position: "absolute",
     width: "100%",
     bottom: 0,
-    zIndex: 5,
+    zIndex: 5
   },
 
   header: {
@@ -97,8 +97,8 @@ const styles = {
     width: "100%",
     top: 0,
 
-    zIndex: 5,
-  },
+    zIndex: 5
+  }
 };
 
 const propTypes = {
@@ -113,11 +113,11 @@ const propTypes = {
   getGithubUser: PropTypes.func.isRequired,
 
   // withRouter
-  history: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  history: PropTypes.oneOfType([PropTypes.object]).isRequired
 };
 const defaultProps = {
   userLoaded: false,
-  user: undefined,
+  user: undefined
 };
 class SignInSide extends Component {
   constructor(props) {
@@ -133,7 +133,7 @@ class SignInSide extends Component {
       emailErrorMsg: null,
       passwordErrorMsg: null,
       copyRightOpened: false,
-      copyRightText: i18n("loginPage.licenseText"),
+      copyRightText: i18n("loginPage.licenseText")
     };
   }
 
@@ -145,11 +145,11 @@ class SignInSide extends Component {
 
       if (error.id === "LOGIN_FAIL") {
         this.setState({
-          msg: error.msg.msg,
+          msg: error.msg.msg
         });
       } else {
         this.setState({
-          msg: null,
+          msg: null
         });
       }
     }
@@ -167,12 +167,12 @@ class SignInSide extends Component {
     this.validateEmail(email);
     this.validatePassword(password);
     this.setState({
-      isLoading: true,
+      isLoading: true
     });
 
     const user = {
       email,
-      password,
+      password
     };
 
     // Attempt to login
@@ -191,7 +191,7 @@ class SignInSide extends Component {
   callback = (isTFAVerified) => {
     if (isTFAVerified) {
       this.setState({
-        isLoading: false,
+        isLoading: false
       });
       this.handleLoginSuccess();
       this.props.history.push("/");
@@ -207,7 +207,7 @@ class SignInSide extends Component {
       role,
       company,
       explanation: "user logged in",
-      type: "LOGIN",
+      type: "LOGIN"
     };
 
     // uniqueId is used to distinguish each oauth user. It exists when it is an oauth user object.
@@ -222,32 +222,32 @@ class SignInSide extends Component {
   validateEmail = (email) => {
     if (email === "")
       this.setState({
-        emailErrorMsg: "Email cannot be empty.",
+        emailErrorMsg: "Email cannot be empty."
       });
     else if (!email.includes("@"))
       this.setState({
-        emailErrorMsg: "Incorrect format",
+        emailErrorMsg: "Incorrect format"
       });
     else
       this.setState({
-        emailErrorMsg: null,
+        emailErrorMsg: null
       });
   };
 
   validatePassword = (password) => {
     if (password === "")
       this.setState({
-        passwordErrorMsg: "Password cannot be empty.",
+        passwordErrorMsg: "Password cannot be empty."
       });
     else
       this.setState({
-        passwordErrorMsg: null,
+        passwordErrorMsg: null
       });
   };
 
   onChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
     if (e.target.name === "email") this.validateEmail(e.target.value);
     else if (e.target.name === "password")
@@ -261,7 +261,7 @@ class SignInSide extends Component {
     const responsiveDialogCallback = () => {
       this.setState({
         isLoading: false,
-        copyRightOpened: false,
+        copyRightOpened: false
       });
     };
 
@@ -271,7 +271,7 @@ class SignInSide extends Component {
       }
 
       this.setState({
-        forgotPasswordClicked: false,
+        forgotPasswordClicked: false
       });
     };
 
@@ -287,7 +287,7 @@ class SignInSide extends Component {
               <Typography
                 variant="body1"
                 style={{
-                  color: "white",
+                  color: "white"
                 }}
               >
                 {i18n("loginPage.cookie")}
@@ -351,7 +351,7 @@ class SignInSide extends Component {
               alignItems: "center",
               justifyContent: "center",
               display: "flex",
-              flexDirection: "column",
+              flexDirection: "column"
             }}
           >
             <Zoom in timeout={500}>
@@ -365,7 +365,7 @@ class SignInSide extends Component {
                       onKeyDown={() => {}}
                       onClick={() => {
                         this.setState({
-                          isLoading: true,
+                          isLoading: true
                         });
                       }}
                       role="button"
@@ -375,8 +375,13 @@ class SignInSide extends Component {
                         buttonText={i18n("loginPage.signInWithGithub")}
                         clientId={confidentials.github_client_id}
                         redirectUri=""
-                        onSuccess={(res) => this.onGithubSignIn(res.code)}
-                        onFailure={(res) => {console.error(res); this.setState({isLoading: false})}}
+                        onSuccessCallback={(res) =>
+                          this.onGithubSignIn(res.code)
+                        }
+                        onFailureCallback={(res) => {
+                          console.error(res);
+                          this.setState({ isLoading: false });
+                        }}
                       />
                     </span>
                   </Tooltip>
@@ -453,7 +458,7 @@ class SignInSide extends Component {
                           to="#"
                           onClick={() => {
                             this.setState({
-                              forgotPasswordClicked: true,
+                              forgotPasswordClicked: true
                             });
                           }}
                           style={{
@@ -461,7 +466,7 @@ class SignInSide extends Component {
                             color:
                               localStorage.getItem("theme") === "dark"
                                 ? "white"
-                                : "black",
+                                : "black"
                           }}
                         >
                           {i18n("loginPage.forgotPassword")}
@@ -475,7 +480,7 @@ class SignInSide extends Component {
                             color:
                               localStorage.getItem("theme") === "dark"
                                 ? "white"
-                                : "black",
+                                : "black"
                           }}
                         >
                           {i18n("loginPage.noAccount")}
@@ -493,7 +498,7 @@ class SignInSide extends Component {
                     <Grid
                       container
                       style={{
-                        marginTop: 15,
+                        marginTop: 15
                       }}
                     >
                       <Grid item xs>
@@ -503,7 +508,7 @@ class SignInSide extends Component {
                           variant="caption"
                           onClick={() => {
                             this.setState({
-                              copyRightOpened: true,
+                              copyRightOpened: true
                             });
                           }}
                           style={{
@@ -511,7 +516,7 @@ class SignInSide extends Component {
                             color:
                               localStorage.getItem("theme") === "dark"
                                 ? "white"
-                                : "black",
+                                : "black"
                           }}
                         >
                           {i18n("loginPage.mit")}
@@ -526,7 +531,7 @@ class SignInSide extends Component {
                             color:
                               localStorage.getItem("theme") === "dark"
                                 ? "white"
-                                : "black",
+                                : "black"
                           }}
                           onClick={() => {
                             window.location.href = `mailto:zdy120939259@outlook.com?subject=interview invitation`;
@@ -550,7 +555,7 @@ class SignInSide extends Component {
                 position: "relative",
                 zIndex: 2,
                 color:
-                  localStorage.getItem("theme") === "dark" ? "white" : "black",
+                  localStorage.getItem("theme") === "dark" ? "white" : "black"
               }}
             >
               {i18n("loginPage.inspiredBy")}
@@ -562,7 +567,7 @@ class SignInSide extends Component {
                 <Typography
                   variant="body1"
                   style={{
-                    color: "white",
+                    color: "white"
                   }}
                 >
                   {i18n("loginPage.cookie")}
@@ -579,7 +584,7 @@ class SignInSide extends Component {
 const mapStateToProps = (state) => ({
   error: state.error,
   userLoaded: state.auth.userLoaded,
-  user: state.auth.user,
+  user: state.auth.user
 });
 SignInSide.propTypes = propTypes;
 SignInSide.defaultProps = defaultProps;
@@ -590,6 +595,6 @@ export default compose(
     clearErrors,
     logLoginSuccess,
     getGithubAccessToken,
-    getGithubUser,
-  }),
+    getGithubUser
+  })
 )(withRouter(SignInSide));
