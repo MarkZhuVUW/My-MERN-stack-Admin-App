@@ -10,12 +10,14 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "client": "npm start --prefix client",
     "heroku-postbuild": "npm install --prefix client && npm run build --prefix client",
-    "build": "npm install --prefix client && npm run build --prefix client && npm run start"
+    "build": "npm install --prefix client && npm run build --prefix client && npm run start",
+    "lint": "eslint --fix --ext .js,.jsx ."
   },
   "author": "Mark Zhu",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.2",
+    "babel-eslint": "^10.0.3",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "concurrently": "^5.0.2",
@@ -35,6 +37,7 @@
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-unused-imports": "^0.1.2",

@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { logout } from "../../actions/authActions";
 
-export class Logout extends Component {
+class Logout extends Component {
   handleOnClick = () => {
     this.props.logout();
     this.props.history.push("/");
@@ -32,8 +32,4 @@ Logout.propTypes = {
   history: PropTypes.oneOfType([PropTypes.object]).isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  authenticated: state.auth.authenticated,
-});
-
-export default withRouter(connect(mapStateToProps, { logout })(Logout));
+export default withRouter(connect(null, { logout })(Logout));
