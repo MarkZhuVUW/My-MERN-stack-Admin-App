@@ -24,6 +24,8 @@ const RegularButton = React.forwardRef((props, ref) => {
     ...rest
   } = props;
 
+  
+
   const classes = makeComponentStyles();
 
   const btnClasses = classNames({

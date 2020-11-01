@@ -23,7 +23,6 @@ class PopupWindow {
         try {
           const popup = this.window;
 
-          
           if (!popup || popup.closed !== false) {
             this.close();
             reject(new Error("The popup was closed"));
