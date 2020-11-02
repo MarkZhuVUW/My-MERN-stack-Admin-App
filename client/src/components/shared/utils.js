@@ -5,11 +5,15 @@ export function toParams(query) {
   const q = query.replace(/^\??\//, "");
 
   return q.split("&").reduce((values, param) => {
-    const [key, value] = param.split("=");
-
+    const keyValuePair = param.split("=");
+    const key = keyValuePair[0];
+    const value = keyValuePair[1];
     const newValues = { ...values };
-    newValues.key = value;
 
+    console.log(key);
+    console.log(value);
+
+    newValues[key] = value;
     return newValues;
   }, {});
 }

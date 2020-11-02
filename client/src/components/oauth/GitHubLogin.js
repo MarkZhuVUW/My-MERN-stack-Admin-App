@@ -40,6 +40,9 @@ const GitHubLogin = ({
   onFailureCallback
 }) => {
   const classes = useStyles();
+  const onFailure = (error) => {
+    onFailureCallback(error);
+  };
   const onSuccess = (data) => {
     if (!data.code) {
       onFailure(new Error("'code' not found"));
@@ -48,9 +51,6 @@ const GitHubLogin = ({
     onSuccessCallback(data);
   };
 
-  const onFailure = (error) => {
-    onFailureCallback(error);
-  };
   const onBtnClick = () => {
     const search = toQuery({
       client_id: clientId,
