@@ -1,10 +1,10 @@
-import { makeStyles } from "@material-ui/core/styles";
+
 import MyButton from "components/shared/MyButton";
-import styles from "jss/global";
 import PropTypes from "prop-types";
 import React from "react";
 import { toQuery } from "../shared/utils";
 import PopupWindow from "./PopupWindow";
+
 
 const propTypes = {
   buttonText: PropTypes.string,
@@ -40,7 +40,6 @@ const GitHubLogin = ({
   onSuccessCallback,
   onFailureCallback
 }) => {
-  const classes = useStyles();
   const onFailure = (error) => {
     onFailureCallback(error);
   };
