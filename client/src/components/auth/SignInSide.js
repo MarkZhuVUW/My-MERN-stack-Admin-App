@@ -36,6 +36,7 @@ import compose from "recompose/compose";
 import GitHubLogin from "../oauth/GitHubLogin";
 import ResponsiveDialog from "../shared/ResponsiveDialog";
 
+
 const theme = createMuiTheme({
   spacing: 4
 });
@@ -154,6 +155,7 @@ class SignInSide extends Component {
       }
     }
   }
+  
 
   toggle = () => {
     // Clear errors
@@ -375,11 +377,11 @@ class SignInSide extends Component {
                         buttonText={i18n("loginPage.signInWithGithub")}
                         clientId={confidentials.github_client_id}
                         redirectUri=""
-                        onSuccessCallback={(res) =>
-                          this.onGithubSignIn(res.code)
-                        }
+                        onSuccessCallback={(code) =>
+                          this.onGithubSignIn(code)}
+                        
                         onFailureCallback={(res) => {
-                          console.error(res);
+                          
                           this.setState({ isLoading: false });
                         }}
                       />

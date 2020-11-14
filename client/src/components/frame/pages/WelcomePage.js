@@ -1,11 +1,10 @@
 import { makeStyles } from "@material-ui/core";
+import Breadcrumb from "components/shared/Breadcrumb";
 // import { StyleSheet } from "@react-pdf/renderer";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import "swagger-ui/dist/swagger-ui.css";
-import Breadcrumb from "components/shared/Breadcrumb";
 import { logDownload } from "../../../actions/adminActions";
 import { clearErrors } from "../../../actions/errorActions";
 
@@ -13,31 +12,36 @@ import { clearErrors } from "../../../actions/errorActions";
 
 class WelcomePage extends Component {
   componentDidMount() {}
+
   componentDidUpdate(prevProp, prevState, snapshot) {}
+
   static propTypes = {
     user: PropTypes.object.isRequired,
     clearErrors: PropTypes.func.isRequired
   };
+
   handleDownload = href => {
     const { _id, name, email, role, company } = this.props.user;
 
     const downloadLog = {
-      name: name,
-      email: email,
-      role: role,
+      name,
+      email,
+      role,
       explanation: href,
       type: "DOWNLOAD",
-      company: company
+      company
     };
 
     this.props.logDownload(_id, downloadLog);
 
     this.toggle();
   };
+
   toggle = () => {
     // Clear errors
     this.props.clearErrors();
   };
+
   render() {
     return (
       <WelcomePageContent

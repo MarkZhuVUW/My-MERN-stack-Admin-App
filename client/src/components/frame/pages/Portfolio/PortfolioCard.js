@@ -1,9 +1,10 @@
-import {Card, CardContent, Grid, Typography} from '@material-ui/core';
-import {makeStyles} from '@material-ui/styles';
+import { Card, CardContent, Grid, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 import 'App.scss';
 import clsx from 'clsx';
 import React from 'react';
 import CountUp from 'react-countup';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%',

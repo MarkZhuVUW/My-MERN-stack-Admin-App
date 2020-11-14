@@ -3,7 +3,6 @@ import MyButton from "components/shared/MyButton";
 import styles from "jss/global";
 import PropTypes from "prop-types";
 import React from "react";
-import "sass/button.scss";
 import { toQuery } from "../shared/utils";
 import PopupWindow from "./PopupWindow";
 
@@ -27,7 +26,9 @@ const defaultProps = {
   children: null
 };
 
-const useStyles = makeStyles(styles);
+
+
+  
 
 const GitHubLogin = ({
   clientId,
@@ -40,17 +41,18 @@ const GitHubLogin = ({
   onFailureCallback
 }) => {
   const classes = useStyles();
-  const onSuccess = (data) => {
-    if (!data.code) {
-      onFailure(new Error("'code' not found"));
-    }
-
-    onSuccessCallback(data);
-  };
-
   const onFailure = (error) => {
     onFailureCallback(error);
   };
+  const onSuccess = (data) => {
+    if (!data.key) {
+      onFailure(new Error("'code' not found"));
+    }
+
+    onSuccessCallback(data.key);
+  };
+
+  
   const onBtnClick = () => {
     const search = toQuery({
       client_id: clientId,

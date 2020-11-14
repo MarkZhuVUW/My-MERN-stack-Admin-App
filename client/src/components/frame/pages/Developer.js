@@ -1,11 +1,11 @@
 import { makeStyles, Paper } from "@material-ui/core";
+import Breadcrumb from "components/shared/Breadcrumb";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import SwaggerUI, { presets } from "swagger-ui";
 import "swagger-ui/dist/swagger-ui.css";
-import Breadcrumb from "components/shared/Breadcrumb";
 import { loadSwaggerUI } from "../../../actions/developerActions";
 
 class Developer extends Component {
@@ -20,6 +20,7 @@ class Developer extends Component {
       });
     }
   }
+
   componentDidUpdate(prevProps, prepStates, snapshot) {
     if (this.props.swaggerUIDocs) {
       SwaggerUI({
@@ -29,6 +30,7 @@ class Developer extends Component {
       });
     }
   }
+
   static propTypes = {
     swaggerUIDocs: PropTypes.object,
   };
