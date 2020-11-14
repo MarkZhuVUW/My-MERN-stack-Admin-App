@@ -1,5 +1,6 @@
 import { Box, Grid, makeStyles, Paper, Typography } from "@material-ui/core";
 import classNames from "classnames";
+import Breadcrumb from "components/shared/Breadcrumb";
 import FacebookProgress from "components/shared/FacebookProgress";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
@@ -7,7 +8,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import ReactTypingEffect from "react-typing-effect";
 import "swagger-ui/dist/swagger-ui.css";
-import Breadcrumb from "components/shared/Breadcrumb";
 import { logDownload } from "../../../../actions/adminActions";
 import { clearErrors } from "../../../../actions/errorActions";
 import { getGithubUser } from "../../../../actions/utilityActions";
@@ -21,12 +21,14 @@ class Portfolio extends Component {
     getGithubUser: PropTypes.func.isRequired,
     githubUser: PropTypes.object,
   };
+
   componentDidMount() {
     // get my github user object through calling github getuser api.
     setTimeout(() => {
       this.props.getGithubUser("MarkZhuVUW");
     }, 1000);
   }
+
   componentDidUpdate(prevProp, prevState, snapshot) {}
 
   // handleDownload = (href) => {

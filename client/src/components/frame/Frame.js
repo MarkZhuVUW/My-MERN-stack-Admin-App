@@ -7,9 +7,10 @@ import Slide from "@material-ui/core/Slide";
 import { makeStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import MenuIcon from "@material-ui/icons/Menu";
+import { logPageView } from "actions/adminActions";
+import { clearErrors } from "actions/errorActions";
 import clsx from "clsx";
 import FacebookProgress from "components/shared/FacebookProgress";
 import ErrorPage from "error-pages/ErrorPage";
@@ -21,8 +22,6 @@ import { connect } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { Redirect, Route, Switch, withRouter } from "react-router-dom";
 import compose from "recompose/compose";
-import { logPageView } from "../../actions/adminActions";
-import { clearErrors } from "../../actions/errorActions";
 import ParticlesCustomized from "../shared/ParticlesCustomized";
 import HeaderMenu from "./HeaderMenu";
 import SelectedListItem from "./listItems";
@@ -33,25 +32,15 @@ import Portfolio from "./pages/Portfolio/Portfolio";
 import UserAdmin from "./pages/UserAdmin";
 import WelcomePage from "./pages/WelcomePage";
 
+const propTypes = {
+  clearErrors: PropTypes.func.isRequired,
+  user: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  themeCallback: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  logPageView: PropTypes.func.isRequired,
+  // withRouter
+  location: PropTypes.oneOfType([PropTypes.object]).isRequired,
+};
 class Frame extends Component {
-  state = {
-    // keeps track of whether the page is logged.
-    pageLogged: false,
-  };
-
-  static propTypes = {
-    auth: PropTypes.object.isRequired,
-    clearErrors: PropTypes.func.isRequired,
-    swaggerUIDocs: PropTypes.object,
-    user: PropTypes.object,
-    logPageView: PropTypes.func,
-
-    // withRouter
-    match: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
-  };
-
   componentDidMount() {
     // if (this.props.user) this.handlePageView();
   }
@@ -75,7 +64,7 @@ class Frame extends Component {
 
     const { _id, name, email, role, company } = this.props.user;
 
-    const logPageView = {
+    const pageViewObj = {
       name,
       email,
       role,
@@ -84,7 +73,7 @@ class Frame extends Component {
       type: "PAGE VIEW",
     };
 
-    this.props.logPageView(_id, logPageView);
+    this.props.logPageView(_id, pageViewObj);
 
     // TODO: implement google analytics.
     // ReactGA.initialize("G-0LQBCYS7PM");
@@ -101,8 +90,6 @@ class Frame extends Component {
   handlePageView = () => {
     if (this.props.user.role !== "employer") return;
     const { pathname } = this.props.location;
-
-    this.setState({ pageLogged: true });
 
     const splitPathname = pathname.split("/");
 
@@ -162,6 +149,7 @@ export default compose(connect(mapStateToProps, { clearErrors, logPageView }))(
   withRouter(Frame),
 );
 
+Frame.propTypes = propTypes;
 const drawerWidth = 240;
 
 function FrameContent(props) {
@@ -322,32 +310,6 @@ function FrameContent(props) {
     props.themeCallback(theme);
   };
 
-  /**
-   * Hide on scroll
-   * @param {*} props
-   */
-  function HideOnScroll(props) {
-    const { children, window } = props;
-    // Note that you normally won't need to set the window ref as useScrollTrigger
-    // will default to window.
-    // This is only being set here because the demo is in an iframe.
-    const trigger = useScrollTrigger({ target: window ? window() : undefined });
-
-    return (
-      <Slide appear={false} direction="down" in={!trigger}>
-        {children}
-      </Slide>
-    );
-  }
-
-  HideOnScroll.propTypes = {
-    children: PropTypes.element.isRequired,
-    /**
-     * Injected by the documentation to work in an iframe.
-     * You won't need it on your project.
-     */
-    window: PropTypes.func,
-  };
   const FrameAppBar = (
     // <ElevationScroll {...props}>
 
@@ -396,8 +358,8 @@ function FrameContent(props) {
       </Toolbar>
     </AppBar>
   );
-  const cb = (selectedIndex) => {
-    setSelectedIndex(selectedIndex);
+  const cb = (index) => {
+    setSelectedIndex(index);
     if (isSmallScreen) setOpen(false);
   };
 

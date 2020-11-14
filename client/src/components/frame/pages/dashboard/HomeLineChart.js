@@ -6,7 +6,7 @@ export default class HomeLineChart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      //group by role of user.
+      // group by role of user.
       pageViewData: this.groupPageViewsByCompany(),
     };
     this.chartRef = React.createRef();
@@ -25,7 +25,7 @@ export default class HomeLineChart extends React.Component {
    * @returns number[]
    */
   groupPageViewsByCompany = () => {
-    let groupedPages = [0, 0, 0, 0, 0];
+    const groupedPages = [0, 0, 0, 0, 0];
     // console.log(this.props.data);
     this.props.data
       .filter((log) => log[3] === "employer")
@@ -57,11 +57,12 @@ export default class HomeLineChart extends React.Component {
         return 4;
     }
   };
+
   componentDidUpdate(prevProp, prevState, snapshot) {
-    let pageViewData = this.groupPageViewsByCompany();
+    const pageViewData = this.groupPageViewsByCompany();
     if (prevProp.data !== this.props.data) {
       this.setState({
-        pageViewData: pageViewData,
+        pageViewData,
       });
       this.myChart.data.datasets = [
         {

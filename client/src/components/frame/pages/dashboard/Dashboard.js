@@ -18,6 +18,7 @@ import HomeLineChart from "./HomeLineChart";
 import HomePolarChart from "./HomePolarChart";
 
 const propTypes = {
+  
   clearErrors: PropTypes.func.isRequired,
   loadAllLogs: PropTypes.func.isRequired,
   allLogs: PropTypes.oneOfType([PropTypes.array]),
@@ -26,6 +27,7 @@ const propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
 };
 const defaultProps = {
+  
   allLogs: null,
 };
 class Dashboard extends Component {
@@ -107,6 +109,10 @@ function DashboardContent(props) {
       zIndex: 1,
       position: "relative",
       height: "100%",
+    },
+    aboveParticles: {
+      zIndex: 1,
+      position: "relative",
     },
   }));
   const classes = useStyle();
@@ -269,7 +275,7 @@ function DashboardContent(props) {
           </Paper>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} className={classes.aboveParticles}>
           <EditableTable
             title={i18n("dashboard.table.userActivities")}
             options={options}

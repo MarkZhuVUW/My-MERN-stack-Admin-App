@@ -24,6 +24,7 @@
 
   "rules": {
     "semi": "error",
+    "react/jsx-props-no-spreading": "off",
     "no-unused-vars": "off",
     "unused-imports/no-unused-imports": 1,
     "linebreak-style": ["error", "windows"],
@@ -33,7 +34,8 @@
     "no-return-assign": ["off"],
     "react/destructuring-assignment": ["off"],
     "no-multiple-empty-lines": ["error", { "max": 2 }],
-    "no-console": ["off"]
+    "no-console": ["off"],
+    "import/no-named-as-default": 0
   },
   "settings": {
     "import/resolver": {

@@ -86,11 +86,12 @@ class SignUp extends Component {
     successMsg: PropTypes.string,
     clearSuccessMsg: PropTypes.func.isRequired,
 
-    //withRouter
+    // withRouter
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
   };
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { error } = this.props;
     if (error !== prevProps.error) {
@@ -107,10 +108,12 @@ class SignUp extends Component {
     // Clear errors
     this.props.clearErrors();
   };
+
   validateName = (name) => {
     if (name === "") this.setState({ nameErrorMsg: "Name cannot be empty." });
     else this.setState({ nameErrorMsg: null });
   };
+
   validateEmail = (email) => {
     if (email === "")
       this.setState({ emailErrorMsg: "Email cannot be empty." });
@@ -118,6 +121,7 @@ class SignUp extends Component {
       this.setState({ emailErrorMsg: "Incorrect format" });
     else this.setState({ emailErrorMsg: null });
   };
+
   validatePassword = (password) => {
     if (password === "")
       this.setState({ passwordErrorMsg: "Password cannot be empty." });
@@ -159,16 +163,16 @@ class SignUp extends Component {
       email,
       password,
       role: selectedRole,
-      company: company,
+      company,
     };
 
     // Attempt to register
     this.props.register(newUser).then();
 
-    //clear errors.
+    // clear errors.
     this.toggle();
 
-    //clear success message
+    // clear success message
     this.props.clearSuccessMsg();
   };
 
@@ -176,14 +180,14 @@ class SignUp extends Component {
     const { classes, error} = this.props;
     const roleSelectedCallback = (selectedRole) => {
       this.setState({
-        selectedRole: selectedRole,
+        selectedRole,
       });
     };
     const responsiveDialogCallback = () => {
       this.setState({
         isLoading: false,
       });
-      //clear success msg
+      // clear success msg
       this.props.clearSuccessMsg();
     };
     return (
@@ -198,11 +202,11 @@ class SignUp extends Component {
         {!this.state.msg && this.props.successMsg ? (
           <ResponsiveDialog
             alertMsg={this.props.successMsg}
-            title={"congrads!"}
+            title="congrads!"
             responsiveDialogCallback={responsiveDialogCallback}
           />
         ) : null}
-        <Zoom in={true} timeout={500}>
+        <Zoom in timeout={500}>
           <Container maxWidth="sm" className={classes.content}>
             <CssBaseline />
             <Paper className={classes.paper}>
@@ -261,7 +265,7 @@ class SignUp extends Component {
                   </Grid>
                   <Grid item xs={12}>
                     {this.state.selectedRole === "employer" ? (
-                      <Slide direction="left" in={true}>
+                      <Slide direction="left" in>
                         <TextField
                           variant="outlined"
                           fullWidth
@@ -278,11 +282,12 @@ class SignUp extends Component {
                   <RoleCheckboxes roleSelectedCallback={roleSelectedCallback} />
                   {this.state.selectedRole !== "admin" &&
                   this.state.selectedRole !== "" ? (
-                    <Slide in={true} direction="right">
+                    <Slide in direction="right">
                       <Grid container>
                         <FormControlLabel
-                          control={
+                          control={(
                             <Checkbox
+                            
                               onChange={() => {
                                 this.setState({
                                   checked: !this.state.checked,
@@ -290,7 +295,7 @@ class SignUp extends Component {
                               }}
                               color="primary"
                             />
-                          }
+                          )}
                           label={i18n("registerPage.warning")}
                         />
                       </Grid>

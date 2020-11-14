@@ -1,5 +1,5 @@
-import axios from 'axios';
-import {returnErrors} from './errorActions';
+import axios from "axios";
+import { returnErrors } from "./errorActions";
 import {
   ALL_USERS_LOADED,
   AUTH_ERROR,
@@ -13,8 +13,8 @@ import {
   LOGOUT_SUCCESS,
   REGISTER_FAIL,
   REGISTER_SUCCESS,
-  TFA_LOAD_FAIL,
   TFA_LOADED,
+  TFA_LOAD_FAIL,
   TFA_SETUP_FAIL,
   TFA_SETUP_SUCCESS,
   TFA_VERIFED,
@@ -22,7 +22,30 @@ import {
   USER_DELETED,
   USER_LOADED,
   USER_LOADING,
-} from './types';
+} from "./types";
+
+// Setup config/headers and token
+export const tokenConfig = (getState) => {
+  // Get token from redux
+  const { token } = getState().auth; // get githubAcessToken from localStorage
+  const githubAccessToken = localStorage.getItem("githubAccessToken");
+
+  // Headers
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
+
+  // If token, add to headers
+  if (token) config.headers["x-auth-token"] = token;
+
+  if (githubAccessToken) {
+    config.headers["github-access-token"] = githubAccessToken;
+  }
+
+  return config;
+};
 
 // CLEAR Success message
 export const clearSuccessMsg = () => {
@@ -34,46 +57,46 @@ export const clearSuccessMsg = () => {
 // Check token & load user
 export const loadUser = () => (dispatch, getState) => {
   // User loading
-  dispatch({type: USER_LOADING});
+  dispatch({ type: USER_LOADING });
 
-  const loadUserPromise = axios.get('/api/auth/user', tokenConfig(getState));
+  const loadUserPromise = axios.get("/api/auth/user", tokenConfig(getState));
   axios
-      .get('/api/auth/user', tokenConfig(getState))
-      .then((res) =>
-        dispatch({
-          type: USER_LOADED,
-          payload: res.data,
-        }),
-      )
-      .catch((err) => {
-        dispatch(returnErrors(err.response.data, err.response.status));
-        dispatch({
-          type: AUTH_ERROR,
-        });
+    .get("/api/auth/user", tokenConfig(getState))
+    .then((res) =>
+      dispatch({
+        type: USER_LOADED,
+        payload: res.data,
+      }),
+    )
+    .catch((err) => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: AUTH_ERROR,
       });
+    });
   return loadUserPromise;
 };
 
 // get all registered users
 export const loadAllUsers = () => (dispatch, getState) => {
   // User loading
-  dispatch({type: USER_LOADING});
+  dispatch({ type: USER_LOADING });
 
-  const authPromise = axios.get('/api/users', tokenConfig(getState));
+  const authPromise = axios.get("/api/users", tokenConfig(getState));
 
   authPromise
-      .then((res) =>
-        dispatch({
-          type: ALL_USERS_LOADED,
-          payload: res.data,
-        }),
-      )
-      .catch((err) => {
-        dispatch(returnErrors(err.response.data, err.response.status));
-        dispatch({
-          type: AUTH_ERROR,
-        });
+    .then((res) =>
+      dispatch({
+        type: ALL_USERS_LOADED,
+        payload: res.data,
+      }),
+    )
+    .catch((err) => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: AUTH_ERROR,
       });
+    });
 
   return authPromise;
 };
@@ -83,16 +106,16 @@ export const register = (user) => (dispatch) => {
   // Headers
   const config = {
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   };
-  const {name, email, password, role, company} = user;
+  const { name, email, password, role, company } = user;
   // Request body
-  const body = JSON.stringify({name, email, password, role, company});
+  const body = JSON.stringify({ name, email, password, role, company });
 
   // not sure if it is the right way to do redux.
   return axios
-    .post('/api/users', body, config)
+    .post("/api/users", body, config)
     .then((res) =>
       dispatch({
         type: REGISTER_SUCCESS,
@@ -101,7 +124,7 @@ export const register = (user) => (dispatch) => {
     )
     .catch((err) => {
       dispatch(
-        returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL'),
+        returnErrors(err.response.data, err.response.status, "REGISTER_FAIL"),
       );
       dispatch({
         type: REGISTER_FAIL,
@@ -111,20 +134,20 @@ export const register = (user) => (dispatch) => {
 
 // Login User
 
-export const login = ({email, password}) => (dispatch) => {
+export const login = ({ email, password }) => (dispatch) => {
   // Headers
   const config = {
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   };
 
   // Request body
-  const body = JSON.stringify({email, password});
+  const body = JSON.stringify({ email, password });
 
   // not sure if it is the right way to do redux.
   return axios
-    .post('/api/auth', body, config)
+    .post("/api/auth", body, config)
     .then((res) =>
       dispatch({
         type: LOGIN_SUCCESS,
@@ -133,7 +156,7 @@ export const login = ({email, password}) => (dispatch) => {
     )
     .catch((err) => {
       dispatch(
-        returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL'),
+        returnErrors(err.response.data, err.response.status, "LOGIN_FAIL"),
       );
       dispatch({
         type: LOGIN_FAIL,
@@ -148,42 +171,18 @@ export const logout = () => {
   };
 };
 
-// Setup config/headers and token
-export const tokenConfig = (getState) => {
-  // Get token from redux
-  const token = getState().auth.token;
-  // get githubAcessToken from localStorage
-  const githubAccessToken = localStorage.getItem('githubAccessToken');
-
-  // Headers
-  const config = {
-    headers: {
-      'Content-type': 'application/json',
-    },
-  };
-
-  // If token, add to headers
-  if (token) config.headers['x-auth-token'] = token;
-
-  if (githubAccessToken) {
-    config.headers['github-access-token'] = githubAccessToken;
-  }
-
-  return config;
-};
-
 export const deleteUser = (id) => (dispatch, getState) => {
   axios
-      .delete(`/api/users/${id}`, tokenConfig(getState))
-      .then((res) =>
-        dispatch({
-          type: USER_DELETED,
-          payload: id,
-        }),
-      )
-      .catch((err) =>
-        dispatch(returnErrors(err.response.data, err.response.status)),
-      );
+    .delete(`/api/users/${id}`, tokenConfig(getState))
+    .then((res) =>
+      dispatch({
+        type: USER_DELETED,
+        payload: id,
+      }),
+    )
+    .catch((err) =>
+      dispatch(returnErrors(err.response.data, err.response.status)),
+    );
 };
 
 // --------------------------- google 2fa auth . ---------------------------------------------//
@@ -191,19 +190,19 @@ export const deleteUser = (id) => (dispatch, getState) => {
 // --------------------------- google 2fa auth . ---------------------------------------------//
 // --------------------------- google 2fa auth . ---------------------------------------------//
 
-export const getTFA = ({email, domainName, uniqueId}) => (dispatch) => {
+export const getTFA = ({ email, domainName, uniqueId }) => (dispatch) => {
   // Headers
   const config = {
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   };
 
   // Request body
-  const body = JSON.stringify({email, domainName, uniqueId});
+  const body = JSON.stringify({ email, domainName, uniqueId });
   // not sure if it is the right way to do redux.
   return axios
-    .post('/api/TFA/', body, config)
+    .post("/api/TFA/", body, config)
     .then((res) => {
       dispatch({
         type: TFA_LOADED,
@@ -212,7 +211,7 @@ export const getTFA = ({email, domainName, uniqueId}) => (dispatch) => {
     })
     .catch((err) => {
       dispatch(
-        returnErrors(err.response.data, err.response.status, 'TFA_LOAD_FAIL'),
+        returnErrors(err.response.data, err.response.status, "TFA_LOAD_FAIL"),
       );
       dispatch({
         type: TFA_LOAD_FAIL,
@@ -221,20 +220,20 @@ export const getTFA = ({email, domainName, uniqueId}) => (dispatch) => {
 };
 
 // google 2fa auth setup.
-export const TFASetup = ({email, domainName, uniqueId}) => (dispatch) => {
+export const TFASetup = ({ email, domainName, uniqueId }) => (dispatch) => {
   // Headers
 
   const config = {
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   };
 
   // Request body
-  const body = JSON.stringify({email, domainName, uniqueId});
+  const body = JSON.stringify({ email, domainName, uniqueId });
   // not sure if it is the right way to do redux.
   return axios
-    .post('/api/TFA/setup', body, config)
+    .post("/api/TFA/setup", body, config)
     .then((res) => {
       dispatch({
         type: TFA_SETUP_SUCCESS,
@@ -243,7 +242,7 @@ export const TFASetup = ({email, domainName, uniqueId}) => (dispatch) => {
     })
     .catch((err) => {
       dispatch(
-        returnErrors(err.response.data, err.response.status, 'TFA_SETUP_FAIL'),
+        returnErrors(err.response.data, err.response.status, "TFA_SETUP_FAIL"),
       );
       dispatch({
         type: TFA_SETUP_FAIL,
@@ -256,15 +255,15 @@ export const TFAVerify = (email, code) => (dispatch) => {
   // Headers
   const config = {
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   };
 
   // Request body
-  const body = JSON.stringify({email, code});
+  const body = JSON.stringify({ email, code });
   // not sure if it is the right way to do redux.
   return axios
-    .post('/api/TFA/verify', body, config)
+    .post("/api/TFA/verify", body, config)
     .then((res) =>
       dispatch({
         type: TFA_VERIFED,
@@ -272,7 +271,7 @@ export const TFAVerify = (email, code) => (dispatch) => {
     )
     .catch((err) => {
       dispatch(
-        returnErrors(err.response.data, err.response.status, 'TFA_VERIFY_FAIL'),
+        returnErrors(err.response.data, err.response.status, "TFA_VERIFY_FAIL"),
       );
       dispatch({
         type: TFA_VERIFY_FAIL,
@@ -283,7 +282,7 @@ export const TFAVerify = (email, code) => (dispatch) => {
 // skip tfa.
 export const skipTFA = () => (dispatch) => {
   // TFAing
-  dispatch({type: TFA_VERIFED});
+  dispatch({ type: TFA_VERIFED });
 };
 
 // --------------------------- Github OAuth ---------------------------------------------//
@@ -294,13 +293,13 @@ export const skipTFA = () => (dispatch) => {
 export const getGithubAccessToken = (code) => (dispatch) => {
   const config = {
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   };
 
-  const body = JSON.stringify({code});
+  const body = JSON.stringify({ code });
   return axios
-    .post('/api/auth/github-access-token', body, config)
+    .post("/api/auth/github-access-token", body, config)
     .then((res) =>
       dispatch({
         type: GITHUB_SIGNIN_SUCCESS,
@@ -312,7 +311,7 @@ export const getGithubAccessToken = (code) => (dispatch) => {
         returnErrors(
           err.response.data,
           err.response.status,
-          'GITHUB_SIGNIN_FAIL',
+          "GITHUB_SIGNIN_FAIL",
         ),
       );
       dispatch({
@@ -323,12 +322,12 @@ export const getGithubAccessToken = (code) => (dispatch) => {
 
 export const getGithubUser = () => (dispatch) => {
   // User loading
-  dispatch({type: USER_LOADING});
+  dispatch({ type: USER_LOADING });
 
   return axios
-    .get('/api/auth/github-user', {
+    .get("/api/auth/github-user", {
       headers: {
-        access_token: localStorage.getItem('githubAccessToken'),
+        access_token: localStorage.getItem("githubAccessToken"),
       },
     })
     .then((res) =>
@@ -351,14 +350,14 @@ export const getGithubUser = () => (dispatch) => {
 export const createOauthUser = (oauthUser, oauthProvider) => (dispatch) => {
   const config = {
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   };
 
-  const body = JSON.stringify({oauthUser, oauthProvider});
+  const body = JSON.stringify({ oauthUser, oauthProvider });
 
   return axios
-    .post('/api/users/create-oauth-user', body, config)
+    .post("/api/users/create-oauth-user", body, config)
     .then((res) =>
       dispatch({
         type: GITHUB_USER_ADAPTED,

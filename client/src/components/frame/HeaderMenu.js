@@ -5,7 +5,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Person as AccountIcon, Send as SendIcon } from "@material-ui/icons";
@@ -17,17 +17,12 @@ import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
 import TranslateIcon from "@material-ui/icons/Translate";
 import classNames from "classnames";
 import { i18n, setLanguageCode } from "i18n";
+import PropTypes from "prop-types";
 import React, { useState } from "react";
 import "../../css3/bouncingEffect.css";
 import Logout from "../auth/Logout";
 import UserAvatar from "../shared/UserAvatar";
 
-/**
- *
- * @param props
- * @return {*}
- * @constructor
- */
 export default function HeaderMenu(props) {
   const useStyles = makeStyles((theme) => ({
     logotype: {
@@ -389,3 +384,11 @@ export default function HeaderMenu(props) {
     </div>
   );
 }
+
+HeaderMenu.propTypes = {
+  oauthUser: PropTypes.oneOfType([PropTypes.object]),
+  themeCallback: PropTypes.func.isRequired,
+};
+HeaderMenu.defaultProps = {
+  oauthUser: null,
+};
