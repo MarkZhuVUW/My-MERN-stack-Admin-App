@@ -27,6 +27,7 @@ const propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
 };
 const defaultProps = {
+  
   allLogs: null,
 };
 class Dashboard extends Component {

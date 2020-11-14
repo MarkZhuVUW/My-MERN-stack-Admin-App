@@ -5,7 +5,7 @@ export default class HomePolarChart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      //group by role of user.
+      // group by role of user.
       companyData: this.groupByCompany(),
     };
     this.chartRef = React.createRef();
@@ -25,7 +25,7 @@ export default class HomePolarChart extends React.Component {
    * @memberof HomePolarChart
    */
   groupByCompany = () => {
-    let groupedCompanies = {};
+    const groupedCompanies = {};
 
     this.props.data
       .filter((user) => user[3] === "employer")

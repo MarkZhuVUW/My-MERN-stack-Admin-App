@@ -6,7 +6,7 @@ import {
   Paper,
   TextField,
   Typography,
-  Zoom,
+  Zoom
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import classNames from "classnames";
@@ -18,7 +18,7 @@ import { connect } from "react-redux";
 import {
   deleteUser,
   loadAllUsers,
-  register,
+  register
 } from "../../../actions/authActions";
 import { clearErrors } from "../../../actions/errorActions";
 import AnimatedProgress from "../../shared/animatedProgress";

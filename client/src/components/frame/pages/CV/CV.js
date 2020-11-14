@@ -1,56 +1,58 @@
 import { makeStyles } from "@material-ui/core";
+import Box from '@material-ui/core/Box';
+import Link from '@material-ui/core/Link';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import Breadcrumb from "components/shared/Breadcrumb";
 // import { StyleSheet } from "@react-pdf/renderer";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
+import { Document, Page } from 'react-pdf';
 import { connect } from "react-redux";
-import "swagger-ui/dist/swagger-ui.css";
-import Breadcrumb from "components/shared/Breadcrumb";
 import { logDownload } from "../../../../actions/adminActions";
 import { clearErrors } from "../../../../actions/errorActions";
-import {Document, Page} from 'react-pdf';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import PageNumMenu from './PageNumMenu';
-import Link from '@material-ui/core/Link';
 import { pdfCV } from "./Mark_Zhu_CV.pdf";
+import PageNumMenu from './PageNumMenu';
 // pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-
-
 
 
 class CV extends Component {
 
 
   componentDidMount() {}
+
   componentDidUpdate(prevProps, prevState, snapshot) {}
+
   static propTypes = {
     user: PropTypes.object.isRequired,
     clearErrors: PropTypes.func.isRequired,
   };
+
   handleDownload = (href) => {
     console.log(this.props.user);
 
     const { _id, name, email, role, company } = this.props.user;
 
     const downloadLog = {
-      name: name,
-      email: email,
-      role: role,
+      name,
+      email,
+      role,
       explanation: href,
       type: "DOWNLOAD",
-      company: company,
+      company,
     };
 
     this.props.logDownload(_id, downloadLog);
 
     this.toggle();
   };
+
   toggle = () => {
     // Clear errors
     this.props.clearErrors();
   };
+
   render() {
     return (
       <CVContent
@@ -139,7 +141,7 @@ function CVContent(props) {
    * For example. 3 will be converted to [1, 2, 3]
    */
   const turnNumPagesToArray = (numPages) => {
-    let arrayOfNums = [];
+    const arrayOfNums = [];
     for (let i = 1; i <= numPages; ++i) {
       arrayOfNums.push(i);
     }
@@ -156,7 +158,7 @@ function CVContent(props) {
         items={[[i18n("frame.menu"), "/"], [i18n("cv.route")]]}
       />
       Will implement a pdf preview but for now there is only CV download.
-       <Paper
+      <Paper
         className={
           props.isSmallScreen ? classes.smallScreenPaper : classes.paper
         }
@@ -182,7 +184,11 @@ function CVContent(props) {
             setPageNumCallback={setPageNumCallback}
           />
 
-          <Typography>of {numPages}</Typography>
+          <Typography>
+            of
+            {' '}
+            {numPages}
+          </Typography>
 
           <Link
             href={`${process.env.PUBLIC_URL}/Mark_Zhu_CV.pdf`}

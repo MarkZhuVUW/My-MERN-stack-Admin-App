@@ -5,7 +5,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Person as AccountIcon, Send as SendIcon } from "@material-ui/icons";
