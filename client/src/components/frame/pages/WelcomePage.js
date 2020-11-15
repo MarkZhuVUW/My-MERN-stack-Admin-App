@@ -16,11 +16,12 @@ class WelcomePage extends Component {
   componentDidUpdate(prevProp, prevState, snapshot) {}
 
   static propTypes = {
-    user: PropTypes.object.isRequired,
-    clearErrors: PropTypes.func.isRequired
+    user: PropTypes.oneOfType([PropTypes.object]).isRequired,
+    clearErrors: PropTypes.func.isRequired,
+    isSmallScreen: PropTypes.bool.isRequired
   };
 
-  handleDownload = href => {
+  handleDownload = (href) => {
     const { _id, name, email, role, company } = this.props.user;
 
     const downloadLog = {
@@ -52,7 +53,7 @@ class WelcomePage extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.auth.user
 });
 
@@ -67,7 +68,7 @@ export default connect(mapStateToProps, {
  * @author Mark Zhu <zdy120939259@outlook.com>
  */
 function WelcomePageContent(props) {
-  const useStyles = makeStyles(theme => ({
+  const useStyles = makeStyles((theme) => ({
     root: {
       backgroundColor: "#E9EAED",
       width: "100%"

@@ -25,9 +25,6 @@ const defaultProps = {
   className: null,
   children: null
 };
-
-
-
   
 
 const GitHubLogin = ({
