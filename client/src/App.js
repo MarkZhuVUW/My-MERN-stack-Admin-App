@@ -1,11 +1,20 @@
 // import Particles from "react-particles-js";
 
 import { enUS, zhCN } from "@material-ui/core/locale";
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { getGithubUser, loadUser } from "actions/authActions";
+import SignInSide from "components/auth/SignInSide";
+import SignUp from "components/auth/SignUp";
+import Frame from "components/frame/Frame";
+import FacebookProgress from "components/shared/FacebookProgress";
+import ParticlesCustomized from "components/shared/ParticlesCustomized";
+import ErrorPage from "error-pages/ErrorPage";
 import PropTypes from "prop-types";
-import { Component, default as React, default as React } from "react";
+import React, { Component } from "react";
+import ClearCache from "react-clear-cache";
 import { connect } from "react-redux";
+import MediaQuery from "react-responsive";
+import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
 import "./App.scss";
 
 const darkOrLightTheme = createMuiTheme(
@@ -66,8 +75,11 @@ class App extends Component {
       <div>
         <ClearCache>
           {({ isLatestVersion, emptyCacheStorage }) => (
-            <div >
+            <div>
               {!isLatestVersion && (
+                <FacebookProgress msg="clearing react cache to show latest changes for this build..." />
+              )}
+              {isLatestVersion && (
                 <ThemeProvider theme={theme}>
                   <HashRouter basename="/">
                     {this.props.authenticated ? (
