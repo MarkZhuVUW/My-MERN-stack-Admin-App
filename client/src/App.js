@@ -16,6 +16,8 @@ import { connect } from "react-redux";
 import MediaQuery from "react-responsive";
 import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
 import "./App.scss";
+import { gsap } from "gsap";
+import { CSSRulePlugin } from "gsap/CSSRulePlugin";
 
 const darkOrLightTheme = createMuiTheme(
   {
@@ -49,6 +51,8 @@ class App extends Component {
     } else if (localStorage.getItem("token")) {
       this.props.loadUser();
     }
+    // registre gsap plugin.
+    gsap.registerPlugin(CSSRulePlugin);
   }
 
   render() {
