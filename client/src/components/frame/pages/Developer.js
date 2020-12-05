@@ -16,7 +16,7 @@ class Developer extends Component {
       SwaggerUI({
         dom_id: "#swaggerContainer",
         spec: this.props.swaggerUIDocs,
-        presets: [presets.apis],
+        presets: [presets.apis]
       });
     }
   }
@@ -25,12 +25,12 @@ class Developer extends Component {
       SwaggerUI({
         dom_id: "#swaggerContainer",
         spec: this.props.swaggerUIDocs,
-        presets: [presets.apis],
+        presets: [presets.apis]
       });
     }
   }
   static propTypes = {
-    swaggerUIDocs: PropTypes.object,
+    swaggerUIDocs: PropTypes.object
   };
 
   render() {
@@ -39,7 +39,7 @@ class Developer extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  swaggerUIDocs: state.developer.swaggerUIDocs,
+  swaggerUIDocs: state.developer.swaggerUIDocs
 });
 
 export default connect(mapStateToProps, { loadSwaggerUI })(Developer);
@@ -53,28 +53,28 @@ function DeveloperContent() {
   const useStyles = makeStyles((theme) => ({
     root: {
       backgroundColor: "#E9EAED",
-      width: "100%",
+      width: "100%"
       //   backgroundColor: "black"
     },
     container: {
       paddingTop: theme.spacing(1),
-      paddingBottom: theme.spacing(1),
+      paddingBottom: theme.spacing(1)
     },
     paper: {
       backgroundColor: "white",
       padding: theme.spacing(1, 1),
       zIndex: 1,
-      position: "relative",
+      position: "relative"
     },
 
     heading: {
       fontSize: theme.typography.pxToRem(15),
-      fontWeight: theme.typography.fontWeightRegular,
+      fontWeight: theme.typography.fontWeightRegular
     },
     expansionPanelHeader: {
       backgroundColor: "#3F51B5",
-      color: "white",
-    },
+      color: "white"
+    }
   }));
 
   const classes = useStyles();
@@ -84,6 +84,7 @@ function DeveloperContent() {
       <Breadcrumb
         items={[[i18n("frame.menu"), "/"], [i18n("developer.route")]]}
       />
+
       <Paper className={classes.paper}>
         <div id="swaggerContainer" />
       </Paper>

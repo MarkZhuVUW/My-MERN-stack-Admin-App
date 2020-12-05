@@ -20,20 +20,20 @@ import {
   logout,
   skipTFA,
   TFASetup,
-  TFAVerify,
+  TFAVerify
 } from "../../actions/authActions";
 import { clearErrors } from "../../actions/errorActions";
 import RoleCheckboxes from "../auth/RoleCheckboxes";
 
 const theme = createMuiTheme({
-  spacing: 4,
+  spacing: 4
 });
 
 const styles = {
   centerItemsContainer: {
     width: "100%",
     height: "80%",
-    margin: "0",
+    margin: "0"
   },
   centerItems: {
     display: "flex",
@@ -42,14 +42,14 @@ const styles = {
     flexDirection: "column",
     width: "100%",
     height: "80%",
-    margin: "0",
+    margin: "0"
   },
 
   buttons: {
     display: "flex",
     justifyContent: "space-between",
-    padding: theme.spacing(2),
-  },
+    padding: theme.spacing(2)
+  }
 };
 
 /**
@@ -61,7 +61,7 @@ const styles = {
 class ResponsiveDialog extends Component {
   state = {
     open: true,
-    code: "",
+    code: ""
   };
 
   static propTypes = {
@@ -75,7 +75,7 @@ class ResponsiveDialog extends Component {
     TFA: PropTypes.object,
     user: PropTypes.object,
     logout: PropTypes.func.isRequired,
-    isGithubUserLoaded: PropTypes.bool,
+    isGithubUserLoaded: PropTypes.bool
   };
   componentDidMount() {
     const { TFA, isGithubUserLoaded, user } = this.props;
@@ -83,7 +83,7 @@ class ResponsiveDialog extends Component {
       const obj = {
         email: user.email,
         domainName: window.location.hostname,
-        isOauth: false,
+        isOauth: false
       };
 
       if (!TFA && !isGithubUserLoaded) {
@@ -95,8 +95,7 @@ class ResponsiveDialog extends Component {
 
   componentDidUpdate(prevProps, prevStates, snapshot) {
     const { error, type } = this.props;
-    const isAuthenticated =
-      localStorage.getItem("authenticated") === "true";
+    const isAuthenticated = localStorage.getItem("authenticated") === "true";
 
     if (isAuthenticated && type !== "User Admin Error Handling") {
       this.props.cb(true);
@@ -122,23 +121,27 @@ class ResponsiveDialog extends Component {
 
   handleClickOpen = () => {
     this.setState({
-      open: true,
+      open: true
     });
   };
 
   handleClose = () => {
-    //re-enable login button and hide the loading spinner
+    // re-enable login button and hide the loading spinner
     this.props.responsiveDialogCallback();
-    this.props.logout();
+
+    if (this.props.type !== "User Admin Error Handling") {
+      this.props.logout();
+    }
+
     this.setState({
-      open: false,
+      open: false
     });
   };
   onSubmit = (e) => {
     e.preventDefault();
 
     const { code } = this.state;
-// Attempt to login
+    // Attempt to login
     this.props.TFAVerify(this.props.email, code);
 
     //clear errors
@@ -162,14 +165,14 @@ class ResponsiveDialog extends Component {
       role: role,
 
       domainName: window.location.hostname,
-      isOauth: false,
+      isOauth: false
     };
 
     const TFAObj = {
       email: user.email,
       domainName: window.location.hostname,
       isOauth: false,
-      uniqueId: user.uniqueId,
+      uniqueId: user.uniqueId
     };
 
     this.props.createOauthUser(oauthUser, "github").then(() => {
@@ -191,7 +194,7 @@ class ResponsiveDialog extends Component {
       alertMsg,
       TFA,
       isGithubUserLoaded,
-      user,
+      user
     } = this.props;
 
     // get TFA object from props for dispalying qrcode
@@ -200,7 +203,7 @@ class ResponsiveDialog extends Component {
     const TFAOrVerificationErrorContent = (
       <div
         style={{
-          width: "100%",
+          width: "100%"
         }}
       >
         <DialogActions>
@@ -247,7 +250,7 @@ class ResponsiveDialog extends Component {
                 <Typography>
                   {i18n("responsiveDialog.hi") + user.email}
                 </Typography>
-                <img src={TFA.dataURL}  alt={"tfa qrcode"}/>
+                <img src={TFA.dataURL} alt={"tfa qrcode"} />
               </div>
             ) : (
               <div className={classes.centerItemsContainer}>
@@ -259,9 +262,10 @@ class ResponsiveDialog extends Component {
                     <img
                       src={user.avatar_url}
                       style={{
-                        padding: theme.spacing(2),
+                        padding: theme.spacing(2)
                       }}
-                     alt={"user avatar"}/>
+                      alt={"user avatar"}
+                    />
                   </div>
                 ) : null}
               </div>
@@ -310,7 +314,7 @@ class ResponsiveDialog extends Component {
 const mapStateToProps = (state) => ({
   error: state.error,
   TFA: state.auth.TFA,
-  user: state.auth.user,
+  user: state.auth.user
 });
 export default connect(mapStateToProps, {
   TFAVerify,
@@ -319,5 +323,5 @@ export default connect(mapStateToProps, {
   clearErrors,
   skipTFA,
   logout,
-  createOauthUser,
+  createOauthUser
 })(withStyles(styles)(ResponsiveDialog));
