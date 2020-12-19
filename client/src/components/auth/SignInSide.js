@@ -333,7 +333,6 @@ class SignInSide extends Component {
                       role="button"
                       tabIndex={0}
                     >
-                      123
                       <GitHubLogin
                         buttonText={i18n("loginPage.signInWithGithub")}
                         clientId={confidentials.github_client_id}
