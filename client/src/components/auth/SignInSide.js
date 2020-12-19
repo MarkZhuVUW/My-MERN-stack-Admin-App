@@ -3,15 +3,14 @@ import {
   Container,
   CssBaseline,
   Tooltip,
-  Zoom
+  Zoom,
+  Paper,
+  Grid,
+  createMuiTheme,
+  TextField,
+  Typography
 } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Snackbar from "@material-ui/core/Snackbar";
-import { createMuiTheme } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import MuiAlert from "@material-ui/lab/Alert";
+
 import { withStyles } from "@material-ui/styles";
 import { logLoginSuccess } from "actions/adminActions";
 import {
@@ -35,7 +34,6 @@ import { NavLink, withRouter } from "react-router-dom";
 import compose from "recompose/compose";
 import GitHubLogin from "../oauth/GitHubLogin";
 import ResponsiveDialog from "../shared/ResponsiveDialog";
-
 
 const theme = createMuiTheme({
   spacing: 4
@@ -94,7 +92,7 @@ const styles = {
     marginTop: "auto",
     backgroundColor: theme.palette.primary.main,
     // position: "relative",
-    position: "absolute",
+
     width: "100%",
     top: 0,
 
@@ -102,24 +100,6 @@ const styles = {
   }
 };
 
-const propTypes = {
-  error: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  login: PropTypes.func.isRequired,
-  userLoaded: PropTypes.bool,
-  clearErrors: PropTypes.func.isRequired,
-  classes: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  user: PropTypes.oneOfType([PropTypes.object]),
-  logLoginSuccess: PropTypes.func.isRequired,
-  getGithubAccessToken: PropTypes.func.isRequired,
-  getGithubUser: PropTypes.func.isRequired,
-
-  // withRouter
-  history: PropTypes.oneOfType([PropTypes.object]).isRequired
-};
-const defaultProps = {
-  userLoaded: false,
-  user: undefined
-};
 class SignInSide extends Component {
   constructor(props) {
     super(props);
@@ -127,7 +107,6 @@ class SignInSide extends Component {
     this.state = {
       email: "",
       password: "",
-      msg: null,
       selectedRole: "",
       forgotPasswordClicked: false,
       isLoading: false,
@@ -137,25 +116,6 @@ class SignInSide extends Component {
       copyRightText: i18n("loginPage.licenseText")
     };
   }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const { error } = this.props;
-
-    if (error !== prevProps.error) {
-      // Check for register error
-
-      if (error.id === "LOGIN_FAIL") {
-        this.setState({
-          msg: error.msg.msg
-        });
-      } else {
-        this.setState({
-          msg: null
-        });
-      }
-    }
-  }
-  
 
   toggle = () => {
     // Clear errors
@@ -258,28 +218,14 @@ class SignInSide extends Component {
 
   render() {
     const { classes, userLoaded, error, user } = this.props;
-    const { msg } = this.state;
 
     const responsiveDialogCallback = () => {
       this.setState({
         isLoading: false,
-        copyRightOpened: false
-      });
-    };
-
-    const handleSnackbarClose = (event, reason) => {
-      if (reason === "clickaway") {
-        return;
-      }
-
-      this.setState({
+        copyRightOpened: false,
         forgotPasswordClicked: false
       });
     };
-
-    function Alert(props) {
-      return <MuiAlert elevation={6} variant="filled" />;
-    }
 
     return (
       <div>
@@ -298,15 +244,14 @@ class SignInSide extends Component {
           </header>
         </MediaQuery>
         {/* if user credentials are correct. Do a google 2fa before login to dashboard */}
-        <Snackbar
-          open={this.state.forgotPasswordClicked}
-          autoHideDuration={6000}
-          onClose={handleSnackbarClose}
-        >
-          <Alert onClose={handleSnackbarClose} severity="success">
-            {i18n("loginPage.registerANewOne")}
-          </Alert>
-        </Snackbar>
+
+        {this.state.forgotPasswordClicked && (
+          <ResponsiveDialog
+            title="Forgot password?"
+            alertMsg={i18n("loginPage.registerANewOne")}
+            responsiveDialogCallback={responsiveDialogCallback}
+          />
+        )}
         {userLoaded && !user.id ? (
           <ResponsiveDialog
             alertMsg={i18n("loginPage.downloadTFAApp")}
@@ -377,11 +322,10 @@ class SignInSide extends Component {
                         buttonText={i18n("loginPage.signInWithGithub")}
                         clientId={confidentials.github_client_id}
                         redirectUri=""
-                        onSuccessCallback={(code) =>
-                          this.onGithubSignIn(code)}
-                        
+                        onSuccessCallback={(res) =>
+                          this.onGithubSignIn(res.code)}
                         onFailureCallback={(res) => {
-                          
+                          console.error(res);
                           this.setState({ isLoading: false });
                         }}
                       />
@@ -391,9 +335,9 @@ class SignInSide extends Component {
                   <Typography component="h1" variant="h5">
                     {i18n("loginPage.welcome")}
                   </Typography>
-                  {this.state.msg ? (
+                  {error.msg ? (
                     <ResponsiveDialog
-                      alertMsg={msg}
+                      alertMsg={error.msg}
                       title={error.id}
                       responsiveDialogCallback={responsiveDialogCallback}
                     />
@@ -456,8 +400,10 @@ class SignInSide extends Component {
 
                     <Grid container>
                       <Grid item xs>
-                        <NavLink
-                          to="#"
+                        <Typography
+                          component="a"
+                          href="#"
+                          variant="caption"
                           onClick={() => {
                             this.setState({
                               forgotPasswordClicked: true
@@ -472,7 +418,7 @@ class SignInSide extends Component {
                           }}
                         >
                           {i18n("loginPage.forgotPassword")}
-                        </NavLink>
+                        </Typography>
                       </Grid>
                       <Grid item>
                         <NavLink
@@ -588,8 +534,25 @@ const mapStateToProps = (state) => ({
   userLoaded: state.auth.userLoaded,
   user: state.auth.user
 });
-SignInSide.propTypes = propTypes;
-SignInSide.defaultProps = defaultProps;
+SignInSide.propTypes = {
+  error: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  login: PropTypes.func.isRequired,
+  userLoaded: PropTypes.bool,
+  clearErrors: PropTypes.func.isRequired,
+  classes: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  user: PropTypes.oneOfType([PropTypes.object]),
+  logLoginSuccess: PropTypes.func.isRequired,
+  getGithubAccessToken: PropTypes.func.isRequired,
+  getGithubUser: PropTypes.func.isRequired,
+
+  // withRouter
+  history: PropTypes.oneOfType([PropTypes.object]).isRequired
+};
+SignInSide.defaultProps = {
+  userLoaded: false,
+  user: undefined
+};
+
 export default compose(
   withStyles(styles),
   connect(mapStateToProps, {

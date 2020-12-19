@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { tokenConfig } from './authActions';
-import { returnErrors } from './errorActions';
+import axios from "axios";
+import { tokenConfig } from "./authActions";
+import { returnErrors } from "./errorActions";
 import {
   ALL_LOGS_LOADED,
   DOWNLOAD_LOGGED,
@@ -8,7 +8,7 @@ import {
   LOGIN_LOGGED,
   LOG_DELETED,
   PAGE_VIEW_LOGGED
-} from './types';
+} from "./types";
 
 export const logPageView = (id, pageViewLog, isOauth) => (
   dispatch,
@@ -21,11 +21,11 @@ export const logPageView = (id, pageViewLog, isOauth) => (
     .patch(`/api/users/${id}/logs`, body, tokenConfig(getState))
     .then(() =>
       dispatch({
-        type: PAGE_VIEW_LOGGED,
+        type: PAGE_VIEW_LOGGED
       })
     )
     .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch(returnErrors(err.response.data.msg, err.response.status));
     });
 };
 
@@ -40,11 +40,11 @@ export const logLoginSuccess = (id, loginLog, isOauth) => (
     .patch(`/api/users/${id}/logs`, body, tokenConfig(getState))
     .then(() =>
       dispatch({
-        type: LOGIN_LOGGED,
+        type: LOGIN_LOGGED
       })
     )
     .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch(returnErrors(err.response.data.msg, err.response.status));
     });
 };
 
@@ -58,11 +58,11 @@ export const logDownload = (id, downloadLog, isOauth) => (
     .patch(`/api/users/${id}/logs`, body, tokenConfig(getState))
     .then(() =>
       dispatch({
-        type: DOWNLOAD_LOGGED,
+        type: DOWNLOAD_LOGGED
       })
     )
     .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch(returnErrors(err.response.data.msg, err.response.status));
     });
 };
 
@@ -74,13 +74,13 @@ export const loadAllLogs = () => (dispatch, getState) => {
     .then((res) =>
       dispatch({
         type: ALL_LOGS_LOADED,
-        payload: res.data,
+        payload: res.data
       })
     )
     .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch(returnErrors(err.response.data.msg, err.response.status));
       dispatch({
-        type: LOAD_LOGS_ERROR,
+        type: LOAD_LOGS_ERROR
       });
     });
 };
@@ -92,10 +92,10 @@ export const deleteLog = (userId, logId) => (dispatch, getState) => {
     .then(() =>
       dispatch({
         type: LOG_DELETED,
-        payload: logId,
+        payload: logId
       })
     )
     .catch((err) =>
-      dispatch(returnErrors(err.response.data, err.response.status))
+      dispatch(returnErrors(err.response.data.msg, err.response.status))
     );
 };

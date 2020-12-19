@@ -2,7 +2,7 @@ import { LOAD_SWAGGER_UI_ERROR, SWAGGER_UI_LOADED } from "../actions/types";
 
 const initialState = {
   swaggerUIDocs: null,
-  isLoading: false,
+  isLoading: false
 };
 
 export default function (state = initialState, action) {
@@ -10,13 +10,13 @@ export default function (state = initialState, action) {
     case LOAD_SWAGGER_UI_ERROR:
       return {
         ...state,
-        isLoading: false,
+        isLoading: false
       };
     case SWAGGER_UI_LOADED:
       return {
         ...state,
         swaggerUIDocs: action.payload,
-        isLoading: false,
+        isLoading: false
       };
 
     default:

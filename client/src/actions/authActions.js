@@ -21,7 +21,7 @@ import {
   TFA_VERIFY_FAIL,
   USER_DELETED,
   USER_LOADED,
-  USER_LOADING,
+  USER_LOADING
 } from "./types";
 
 // Setup config/headers and token
@@ -33,8 +33,8 @@ export const tokenConfig = (getState) => {
   // Headers
   const config = {
     headers: {
-      "Content-type": "application/json",
-    },
+      "Content-type": "application/json"
+    }
   };
 
   // If token, add to headers
@@ -50,7 +50,7 @@ export const tokenConfig = (getState) => {
 // CLEAR Success message
 export const clearSuccessMsg = () => {
   return {
-    type: CLEAR_SUCCESS_MSG,
+    type: CLEAR_SUCCESS_MSG
   };
 };
 
@@ -65,13 +65,13 @@ export const loadUser = () => (dispatch, getState) => {
     .then((res) =>
       dispatch({
         type: USER_LOADED,
-        payload: res.data,
-      }),
+        payload: res.data
+      })
     )
     .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch(returnErrors(err.response.data.msg, err.response.status));
       dispatch({
-        type: AUTH_ERROR,
+        type: AUTH_ERROR
       });
     });
   return loadUserPromise;
@@ -88,13 +88,13 @@ export const loadAllUsers = () => (dispatch, getState) => {
     .then((res) =>
       dispatch({
         type: ALL_USERS_LOADED,
-        payload: res.data,
-      }),
+        payload: res.data
+      })
     )
     .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch(returnErrors(err.response.data.msg, err.response.status));
       dispatch({
-        type: AUTH_ERROR,
+        type: AUTH_ERROR
       });
     });
 
@@ -106,8 +106,8 @@ export const register = (user) => (dispatch) => {
   // Headers
   const config = {
     headers: {
-      "Content-Type": "application/json",
-    },
+      "Content-Type": "application/json"
+    }
   };
   const { name, email, password, role, company } = user;
   // Request body
@@ -119,15 +119,20 @@ export const register = (user) => (dispatch) => {
     .then((res) =>
       dispatch({
         type: REGISTER_SUCCESS,
-        payload: res.data,
-      }),
+        payload: res.data
+      })
     )
     .catch((err) => {
       dispatch(
-        returnErrors(err.response.data, err.response.status, "REGISTER_FAIL"),
+        returnErrors(
+          err.response.data.msg,
+          err.response.status,
+          "REGISTER_FAIL"
+        )
       );
+
       dispatch({
-        type: REGISTER_FAIL,
+        type: REGISTER_FAIL
       });
     });
 };
@@ -138,8 +143,8 @@ export const login = ({ email, password }) => (dispatch) => {
   // Headers
   const config = {
     headers: {
-      "Content-Type": "application/json",
-    },
+      "Content-Type": "application/json"
+    }
   };
 
   // Request body
@@ -151,15 +156,15 @@ export const login = ({ email, password }) => (dispatch) => {
     .then((res) =>
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: res.data,
-      }),
+        payload: res.data
+      })
     )
     .catch((err) => {
       dispatch(
-        returnErrors(err.response.data, err.response.status, "LOGIN_FAIL"),
+        returnErrors(err.response.data.msg, err.response.status, "LOGIN_FAIL")
       );
       dispatch({
-        type: LOGIN_FAIL,
+        type: LOGIN_FAIL
       });
     });
 };
@@ -167,7 +172,7 @@ export const login = ({ email, password }) => (dispatch) => {
 // Logout User
 export const logout = () => {
   return {
-    type: LOGOUT_SUCCESS,
+    type: LOGOUT_SUCCESS
   };
 };
 
@@ -177,11 +182,11 @@ export const deleteUser = (id) => (dispatch, getState) => {
     .then((res) =>
       dispatch({
         type: USER_DELETED,
-        payload: id,
-      }),
+        payload: id
+      })
     )
     .catch((err) =>
-      dispatch(returnErrors(err.response.data, err.response.status)),
+      dispatch(returnErrors(err.response.data.msg, err.response.status))
     );
 };
 
@@ -194,29 +199,28 @@ export const getTFA = ({ email, domainName, uniqueId }) => (dispatch) => {
   // Headers
   const config = {
     headers: {
-      "Content-Type": "application/json",
-    },
+      "Content-Type": "application/json"
+    }
   };
 
   // Request body
   const body = JSON.stringify({ email, domainName, uniqueId });
-  // not sure if it is the right way to do redux.
-  return axios
-    .post("/api/TFA/", body, config)
+
+  const getTFAPromise = axios.post("/api/TFA/", body, config);
+
+  getTFAPromise
     .then((res) => {
       dispatch({
         type: TFA_LOADED,
-        payload: res.data,
+        payload: res.data
       });
     })
     .catch((err) => {
-      dispatch(
-        returnErrors(err.response.data, err.response.status, "TFA_LOAD_FAIL"),
-      );
       dispatch({
-        type: TFA_LOAD_FAIL,
+        type: TFA_LOAD_FAIL
       });
     });
+  return getTFAPromise;
 };
 
 // google 2fa auth setup.
@@ -225,8 +229,8 @@ export const TFASetup = ({ email, domainName, uniqueId }) => (dispatch) => {
 
   const config = {
     headers: {
-      "Content-Type": "application/json",
-    },
+      "Content-Type": "application/json"
+    }
   };
 
   // Request body
@@ -237,15 +241,19 @@ export const TFASetup = ({ email, domainName, uniqueId }) => (dispatch) => {
     .then((res) => {
       dispatch({
         type: TFA_SETUP_SUCCESS,
-        payload: res.data,
+        payload: res.data
       });
     })
     .catch((err) => {
       dispatch(
-        returnErrors(err.response.data, err.response.status, "TFA_SETUP_FAIL"),
+        returnErrors(
+          err.response.data.msg,
+          err.response.status,
+          "TFA_SETUP_FAIL"
+        )
       );
       dispatch({
-        type: TFA_SETUP_FAIL,
+        type: TFA_SETUP_FAIL
       });
     });
 };
@@ -255,8 +263,8 @@ export const TFAVerify = (email, code) => (dispatch) => {
   // Headers
   const config = {
     headers: {
-      "Content-Type": "application/json",
-    },
+      "Content-Type": "application/json"
+    }
   };
 
   // Request body
@@ -266,15 +274,19 @@ export const TFAVerify = (email, code) => (dispatch) => {
     .post("/api/TFA/verify", body, config)
     .then((res) =>
       dispatch({
-        type: TFA_VERIFED,
-      }),
+        type: TFA_VERIFED
+      })
     )
     .catch((err) => {
       dispatch(
-        returnErrors(err.response.data, err.response.status, "TFA_VERIFY_FAIL"),
+        returnErrors(
+          err.response.data.msg,
+          err.response.status,
+          "TFA_VERIFY_FAIL"
+        )
       );
       dispatch({
-        type: TFA_VERIFY_FAIL,
+        type: TFA_VERIFY_FAIL
       });
     });
 };
@@ -293,8 +305,8 @@ export const skipTFA = () => (dispatch) => {
 export const getGithubAccessToken = (code) => (dispatch) => {
   const config = {
     headers: {
-      "Content-Type": "application/json",
-    },
+      "Content-Type": "application/json"
+    }
   };
 
   const body = JSON.stringify({ code });
@@ -303,19 +315,19 @@ export const getGithubAccessToken = (code) => (dispatch) => {
     .then((res) =>
       dispatch({
         type: GITHUB_SIGNIN_SUCCESS,
-        payload: res.data,
-      }),
+        payload: res.data
+      })
     )
     .catch((err) => {
       dispatch(
         returnErrors(
           err.response.data,
           err.response.status,
-          "GITHUB_SIGNIN_FAIL",
-        ),
+          "GITHUB_SIGNIN_FAIL"
+        )
       );
       dispatch({
-        type: GITHUB_SIGNIN_FAIL,
+        type: GITHUB_SIGNIN_FAIL
       });
     });
 };
@@ -327,19 +339,19 @@ export const getGithubUser = () => (dispatch) => {
   return axios
     .get("/api/auth/github-user", {
       headers: {
-        access_token: localStorage.getItem("githubAccessToken"),
-      },
+        access_token: localStorage.getItem("githubAccessToken")
+      }
     })
     .then((res) =>
       dispatch({
         type: GITHUB_USER_LOADED,
-        payload: res.data,
-      }),
+        payload: res.data
+      })
     )
     .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch(returnErrors(err.response.data.msg, err.response.status));
       dispatch({
-        type: AUTH_ERROR,
+        type: AUTH_ERROR
       });
     });
 };
@@ -350,8 +362,8 @@ export const getGithubUser = () => (dispatch) => {
 export const createOauthUser = (oauthUser, oauthProvider) => (dispatch) => {
   const config = {
     headers: {
-      "Content-Type": "application/json",
-    },
+      "Content-Type": "application/json"
+    }
   };
 
   const body = JSON.stringify({ oauthUser, oauthProvider });
@@ -361,13 +373,13 @@ export const createOauthUser = (oauthUser, oauthProvider) => (dispatch) => {
     .then((res) =>
       dispatch({
         type: GITHUB_USER_ADAPTED,
-        payload: res.data,
-      }),
+        payload: res.data
+      })
     )
     .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch(returnErrors(err.response.data.msg, err.response.status));
       dispatch({
-        type: AUTH_ERROR,
+        type: AUTH_ERROR
       });
     });
 };

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import {
   ALL_USERS_LOADED,
   AUTH_ERROR,
@@ -19,7 +20,7 @@ import {
   TFA_VERIFY_FAIL,
   USER_DELETED,
   USER_LOADED,
-  USER_LOADING,
+  USER_LOADING
 } from "../actions/types";
 
 const initialState = {
@@ -32,6 +33,7 @@ const initialState = {
   successMsg: null,
   allUsers: [],
   authenticated: false,
+  TFAExistsForThisUser: false
 };
 
 export default function (state = initialState, action) {
@@ -39,19 +41,19 @@ export default function (state = initialState, action) {
     case CLEAR_SUCCESS_MSG:
       return {
         ...state,
-        successMsg: null,
+        successMsg: null
       };
 
     case USER_LOADING:
       return {
         ...state,
-        isLoading: true,
+        isLoading: true
       };
     case ALL_USERS_LOADED:
       return {
         ...state,
         allUsers: action.payload,
-        isLoading: false,
+        isLoading: false
       };
     case USER_LOADED:
     case GITHUB_USER_LOADED:
@@ -60,7 +62,7 @@ export default function (state = initialState, action) {
         ...state,
         isLoading: false,
         userLoaded: true,
-        user: action.payload,
+        user: action.payload
       };
 
     case USER_DELETED:
@@ -68,7 +70,7 @@ export default function (state = initialState, action) {
         ...state,
         allUsers: state.allUsers.filter((user) => {
           return user._id !== action.payload;
-        }),
+        })
       };
     case REGISTER_SUCCESS:
       return { ...state, successMsg: "registration successful" };
@@ -79,7 +81,7 @@ export default function (state = initialState, action) {
         ...state,
         ...action.payload,
         isLoading: false,
-        userLoaded: true,
+        userLoaded: true
       };
     case GITHUB_SIGNIN_SUCCESS:
       localStorage.setItem("githubAccessToken", action.payload.access_token);
@@ -87,7 +89,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         ...action.payload,
-        isLoading: false,
+        isLoading: false
       };
     case LOGOUT_SUCCESS:
       localStorage.removeItem("token");
@@ -97,7 +99,7 @@ export default function (state = initialState, action) {
       return {
         ...initialState,
         token: localStorage.getItem("token"),
-        authenticated: false,
+        authenticated: false
       };
 
     case AUTH_ERROR:
@@ -113,25 +115,26 @@ export default function (state = initialState, action) {
         isLoading: false,
         userLoaded: false,
         token: localStorage.getItem("token"),
-        authenticated: false,
+        authenticated: false
       };
     case REGISTER_FAIL:
       return {
         ...state,
-        isLoading: false,
+        isLoading: false
       };
     case TFA_SETUP_FAIL:
       return {
-        ...state,
+        ...state
       };
-    //do not change state if verification failed
+
+    // do not change state if verification failed
     case TFA_VERIFY_FAIL:
       return {
-        ...state,
+        ...state
       };
     case TFA_LOAD_FAIL:
       return {
-        ...state,
+        ...state
       };
     case TFA_SETUP_SUCCESS:
     case TFA_LOADED:
@@ -139,6 +142,7 @@ export default function (state = initialState, action) {
         ...state,
         TFA: action.payload,
         TFALoaded: true,
+        TFAExistsForThisUser: true
       };
     case TFA_VERIFED:
       localStorage.setItem("authenticated", true);
@@ -146,7 +150,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         TFA: null,
-        authenticated: true,
+        authenticated: true
       };
 
     // case TFA_ING:
@@ -158,8 +162,7 @@ export default function (state = initialState, action) {
     default:
       return {
         ...state,
-        authenticated:
-          localStorage.getItem("authenticated") === "true",
+        authenticated: localStorage.getItem("authenticated") === "true"
       };
   }
 }

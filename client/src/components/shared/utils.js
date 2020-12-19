@@ -1,5 +1,3 @@
-import { useEffect, useRef } from "react";
-
 /**
  * handwritten url parameter parser.
  */
@@ -7,11 +5,12 @@ export function toParams(query) {
   const q = query.replace(/^\??\//, "");
 
   return q.split("&").reduce((values, param) => {
-    const [key, value] = param.split("=");
-
+    const keyValuePair = param.split("=");
+    const key = keyValuePair[0];
+    const value = keyValuePair[1];
     const newValues = { ...values };
-    newValues.key = value;
 
+    newValues[key] = value;
     return newValues;
   }, {});
 }
@@ -30,17 +29,3 @@ export function toQuery(params, delimiter = "&") {
     return query;
   }, "");
 }
-
-// react hooks.
-
-/**
- * keeps track of the previous value.
- * @param {} value
- */
-export const usePrevious = (value) => {
-  const ref = useRef();
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current ? ref.current : {};
-};

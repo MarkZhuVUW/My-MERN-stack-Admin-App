@@ -13,11 +13,10 @@ import { logPageView } from "actions/adminActions";
 import { clearErrors } from "actions/errorActions";
 import clsx from "clsx";
 import FacebookProgress from "components/shared/FacebookProgress";
-import { usePrevious } from "components/shared/utils";
 import ErrorPage from "error-pages/ErrorPage";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
-import React, { useEffect } from "react";
+import React, { Component } from "react";
 // redux
 import { connect } from "react-redux";
 import { useMediaQuery } from "react-responsive";
@@ -33,21 +32,126 @@ import Portfolio from "./pages/Portfolio/Portfolio";
 import UserAdmin from "./pages/UserAdmin";
 import WelcomePage from "./pages/WelcomePage";
 
-const propTypes = {
-  // clearErrors: PropTypes.func.isRequired,
-  user: PropTypes.oneOfType([PropTypes.object]),
-  themeCallback: PropTypes.func.isRequired,
+class Frame extends Component {
+  componentDidMount() {
+    // if (this.props.user) this.handlePageView();
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.user !== this.props.user) this.handlePageView();
+    if (
+      prevProps.location.pathname !== this.props.location.pathname &&
+      this.props.user
+    )
+      this.handlePageView();
+  }
+
+  /**
+   * Log employer page view and make api call to update corresponding documents in my mongodb database
+   */
+  logPageView = (page) => {
+    // Using my own REST API to log page views.
+    // Ideally I will implement google analytics in the future.
+    // I am only interested in logging employer page views
+
+    const { _id, name, email, role, company } = this.props.user;
+
+    const pageViewObj = {
+      name,
+      email,
+      role,
+      company,
+      explanation: page,
+      type: "PAGE VIEW"
+    };
+
+    this.props.logPageView(_id, pageViewObj);
+
+    // TODO: implement google analytics.
+    // ReactGA.initialize("G-0LQBCYS7PM");
+
+    // if (this.props.user && this.props.user.role === "employer")
+    //   this.props.history.listen(location => {
+    //     ReactGA.set({ page: location.pathname });
+    //     ReactGA.pageview(location.pathname);
+    //   });
+
+    this.toggle();
+  };
+
+  handlePageView = () => {
+    if (this.props.user.role !== "employer") return;
+    const { pathname } = this.props.location;
+
+    const splitPathname = pathname.split("/");
+
+    while (splitPathname[splitPathname.length - 1] === "") {
+      if (splitPathname.length - 1 === 0) break;
+      splitPathname.splice(splitPathname.length - 1, 1);
+    }
+
+    const path = splitPathname[splitPathname.length - 1];
+    if (path === "cv" || path === "portfolio" || path === "welcomepage")
+      this.logPageView(path);
+    else if (
+      path === "dashboard" ||
+      path === "useradmin" ||
+      path === "developer"
+    )
+      this.logPageView(403);
+    else this.logPageView(404);
+  };
+
+  toggle = () => {
+    // Clear errors
+    this.props.clearErrors();
+  };
+
+  render() {
+    if (!this.props.user)
+      return (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100vh"
+          }}
+        >
+          <FacebookProgress />
+        </div>
+      );
+
+    return (
+      <FrameView
+        location={this.props.location}
+        themeCallback={this.props.themeCallback}
+        user={this.props.user}
+      />
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  user: state.auth.user
+});
+
+export default compose(connect(mapStateToProps, { clearErrors, logPageView }))(
+  withRouter(Frame)
+);
+
+Frame.propTypes = {
+  clearErrors: PropTypes.func.isRequired,
+  user: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  themeCallback: PropTypes.oneOfType([PropTypes.object]).isRequired,
   logPageView: PropTypes.func.isRequired,
   // withRouter
   location: PropTypes.oneOfType([PropTypes.object]).isRequired
 };
-const defaultProps = { user: null };
-const Frame = (props) => {
-  const { user, location } = props;
-  const [selectedIndex, setSelectedIndex] = React.useState(5);
-  const isSmallScreen = useMediaQuery({ query: "(max-width: 700px)" });
+const drawerWidth = 240;
 
-  const drawerWidth = 240;
+const FrameView = (props) => {
   const useStyles = makeStyles((theme) => ({
     root: {
       display: "flex",
@@ -109,7 +213,10 @@ const Frame = (props) => {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen
       }),
-      width: 0
+      width: theme.spacing(7),
+      [theme.breakpoints.up("sm")]: {
+        width: theme.spacing(9)
+      }
     },
     appBarSpacer: theme.mixins.toolbar,
     content: {
@@ -143,78 +250,6 @@ const Frame = (props) => {
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
-  /**
-   * Log employer page view and make api call to update corresponding documents in my mongodb database.
-   */
-  const logCurrentPageView = (page) => {
-    // Using my own REST API to log page views.
-    // Ideally I will implement google analytics in the future.
-    // I am only interested in logging employer page views
-
-    const { _id, name, email, role, company } = user;
-    const toggle = () => {
-      // Clear errors
-      clearErrors();
-    };
-
-    const pageViewObj = {
-      name,
-      email,
-      role,
-      company,
-      explanation: page,
-      type: "PAGE VIEW"
-    };
-
-    props.logPageView(_id, pageViewObj);
-
-    // TODO: implement google analytics.
-    // ReactGA.initialize("G-0LQBCYS7PM");
-
-    // if (user && user.role === "employer")
-    //   history.listen(location => {
-    //     ReactGA.set({ page: location.pathname });
-    //     ReactGA.pageview(location.pathname);
-    //   });
-
-    toggle();
-  };
-  const handlePageView = () => {
-    if (user.role !== "employer") return;
-    const { pathname } = location;
-
-    const splitPathname = pathname.split("/");
-
-    while (splitPathname[splitPathname.length - 1] === "") {
-      if (splitPathname.length - 1 === 0) break;
-      splitPathname.splice(splitPathname.length - 1, 1);
-    }
-
-    const path = splitPathname[splitPathname.length - 1];
-    if (path === "cv" || path === "portfolio" || path === "welcomepage")
-      logCurrentPageView(path);
-    else if (
-      path === "dashboard" ||
-      path === "useradmin" ||
-      path === "developer"
-    )
-      logCurrentPageView(403);
-    else logCurrentPageView(404);
-  };
-
-  // keep track of the previous user and location using a customized hook.
-  const prevAmount = usePrevious({ user, location });
-
-  useEffect(() => {
-    if (prevAmount.user !== user && user) handlePageView();
-
-    if (
-      prevAmount.location &&
-      prevAmount.location.pathname !== location.pathname &&
-      user
-    )
-      handlePageView();
-  });
 
   /**
    * translate the name of the page to its corresponding index. Used in the listitems.js file
@@ -228,7 +263,7 @@ const Frame = (props) => {
    * -1: Page Not Found
    */
   const translatePageToIndex = () => {
-    const { pathname } = location;
+    const { pathname } = props.location;
     // trim out the "" in the last index of the array
     const splitPathname = pathname.split("/");
 
@@ -239,11 +274,11 @@ const Frame = (props) => {
 
     switch (splitPathname[splitPathname.length - 1]) {
       case "dashboard":
-        return user.role === "admin" ? 0 : 403;
+        return props.user.role === "admin" ? 0 : 403;
       case "developer":
-        return user.role === "admin" ? 1 : 403;
+        return props.user.role === "admin" ? 1 : 403;
       case "useradmin":
-        return user.role === "admin" ? 2 : 403;
+        return props.user.role === "admin" ? 2 : 403;
       case "welcomepage":
         return 3;
       case "portfolio":
@@ -251,31 +286,27 @@ const Frame = (props) => {
       case "cv":
         return 5;
       case "frame":
-        return user.role === "admin" ? 0 : 3;
+        return props.user.role === "admin" ? 0 : 3;
 
       default:
         return 404; // Page Not Found
     }
   };
 
-  if (!user)
-    return (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "100vh"
-        }}
-      >
-        <FacebookProgress msg="user loading..." />
-      </div>
-    );
+  const [selectedIndex, setSelectedIndex] = React.useState(
+    translatePageToIndex()
+  );
+  const isSmallScreen = useMediaQuery({ query: "(max-width: 700px)" });
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const themeCallback = (theme) => {
+    props.themeCallback(theme);
   };
 
   const FrameAppBar = (
@@ -303,7 +334,7 @@ const Frame = (props) => {
             noWrap
             className={classes.title}
           >
-            {user.role === "admin"
+            {props.user.role === "admin"
               ? i18n("frame.adminApp")
               : i18n("frame.welcome")}
           </Typography>
@@ -317,8 +348,8 @@ const Frame = (props) => {
           >
             <div>
               <HeaderMenu
-                themeCallback={props.themeCallback}
-                oauthUser={user.uniqueId ? user : null}
+                themeCallback={themeCallback}
+                oauthUser={props.user.uniqueId ? props.user : null}
               />
             </div>
           </Slide>
@@ -347,14 +378,12 @@ const Frame = (props) => {
       <SelectedListItem
         callback={cb}
         currentIndex={translatePageToIndex()}
-        role={user.role}
+        role={props.user.role}
       />
     </Drawer>
   );
-
   const index = translatePageToIndex();
   const isIndexInvalid = index === 403 || index === 404;
-
   return (
     <>
       {localStorage.getItem("theme") === "dark" ? (
@@ -387,7 +416,7 @@ const Frame = (props) => {
                     exact
                     path="/frame"
                     render={() => {
-                      return user.role === "admin" ? (
+                      return props.user.role === "admin" ? (
                         <Redirect to="/frame/dashboard" />
                       ) : (
                         <Redirect to="/frame/welcomepage" />
@@ -395,7 +424,7 @@ const Frame = (props) => {
                     }}
                   />
 
-                  {user.role === "admin" ? (
+                  {props.user.role === "admin" ? (
                     <Switch>
                       <Route exact path="/frame/dashboard">
                         <Dashboard isSmallScreen={isSmallScreen} />
@@ -442,14 +471,9 @@ const Frame = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  user: state.auth.user
-});
-
-export default compose(connect(mapStateToProps, { clearErrors, logPageView }))(
-  withRouter(Frame)
-);
-
-Frame.propTypes = propTypes;
-Frame.defaultProps = defaultProps;
+FrameView.propTypes = {
+  user: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  themeCallback: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  // withRouter
+  location: PropTypes.oneOfType([PropTypes.object]).isRequired
+};
