@@ -36,7 +36,6 @@ import compose from "recompose/compose";
 import GitHubLogin from "../oauth/GitHubLogin";
 import ResponsiveDialog from "../shared/ResponsiveDialog";
 
-
 const theme = createMuiTheme({
   spacing: 4
 });
@@ -102,24 +101,6 @@ const styles = {
   }
 };
 
-const propTypes = {
-  error: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  login: PropTypes.func.isRequired,
-  userLoaded: PropTypes.bool,
-  clearErrors: PropTypes.func.isRequired,
-  classes: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  user: PropTypes.oneOfType([PropTypes.object]),
-  logLoginSuccess: PropTypes.func.isRequired,
-  getGithubAccessToken: PropTypes.func.isRequired,
-  getGithubUser: PropTypes.func.isRequired,
-
-  // withRouter
-  history: PropTypes.oneOfType([PropTypes.object]).isRequired
-};
-const defaultProps = {
-  userLoaded: false,
-  user: undefined
-};
 class SignInSide extends Component {
   constructor(props) {
     super(props);
@@ -127,7 +108,6 @@ class SignInSide extends Component {
     this.state = {
       email: "",
       password: "",
-      msg: null,
       selectedRole: "",
       forgotPasswordClicked: false,
       isLoading: false,
@@ -137,25 +117,6 @@ class SignInSide extends Component {
       copyRightText: i18n("loginPage.licenseText")
     };
   }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const { error } = this.props;
-
-    if (error !== prevProps.error) {
-      // Check for register error
-
-      if (error.id === "LOGIN_FAIL") {
-        this.setState({
-          msg: error.msg.msg
-        });
-      } else {
-        this.setState({
-          msg: null
-        });
-      }
-    }
-  }
-  
 
   toggle = () => {
     // Clear errors
@@ -258,7 +219,6 @@ class SignInSide extends Component {
 
   render() {
     const { classes, userLoaded, error, user } = this.props;
-    const { msg } = this.state;
 
     const responsiveDialogCallback = () => {
       this.setState({
@@ -377,11 +337,11 @@ class SignInSide extends Component {
                         buttonText={i18n("loginPage.signInWithGithub")}
                         clientId={confidentials.github_client_id}
                         redirectUri=""
-                        onSuccessCallback={(code) =>
-                          this.onGithubSignIn(code)}
-                        
+                        onSuccessCallback={(res) =>
+                          this.onGithubSignIn(res.code)
+                        }
                         onFailureCallback={(res) => {
-                          
+                          console.error(res);
                           this.setState({ isLoading: false });
                         }}
                       />
@@ -391,9 +351,9 @@ class SignInSide extends Component {
                   <Typography component="h1" variant="h5">
                     {i18n("loginPage.welcome")}
                   </Typography>
-                  {this.state.msg ? (
+                  {error.msg ? (
                     <ResponsiveDialog
-                      alertMsg={msg}
+                      alertMsg={error.msg}
                       title={error.id}
                       responsiveDialogCallback={responsiveDialogCallback}
                     />
@@ -588,8 +548,25 @@ const mapStateToProps = (state) => ({
   userLoaded: state.auth.userLoaded,
   user: state.auth.user
 });
-SignInSide.propTypes = propTypes;
-SignInSide.defaultProps = defaultProps;
+SignInSide.propTypes = {
+  error: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  login: PropTypes.func.isRequired,
+  userLoaded: PropTypes.bool,
+  clearErrors: PropTypes.func.isRequired,
+  classes: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  user: PropTypes.oneOfType([PropTypes.object]),
+  logLoginSuccess: PropTypes.func.isRequired,
+  getGithubAccessToken: PropTypes.func.isRequired,
+  getGithubUser: PropTypes.func.isRequired,
+
+  // withRouter
+  history: PropTypes.oneOfType([PropTypes.object]).isRequired
+};
+SignInSide.defaultProps = {
+  userLoaded: false,
+  user: undefined
+};
+
 export default compose(
   withStyles(styles),
   connect(mapStateToProps, {

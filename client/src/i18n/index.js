@@ -9,14 +9,14 @@ const languages = {
     id: "en",
     label: "en",
     flag: "/images/flags/24/United-States.png",
-    dictionary: en,
+    dictionary: en
   },
   chinese: {
     id: "chinese",
     label: "chinese",
     flag: "/images/flags/24/Brazil.png",
-    dictionary: chinese,
-  },
+    dictionary: chinese
+  }
 };
 
 export const setLanguageCode = (arg) => {
@@ -48,7 +48,7 @@ const format = (message, args) => {
 
   try {
     return message.replace(/{(\d+)}/g, (match, number) =>
-      typeof args[number] !== "undefined" ? args[number] : match,
+      typeof args[number] !== "undefined" ? args[number] : match
     );
   } catch (error) {
     console.error(message, error);

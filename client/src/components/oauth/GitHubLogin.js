@@ -1,10 +1,8 @@
-
 import MyButton from "components/shared/MyButton";
 import PropTypes from "prop-types";
 import React from "react";
 import { toQuery } from "../shared/utils";
 import PopupWindow from "./PopupWindow";
-
 
 const propTypes = {
   buttonText: PropTypes.string,
@@ -25,10 +23,6 @@ const defaultProps = {
   className: null,
   children: null
 };
-
-
-
-  
 
 const GitHubLogin = ({
   clientId,
@@ -51,7 +45,6 @@ const GitHubLogin = ({
     onSuccessCallback(data.key);
   };
 
-  
   const onBtnClick = () => {
     const search = toQuery({
       client_id: clientId,

@@ -1,10 +1,10 @@
 import { makeStyles } from "@material-ui/core";
-import Breadcrumb from "components/shared/Breadcrumb";
 // import { StyleSheet } from "@react-pdf/renderer";
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import Breadcrumb from "components/shared/Breadcrumb";
 import { logDownload } from "../../../actions/adminActions";
 import { clearErrors } from "../../../actions/errorActions";
 
@@ -20,9 +20,8 @@ class WelcomePage extends Component {
     clearErrors: PropTypes.func.isRequired
   };
 
-  handleDownload = href => {
+  handleDownload = (href) => {
     const { _id, name, email, role, company } = this.props.user;
-
     const downloadLog = {
       name,
       email,
@@ -52,7 +51,7 @@ class WelcomePage extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.auth.user
 });
 
@@ -67,7 +66,7 @@ export default connect(mapStateToProps, {
  * @author Mark Zhu <zdy120939259@outlook.com>
  */
 function WelcomePageContent(props) {
-  const useStyles = makeStyles(theme => ({
+  const useStyles = makeStyles((theme) => ({
     root: {
       backgroundColor: "#E9EAED",
       width: "100%"

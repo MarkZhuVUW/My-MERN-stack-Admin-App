@@ -20,8 +20,10 @@
     "gsap": "^3.2.6",
     "lodash": "^4.17.15",
     "mui-datatables": "^2.13.3",
+    "node-sass": "^4.14.1",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
+    "react-clear-cache": "^1.4.8",
     "react-countup": "^4.3.3",
     "react-dom": "^16.12.0",
     "react-ga": "^2.7.0",
@@ -44,9 +46,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "npm run prebuild react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "generate-build-meta": "node ./node_modules/react-clear-cache/bin/cli.js",
+    "prebuild": "npm run generate-build-meta"
   },
   "browserslist": {
     "production": [

@@ -54,13 +54,13 @@
 
         "responses": {
           "200": {
-            "description": "OK ",
+            "description": "OK",
             "schema": {
               "$ref": "#/definitions/User"
             }
           },
           "400": {
-            "description": "wrong jwt token probably. (can't fix the above error. If anybody sees this and care to fix it please email me the fix. Thanks :))"
+            "description": "wrong jwt token probably."
           }
         }
       }
@@ -381,30 +381,20 @@
         "role": {
           "type": "string"
         },
-        "company": {
-          "type": "string"
-        },
-        "support": {
-          "type": "string"
-        },
         "_id": {
-          "type": "array"
+          "type": "string"
         },
         "name": {
-          "type": "date"
+          "type": "string"
         },
         "email": {
           "type": "string"
         },
-        "team": {
+        "company": {
           "type": "string"
         },
         "register_date": {
           "type": "string"
-        },
-        "schema": {
-          "type": "array",
-          "logs": { "$ref": "#/definitions/Log" }
         }
       }
     },
@@ -474,7 +464,7 @@
           "type": "string"
         },
         "date_established": {
-          "type": "date"
+          "type": "string"
         }
       }
     },

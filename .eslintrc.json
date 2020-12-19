@@ -27,7 +27,6 @@
     "react/jsx-props-no-spreading": "off",
     "no-unused-vars": "off",
     "unused-imports/no-unused-imports": 1,
-    "linebreak-style": ["error", "windows"],
     "prefer-promise-reject-errors": ["off"],
     "react/jsx-filename-extension": ["off"],
     "react/prop-types": ["warn"],
