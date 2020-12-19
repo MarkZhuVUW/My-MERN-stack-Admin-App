@@ -1,5 +1,8 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-multi-assign */
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 
 // Create Schema
 const LogSchema = new Schema({

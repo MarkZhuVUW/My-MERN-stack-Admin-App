@@ -1,10 +1,11 @@
 const express = require("express");
+
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const config = require("config");
 const jwt = require("jsonwebtoken");
-const auth = require("../../middleware/auth");
 const axios = require("axios");
+const auth = require("../../middleware/auth");
 
 // User Model
 const userModels = require("../../models/User");
@@ -31,23 +32,27 @@ router.post("/", (req, res) => {
   }
 
   // Check for existing user
-  userModels.User.findOne({ email })
+  return userModels.User.findOne({ email })
     .then((user) => {
       if (!user) return res.status(400).json({ msg: "User Does not exist" });
 
       // Validate password
-      bcrypt.compare(password, user.password).then((isMatch) => {
+      return bcrypt.compare(password, user.password).then((isMatch) => {
         if (!isMatch) {
           return res.status(400).json({ msg: "Invalid credentials" });
         }
 
-        jwt.sign({ id: user.id }, config.get("jwtSecret"), (err, token) => {
-          // if (err) throw err;
-          res.json({
-            token,
-            user
-          });
-        });
+        return jwt.sign(
+          { id: user.id },
+          config.get("jwtSecret"),
+          (err, token) => {
+            // if (err) throw err;
+            res.json({
+              token,
+              user
+            });
+          }
+        );
       });
     })
     .catch((err) => res.status(400).json(err));
@@ -65,20 +70,24 @@ router.get("/", (req, res) => {
   }
 
   // Check for existing user
-  userModels.User.findOne({ email }).then((user) => {
+  return userModels.User.findOne({ email }).then((user) => {
     if (!user) return res.status(400).json({ msg: "User Does not exist" });
 
     // Validate password
-    bcrypt.compare(password, user.password).then((isMatch) => {
+    return bcrypt.compare(password, user.password).then((isMatch) => {
       if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
 
-      jwt.sign({ id: user.id }, config.get("jwtSecret"), (err, token) => {
-        if (err) throw err;
-        res.json({
-          token,
-          user
-        });
-      });
+      return jwt.sign(
+        { id: user.id },
+        config.get("jwtSecret"),
+        (err, token) => {
+          if (err) throw err;
+          res.json({
+            token,
+            user
+          });
+        }
+      );
     });
   });
 });
@@ -104,11 +113,11 @@ router.post("/github-access-token", (req, res) => {
   const body = JSON.stringify({
     client_id: clientId,
     client_secret: clientSecret,
-    code: code
+    code
   });
 
   // get access token.
-  axios
+  return axios
     .post(`https://github.com/login/oauth/access_token`, body, {
       headers: {
         "Content-Type": "application/json",
@@ -134,7 +143,7 @@ router.get("/github-user", (req, res) => {
   const githubUserConfig = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + req.headers.access_token
+      Authorization: `Bearer ${req.headers.access_token}`
     }
   };
 

@@ -1,10 +1,10 @@
 import {
   MY_GITHUB_USER_LOADED,
-  MY_GITHUB_USER_LOAD_FAILURE,
+  MY_GITHUB_USER_LOAD_FAILURE
 } from "../actions/types";
 
 const initialState = {
-  githubUser: null,
+  githubUser: null
 };
 
 export default function (state = initialState, action) {
@@ -12,16 +12,16 @@ export default function (state = initialState, action) {
     case MY_GITHUB_USER_LOADED:
       return {
         ...state,
-        githubUser: action.payload,
+        githubUser: action.payload
       };
     case MY_GITHUB_USER_LOAD_FAILURE:
       return {
-        ...state,
+        ...state
         // TODO maybe do something in the future.
       };
     default:
       return {
-        ...state,
+        ...state
       };
   }
 }

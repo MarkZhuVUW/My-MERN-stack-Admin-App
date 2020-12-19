@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import {
   ALL_USERS_LOADED,
   AUTH_ERROR,
@@ -31,7 +32,8 @@ const initialState = {
   TFALoaded: false,
   successMsg: null,
   allUsers: [],
-  authenticated: false
+  authenticated: false,
+  TFAExistsForThisUser: false
 };
 
 export default function (state = initialState, action) {
@@ -139,7 +141,8 @@ export default function (state = initialState, action) {
       return {
         ...state,
         TFA: action.payload,
-        TFALoaded: true
+        TFALoaded: true,
+        TFAExistsForThisUser: true
       };
     case TFA_VERIFED:
       localStorage.setItem("authenticated", true);

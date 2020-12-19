@@ -3,13 +3,13 @@ import {
   DOWNLOAD_LOGGED,
   LOGIN_LOGGED,
   LOG_DELETED,
-  PAGE_VIEW_LOGGED,
+  PAGE_VIEW_LOGGED
 } from "../actions/types";
 
 const initialState = {
   swaggerUIDocs: null,
   isLoading: false,
-  allLogs: null,
+  allLogs: null
 };
 
 export default function (state = initialState, action) {
@@ -20,13 +20,13 @@ export default function (state = initialState, action) {
     case LOG_DELETED:
       return {
         ...state,
-        isLoading: false,
+        isLoading: false
       };
     case ALL_LOGS_LOADED:
       return {
         ...state,
         allLogs: action.payload,
-        isLoading: false,
+        isLoading: false
       };
 
     default:

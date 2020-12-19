@@ -12,8 +12,7 @@ function auth(req, res, next) {
   }
 
   // Check for token
-  if (!token)
-    return res.status(401).json({ msg: "No token, authorizaton denied" });
+  if (!token) res.status(401).json({ msg: "No token, authorizaton denied" });
 
   try {
     // if (token) {
@@ -31,7 +30,7 @@ function auth(req, res, next) {
     //     Authorization: "Bearer " + req.headers.access_token,
     //   },
     // };
-    //get github user.
+    // get github user.
     // axios
     //   .get(`https://api.github.com/user`, githubUserConfig)
     //   .then((githubUserRes) => {

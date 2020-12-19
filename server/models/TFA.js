@@ -1,5 +1,7 @@
+/* eslint-disable no-undef */
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 
 // Create Schema
 const TFASchema = new Schema({
@@ -26,4 +28,5 @@ const TFASchema = new Schema({
   }
 });
 
+// eslint-disable-next-line no-multi-assign
 module.exports = TFA = mongoose.model("TFA", TFASchema);

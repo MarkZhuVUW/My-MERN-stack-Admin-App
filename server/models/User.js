@@ -7,64 +7,64 @@ const Log = require("./Log");
 const UserSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    required: true
   },
   email: {
     type: String,
     required: true,
-    unique: true,
+    unique: true
   },
   password: {
     type: String,
-    required: true,
+    required: true
   },
 
   register_date: {
     type: Date,
-    default: Date.now,
+    default: Date.now
   },
   role: {
     type: String,
     enum: ["admin", "guest", "employer"],
     required: true,
-    default: "guest",
+    default: "guest"
   },
   company: {
-    type: String,
+    type: String
   },
-  logs: [Log.schema],
+  logs: [Log.schema]
 });
 
 const OauthUserSchema = new Schema(
   {
     uniqueId: {
       type: String,
-      required: true,
+      required: true
     },
     name: {
       type: String,
-      required: true,
+      required: true
     },
     email: {
       type: String,
-      required: true,
+      required: true
     },
     role: {
       type: String,
       enum: ["admin", "guest", "employer"],
-      required: true,
+      required: true
     },
 
     register_date: {
       type: Date,
-      default: Date.now,
+      default: Date.now
     },
-    logs: [Log.schema],
+    logs: [Log.schema]
   },
-  { strict: false },
+  { strict: false }
 );
 
 module.exports = {
   User: mongoose.model("user", UserSchema),
-  OauthUser: mongoose.model("oauthUser", OauthUserSchema),
+  OauthUser: mongoose.model("oauthUser", OauthUserSchema)
 };

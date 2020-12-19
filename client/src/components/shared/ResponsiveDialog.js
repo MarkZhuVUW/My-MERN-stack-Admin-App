@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import MediaQuery from "react-responsive";
-//redux
+// redux
 import {
   createOauthUser,
   getTFA,
@@ -59,24 +59,15 @@ const styles = {
  * 3. do github oauth authencation.
  */
 class ResponsiveDialog extends Component {
-  state = {
-    open: true,
-    code: ""
-  };
+  constructor(props) {
+    super(props);
 
-  static propTypes = {
-    error: PropTypes.object.isRequired,
+    this.state = {
+      open: true,
+      code: ""
+    };
+  }
 
-    clearErrors: PropTypes.func.isRequired,
-    TFAVerify: PropTypes.func.isRequired,
-    TFASetup: PropTypes.func.isRequired,
-    getTFA: PropTypes.func.isRequired,
-    skipTFA: PropTypes.func.isRequired,
-    TFA: PropTypes.object,
-    user: PropTypes.object,
-    logout: PropTypes.func.isRequired,
-    isGithubUserLoaded: PropTypes.bool
-  };
   componentDidMount() {
     const { TFA, isGithubUserLoaded, user } = this.props;
     if (this.props.title === i18n("loginPage.googleTFA")) {
@@ -87,8 +78,10 @@ class ResponsiveDialog extends Component {
       };
 
       if (!TFA && !isGithubUserLoaded) {
-        this.props.TFASetup(obj);
-        this.props.getTFA(obj);
+        this.props.getTFA(obj).catch(() => {
+          console.log(1);
+          this.props.TFASetup(obj);
+        });
       }
     }
   }
@@ -99,18 +92,6 @@ class ResponsiveDialog extends Component {
 
     if (isAuthenticated && type !== "User Admin Error Handling") {
       this.props.cb(true);
-    }
-    if (error !== prevProps.error) {
-      // Check for register error
-      if (error.id === "TFA_VERIFY_FAIL") {
-        // re-enable login button and hide the loading spinner
-
-        // this.props.responsiveDialogCallback();
-
-        this.setState({ msg: error.msg.msg });
-      } else {
-        this.setState({ msg: null });
-      }
     }
   }
 
@@ -137,6 +118,7 @@ class ResponsiveDialog extends Component {
       open: false
     });
   };
+
   onSubmit = (e) => {
     e.preventDefault();
 
@@ -144,9 +126,10 @@ class ResponsiveDialog extends Component {
     // Attempt to login
     this.props.TFAVerify(this.props.email, code);
 
-    //clear errors
+    // clear errors
     this.toggle();
   };
+
   onChange = (e) => {
     this.setState({ code: e.target.value });
   };
@@ -162,7 +145,7 @@ class ResponsiveDialog extends Component {
 
     const oauthUser = {
       ...user,
-      role: role,
+      role,
 
       domainName: window.location.hostname,
       isOauth: false
@@ -177,8 +160,9 @@ class ResponsiveDialog extends Component {
 
     this.props.createOauthUser(oauthUser, "github").then(() => {
       if (!TFA) {
-        this.props.TFASetup(TFAObj);
-        this.props.getTFA(TFAObj);
+        this.props.getTFA(TFAObj).catch(() => {
+          this.props.TFASetup(TFAObj);
+        });
       }
     });
   };
@@ -194,7 +178,8 @@ class ResponsiveDialog extends Component {
       alertMsg,
       TFA,
       isGithubUserLoaded,
-      user
+      user,
+      TFAExistsForThisUser
     } = this.props;
 
     // get TFA object from props for dispalying qrcode
@@ -243,14 +228,18 @@ class ResponsiveDialog extends Component {
         >
           <DialogTitle id="responsive-dialog-title">{title}</DialogTitle>
           <DialogContent>
-            <DialogContentText>{alertMsg}</DialogContentText>
+            <DialogContentText>
+              {TFAExistsForThisUser ? i18n("loginPage.tfaExists") : alertMsg}
+            </DialogContentText>
 
             {TFA ? (
               <div className={classes.centerItems}>
                 <Typography>
                   {i18n("responsiveDialog.hi") + user.email}
                 </Typography>
-                <img src={TFA.dataURL} alt={"tfa qrcode"} />
+                {!TFAExistsForThisUser && (
+                  <img src={TFA.dataURL} alt="tfa qrcode" />
+                )}
               </div>
             ) : (
               <div className={classes.centerItemsContainer}>
@@ -264,7 +253,7 @@ class ResponsiveDialog extends Component {
                       style={{
                         padding: theme.spacing(2)
                       }}
-                      alt={"user avatar"}
+                      alt="user avatar"
                     />
                   </div>
                 ) : null}
@@ -311,10 +300,45 @@ class ResponsiveDialog extends Component {
   }
 }
 
+ResponsiveDialog.propTypes = {
+  error: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  clearErrors: PropTypes.func.isRequired,
+  TFAVerify: PropTypes.func.isRequired,
+  TFASetup: PropTypes.func.isRequired,
+  getTFA: PropTypes.func.isRequired,
+  skipTFA: PropTypes.func.isRequired,
+  TFA: PropTypes.oneOfType([PropTypes.object]),
+  user: PropTypes.oneOfType([PropTypes.object]),
+  logout: PropTypes.func.isRequired,
+  isGithubUserLoaded: PropTypes.bool,
+  title: PropTypes.string,
+  loginSuccessCallback: PropTypes.func,
+  responsiveDialogCallback: PropTypes.func,
+  email: PropTypes.string,
+  type: PropTypes.string,
+  alertMsg: PropTypes.string.isRequired,
+  classes: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  createOauthUser: PropTypes.func,
+  TFAExistsForThisUser: PropTypes.bool.isRequired,
+  cb: PropTypes.func
+};
+ResponsiveDialog.defaultProps = {
+  isGithubUserLoaded: null,
+  title: null,
+  loginSuccessCallback: null,
+  responsiveDialogCallback: null,
+  email: null,
+  type: null,
+  TFA: null,
+  user: null,
+  createOauthUser: null,
+  cb: null
+};
 const mapStateToProps = (state) => ({
   error: state.error,
   TFA: state.auth.TFA,
-  user: state.auth.user
+  user: state.auth.user,
+  TFAExistsForThisUser: state.auth.TFAExistsForThisUser
 });
 export default connect(mapStateToProps, {
   TFAVerify,

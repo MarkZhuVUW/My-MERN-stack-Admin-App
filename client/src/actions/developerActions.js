@@ -5,7 +5,7 @@ import { LOAD_SWAGGER_UI_ERROR, SWAGGER_UI_LOADED } from "./types";
 // Setup config/headers and token
 export const tokenConfig = (getState) => {
   // Get token from localstorage
-  const token = getState().auth.token;
+  const { token } = getState().auth;
 
   // Headers
   const config = {

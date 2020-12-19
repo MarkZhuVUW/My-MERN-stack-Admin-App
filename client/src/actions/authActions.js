@@ -69,7 +69,7 @@ export const loadUser = () => (dispatch, getState) => {
       })
     )
     .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch(returnErrors(err.response.data.msg, err.response.status));
       dispatch({
         type: AUTH_ERROR
       });
@@ -92,7 +92,7 @@ export const loadAllUsers = () => (dispatch, getState) => {
       })
     )
     .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch(returnErrors(err.response.data.msg, err.response.status));
       dispatch({
         type: AUTH_ERROR
       });
@@ -124,7 +124,11 @@ export const register = (user) => (dispatch) => {
     )
     .catch((err) => {
       dispatch(
-        returnErrors(err.response.data, err.response.status, "REGISTER_FAIL")
+        returnErrors(
+          err.response.data.msg,
+          err.response.status,
+          "REGISTER_FAIL"
+        )
       );
 
       dispatch({
@@ -157,7 +161,7 @@ export const login = ({ email, password }) => (dispatch) => {
     )
     .catch((err) => {
       dispatch(
-        returnErrors(err.response.data, err.response.status, "LOGIN_FAIL")
+        returnErrors(err.response.data.msg, err.response.status, "LOGIN_FAIL")
       );
       dispatch({
         type: LOGIN_FAIL
@@ -182,7 +186,7 @@ export const deleteUser = (id) => (dispatch, getState) => {
       })
     )
     .catch((err) =>
-      dispatch(returnErrors(err.response.data, err.response.status))
+      dispatch(returnErrors(err.response.data.msg, err.response.status))
     );
 };
 
@@ -201,9 +205,10 @@ export const getTFA = ({ email, domainName, uniqueId }) => (dispatch) => {
 
   // Request body
   const body = JSON.stringify({ email, domainName, uniqueId });
-  // not sure if it is the right way to do redux.
-  return axios
-    .post("/api/TFA/", body, config)
+
+  const getTFAPromise = axios.post("/api/TFA/", body, config);
+
+  getTFAPromise
     .then((res) => {
       dispatch({
         type: TFA_LOADED,
@@ -211,13 +216,11 @@ export const getTFA = ({ email, domainName, uniqueId }) => (dispatch) => {
       });
     })
     .catch((err) => {
-      dispatch(
-        returnErrors(err.response.data, err.response.status, "TFA_LOAD_FAIL")
-      );
       dispatch({
         type: TFA_LOAD_FAIL
       });
     });
+  return getTFAPromise;
 };
 
 // google 2fa auth setup.
@@ -243,7 +246,11 @@ export const TFASetup = ({ email, domainName, uniqueId }) => (dispatch) => {
     })
     .catch((err) => {
       dispatch(
-        returnErrors(err.response.data, err.response.status, "TFA_SETUP_FAIL")
+        returnErrors(
+          err.response.data.msg,
+          err.response.status,
+          "TFA_SETUP_FAIL"
+        )
       );
       dispatch({
         type: TFA_SETUP_FAIL
@@ -272,7 +279,11 @@ export const TFAVerify = (email, code) => (dispatch) => {
     )
     .catch((err) => {
       dispatch(
-        returnErrors(err.response.data, err.response.status, "TFA_VERIFY_FAIL")
+        returnErrors(
+          err.response.data.msg,
+          err.response.status,
+          "TFA_VERIFY_FAIL"
+        )
       );
       dispatch({
         type: TFA_VERIFY_FAIL
@@ -338,7 +349,7 @@ export const getGithubUser = () => (dispatch) => {
       })
     )
     .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch(returnErrors(err.response.data.msg, err.response.status));
       dispatch({
         type: AUTH_ERROR
       });
@@ -366,7 +377,7 @@ export const createOauthUser = (oauthUser, oauthProvider) => (dispatch) => {
       })
     )
     .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch(returnErrors(err.response.data.msg, err.response.status));
       dispatch({
         type: AUTH_ERROR
       });

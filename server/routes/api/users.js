@@ -33,7 +33,7 @@ router.post("/", (req, res) => {
   }
 
   // Check for existing user
-  userModels.User.findOne({ email }).then((user) => {
+  return userModels.User.findOne({ email }).then((user) => {
     if (user) return res.status(400).json({ msg: "User already exists" });
 
     const newUser = new userModels.User({
@@ -41,19 +41,19 @@ router.post("/", (req, res) => {
       email,
       password,
       role,
-      company: company || "",
+      company: company || ""
     });
     // Create salt & hash
-    bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(newUser.password, salt, (err, hash) => {
-        if (err) throw err;
+    return bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(newUser.password, salt, (error, hash) => {
+        if (error) throw error;
         newUser.password = hash;
-        newUser.save().then((user) => {
-          jwt.sign({ id: user.id }, config.get("jwtSecret"), (err, token) => {
-            if (err) throw err;
+        newUser.save().then((userObj) => {
+          jwt.sign({ id: userObj.id }, config.get("jwtSecret"), (e, token) => {
+            if (e) throw e;
 
             return res.json({
-              msg: "register successfull",
+              msg: "register successfull"
             });
           });
         });
@@ -88,7 +88,7 @@ router.patch("/:id/logs", auth, (req, res) => {
     name: log.name,
     explanation: log.explanation,
     role: log.role,
-    company: log.company,
+    company: log.company
   })
     .save()
     .then((savedLog) => {
@@ -97,8 +97,8 @@ router.patch("/:id/logs", auth, (req, res) => {
         { _id: req.params.id },
         {
           $push: {
-            logs: savedLog,
-          },
+            logs: savedLog
+          }
         }
       );
       if (isOauth)
@@ -106,8 +106,8 @@ router.patch("/:id/logs", auth, (req, res) => {
           { uniqueId: req.params.id },
           {
             $push: {
-              logs: savedLog,
-            },
+              logs: savedLog
+            }
           }
         );
       else
@@ -115,7 +115,7 @@ router.patch("/:id/logs", auth, (req, res) => {
           .then((user) => {
             if (!user)
               return res.status(400).json({ msg: "User does not exist" });
-            res.json(user);
+            return res.json(user);
           })
           .catch((err) => res.status(400).json({ success: false }));
     });
@@ -130,22 +130,22 @@ router.patch("/:id", auth, (req, res) => {
 
   if (!email || !name || !role)
     return res.status(400).json({
-      msg: "request body should contain the updated user information ",
+      msg: "request body should contain the updated user information "
     });
 
-  userModels.User.findByIdAndUpdate(
+  return userModels.User.findByIdAndUpdate(
     { _id: req.params.id },
     {
       $set: {
         name,
         email,
-        role,
-      },
+        role
+      }
     }
   )
     .then((user) => {
       if (!user) return res.status(404).json({ msg: "User does not exist" });
-      res.json(user);
+      return res.json(user);
     })
     .catch((err) => res.status(404).json({ success: false }));
 });
@@ -171,8 +171,8 @@ router.delete("/:userid/logs/:logid", auth, (req, res) => {
     { _id: req.params.userid },
     {
       $pull: {
-        logs: { _id: req.params.logid },
-      },
+        logs: { _id: req.params.logid }
+      }
     }
   )
     .then(() => {
@@ -205,12 +205,12 @@ router.post("/create-oauth-user", (req, res) => {
 
     const newOauthUser = new userModels.OauthUser({
       uniqueId,
-      ...oauthUser,
+      ...oauthUser
     });
 
-    newOauthUser
+    return newOauthUser
       .save()
-      .then((oauthUser) => res.json(oauthUser))
+      .then((oauthUserObj) => res.json(oauthUserObj))
       .catch((err) =>
         // res.status(400).json({ msg: "oauth user registration failed" })
         res.status(400).json(err)
