@@ -22,24 +22,22 @@ const darkOrLightTheme = createMuiTheme(
         localStorage.getItem("theme") === "dark"
           ? { main: "#303f9f" }
           : { main: "#1976d2" },
-      type: localStorage.getItem("theme") === "dark" ? "dark" : "light",
-    },
+      type: localStorage.getItem("theme") === "dark" ? "dark" : "light"
+    }
   },
-   localStorage.getItem("language") === "en" ? enUS : zhCN,
+  localStorage.getItem("language") === "en" ? enUS : zhCN
 );
 
 const propTypes = {
   authenticated: PropTypes.bool.isRequired,
   loadUser: PropTypes.func.isRequired,
-  getGithubUser: PropTypes.func.isRequired,
-  
-  
+  getGithubUser: PropTypes.func.isRequired
 };
 class App extends Component {
-          constructor(props) {
+  constructor(props) {
     super(props);
     this.state = {
-      theme: darkOrLightTheme,
+      theme: darkOrLightTheme
     };
   }
 
@@ -63,11 +61,11 @@ class App extends Component {
                 localStorage.getItem("theme") === "dark"
                   ? { main: "#303f9f" }
                   : { main: "#1976d2" },
-              type: localStorage.getItem("theme") === "dark" ? "dark" : "light",
-            },
+              type: localStorage.getItem("theme") === "dark" ? "dark" : "light"
+            }
           },
-          localStorage.getItem("language") === "en" ? enUS : zhCN,
-        ),
+          localStorage.getItem("language") === "en" ? enUS : zhCN
+        )
       });
     };
 
@@ -147,6 +145,6 @@ class App extends Component {
 App.propTypes = propTypes;
 const mapStateToProps = (state) => ({
   user: state.auth.user,
-  authenticated: state.auth.authenticated,
+  authenticated: state.auth.authenticated
 });
 export default connect(mapStateToProps, { loadUser, getGithubUser })(App);

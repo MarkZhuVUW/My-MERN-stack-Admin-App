@@ -27,7 +27,7 @@ import ResponsiveDialog from "../shared/ResponsiveDialog";
 import RoleCheckboxes from "./RoleCheckboxes";
 
 const theme = createMuiTheme({
-  spacing: 4,
+  spacing: 4
 });
 const styles = {
   content: {
@@ -39,29 +39,29 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     zIndex: 1,
-    position: "relative",
+    position: "relative"
   },
   root: {
-    backgroundColor: theme.palette.grey[600],
+    backgroundColor: theme.palette.grey[600]
   },
   paper: {
     padding: theme.spacing(8, 4),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.secondary.main
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(3)
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
+    margin: theme.spacing(3, 0, 2)
+  }
 };
 class SignUp extends Component {
   state = {
@@ -75,7 +75,7 @@ class SignUp extends Component {
     isLoading: false,
     emailErrorMsg: null,
     passwordErrorMsg: null,
-    nameErrorMsg: null,
+    nameErrorMsg: null
   };
 
   static propTypes = {
@@ -89,7 +89,7 @@ class SignUp extends Component {
     // withRouter
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
   };
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -147,7 +147,7 @@ class SignUp extends Component {
       company,
       nameErrorMsg,
       emailErrorMsg,
-      passwordErrorMsg,
+      passwordErrorMsg
     } = this.state;
     this.validateName(name);
     this.validateEmail(email);
@@ -155,7 +155,7 @@ class SignUp extends Component {
     if (emailErrorMsg || passwordErrorMsg || nameErrorMsg) return;
 
     this.setState({
-      isLoading: true,
+      isLoading: true
     });
     // Create user object
     const newUser = {
@@ -163,7 +163,7 @@ class SignUp extends Component {
       email,
       password,
       role: selectedRole,
-      company,
+      company
     };
 
     // Attempt to register
@@ -177,15 +177,15 @@ class SignUp extends Component {
   };
 
   render() {
-    const { classes, error} = this.props;
+    const { classes, error } = this.props;
     const roleSelectedCallback = (selectedRole) => {
       this.setState({
-        selectedRole,
+        selectedRole
       });
     };
     const responsiveDialogCallback = () => {
       this.setState({
-        isLoading: false,
+        isLoading: false
       });
       // clear success msg
       this.props.clearSuccessMsg();
@@ -285,17 +285,16 @@ class SignUp extends Component {
                     <Slide in direction="right">
                       <Grid container>
                         <FormControlLabel
-                          control={(
+                          control={
                             <Checkbox
-                            
                               onChange={() => {
                                 this.setState({
-                                  checked: !this.state.checked,
+                                  checked: !this.state.checked
                                 });
                               }}
                               color="primary"
                             />
-                          )}
+                          }
                           label={i18n("registerPage.warning")}
                         />
                       </Grid>
@@ -337,7 +336,7 @@ class SignUp extends Component {
                         color:
                           localStorage.getItem("theme") === "dark"
                             ? "white"
-                            : "black",
+                            : "black"
                       }}
                     >
                       {i18n("registerPage.goBack")}
@@ -356,7 +355,7 @@ class SignUp extends Component {
 const mapStateToProps = (state) => ({
   error: state.error,
   userLoaded: state.auth.userLoaded,
-  successMsg: state.auth.successMsg,
+  successMsg: state.auth.successMsg
 });
 export default compose(
   withStyles(styles),

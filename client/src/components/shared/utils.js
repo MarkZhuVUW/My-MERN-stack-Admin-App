@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 /**
  * handwritten url parameter parser.
  */
@@ -28,3 +30,17 @@ export function toQuery(params, delimiter = "&") {
     return query;
   }, "");
 }
+
+// react hooks.
+
+/**
+ * keeps track of the previous value.
+ * @param {} value
+ */
+export const usePrevious = (value) => {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current ? ref.current : {};
+};

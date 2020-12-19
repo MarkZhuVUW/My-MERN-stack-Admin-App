@@ -2,10 +2,12 @@
 
 import React from 'react';
 import Particles from 'react-particles-js';
+import PropTypes from "prop-types";
 
 
-export default function ParticlesCustomized(props) {
+ const  ParticlesCustomized = (props) => {
   const {numParticles, size, hoverMode} = props;
+  
   const particlesParams = {
     particles: {
       number: {
@@ -42,4 +44,12 @@ export default function ParticlesCustomized(props) {
       params={particlesParams}
     />
   );
-}
+};
+
+ParticlesCustomized.propTypes = {
+  numParticles: PropTypes.number.isRequired,
+  size: PropTypes.string.isRequired,
+  hoverMode: PropTypes.string.isRequired,
+
+};
+export default ParticlesCustomized;
