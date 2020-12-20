@@ -44,7 +44,9 @@ class PopupWindow {
            * Ignore DOMException: Blocked a frame with origin from accessing a
            * cross-origin frame.
            */
-          console.error(error.stack);
+          if(process.env.NODE_ENV === "development") {
+            console.error(error.stack);
+          }
         }
       }, 500);
     });

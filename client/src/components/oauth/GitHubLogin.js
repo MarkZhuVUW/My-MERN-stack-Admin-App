@@ -38,11 +38,12 @@ const GitHubLogin = ({
     onFailureCallback(error);
   };
   const onSuccess = (data) => {
-    if (!data.key) {
+    console.log(data);
+    if (!data.code) {
       onFailure(new Error("'code' not found"));
     }
 
-    onSuccessCallback(data.key);
+    onSuccessCallback(data.code);
   };
 
   const onBtnClick = () => {

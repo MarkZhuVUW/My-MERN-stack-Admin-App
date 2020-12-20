@@ -64,44 +64,21 @@ const styles = {
   }
 };
 class SignUp extends Component {
-  state = {
-    name: "",
-    email: "",
-    password: "",
-    msg: null,
-    selectedRole: "",
-    checked: false,
-    company: "",
-    isLoading: false,
-    emailErrorMsg: null,
-    passwordErrorMsg: null,
-    nameErrorMsg: null
-  };
-
-  static propTypes = {
-    error: PropTypes.object.isRequired,
-    register: PropTypes.func.isRequired,
-    userLoaded: PropTypes.bool,
-    clearErrors: PropTypes.func.isRequired,
-    successMsg: PropTypes.string,
-    clearSuccessMsg: PropTypes.func.isRequired,
-
-    // withRouter
-    match: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
-  };
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const { error } = this.props;
-    if (error !== prevProps.error) {
-      // Check for register error
-      if (error.id === "REGISTER_FAIL") {
-        this.setState({ msg: error.msg.msg });
-      } else {
-        this.setState({ msg: null });
-      }
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "",
+      email: "",
+      password: "",
+      msg: null,
+      selectedRole: "",
+      checked: false,
+      company: "",
+      isLoading: false,
+      emailErrorMsg: null,
+      passwordErrorMsg: null,
+      nameErrorMsg: null
+    };
   }
 
   toggle = () => {
@@ -192,7 +169,7 @@ class SignUp extends Component {
     };
     return (
       <div className={classes.root}>
-        {this.state.msg ? (
+        {error.msg ? (
           <ResponsiveDialog
             alertMsg={this.state.msg}
             title={error.id}
@@ -285,16 +262,17 @@ class SignUp extends Component {
                     <Slide in direction="right">
                       <Grid container>
                         <FormControlLabel
-                          control={
+                          control={(
                             <Checkbox
                               onChange={() => {
+                                const prevChecked = this.state.checked;
                                 this.setState({
-                                  checked: !this.state.checked
+                                  checked: !prevChecked
                                 });
                               }}
                               color="primary"
                             />
-                          }
+                          )}
                           label={i18n("registerPage.warning")}
                         />
                       </Grid>
@@ -354,10 +332,22 @@ class SignUp extends Component {
 
 const mapStateToProps = (state) => ({
   error: state.error,
-  userLoaded: state.auth.userLoaded,
   successMsg: state.auth.successMsg
 });
 export default compose(
   withStyles(styles),
   connect(mapStateToProps, { register, clearErrors, clearSuccessMsg })
 )(withRouter(SignUp));
+
+SignUp.propTypes = {
+  classes: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  register: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
+  successMsg: PropTypes.string,
+  clearSuccessMsg: PropTypes.func.isRequired,
+  error: PropTypes.oneOfType([PropTypes.object]).isRequired
+};
+
+SignUp.defaultProps = {
+  successMsg: null
+};

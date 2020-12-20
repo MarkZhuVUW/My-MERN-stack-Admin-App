@@ -3,15 +3,14 @@ import {
   Container,
   CssBaseline,
   Tooltip,
-  Zoom
+  Zoom,
+  Paper,
+  Grid,
+  createMuiTheme,
+  TextField,
+  Typography
 } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Snackbar from "@material-ui/core/Snackbar";
-import { createMuiTheme } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import MuiAlert from "@material-ui/lab/Alert";
+
 import { withStyles } from "@material-ui/styles";
 import { logLoginSuccess } from "actions/adminActions";
 import {
@@ -93,7 +92,7 @@ const styles = {
     marginTop: "auto",
     backgroundColor: theme.palette.primary.main,
     // position: "relative",
-    position: "absolute",
+
     width: "100%",
     top: 0,
 
@@ -223,23 +222,10 @@ class SignInSide extends Component {
     const responsiveDialogCallback = () => {
       this.setState({
         isLoading: false,
-        copyRightOpened: false
-      });
-    };
-
-    const handleSnackbarClose = (event, reason) => {
-      if (reason === "clickaway") {
-        return;
-      }
-
-      this.setState({
+        copyRightOpened: false,
         forgotPasswordClicked: false
       });
     };
-
-    function Alert(props) {
-      return <MuiAlert elevation={6} variant="filled" />;
-    }
 
     return (
       <div>
@@ -258,15 +244,14 @@ class SignInSide extends Component {
           </header>
         </MediaQuery>
         {/* if user credentials are correct. Do a google 2fa before login to dashboard */}
-        <Snackbar
-          open={this.state.forgotPasswordClicked}
-          autoHideDuration={6000}
-          onClose={handleSnackbarClose}
-        >
-          <Alert onClose={handleSnackbarClose} severity="success">
-            {i18n("loginPage.registerANewOne")}
-          </Alert>
-        </Snackbar>
+
+        {this.state.forgotPasswordClicked && (
+          <ResponsiveDialog
+            title="Forgot password?"
+            alertMsg={i18n("loginPage.registerANewOne")}
+            responsiveDialogCallback={responsiveDialogCallback}
+          />
+        )}
         {userLoaded && !user.id ? (
           <ResponsiveDialog
             alertMsg={i18n("loginPage.downloadTFAApp")}
@@ -337,9 +322,7 @@ class SignInSide extends Component {
                         buttonText={i18n("loginPage.signInWithGithub")}
                         clientId={confidentials.github_client_id}
                         redirectUri=""
-                        onSuccessCallback={(res) =>
-                          this.onGithubSignIn(res.code)
-                        }
+                        onSuccessCallback={(res) => this.onGithubSignIn(res)}
                         onFailureCallback={(res) => {
                           console.error(res);
                           this.setState({ isLoading: false });
@@ -416,8 +399,10 @@ class SignInSide extends Component {
 
                     <Grid container>
                       <Grid item xs>
-                        <NavLink
-                          to="#"
+                        <Typography
+                          component="a"
+                          href="#"
+                          variant="caption"
                           onClick={() => {
                             this.setState({
                               forgotPasswordClicked: true
@@ -432,7 +417,7 @@ class SignInSide extends Component {
                           }}
                         >
                           {i18n("loginPage.forgotPassword")}
-                        </NavLink>
+                        </Typography>
                       </Grid>
                       <Grid item>
                         <NavLink

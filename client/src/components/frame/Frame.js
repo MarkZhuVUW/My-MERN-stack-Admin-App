@@ -32,14 +32,6 @@ import Portfolio from "./pages/Portfolio/Portfolio";
 import UserAdmin from "./pages/UserAdmin";
 import WelcomePage from "./pages/WelcomePage";
 
-const propTypes = {
-  clearErrors: PropTypes.func.isRequired,
-  user: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  themeCallback: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  logPageView: PropTypes.func.isRequired,
-  // withRouter
-  location: PropTypes.oneOfType([PropTypes.object]).isRequired
-};
 class Frame extends Component {
   componentDidMount() {
     // if (this.props.user) this.handlePageView();
@@ -131,7 +123,7 @@ class Frame extends Component {
       );
 
     return (
-      <FrameContent
+      <FrameView
         location={this.props.location}
         themeCallback={this.props.themeCallback}
         user={this.props.user}
@@ -149,10 +141,17 @@ export default compose(connect(mapStateToProps, { clearErrors, logPageView }))(
   withRouter(Frame)
 );
 
-Frame.propTypes = propTypes;
+Frame.propTypes = {
+  clearErrors: PropTypes.func.isRequired,
+  user: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  themeCallback: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  logPageView: PropTypes.func.isRequired,
+  // withRouter
+  location: PropTypes.oneOfType([PropTypes.object]).isRequired
+};
 const drawerWidth = 240;
 
-function FrameContent(props) {
+const FrameView = (props) => {
   const useStyles = makeStyles((theme) => ({
     root: {
       display: "flex",
@@ -470,4 +469,11 @@ function FrameContent(props) {
       </div>
     </>
   );
-}
+};
+
+FrameView.propTypes = {
+  user: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  themeCallback: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  // withRouter
+  location: PropTypes.oneOfType([PropTypes.object]).isRequired
+};

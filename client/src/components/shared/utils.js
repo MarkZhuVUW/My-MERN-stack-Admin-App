@@ -10,9 +10,6 @@ export function toParams(query) {
     const value = keyValuePair[1];
     const newValues = { ...values };
 
-    console.log(key);
-    console.log(value);
-
     newValues[key] = value;
     return newValues;
   }, {});
