@@ -78,7 +78,7 @@ class App extends Component {
 
     return (
       <div>
-        <ClearCache>
+        <ClearCache auto>
           {({ isLatestVersion, emptyCacheStorage }) => (
             <div>
               {!isLatestVersion && (
