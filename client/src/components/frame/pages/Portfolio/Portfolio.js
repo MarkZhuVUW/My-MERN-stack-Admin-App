@@ -118,11 +118,9 @@ const Portfolio = (props) => {
                     eraseDelay={1200}
                     typingDelay={200}
                     text={[
-                      " a web developer",
-                      " a material design lover",
-                      " a react/vue developer",
-                      " a nodejs developer",
-                      " a .net developer"
+                      "a software engineer",
+                      "a web developer",
+                      "an indie game enthusiast"
                     ]}
                   />
                 </Typography>
@@ -173,9 +171,7 @@ const Portfolio = (props) => {
                   nodeId="1"
                   labelText="RSMSSB"
                   labelIcon={FolderIcon}
-                >
-                  
-                </MyTreeItem>
+                />
                 <MyTreeItem
                   nodeId="2"
                   labelText="RSMSSB"
