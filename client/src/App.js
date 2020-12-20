@@ -90,8 +90,13 @@ class App extends Component {
                     height: "100vh"
                   }}
                 >
-                  <MyButton onClick={() => emptyCacheStorage()}>
-                    click to clear frontend cache
+                  <MyButton
+                    onClick={(e) => {
+                      e.preventDefault();
+                      emptyCacheStorage();
+                    }}
+                  >
+                    click to update frontend version.
                   </MyButton>
                 </div>
               )}
