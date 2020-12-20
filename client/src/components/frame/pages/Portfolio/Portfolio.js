@@ -1,18 +1,16 @@
 import { Grid, makeStyles, Paper, Typography } from "@material-ui/core";
-import { TreeView } from "@material-ui/lab";
+
 import classNames from "classnames";
 import Breadcrumb from "components/shared/Breadcrumb";
 import FacebookProgress from "components/shared/FacebookProgress";
-import MyTreeItem from "components/shared/MyTreeItem";
+
 import { i18n } from "i18n";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import ReactTypingEffect from "react-typing-effect";
 
-import FolderIcon from "@material-ui/icons/Folder";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+
 import { logDownload } from "../../../../actions/adminActions";
 import { clearErrors } from "../../../../actions/errorActions";
 import { getGithubUser } from "../../../../actions/utilityActions";
@@ -118,11 +116,9 @@ const Portfolio = (props) => {
                     eraseDelay={1200}
                     typingDelay={200}
                     text={[
-                      " a web developer",
-                      " a material design lover",
-                      " a react/vue developer",
-                      " a nodejs developer",
-                      " a .net developer"
+                      "a software engineer",
+                      "a web developer",
+                      "an indie game enthusiast"
                     ]}
                   />
                 </Typography>
@@ -159,34 +155,6 @@ const Portfolio = (props) => {
                   className={classNames("card-scale")}
                 />
               </Grid>
-            </Grid>
-
-            <Grid container className="grid" spacing={isSmallScreen ? 1 : 4}>
-              <TreeView
-                className={classes.root}
-                defaultCollapseIcon={<ExpandMoreIcon />}
-                defaultExpandIcon={<ChevronRightIcon />}
-                expanded={expanded}
-                onNodeToggle={handleChange}
-              >
-                <MyTreeItem
-                  nodeId="1"
-                  labelText="RSMSSB"
-                  labelIcon={FolderIcon}
-                >
-                  
-                </MyTreeItem>
-                <MyTreeItem
-                  nodeId="2"
-                  labelText="RSMSSB"
-                  labelIcon={FolderIcon}
-                />
-                <MyTreeItem
-                  nodeId="3"
-                  labelText="RSMSSB"
-                  labelIcon={FolderIcon}
-                />
-              </TreeView>
             </Grid>
           </div>
         </>

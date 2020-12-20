@@ -6,7 +6,7 @@ import { getGithubUser, loadUser } from "actions/authActions";
 import SignInSide from "components/auth/SignInSide";
 import SignUp from "components/auth/SignUp";
 import Frame from "components/frame/Frame";
-import FacebookProgress from "components/shared/FacebookProgress";
+
 import ParticlesCustomized from "components/shared/ParticlesCustomized";
 import ErrorPage from "error-pages/ErrorPage";
 import PropTypes from "prop-types";
@@ -18,6 +18,7 @@ import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
 import "./App.scss";
 import { gsap } from "gsap";
 import { CSSRulePlugin } from "gsap/CSSRulePlugin";
+import MyButton from "components/shared/MyButton";
 
 const darkOrLightTheme = createMuiTheme(
   {
@@ -77,11 +78,27 @@ class App extends Component {
 
     return (
       <div>
-        <ClearCache>
+        <ClearCache auto>
           {({ isLatestVersion, emptyCacheStorage }) => (
             <div>
               {!isLatestVersion && (
-                <FacebookProgress msg="clearing react cache to show latest changes for this build..." />
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100vh"
+                  }}
+                >
+                  <MyButton
+                    onClick={(e) => {
+                      e.preventDefault();
+                      emptyCacheStorage();
+                    }}
+                  >
+                    click to update frontend version.
+                  </MyButton>
+                </div>
               )}
               {isLatestVersion && (
                 <ThemeProvider theme={theme}>
