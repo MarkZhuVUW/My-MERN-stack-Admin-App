@@ -322,8 +322,7 @@ class SignInSide extends Component {
                         buttonText={i18n("loginPage.signInWithGithub")}
                         clientId={confidentials.github_client_id}
                         redirectUri=""
-                        onSuccessCallback={(res) =>
-                          this.onGithubSignIn(res.code)}
+                        onSuccessCallback={(res) => this.onGithubSignIn(res)}
                         onFailureCallback={(res) => {
                           console.error(res);
                           this.setState({ isLoading: false });

@@ -1,46 +1,44 @@
-
-
-import React from 'react';
-import Particles from 'react-particles-js';
+import React from "react";
+import Particles from "react-particles-js";
 import PropTypes from "prop-types";
 
+const ParticlesCustomized = (props) => {
+  const { numParticles, size, hoverMode } = props;
 
- const  ParticlesCustomized = (props) => {
-  const {numParticles, size, hoverMode} = props;
-  
   const particlesParams = {
     particles: {
       number: {
-        value: props.numParticles,
+        value: props.numParticles
       },
       size: {
-        value: size,
+        value: size
       },
 
       move: {
-        enable: true,
+        enable: true
         // speed: 6,
-      },
+      }
     },
     interactivity: {
       events: {
         onhover: {
           enable: true,
-          mode: hoverMode,
-        },
-      },
-    },
+          mode: hoverMode
+        }
+      }
+    }
   };
 
   return (
     <Particles
       style={{
-        position: 'absolute',
+        position: "absolute",
         top: 0,
         left: 0,
-        width: '100%',
-        height: '100%',
-        zIndex: 1}}
+        width: "100%",
+        height: "100%",
+        zIndex: 1
+      }}
       params={particlesParams}
     />
   );
@@ -48,8 +46,7 @@ import PropTypes from "prop-types";
 
 ParticlesCustomized.propTypes = {
   numParticles: PropTypes.number.isRequired,
-  size: PropTypes.string.isRequired,
-  hoverMode: PropTypes.string.isRequired,
-
+  size: PropTypes.number.isRequired,
+  hoverMode: PropTypes.string.isRequired
 };
 export default ParticlesCustomized;
